@@ -2,14 +2,26 @@ package integration
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
+
+	"aegisr/internal/testutil"
 )
 
-func TestFixturesECS(t *testing.T) {
-	data, err := os.ReadFile("/Users/shak1532/Downloads/Aegis-R/data/fixtures/ecs/sample.json")
+func readFixture(t *testing.T, parts ...string) []byte {
+	t.Helper()
+	root := testutil.RepoRoot(t)
+	path := filepath.Join(append([]string{root}, parts...)...)
+	//nolint:gosec // path built from repo root
+	data, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatalf("read: %v", err)
 	}
+	return data
+}
+
+func TestFixturesECS(t *testing.T) {
+	data := readFixture(t, "data", "fixtures", "ecs", "sample.json")
 	events, err := IngestEvents(data, IngestOptions{Schema: SchemaECS})
 	if err != nil || len(events) == 0 {
 		t.Fatalf("ingest ecs: %v", err)
@@ -17,10 +29,7 @@ func TestFixturesECS(t *testing.T) {
 }
 
 func TestFixturesOCSF(t *testing.T) {
-	data, err := os.ReadFile("/Users/shak1532/Downloads/Aegis-R/data/fixtures/ocsf/sample.json")
-	if err != nil {
-		t.Fatalf("read: %v", err)
-	}
+	data := readFixture(t, "data", "fixtures", "ocsf", "sample.json")
 	events, err := IngestEvents(data, IngestOptions{Schema: SchemaOCSF})
 	if err != nil || len(events) == 0 {
 		t.Fatalf("ingest ocsf: %v", err)
@@ -28,10 +37,7 @@ func TestFixturesOCSF(t *testing.T) {
 }
 
 func TestFixturesCIM(t *testing.T) {
-	data, err := os.ReadFile("/Users/shak1532/Downloads/Aegis-R/data/fixtures/cim/sample.json")
-	if err != nil {
-		t.Fatalf("read: %v", err)
-	}
+	data := readFixture(t, "data", "fixtures", "cim", "sample.json")
 	events, err := IngestEvents(data, IngestOptions{Schema: SchemaCIM})
 	if err != nil || len(events) == 0 {
 		t.Fatalf("ingest cim: %v", err)
@@ -39,10 +45,7 @@ func TestFixturesCIM(t *testing.T) {
 }
 
 func TestFixturesMDEDevice(t *testing.T) {
-	data, err := os.ReadFile("/Users/shak1532/Downloads/Aegis-R/data/fixtures/mde_device.json")
-	if err != nil {
-		t.Fatalf("read: %v", err)
-	}
+	data := readFixture(t, "data", "fixtures", "mde_device.json")
 	events, err := IngestEvents(data, IngestOptions{Schema: SchemaMDE, Kind: "device"})
 	if err != nil || len(events) == 0 {
 		t.Fatalf("ingest mde device: %v", err)
@@ -50,10 +53,7 @@ func TestFixturesMDEDevice(t *testing.T) {
 }
 
 func TestFixturesMDEIdentity(t *testing.T) {
-	data, err := os.ReadFile("/Users/shak1532/Downloads/Aegis-R/data/fixtures/mde_identity.json")
-	if err != nil {
-		t.Fatalf("read: %v", err)
-	}
+	data := readFixture(t, "data", "fixtures", "mde_identity.json")
 	events, err := IngestEvents(data, IngestOptions{Schema: SchemaMDE, Kind: "identity"})
 	if err != nil || len(events) == 0 {
 		t.Fatalf("ingest mde identity: %v", err)
@@ -61,10 +61,7 @@ func TestFixturesMDEIdentity(t *testing.T) {
 }
 
 func TestFixturesElasticECS(t *testing.T) {
-	data, err := os.ReadFile("/Users/shak1532/Downloads/Aegis-R/data/fixtures/elastic_ecs.json")
-	if err != nil {
-		t.Fatalf("read: %v", err)
-	}
+	data := readFixture(t, "data", "fixtures", "elastic_ecs.json")
 	events, err := IngestEvents(data, IngestOptions{Schema: SchemaElasticECS})
 	if err != nil || len(events) == 0 {
 		t.Fatalf("ingest elastic ecs: %v", err)
@@ -72,10 +69,7 @@ func TestFixturesElasticECS(t *testing.T) {
 }
 
 func TestFixturesSplunkAuth(t *testing.T) {
-	data, err := os.ReadFile("/Users/shak1532/Downloads/Aegis-R/data/fixtures/splunk_cim_auth.json")
-	if err != nil {
-		t.Fatalf("read: %v", err)
-	}
+	data := readFixture(t, "data", "fixtures", "splunk_cim_auth.json")
 	events, err := IngestEvents(data, IngestOptions{Schema: SchemaSplunkAuth})
 	if err != nil || len(events) == 0 {
 		t.Fatalf("ingest splunk auth: %v", err)
@@ -83,10 +77,7 @@ func TestFixturesSplunkAuth(t *testing.T) {
 }
 
 func TestFixturesSplunkNet(t *testing.T) {
-	data, err := os.ReadFile("/Users/shak1532/Downloads/Aegis-R/data/fixtures/splunk_cim_net.json")
-	if err != nil {
-		t.Fatalf("read: %v", err)
-	}
+	data := readFixture(t, "data", "fixtures", "splunk_cim_net.json")
 	events, err := IngestEvents(data, IngestOptions{Schema: SchemaSplunkNet})
 	if err != nil || len(events) == 0 {
 		t.Fatalf("ingest splunk net: %v", err)
@@ -94,10 +85,7 @@ func TestFixturesSplunkNet(t *testing.T) {
 }
 
 func TestFixturesOktaSystemLog(t *testing.T) {
-	data, err := os.ReadFile("/Users/shak1532/Downloads/Aegis-R/data/fixtures/okta_systemlog.json")
-	if err != nil {
-		t.Fatalf("read: %v", err)
-	}
+	data := readFixture(t, "data", "fixtures", "okta_systemlog.json")
 	events, err := IngestEvents(data, IngestOptions{Schema: SchemaOkta})
 	if err != nil || len(events) == 0 {
 		t.Fatalf("ingest okta: %v", err)
@@ -105,10 +93,7 @@ func TestFixturesOktaSystemLog(t *testing.T) {
 }
 
 func TestFixturesCloudTrail(t *testing.T) {
-	data, err := os.ReadFile("/Users/shak1532/Downloads/Aegis-R/data/fixtures/aws_cloudtrail.json")
-	if err != nil {
-		t.Fatalf("read: %v", err)
-	}
+	data := readFixture(t, "data", "fixtures", "aws_cloudtrail.json")
 	events, err := IngestEvents(data, IngestOptions{Schema: SchemaCloudTrail})
 	if err != nil || len(events) == 0 {
 		t.Fatalf("ingest cloudtrail: %v", err)
@@ -116,10 +101,7 @@ func TestFixturesCloudTrail(t *testing.T) {
 }
 
 func TestFixturesSentinelCSL(t *testing.T) {
-	data, err := os.ReadFile("/Users/shak1532/Downloads/Aegis-R/data/fixtures/sentinel_csl.json")
-	if err != nil {
-		t.Fatalf("read: %v", err)
-	}
+	data := readFixture(t, "data", "fixtures", "sentinel_csl.json")
 	events, err := IngestEvents(data, IngestOptions{Schema: SchemaSentinelCSL})
 	if err != nil || len(events) == 0 {
 		t.Fatalf("ingest sentinel csl: %v", err)
@@ -127,10 +109,7 @@ func TestFixturesSentinelCSL(t *testing.T) {
 }
 
 func TestFixturesCrowdStrike(t *testing.T) {
-	data, err := os.ReadFile("/Users/shak1532/Downloads/Aegis-R/data/fixtures/crowdstrike_fdr.json")
-	if err != nil {
-		t.Fatalf("read: %v", err)
-	}
+	data := readFixture(t, "data", "fixtures", "crowdstrike_fdr.json")
 	events, err := IngestEvents(data, IngestOptions{Schema: SchemaCrowdStrike})
 	if err != nil || len(events) == 0 {
 		t.Fatalf("ingest crowdstrike: %v", err)

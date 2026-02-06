@@ -1,14 +1,17 @@
 package eval
 
 import (
+	"path/filepath"
 	"testing"
 
 	"aegisr/internal/logic"
+	"aegisr/internal/testutil"
 )
 
 func TestRealisticScenarios(t *testing.T) {
 	rules := logic.DefaultRules()
-	scenarios, err := LoadScenarios("/Users/shak1532/Downloads/Aegis-R/data/scenarios_realistic.json")
+	root := testutil.RepoRoot(t)
+	scenarios, err := LoadScenarios(filepath.Join(root, "data", "scenarios_realistic.json"))
 	if err != nil {
 		t.Fatalf("load: %v", err)
 	}

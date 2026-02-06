@@ -1,0 +1,28 @@
+package testutil
+
+import (
+	"os"
+	"path/filepath"
+	"testing"
+)
+
+func RepoRoot(t testing.TB) string {
+	t.Helper()
+	cwd, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("getwd: %v", err)
+	}
+	dir := cwd
+	for {
+		if _, err := os.Stat(filepath.Join(dir, "go.mod")); err == nil {
+			return dir
+		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			break
+		}
+		dir = parent
+	}
+	t.Fatalf("repo root not found from %s", cwd)
+	return ""
+}
