@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aegisr.fullname" . }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "aegisr.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "aegisr.name" . }}
+    spec:
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ if .Values.serviceAccount.name }}{{ .Values.serviceAccount.name }}{{ else }}{{ include "aegisr.fullname" . }}{{ end }}
+      {{- else if .Values.serviceAccount.name }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      {{- end }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
+      securityContext:
+        runAsUser: {{ .Values.security.runAsUser }}
+        runAsGroup: {{ .Values.security.runAsGroup }}
+        fsGroup: {{ .Values.security.fsGroup }}
+        runAsNonRoot: {{ .Values.security.runAsNonRoot }}
+        seccompProfile:
+          type: {{ .Values.security.seccompProfile }}
+      containers:
+        - name: aegisr
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["ingest-http", "-addr", ":8080"]
+          ports:
+            - containerPort: 8080
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: {{ .Values.security.readOnlyRootFilesystem }}
+            capabilities:
+              drop: ["ALL"]
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+        {{- if .Values.ui.enabled }}
+        - name: ui
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "ui"
+            - "-addr"
+            - ":9090"
+            - "-audit"
+            - "{{ .Values.ui.auditPath }}"
+            - "-signed-audit"
+            - "{{ .Values.ui.signedAuditPath }}"
+            - "-approvals"
+            - "{{ .Values.ui.approvalsPath }}"
+            - "-report"
+            - "{{ .Values.ui.reportPath }}"
+            - "-profiles"
+            - "{{ .Values.ui.profilesPath }}"
+            - "-disagreements"
+            - "{{ .Values.ui.disagreementsPath }}"
+            - "-key"
+            - "/data/keypair.json"
+            - "-basic-user"
+            - "{{ .Values.ui.basicUser }}"
+            - "-basic-pass"
+            - "$(BASIC_PASS)"
+          env:
+            - name: BASIC_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.ui.basicPassSecret }}
+                  key: password
+          ports:
+            - containerPort: 9090
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: {{ .Values.security.readOnlyRootFilesystem }}
+            capabilities:
+              drop: ["ALL"]
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+        {{- end }}
+      volumes:
+        - name: data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "aegisr.fullname" . }}-pvc
+          {{- else }}
+          emptyDir: {}
+          {{- end }}

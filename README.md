@@ -18,6 +18,33 @@ Aegis-R is a **human-governed security reasoning infrastructure** that evaluates
 
 ---
 
+## Kubernetes Deployment (Helm)
+
+### Requirements
+1. Kubernetes 1.27+
+2. Ingress controller (nginx default, ALB optional)
+3. cert-manager for TLS (or provide a secret)
+
+### Install
+```bash
+kubectl create namespace aegis-r
+helm install aegis-r ./deploy/helm/aegis-r --namespace aegis-r
+```
+
+### Configure UI Basic Auth
+```bash
+kubectl -n aegis-r create secret generic aegisr-ui-basic --from-literal=password='change-me'
+```
+
+### Example Values Overrides
+```bash
+helm upgrade --install aegis-r ./deploy/helm/aegis-r \
+  --namespace aegis-r \
+  --set ingress.host=aegisr.example.com \
+  --set ingress.tls.secretName=aegisr-tls \
+  --set ui.basicPassSecretCreate=false
+```
+
 ## Quick Start
 
 ### 1) Generate Synthetic Events
