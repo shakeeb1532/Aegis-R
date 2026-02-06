@@ -3,6 +3,8 @@ package env
 import (
 	"encoding/json"
 	"os"
+
+	"aegisr/internal/ops"
 )
 
 type Host struct {
@@ -36,6 +38,9 @@ type Environment struct {
 func Load(path string) (Environment, error) {
 	var e Environment
 	if path == "" {
+		return e, os.ErrInvalid
+	}
+	if !ops.IsSafePath(path) {
 		return e, os.ErrInvalid
 	}
 	data, err := os.ReadFile(path)

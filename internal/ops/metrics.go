@@ -9,14 +9,23 @@ type Metrics struct {
 }
 
 func (m *Metrics) IncEvents(n int) {
+	if n <= 0 {
+		return
+	}
 	atomic.AddUint64(&m.EventsIn, uint64(n))
 }
 
 func (m *Metrics) IncRules(n int) {
+	if n <= 0 {
+		return
+	}
 	atomic.AddUint64(&m.RulesChecked, uint64(n))
 }
 
 func (m *Metrics) IncFindings(n int) {
+	if n <= 0 {
+		return
+	}
 	atomic.AddUint64(&m.FindingsOut, uint64(n))
 }
 

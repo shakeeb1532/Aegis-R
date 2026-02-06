@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"aegisr/internal/audit"
+	"aegisr/internal/ops"
 )
 
 type SignedStatus struct {
@@ -17,6 +18,9 @@ type SignedStatus struct {
 func loadSignedArtifacts(path string) ([]SignedStatus, error) {
 	if path == "" {
 		return nil, nil
+	}
+	if !ops.IsSafePath(path) {
+		return nil, os.ErrInvalid
 	}
 	data, err := os.ReadFile(path)
 	if err != nil {

@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"os"
 	"time"
+
+	"aegisr/internal/ops"
 )
 
 type AttackState struct {
@@ -32,6 +34,9 @@ func Load(path string) (AttackState, error) {
 	if path == "" {
 		return New(), nil
 	}
+	if !ops.IsSafePath(path) {
+		return New(), os.ErrInvalid
+	}
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return New(), err
@@ -59,9 +64,12 @@ func Save(path string, s AttackState) error {
 	if path == "" {
 		return nil
 	}
+	if !ops.IsSafePath(path) {
+		return os.ErrInvalid
+	}
 	data, err := json.MarshalIndent(s, "", "  ")
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(path, data, 0644)
+	return os.WriteFile(path, data, 0600)
 }

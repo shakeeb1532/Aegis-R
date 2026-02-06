@@ -25,7 +25,7 @@ func SaveScenarios(path string, f ScenariosFile) error {
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(path, data, 0644)
+	return os.WriteFile(path, data, 0600)
 }
 
 func scenarioForRule(r logic.Rule, outcome Outcome) Scenario {

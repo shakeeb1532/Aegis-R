@@ -26,6 +26,7 @@ import (
 	"aegisr/internal/state"
 	"aegisr/internal/ui"
 	"aegisr/internal/validate"
+	"aegisr/internal/zerotrust"
 )
 
 type KeypairFile struct {
@@ -66,6 +67,10 @@ func main() {
 		handleIngestHTTP(os.Args[2:])
 	case "ui":
 		handleUI(os.Args[2:])
+	case "init-scan":
+		handleInitScan(os.Args[2:])
+	case "scan":
+		handleScan(os.Args[2:])
 	default:
 		usage()
 		os.Exit(1)
@@ -77,7 +82,7 @@ func usage() {
 	fmt.Println("Commands:")
 	fmt.Println("  generate -out events.json -count 60 -seed 42")
 	fmt.Println("  reason -in events.json [-approval approval.json] [-require-okta] [-rules rules.json] [-format cli|json]")
-	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log [-rules rules.json] [-approval approval.json] [-policy policy.json] [-config ops.json] [-format cli|json]")
+	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log [-rules rules.json] [-approval approval.json] [-policy policy.json] [-config ops.json] [-format cli|json] [-baseline data/zero_trust_baseline.json]")
 	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log -siem siem.json (optional)")
 	fmt.Println("  keys -out keypair.json")
 	fmt.Println("  approve -key keypair.json -id change-1 -ttl 10m -okta true -signer alice -role approver -out approval.json")
@@ -89,6 +94,8 @@ func usage() {
 	fmt.Println("  evaluate -scenarios scenarios.json [-rules rules.json]")
 	fmt.Println("  ingest-http -addr :8080 (schema: ecs|elastic_ecs|ocsf|cim|splunk_cim_auth|splunk_cim_net|mde)")
 	fmt.Println("  ui -addr :9090 -audit audit.log -signed-audit signed_audit.log -approvals approvals.log -report report.json -key keypair.json -basic-user user -basic-pass pass")
+	fmt.Println("  init-scan -baseline data/zero_trust_baseline.json")
+	fmt.Println("  scan -baseline data/zero_trust_baseline.json [-override-approval admin_approval.json]")
 }
 
 func handleGenerate(args []string) {
@@ -159,10 +166,15 @@ func handleAssess(args []string) {
 	rulesPath := fs.String("rules", "", "rules json (optional)")
 	format := fs.String("format", "json", "output format: cli or json")
 	configPath := fs.String("config", "", "ops config json (optional)")
+	baselinePath := fs.String("baseline", "data/zero_trust_baseline.json", "zero-trust baseline")
 	fs.Parse(args)
 
 	if *in == "" || *envPath == "" {
 		fatal(errors.New("-in and -env are required"))
+	}
+
+	if _, err := zerotrust.LoadBaseline(*baselinePath); err != nil {
+		fatal(errors.New("zero-trust baseline missing or invalid; run init-scan before assess"))
 	}
 
 	var events []model.Event
@@ -496,7 +508,15 @@ func handleIngestHTTP(args []string) {
 	http.HandleFunc("/ingest", integration.IngestHandler)
 	http.HandleFunc("/healthz", integration.HealthHandler)
 	fmt.Printf("Ingest HTTP listening on %s\n", *addr)
-	if err := http.ListenAndServe(*addr, nil); err != nil {
+	srv := &http.Server{
+		Addr:              *addr,
+		Handler:           nil,
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       10 * time.Second,
+		WriteTimeout:      10 * time.Second,
+		IdleTimeout:       60 * time.Second,
+	}
+	if err := srv.ListenAndServe(); err != nil {
 		fatal(err)
 	}
 }
@@ -518,12 +538,67 @@ func handleUI(args []string) {
 		fatal(err)
 	}
 	fmt.Printf("UI listening on %s\n", *addr)
-	if err := http.ListenAndServe(*addr, server.Routes()); err != nil {
+	srv := &http.Server{
+		Addr:              *addr,
+		Handler:           server.Routes(),
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       10 * time.Second,
+		WriteTimeout:      10 * time.Second,
+		IdleTimeout:       60 * time.Second,
+	}
+	if err := srv.ListenAndServe(); err != nil {
 		fatal(err)
 	}
 }
 
+func handleInitScan(args []string) {
+	fs := flag.NewFlagSet("init-scan", flag.ExitOnError)
+	baselinePath := fs.String("baseline", "data/zero_trust_baseline.json", "baseline output path")
+	fs.Parse(args)
+	root, _ := os.Getwd()
+	b, err := zerotrust.BuildBaseline(root, zerotrust.DefaultExclusions)
+	if err != nil {
+		fatal(err)
+	}
+	if err := zerotrust.SaveBaseline(*baselinePath, b); err != nil {
+		fatal(err)
+	}
+	fmt.Printf("Zero-Trust baseline created: %s\n", *baselinePath)
+}
+
+func handleScan(args []string) {
+	fs := flag.NewFlagSet("scan", flag.ExitOnError)
+	baselinePath := fs.String("baseline", "data/zero_trust_baseline.json", "baseline path")
+	overrideApproval := fs.String("override-approval", "", "admin override approval")
+	fs.Parse(args)
+
+	root, _ := os.Getwd()
+	b, err := zerotrust.LoadBaseline(*baselinePath)
+	if err != nil {
+		fatal(errors.New("zero-trust baseline missing or invalid; run init-scan"))
+	}
+	res, err := zerotrust.Compare(root, b, zerotrust.DefaultExclusions)
+	if err != nil {
+		fatal(err)
+	}
+	if len(res.Missing)+len(res.Added)+len(res.Changed) == 0 {
+		fmt.Println("Zero-Trust scan passed")
+		return
+	}
+	fmt.Printf("Zero-Trust scan failed: added=%d changed=%d missing=%d\n", len(res.Added), len(res.Changed), len(res.Missing))
+	if *overrideApproval == "" {
+		fatal(errors.New("admin override required"))
+	}
+	if err := verifyAdminOverride(*overrideApproval); err != nil {
+		fatal(err)
+	}
+	fmt.Println("WARNING: Zero-Trust scan failed. Override applied by admin. No liability assumed; system integrity may be impacted.")
+}
+
 func readJSON(path string, out interface{}) {
+	if !ops.IsSafePath(path) {
+		fatal(os.ErrInvalid)
+	}
 	data, err := os.ReadFile(path)
 	if err != nil {
 		fatal(err)
@@ -542,7 +617,10 @@ func writeJSON(path string, v interface{}) {
 		fmt.Println(string(data))
 		return
 	}
-	if err := os.WriteFile(path, data, 0644); err != nil {
+	if !ops.IsSafePath(path) {
+		fatal(os.ErrInvalid)
+	}
+	if err := os.WriteFile(path, data, 0600); err != nil {
 		fatal(err)
 	}
 }
@@ -633,6 +711,37 @@ func verifyApprovalFileWithPolicy(path string, policy governance.Policy) error {
 		return err
 	}
 	return approval.VerifySignerRole(a, policy.AllowedSignerRoles)
+}
+
+func verifyAdminOverride(path string) error {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	var dual approval.DualApproval
+	if err := json.Unmarshal(data, &dual); err == nil && len(dual.Approvals) > 0 {
+		dual.RequireOkta = true
+		if err := approval.VerifyDual(dual, time.Now().UTC()); err != nil {
+			return err
+		}
+		for _, a := range dual.Approvals {
+			if a.SignerRole != "admin" {
+				return errors.New("admin override requires admin signer role")
+			}
+		}
+		return nil
+	}
+	var a approval.Approval
+	if err := json.Unmarshal(data, &a); err != nil {
+		return err
+	}
+	if err := approval.Verify(a, true, time.Now().UTC()); err != nil {
+		return err
+	}
+	if a.SignerRole != "admin" {
+		return errors.New("admin override requires admin signer role")
+	}
+	return nil
 }
 
 func fatal(err error) {

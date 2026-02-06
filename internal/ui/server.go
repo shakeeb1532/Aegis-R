@@ -15,6 +15,7 @@ import (
 	"aegisr/internal/approval"
 	"aegisr/internal/audit"
 	"aegisr/internal/model"
+	"aegisr/internal/ops"
 )
 
 type Server struct {
@@ -212,6 +213,10 @@ func (s *Server) download(w http.ResponseWriter, r *http.Request) {
 func (s *Server) serveFile(w http.ResponseWriter, path string, name string) {
 	if path == "" {
 		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+	if !ops.IsSafePath(path) {
+		w.WriteHeader(http.StatusForbidden)
 		return
 	}
 	data, err := os.ReadFile(path)

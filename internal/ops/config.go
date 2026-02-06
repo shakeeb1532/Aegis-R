@@ -16,6 +16,9 @@ func LoadConfig(path string) (Config, error) {
 	if path == "" {
 		return c, nil
 	}
+	if !IsSafePath(path) {
+		return c, os.ErrInvalid
+	}
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return c, err

@@ -35,7 +35,7 @@ func ExportSIEM(path string, out core.Output) error {
 	if err != nil {
 		return err
 	}
-	if err := os.WriteFile(path, data, 0644); err != nil {
+	if err := os.WriteFile(path, data, 0600); err != nil {
 		return err
 	}
 	fmt.Printf("SIEM export written: %s\n", path)

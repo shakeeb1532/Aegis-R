@@ -3,6 +3,8 @@ package eval
 import (
 	"encoding/json"
 	"os"
+
+	"aegisr/internal/ops"
 )
 
 type Outcome string
@@ -54,6 +56,9 @@ type Mismatch struct {
 
 func LoadScenarios(path string) (ScenariosFile, error) {
 	var f ScenariosFile
+	if !ops.IsSafePath(path) {
+		return f, os.ErrInvalid
+	}
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return f, err

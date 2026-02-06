@@ -9,6 +9,8 @@ import (
 	"os"
 	"strings"
 	"time"
+
+	"aegisr/internal/ops"
 )
 
 type Artifact struct {
@@ -36,6 +38,9 @@ func HashArtifact(a Artifact) (string, error) {
 func LoadLastHash(path string) (string, error) {
 	if path == "" {
 		return "", nil
+	}
+	if !ops.IsSafePath(path) {
+		return "", os.ErrInvalid
 	}
 	f, err := os.Open(path)
 	if err != nil {
@@ -72,12 +77,15 @@ func AppendLog(path string, a Artifact) error {
 	if path == "" {
 		return nil
 	}
+	if !ops.IsSafePath(path) {
+		return os.ErrInvalid
+	}
 	data, err := json.Marshal(a)
 	if err != nil {
 		return err
 	}
 	data = append(data, '\n')
-	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0600)
 	if err != nil {
 		return err
 	}
@@ -90,12 +98,15 @@ func AppendSigned(path string, s SignedArtifact) error {
 	if path == "" {
 		return nil
 	}
+	if !ops.IsSafePath(path) {
+		return os.ErrInvalid
+	}
 	data, err := json.Marshal(s)
 	if err != nil {
 		return err
 	}
 	data = append(data, '\n')
-	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0600)
 	if err != nil {
 		return err
 	}
@@ -107,6 +118,9 @@ func AppendSigned(path string, s SignedArtifact) error {
 func VerifyChain(path string) error {
 	if path == "" {
 		return nil
+	}
+	if !ops.IsSafePath(path) {
+		return os.ErrInvalid
 	}
 	f, err := os.Open(path)
 	if err != nil {
