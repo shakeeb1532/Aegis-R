@@ -1,0 +1,10 @@
+{
+  "id": "enterprise-default",
+  "require_dual_for_signals": [
+    "trust_boundary_change",
+    "policy_override",
+    "new_admin_account"
+  ],
+  "min_approvals": 2,
+  "allowed_signer_roles": ["approver", "admin"]
+}

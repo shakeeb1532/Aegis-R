@@ -1,0 +1,81 @@
+package integration
+
+import (
+	"encoding/json"
+	"strings"
+
+	"aegisr/internal/model"
+)
+
+type cloudTrailEvent struct {
+	EventID       string                 `json:"eventID"`
+	EventTime     string                 `json:"eventTime"`
+	EventSource   string                 `json:"eventSource"`
+	EventName     string                 `json:"eventName"`
+	AWSRegion     string                 `json:"awsRegion"`
+	SourceIP      string                 `json:"sourceIPAddress"`
+	UserAgent     string                 `json:"userAgent"`
+	RecipientAcct string                 `json:"recipientAccountId"`
+	UserIdentity  map[string]interface{} `json:"userIdentity"`
+	RequestParams map[string]interface{} `json:"requestParameters"`
+	ResponseElems map[string]interface{} `json:"responseElements"`
+	ErrorCode     string                 `json:"errorCode"`
+	ErrorMessage  string                 `json:"errorMessage"`
+}
+
+func mapCloudTrail(raw []byte) ([]model.Event, error) {
+	var in []cloudTrailEvent
+	if err := json.Unmarshal(raw, &in); err != nil {
+		return nil, err
+	}
+	out := make([]model.Event, 0, len(in))
+	for _, e := range in {
+		user := extractUserIdentity(e.UserIdentity)
+		etype := mapCloudTrailEventType(e.EventSource, e.EventName)
+		details := map[string]interface{}{
+			"event_source":  e.EventSource,
+			"aws_region":    e.AWSRegion,
+			"source_ip":     e.SourceIP,
+			"user_agent":    e.UserAgent,
+			"error_code":    e.ErrorCode,
+			"error_message": e.ErrorMessage,
+			"request":       e.RequestParams,
+			"response":      e.ResponseElems,
+		}
+		out = append(out, model.Event{
+			ID:      e.EventID,
+			Time:    parseTime(e.EventTime),
+			Host:    e.RecipientAcct,
+			User:    user,
+			Type:    etype,
+			Details: details,
+		})
+	}
+	return out, nil
+}
+
+func extractUserIdentity(m map[string]interface{}) string {
+	if m == nil {
+		return ""
+	}
+	if arn, ok := m["arn"].(string); ok && arn != "" {
+		return arn
+	}
+	if user, ok := m["userName"].(string); ok && user != "" {
+		return user
+	}
+	if principal, ok := m["principalId"].(string); ok {
+		return principal
+	}
+	return ""
+}
+
+func mapCloudTrailEventType(source string, name string) string {
+	if strings.Contains(source, "iam.amazonaws.com") || strings.Contains(source, "sts.amazonaws.com") {
+		if strings.Contains(name, "CreateUser") || strings.Contains(name, "CreateRole") {
+			return "new_admin_account"
+		}
+		return "iam_change"
+	}
+	return name
+}

@@ -1,0 +1,9 @@
+[
+  {
+    "Timestamp": "2026-02-05T05:00:00Z",
+    "DeviceName": "host-5",
+    "AccountName": "alice",
+    "ActionType": "beacon_outbound",
+    "AdditionalFields": {"foo": "bar"}
+  }
+]

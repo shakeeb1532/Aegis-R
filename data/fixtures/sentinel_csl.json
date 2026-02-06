@@ -1,0 +1,13 @@
+[
+  {
+    "TimeGenerated": "2026-02-05T10:00:00Z",
+    "Computer": "host-9",
+    "AccountName": "bob",
+    "SourceIP": "10.1.1.1",
+    "DestinationIP": "10.2.2.2",
+    "DeviceAction": "allowed",
+    "Activity": "network_connection",
+    "Protocol": "TCP",
+    "Fields": {"Vendor": "Palo Alto"}
+  }
+]

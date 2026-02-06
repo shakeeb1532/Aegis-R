@@ -1,0 +1,94 @@
+[
+  {
+    "id": "TA0001.PHISHING",
+    "name": "Initial Access via Phishing",
+    "requirements": [
+      {"type": "email_attachment_open", "description": "User opened malicious attachment"},
+      {"type": "macro_execution", "description": "Macro executed from attachment"},
+      {"type": "beacon_outbound", "description": "Outbound beacon to known C2"}
+    ],
+    "preconds": [],
+    "explain": "User interaction and macro execution leading to outbound beaconing.",
+    "mitre": {"tactic": "TA0001", "technique": "T1566", "subtechnique": "T1566.001", "links": ["https://attack.mitre.org/techniques/T1566/"]},
+    "provenance": {"author": "Aegis-R", "version": "1.0", "sources": ["internal"], "reviewed_by": ["soc-lead"], "approved_at": "2026-02-05"},
+    "constraints": {"min_confidence": 0.6, "applies_to": ["windows", "corp"]}
+  },
+  {
+    "id": "TA0004.PRIVESCA",
+    "name": "Privilege Escalation",
+    "requirements": [
+      {"type": "token_manipulation", "description": "Token manipulation activity"},
+      {"type": "admin_group_change", "description": "User added to admin group"}
+    ],
+    "preconds": [],
+    "explain": "Evidence of elevating access beyond initial privileges.",
+    "mitre": {"tactic": "TA0004", "technique": "T1068", "subtechnique": "", "links": ["https://attack.mitre.org/tactics/TA0004/"]},
+    "provenance": {"author": "Aegis-R", "version": "1.0", "sources": ["internal"], "reviewed_by": ["soc-lead"], "approved_at": "2026-02-05"},
+    "constraints": {"min_confidence": 0.6, "applies_to": ["windows", "corp"]}
+  },
+  {
+    "id": "TA0006.CREDDUMP",
+    "name": "Credential Dumping",
+    "requirements": [
+      {"type": "process_creation", "description": "Credential dumping tool execution"},
+      {"type": "lsass_access", "description": "Access to LSASS"}
+    ],
+    "preconds": ["privilege_escalation"],
+    "explain": "Requires elevated privileges to access credential stores.",
+    "mitre": {"tactic": "TA0006", "technique": "T1003", "subtechnique": "T1003.001", "links": ["https://attack.mitre.org/techniques/T1003/"]},
+    "provenance": {"author": "Aegis-R", "version": "1.0", "sources": ["internal"], "reviewed_by": ["soc-lead"], "approved_at": "2026-02-05"},
+    "constraints": {"min_confidence": 0.6, "applies_to": ["windows", "corp"]}
+  },
+  {
+    "id": "TA0008.LATERAL",
+    "name": "Lateral Movement",
+    "requirements": [
+      {"type": "remote_service_creation", "description": "Remote service created"},
+      {"type": "network_logon", "description": "Successful network logon"}
+    ],
+    "preconds": ["credential_access"],
+    "explain": "Requires valid credentials before remote execution.",
+    "mitre": {"tactic": "TA0008", "technique": "T1021", "subtechnique": "", "links": ["https://attack.mitre.org/tactics/TA0008/"]},
+    "provenance": {"author": "Aegis-R", "version": "1.0", "sources": ["internal"], "reviewed_by": ["soc-lead"], "approved_at": "2026-02-05"},
+    "constraints": {"min_confidence": 0.6, "applies_to": ["windows", "corp"]}
+  },
+  {
+    "id": "TA0003.PERSIST",
+    "name": "Persistence",
+    "requirements": [
+      {"type": "registry_run_key", "description": "Registry run key set"},
+      {"type": "scheduled_task", "description": "Scheduled task created"}
+    ],
+    "preconds": ["initial_access"],
+    "explain": "Persistence established after initial access.",
+    "mitre": {"tactic": "TA0003", "technique": "T1060", "subtechnique": "", "links": ["https://attack.mitre.org/tactics/TA0003/"]},
+    "provenance": {"author": "Aegis-R", "version": "1.0", "sources": ["internal"], "reviewed_by": ["soc-lead"], "approved_at": "2026-02-05"},
+    "constraints": {"min_confidence": 0.6, "applies_to": ["windows", "corp"]}
+  },
+  {
+    "id": "TA0011.C2",
+    "name": "Command and Control",
+    "requirements": [
+      {"type": "beacon_outbound", "description": "Outbound beacon to known C2"},
+      {"type": "dns_tunneling", "description": "DNS tunneling patterns"}
+    ],
+    "preconds": ["initial_access"],
+    "explain": "C2 established after initial access.",
+    "mitre": {"tactic": "TA0011", "technique": "T1071", "subtechnique": "T1071.004", "links": ["https://attack.mitre.org/tactics/TA0011/"]},
+    "provenance": {"author": "Aegis-R", "version": "1.0", "sources": ["internal"], "reviewed_by": ["soc-lead"], "approved_at": "2026-02-05"},
+    "constraints": {"min_confidence": 0.6, "applies_to": ["windows", "corp"]}
+  },
+  {
+    "id": "TA0010.EXFIL",
+    "name": "Exfiltration",
+    "requirements": [
+      {"type": "data_staging", "description": "Data staged in archive"},
+      {"type": "large_outbound_transfer", "description": "Large outbound data transfer"}
+    ],
+    "preconds": ["c2_established", "credential_access"],
+    "explain": "Exfiltration typically follows C2 and credential access.",
+    "mitre": {"tactic": "TA0010", "technique": "T1041", "subtechnique": "", "links": ["https://attack.mitre.org/tactics/TA0010/"]},
+    "provenance": {"author": "Aegis-R", "version": "1.0", "sources": ["internal"], "reviewed_by": ["soc-lead"], "approved_at": "2026-02-05"},
+    "constraints": {"min_confidence": 0.6, "applies_to": ["windows", "corp"]}
+  }
+]

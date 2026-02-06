@@ -1,0 +1,16 @@
+[
+  {
+    "@timestamp": "2026-02-05T01:00:00Z",
+    "event": {"id": "ecs-1", "kind": "alert", "type": ["beacon_outbound"]},
+    "host": {"name": "host-1"},
+    "user": {"name": "alice"},
+    "labels": {"src_ip": "10.0.0.1", "dst_ip": "10.0.0.2"}
+  },
+  {
+    "@timestamp": "2026-02-05T01:01:00Z",
+    "event": {"id": "ecs-2", "kind": "event", "type": ["lsass_access"]},
+    "host": {"name": "host-1"},
+    "user": {"name": "alice"},
+    "labels": {"process": "mimikatz"}
+  }
+]

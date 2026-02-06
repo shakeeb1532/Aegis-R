@@ -1,0 +1,12 @@
+[
+  {
+    "_time": "2026-02-05 07:00:00",
+    "user": "alice",
+    "src": "10.0.0.1",
+    "dest": "host-7",
+    "action": "success",
+    "app": "ssh",
+    "signature": "login_success",
+    "fields": {"vendor_product": "splunk"}
+  }
+]

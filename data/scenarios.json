@@ -1,0 +1,688 @@
+{
+  "scenarios": [
+    {
+      "id": "TA0001.PHISHING-feasible",
+      "description": "feasible scenario for Initial Access via Phishing",
+      "events": [
+        {
+          "id": "e-TA0001.PHISHING-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "e-TA0001.PHISHING-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "e-TA0001.PHISHING-2",
+          "time": "2026-02-05T21:53:25Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "beacon_outbound",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.PHISHING",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "TA0001.PHISHING-incomplete",
+      "description": "incomplete scenario for Initial Access via Phishing",
+      "events": [
+        {
+          "id": "e-TA0001.PHISHING-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "e-TA0001.PHISHING-2",
+          "time": "2026-02-05T21:53:25Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "beacon_outbound",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.PHISHING",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "TA0001.PHISHING-impossible",
+      "description": "impossible scenario for Initial Access via Phishing",
+      "events": [
+        {
+          "id": "e-TA0001.PHISHING-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "e-TA0001.PHISHING-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "e-TA0001.PHISHING-2",
+          "time": "2026-02-05T21:53:25Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "beacon_outbound",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.PHISHING",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "TA0004.PRIVESCA-feasible",
+      "description": "feasible scenario for Privilege Escalation",
+      "events": [
+        {
+          "id": "e-TA0004.PRIVESCA-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "e-TA0004.PRIVESCA-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "admin_group_change",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.PRIVESCA",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "TA0004.PRIVESCA-incomplete",
+      "description": "incomplete scenario for Privilege Escalation",
+      "events": [
+        {
+          "id": "e-TA0004.PRIVESCA-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "admin_group_change",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.PRIVESCA",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "TA0004.PRIVESCA-impossible",
+      "description": "impossible scenario for Privilege Escalation",
+      "events": [
+        {
+          "id": "e-TA0004.PRIVESCA-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "e-TA0004.PRIVESCA-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "admin_group_change",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.PRIVESCA",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "TA0006.CREDDUMP-feasible",
+      "description": "feasible scenario for Credential Dumping",
+      "events": [
+        {
+          "id": "p-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "e-TA0006.CREDDUMP-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "process_creation",
+          "details": {}
+        },
+        {
+          "id": "e-TA0006.CREDDUMP-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.CREDDUMP",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "TA0006.CREDDUMP-incomplete",
+      "description": "incomplete scenario for Credential Dumping",
+      "events": [
+        {
+          "id": "p-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "e-TA0006.CREDDUMP-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.CREDDUMP",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "TA0006.CREDDUMP-impossible",
+      "description": "impossible scenario for Credential Dumping",
+      "events": [
+        {
+          "id": "e-TA0006.CREDDUMP-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "process_creation",
+          "details": {}
+        },
+        {
+          "id": "e-TA0006.CREDDUMP-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.CREDDUMP",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "TA0008.LATERAL-feasible",
+      "description": "feasible scenario for Lateral Movement",
+      "events": [
+        {
+          "id": "p-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "e-TA0008.LATERAL-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "remote_service_creation",
+          "details": {}
+        },
+        {
+          "id": "e-TA0008.LATERAL-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "network_logon",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.LATERAL",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "TA0008.LATERAL-incomplete",
+      "description": "incomplete scenario for Lateral Movement",
+      "events": [
+        {
+          "id": "p-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "e-TA0008.LATERAL-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "network_logon",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.LATERAL",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "TA0008.LATERAL-impossible",
+      "description": "impossible scenario for Lateral Movement",
+      "events": [
+        {
+          "id": "e-TA0008.LATERAL-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "remote_service_creation",
+          "details": {}
+        },
+        {
+          "id": "e-TA0008.LATERAL-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "network_logon",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.LATERAL",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "TA0003.PERSIST-feasible",
+      "description": "feasible scenario for Persistence",
+      "events": [
+        {
+          "id": "p-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "p-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "e-TA0003.PERSIST-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "registry_run_key",
+          "details": {}
+        },
+        {
+          "id": "e-TA0003.PERSIST-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "scheduled_task",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.PERSIST",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "TA0003.PERSIST-incomplete",
+      "description": "incomplete scenario for Persistence",
+      "events": [
+        {
+          "id": "p-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "p-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "e-TA0003.PERSIST-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "scheduled_task",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.PERSIST",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "TA0003.PERSIST-impossible",
+      "description": "impossible scenario for Persistence",
+      "events": [
+        {
+          "id": "e-TA0003.PERSIST-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "registry_run_key",
+          "details": {}
+        },
+        {
+          "id": "e-TA0003.PERSIST-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "scheduled_task",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.PERSIST",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "TA0011.C2-feasible",
+      "description": "feasible scenario for Command and Control",
+      "events": [
+        {
+          "id": "p-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "p-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "e-TA0011.C2-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "beacon_outbound",
+          "details": {}
+        },
+        {
+          "id": "e-TA0011.C2-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "dns_tunneling",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.C2",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "TA0011.C2-incomplete",
+      "description": "incomplete scenario for Command and Control",
+      "events": [
+        {
+          "id": "p-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "p-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "e-TA0011.C2-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "dns_tunneling",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.C2",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "TA0011.C2-impossible",
+      "description": "impossible scenario for Command and Control",
+      "events": [
+        {
+          "id": "e-TA0011.C2-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "beacon_outbound",
+          "details": {}
+        },
+        {
+          "id": "e-TA0011.C2-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "dns_tunneling",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.C2",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "TA0010.EXFIL-feasible",
+      "description": "feasible scenario for Exfiltration",
+      "events": [
+        {
+          "id": "p-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "beacon_outbound",
+          "details": {}
+        },
+        {
+          "id": "p-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "e-TA0010.EXFIL-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "data_staging",
+          "details": {}
+        },
+        {
+          "id": "e-TA0010.EXFIL-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "large_outbound_transfer",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "TA0010.EXFIL-incomplete",
+      "description": "incomplete scenario for Exfiltration",
+      "events": [
+        {
+          "id": "p-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "beacon_outbound",
+          "details": {}
+        },
+        {
+          "id": "p-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "e-TA0010.EXFIL-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "large_outbound_transfer",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "TA0010.EXFIL-impossible",
+      "description": "impossible scenario for Exfiltration",
+      "events": [
+        {
+          "id": "e-TA0010.EXFIL-0",
+          "time": "2026-02-05T21:53:23Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "data_staging",
+          "details": {}
+        },
+        {
+          "id": "e-TA0010.EXFIL-1",
+          "time": "2026-02-05T21:53:24Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "large_outbound_transfer",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "impossible"
+        }
+      ]
+    }
+  ]
+}

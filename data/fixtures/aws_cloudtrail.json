@@ -1,0 +1,13 @@
+[
+  {
+    "eventID": "c1",
+    "eventTime": "2026-02-05T09:00:00Z",
+    "eventSource": "ec2.amazonaws.com",
+    "eventName": "StartInstances",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "198.51.100.2",
+    "userAgent": "aws-cli/2.0",
+    "recipientAccountId": "123456789012",
+    "userIdentity": {"type": "IAMUser", "userName": "alice", "arn": "arn:aws:iam::123456789012:user/alice"}
+  }
+]

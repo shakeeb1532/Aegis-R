@@ -1,0 +1,36 @@
+package model
+
+import "time"
+
+type Event struct {
+	ID      string                 `json:"id"`
+	Time    time.Time              `json:"time"`
+	Host    string                 `json:"host"`
+	User    string                 `json:"user"`
+	Type    string                 `json:"type"`
+	Details map[string]interface{} `json:"details"`
+}
+
+type EvidenceRequirement struct {
+	Type        string `json:"type"`
+	Description string `json:"description"`
+}
+
+type RuleResult struct {
+	RuleID             string                `json:"rule_id"`
+	Name               string                `json:"name"`
+	Feasible           bool                  `json:"feasible"`
+	Confidence         float64               `json:"confidence"`
+	MissingEvidence    []EvidenceRequirement `json:"missing_evidence"`
+	SupportingEvents   []Event               `json:"supporting_events"`
+	SupportingEventIDs []string              `json:"supporting_event_ids"`
+	Explanation        string                `json:"explanation"`
+	GapNarrative       string                `json:"gap_narrative"`
+}
+
+type ReasoningReport struct {
+	GeneratedAt time.Time    `json:"generated_at"`
+	Summary     string       `json:"summary"`
+	Results     []RuleResult `json:"results"`
+	Narrative   []string     `json:"narrative"`
+}

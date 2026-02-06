@@ -1,0 +1,44 @@
+{
+  "scenarios": [
+    {
+      "id": "phishing-to-c2",
+      "description": "User opens attachment, macro runs, C2 beacons",
+      "events": [
+        {"id": "e1", "time": "2026-02-05T01:00:00Z", "host": "host-1", "user": "alice", "type": "email_attachment_open", "details": {}},
+        {"id": "e2", "time": "2026-02-05T01:01:00Z", "host": "host-1", "user": "alice", "type": "macro_execution", "details": {}},
+        {"id": "e3", "time": "2026-02-05T01:02:00Z", "host": "host-1", "user": "alice", "type": "beacon_outbound", "details": {"dst": "c2"}}
+      ],
+      "labels": [{"rule_id": "TA0001.PHISHING", "outcome": "feasible"}]
+    },
+    {
+      "id": "privesc-to-creddump",
+      "description": "Privilege escalation then credential dumping",
+      "events": [
+        {"id": "e4", "time": "2026-02-05T02:00:00Z", "host": "host-2", "user": "bob", "type": "token_manipulation", "details": {}},
+        {"id": "e5", "time": "2026-02-05T02:01:00Z", "host": "host-2", "user": "bob", "type": "admin_group_change", "details": {}},
+        {"id": "e5b", "time": "2026-02-05T02:01:30Z", "host": "host-2", "user": "bob", "type": "process_creation", "details": {"process": "mimikatz"}},
+        {"id": "e6", "time": "2026-02-05T02:02:00Z", "host": "host-2", "user": "bob", "type": "lsass_access", "details": {}}
+      ],
+      "labels": [
+        {"rule_id": "TA0004.PRIVESCA", "outcome": "feasible"},
+        {"rule_id": "TA0006.CREDDUMP", "outcome": "feasible"}
+      ]
+    },
+    {
+      "id": "lateral-incomplete",
+      "description": "Network logon without remote service creation",
+      "events": [
+        {"id": "e7", "time": "2026-02-05T03:00:00Z", "host": "host-3", "user": "carol", "type": "network_logon", "details": {"src": "host-1"}}
+      ],
+      "labels": [{"rule_id": "TA0008.LATERAL", "outcome": "incomplete"}]
+    },
+    {
+      "id": "exfil-impossible",
+      "description": "Large outbound transfer without staging or C2",
+      "events": [
+        {"id": "e8", "time": "2026-02-05T04:00:00Z", "host": "host-4", "user": "dave", "type": "large_outbound_transfer", "details": {"bytes": 10000000}}
+      ],
+      "labels": [{"rule_id": "TA0010.EXFIL", "outcome": "incomplete"}]
+    }
+  ]
+}

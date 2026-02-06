@@ -1,0 +1,11 @@
+[
+  {
+    "Timestamp": "2026-02-05T05:01:00Z",
+    "DeviceName": "host-5",
+    "AccountName": "alice",
+    "TargetAccountUpn": "alice@corp.com",
+    "AccountDisplayName": "Alice",
+    "ReportId": "r1",
+    "AdditionalFields": {"query": "ldap"}
+  }
+]

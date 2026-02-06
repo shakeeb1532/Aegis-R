@@ -1,0 +1,10 @@
+[
+  {
+    "@timestamp": "2026-02-05T06:00:00Z",
+    "event": {"id": "el-1", "action": "process_start", "category": ["process"], "type": ["start"], "kind": "event"},
+    "host": {"name": "host-6"},
+    "user": {"name": "alice"},
+    "message": "Process started",
+    "labels": {"process.name": "powershell.exe"}
+  }
+]

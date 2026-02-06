@@ -1,0 +1,11 @@
+[
+  {
+    "timestamp": "2026-02-05T11:00:00Z",
+    "event_simpleName": "ProcessRollup2",
+    "aid": "aid-1",
+    "aip": "10.3.3.3",
+    "ComputerName": "host-10",
+    "UserName": "carol",
+    "details": {"process": "cmd.exe"}
+  }
+]

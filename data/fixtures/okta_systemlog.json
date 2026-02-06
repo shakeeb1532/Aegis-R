@@ -1,0 +1,9 @@
+[
+  {
+    "eventType": "user.session.start",
+    "published": "2026-02-05T08:00:00Z",
+    "actor": {"id": "00u123", "displayName": "Alice", "alternateId": "alice@corp.com"},
+    "client": {"ipAddress": "203.0.113.10", "userAgent": "Chrome"},
+    "target": [{"type": "User", "id": "00u123", "displayName": "Alice"}]
+  }
+]
