@@ -16,48 +16,40 @@ Aegis-R is a **human-governed security reasoning infrastructure** that evaluates
 - Does **not** rely on black-box AI decisions.
 - Does **not** silently adapt trust based on attacker behavior.
 
+## Core Concepts
+- **Reasoning**: Event feasibility checks using environment and rule preconditions.
+- **Progression**: A live attack-progression model that tracks attacker position, confidence, and reachability over time.
+- **Audit**: Tamper-evident decision logs and signed artifacts.
+- **Governance**: Human approvals and constraints that bind reasoning outcomes.
+- **Zero-Trust Initialization**: A strict install-time scan that creates a baseline and prevents poisoning.
+
 ---
-
-## Kubernetes Deployment (Helm)
-
-### Requirements
-1. Kubernetes 1.27+
-2. Ingress controller (nginx default, ALB optional)
-3. cert-manager for TLS (or provide a secret)
-
-### Install
-```bash
-kubectl create namespace aegis-r
-helm install aegis-r ./deploy/helm/aegis-r --namespace aegis-r
-```
-
-### Configure UI Basic Auth
-```bash
-kubectl -n aegis-r create secret generic aegisr-ui-basic --from-literal=password='change-me'
-```
-
-### Example Values Overrides
-```bash
-helm upgrade --install aegis-r ./deploy/helm/aegis-r \
-  --namespace aegis-r \
-  --set ingress.host=aegisr.example.com \
-  --set ingress.tls.secretName=aegisr-tls \
-  --set ui.basicPassSecretCreate=false
-```
 
 ## Quick Start
 
-### 1) Generate Synthetic Events
+### 1) Install Go
+```bash
+brew install go
+```
+
+### 2) Initialize Zero-Trust Baseline (Required)
+```bash
+go run ./cmd/aegisr init-scan \
+  -baseline data/zero_trust_baseline.json \
+  -out init_scan_report.json
+```
+
+### 3) Generate Synthetic Events
 ```bash
 go run ./cmd/aegisr generate -out events.json -count 80
 ```
 
-### 2) Run Reasoning (CLI)
+### 4) Run Reasoning (CLI)
 ```bash
 go run ./cmd/aegisr reason -in events.json -rules data/rules.json -format cli
 ```
 
-### 3) Run Full Assessment (JSON)
+### 5) Run Full Assessment (JSON)
 ```bash
 go run ./cmd/aegisr assess \
   -in events.json \
@@ -66,8 +58,30 @@ go run ./cmd/aegisr assess \
   -audit audit.log \
   -policy data/policy.json \
   -config data/ops.json \
+  -baseline data/zero_trust_baseline.json \
   -format json
 ```
+
+---
+
+## Zero-Trust Initialization (Poison Resistance)
+
+Aegis-R requires a **strict initialization scan** on first install. The baseline is immutable unless an **admin** explicitly overrides.
+
+### Run Init Scan
+```bash
+go run ./cmd/aegisr init-scan \
+  -baseline data/zero_trust_baseline.json \
+  -out init_scan_report.json
+```
+
+### Fast Baseline Check (Assess Only)
+- `assess` only checks baseline integrity.
+- If baseline is missing, `assess` **refuses to run** and instructs the installer to run `init-scan`.
+
+### Override Policy
+- Overrides require a **signed admin approval**.
+- Aegis-R will display **explicit warnings** and a liability waiver if a baseline issue is overridden.
 
 ---
 
@@ -83,6 +97,9 @@ go run ./cmd/aegisr assess \
 - `approve` — create approval (single)
 - `approve2` — create dual approval
 - `verify` — verify approval
+- `profile-add` — add analyst reasoning profile
+- `constraint-add` — add reasoning constraint
+- `disagreement-add` — record analyst disagreement
 
 ### Audit
 - `audit-verify` — verify hash chain
@@ -95,6 +112,10 @@ go run ./cmd/aegisr assess \
 ### Integration
 - `ingest-http` — HTTP ingest endpoint
 - `ui` — lightweight analyst UI
+
+### Zero-Trust
+- `init-scan` — strict install-time baseline creation
+- `scan` — compare current system to baseline
 
 ---
 
@@ -157,6 +178,36 @@ Vendor field normalization details are in:
 
 ---
 
+## Normalized Envelope (Internal Model)
+
+Aegis-R adapters normalize events into a stable envelope:
+- `timestamp`
+- `source` (EDR/IdP/CloudTrail/etc.)
+- `principal` (identity)
+- `asset` (host/resource)
+- `action` (normalized verb)
+- `evidence` (raw refs)
+- `confidence` (scoring)
+- `tags` (zone, criticality)
+
+---
+
+## Attack Progression Model
+
+Aegis-R maintains a live **attack progression graph** with:
+- Graph-based current attacker position overlay
+- Confidence decay over time
+- Time-windowed progression (default last 24h)
+
+Minimal trigger set covers most real intrusions:
+- Identity and Auth events
+- Privilege escalation and role changes
+- Suspicious host execution and credential access
+- Lateral movement and inbound admin protocols
+- Exfil and impact indicators
+
+---
+
 ## Analyst UI (Lightweight)
 
 Start UI:
@@ -167,6 +218,8 @@ go run ./cmd/aegisr ui \
   -signed-audit signed_audit.log \
   -approvals approvals.log \
   -report report.json \
+  -profiles analyst_profiles.json \
+  -disagreements disagreements.log \
   -key keypair.json \
   -basic-user admin \
   -basic-pass pass
@@ -174,11 +227,12 @@ go run ./cmd/aegisr ui \
 
 Features:
 - Audit timeline
-- Approval history
-- Download audit logs
+- Approval history with rationale and evidence gaps
+- Role-gated approvals (analyst, approver, admin)
 - Signed artifact verification (valid/invalid)
 - Per-rule evidence drilldown
-- Role-gated approvals (approver/admin)
+- Search/filter for audit + approvals
+- Export buttons for audit + signed artifacts
 
 ---
 
@@ -197,6 +251,20 @@ go run ./cmd/aegisr evaluate -scenarios data/scenarios.json -rules data/rules.js
 Realistic scenarios:
 ```bash
 go run ./cmd/aegisr evaluate -scenarios data/scenarios_realistic.json -rules data/rules.json -format cli
+```
+
+---
+
+## Benchmarks
+
+Reasoning:
+```bash
+go test ./internal/logic -bench BenchmarkReason -benchmem
+```
+
+Assessment:
+```bash
+go test ./internal/core -bench BenchmarkAssess -benchmem
 ```
 
 ---
@@ -227,6 +295,35 @@ go run ./cmd/aegisr audit-sign -audit audit.log -out signed_audit.log -signer so
 
 ---
 
+## Kubernetes Deployment (Helm)
+
+### Requirements
+1. Kubernetes 1.27+
+2. Ingress controller (nginx default, ALB optional)
+3. cert-manager for TLS (or provide a secret)
+
+### Install
+```bash
+kubectl create namespace aegis-r
+helm install aegis-r ./deploy/helm/aegis-r --namespace aegis-r
+```
+
+### Configure UI Basic Auth
+```bash
+kubectl -n aegis-r create secret generic aegisr-ui-basic --from-literal=password='change-me'
+```
+
+### Example Values Overrides
+```bash
+helm upgrade --install aegis-r ./deploy/helm/aegis-r \
+  --namespace aegis-r \
+  --set ingress.host=aegisr.example.com \
+  --set ingress.tls.secretName=aegisr-tls \
+  --set ui.basicPassSecretCreate=false
+```
+
+---
+
 ## Docker
 
 ```bash
@@ -237,10 +334,10 @@ docker run -p 8080:8080 aegisr
 ---
 
 ## Repository Structure
-
 - `cmd/aegisr/` — CLI entrypoint
 - `internal/logic/` — reasoning engine
 - `internal/core/` — stateful assessment
+- `internal/progression/` — attack progression model
 - `internal/audit/` — audit chain + signing
 - `internal/governance/` — policy + roles
 - `internal/integration/` — adapters + ingest
@@ -255,7 +352,7 @@ docker run -p 8080:8080 aegisr
 - Production auth (OIDC / SSO integration)
 - Vendor-specific adapter expansion (more fields, more products)
 - Rule catalog growth (full MITRE coverage)
-- Deployment packaging (Helm / systemd)
+- Hardened production packaging (Helm refinement, systemd)
 
 ---
 
