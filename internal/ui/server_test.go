@@ -13,9 +13,13 @@ func TestUIAuthRequiresBasic(t *testing.T) {
 	if err != nil {
 		t.Fatalf("temp: %v", err)
 	}
-	defer os.Remove(f.Name())
-	f.WriteString(kp)
-	f.Close()
+	defer func() { _ = os.Remove(f.Name()) }()
+	if _, err := f.WriteString(kp); err != nil {
+		t.Fatalf("write: %v", err)
+	}
+	if err := f.Close(); err != nil {
+		t.Fatalf("close: %v", err)
+	}
 
 	s, err := NewServer("", "", "", "", "", "", f.Name(), "user", "pass")
 	if err != nil {

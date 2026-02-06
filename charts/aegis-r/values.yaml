@@ -1,0 +1,83 @@
+namespace: aegis-r
+
+image:
+  repository: aegisr
+  tag: latest
+  pullPolicy: IfNotPresent
+
+api:
+  port: 8080
+  serviceType: ClusterIP
+  args: ["ingest-http", "-addr", ":8080"]
+
+ingress:
+  enabled: true
+  className: nginx
+  host: aegisr.local
+  annotations: {}
+  tls:
+    enabled: true
+    secretName: aegisr-tls
+
+alb:
+  enabled: false
+  annotations: {}
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+persistence:
+  enabled: true
+  size: 20Gi
+  storageClassName: ""
+
+security:
+  runAsUser: 10001
+  runAsGroup: 10001
+  fsGroup: 10001
+  runAsNonRoot: true
+  seccompProfile: RuntimeDefault
+  readOnlyRootFilesystem: true
+
+config:
+  logLevel: info
+  metricsOn: true
+  strictMode: false
+
+ui:
+  enabled: true
+  port: 9090
+  serviceType: ClusterIP
+  basicUser: admin
+  basicPassSecret: aegisr-ui-basic
+  basicPassSecretCreate: true
+  basicPass: change-me
+  keyPath: /secrets/keypair.json
+  reportPath: /data/report.json
+  approvalsPath: /data/approvals.log
+  auditPath: /data/audit.log
+  signedAuditPath: /data/signed_audit.log
+  profilesPath: /data/analyst_profiles.json
+  disagreementsPath: /data/disagreements.log
+
+signingKeySecret:
+  create: false
+  name: aegisr-signing-keys
+  keyName: keypair.json
+  keypairJson: ""
+
+networkPolicy:
+  enabled: true
+  allowFromNamespaceSelector: {}
+  allowFromPodSelector: {}
+  allowEgressToDNS: true
+
+serviceAccount:
+  create: true
+  name: ""
+  automount: false

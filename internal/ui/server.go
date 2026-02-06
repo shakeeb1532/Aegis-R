@@ -44,6 +44,10 @@ type keypair struct {
 func NewServer(auditPath string, approvalsPath string, signedAuditPath string, reportPath string, profilesPath string, disagreementsPath string, keypairPath string, basicUser string, basicPass string) (*Server, error) {
 	kp := keypair{}
 	if keypairPath != "" {
+		if !ops.IsSafePath(keypairPath) {
+			return nil, os.ErrInvalid
+		}
+		//nolint:gosec // path validated via IsSafePath
 		data, err := os.ReadFile(keypairPath)
 		if err != nil {
 			return nil, err
@@ -239,6 +243,7 @@ func (s *Server) serveFile(w http.ResponseWriter, path string, name string) {
 		w.WriteHeader(http.StatusForbidden)
 		return
 	}
+	//nolint:gosec // path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
@@ -291,6 +296,10 @@ func loadArtifacts(path string) ([]audit.Artifact, error) {
 	if path == "" {
 		return nil, nil
 	}
+	if !ops.IsSafePath(path) {
+		return nil, os.ErrInvalid
+	}
+	//nolint:gosec // path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err

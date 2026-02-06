@@ -64,6 +64,20 @@ go run ./cmd/aegisr assess \
 
 ---
 
+## One Command Local Demo
+
+Run a full local demo (UI up + sample ingest + report generated):
+```bash
+make demo
+```
+
+Or run with Docker Compose:
+```bash
+docker compose up --build
+```
+
+---
+
 ## Zero-Trust Initialization (Poison Resistance)
 
 Aegis-R requires a **strict initialization scan** on first install. The baseline is immutable unless an **admin** explicitly overrides.
@@ -305,7 +319,7 @@ go run ./cmd/aegisr audit-sign -audit audit.log -out signed_audit.log -signer so
 ### Install
 ```bash
 kubectl create namespace aegis-r
-helm install aegis-r ./deploy/helm/aegis-r --namespace aegis-r
+helm install aegis-r ./charts/aegis-r --namespace aegis-r
 ```
 
 ### Configure UI Basic Auth
@@ -313,13 +327,20 @@ helm install aegis-r ./deploy/helm/aegis-r --namespace aegis-r
 kubectl -n aegis-r create secret generic aegisr-ui-basic --from-literal=password='change-me'
 ```
 
+### Configure Signing Keys
+```bash
+kubectl -n aegis-r create secret generic aegisr-signing-keys --from-file=keypair.json
+```
+
 ### Example Values Overrides
 ```bash
-helm upgrade --install aegis-r ./deploy/helm/aegis-r \
+helm upgrade --install aegis-r ./charts/aegis-r \
   --namespace aegis-r \
   --set ingress.host=aegisr.example.com \
   --set ingress.tls.secretName=aegisr-tls \
-  --set ui.basicPassSecretCreate=false
+  --set ui.basicPassSecretCreate=false \
+  --set signingKeySecret.create=false \
+  --set signingKeySecret.name=aegisr-signing-keys
 ```
 
 ---
@@ -330,6 +351,13 @@ helm upgrade --install aegis-r ./deploy/helm/aegis-r \
 docker build -t aegisr .
 docker run -p 8080:8080 aegisr
 ```
+
+---
+
+## Release Artifacts
+
+- Container images: `ghcr.io/shakeeb1532/aegis-r:<tag>` and `latest`
+- Versioned binaries via GoReleaser (tagged releases)
 
 ---
 

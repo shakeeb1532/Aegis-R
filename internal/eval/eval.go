@@ -59,6 +59,7 @@ func LoadScenarios(path string) (ScenariosFile, error) {
 	if !ops.IsSafePath(path) {
 		return f, os.ErrInvalid
 	}
+	//nolint:gosec // path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return f, err

@@ -7,8 +7,6 @@ import (
 	"aegisr/internal/state"
 )
 
-type peWrap struct{ *state.ProgressEvent }
-
 func TestApplyDecayWindow(t *testing.T) {
 	now := time.Now().UTC()
 	old := state.ProgressEvent{Time: now.Add(-48 * time.Hour), Confidence: 1}

@@ -42,6 +42,7 @@ func LoadLastHash(path string) (string, error) {
 	if !ops.IsSafePath(path) {
 		return "", os.ErrInvalid
 	}
+	//nolint:gosec // path validated via IsSafePath
 	f, err := os.Open(path)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
@@ -49,7 +50,7 @@ func LoadLastHash(path string) (string, error) {
 		}
 		return "", err
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	var last string
 	scanner := bufio.NewScanner(f)
@@ -85,11 +86,12 @@ func AppendLog(path string, a Artifact) error {
 		return err
 	}
 	data = append(data, '\n')
+	//nolint:gosec // path validated via IsSafePath
 	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0600)
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 	_, err = f.Write(data)
 	return err
 }
@@ -106,11 +108,12 @@ func AppendSigned(path string, s SignedArtifact) error {
 		return err
 	}
 	data = append(data, '\n')
+	//nolint:gosec // path validated via IsSafePath
 	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0600)
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 	_, err = f.Write(data)
 	return err
 }
@@ -122,11 +125,12 @@ func VerifyChain(path string) error {
 	if !ops.IsSafePath(path) {
 		return os.ErrInvalid
 	}
+	//nolint:gosec // path validated via IsSafePath
 	f, err := os.Open(path)
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	scanner := bufio.NewScanner(f)
 	prevHash := ""

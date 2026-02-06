@@ -28,8 +28,10 @@ func TestEndToEndAssessAudit(t *testing.T) {
 	if err != nil {
 		t.Fatalf("temp: %v", err)
 	}
-	defer os.Remove(f.Name())
-	f.Close()
+	defer func() { _ = os.Remove(f.Name()) }()
+	if err := f.Close(); err != nil {
+		t.Fatalf("close: %v", err)
+	}
 
 	artifact := audit.Artifact{ID: "a1", CreatedAt: time.Now().UTC(), Summary: out.Summary, Findings: out.Findings}
 	artifact.Hash, err = audit.HashArtifact(artifact)

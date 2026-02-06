@@ -16,6 +16,7 @@ func loadReasoningReport(path string) (model.ReasoningReport, error) {
 	if !ops.IsSafePath(path) {
 		return r, os.ErrInvalid
 	}
+	//nolint:gosec // path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return r, err

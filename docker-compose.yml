@@ -1,0 +1,70 @@
+version: "3.8"
+
+services:
+  api:
+    build: .
+    command: ["ingest-http", "-addr", ":8080"]
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data
+
+  demo:
+    build: .
+    command:
+      - /bin/sh
+      - -c
+      - |
+        set -e
+        if [ ! -f /data/zero_trust_baseline.json ]; then
+          /usr/local/bin/aegisr init-scan -baseline /data/zero_trust_baseline.json -out /data/init_scan_report.json
+        fi
+        : > /data/approvals.log
+        : > /data/disagreements.log
+        : > /data/audit.log
+        echo \"[]\" > /data/analyst_profiles.json
+        /usr/local/bin/aegisr keys -out /data/keypair.json
+        /usr/local/bin/aegisr generate -out /data/events.json -count 80
+        /usr/local/bin/aegisr assess \
+          -in /data/events.json \
+          -env /data/env.json \
+          -rules /data/rules.json \
+          -state /data/state.json \
+          -audit /data/audit.log \
+          -baseline /data/zero_trust_baseline.json \
+          -format json > /data/report.json
+    volumes:
+      - ./data:/data
+    depends_on:
+      - api
+
+  ui:
+    build: .
+    command:
+      - ui
+      - -addr
+      - :9090
+      - -audit
+      - /data/audit.log
+      - -signed-audit
+      - /data/signed_audit.log
+      - -approvals
+      - /data/approvals.log
+      - -report
+      - /data/report.json
+      - -profiles
+      - /data/analyst_profiles.json
+      - -disagreements
+      - /data/disagreements.log
+      - -key
+      - /data/keypair.json
+      - -basic-user
+      - admin
+      - -basic-pass
+      - pass
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./data:/data
+    depends_on:
+      - demo

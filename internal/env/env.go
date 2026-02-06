@@ -43,6 +43,7 @@ func Load(path string) (Environment, error) {
 	if !ops.IsSafePath(path) {
 		return e, os.ErrInvalid
 	}
+	//nolint:gosec // path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return e, err

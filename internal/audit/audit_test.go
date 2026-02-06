@@ -11,8 +11,10 @@ func TestAuditChain(t *testing.T) {
 	if err != nil {
 		t.Fatalf("temp: %v", err)
 	}
-	defer os.Remove(f.Name())
-	f.Close()
+	defer func() { _ = os.Remove(f.Name()) }()
+	if err := f.Close(); err != nil {
+		t.Fatalf("close: %v", err)
+	}
 
 	a1 := Artifact{ID: "1", CreatedAt: time.Now().UTC(), Summary: "s1"}
 	h1, err := HashArtifact(a1)

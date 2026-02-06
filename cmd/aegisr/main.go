@@ -112,7 +112,7 @@ func handleGenerate(args []string) {
 	out := fs.String("out", "", "output file (default stdout)")
 	count := fs.Int("count", 60, "number of events")
 	seed := fs.Int64("seed", 0, "random seed")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 
 	events := sim.Synthetic(*seed, *count)
 	writeJSON(*out, events)
@@ -125,7 +125,7 @@ func handleReason(args []string) {
 	requireOkta := fs.Bool("require-okta", true, "require okta verified approvals")
 	rulesPath := fs.String("rules", "", "rules json (optional)")
 	format := fs.String("format", "cli", "output format: cli or json")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 
 	if *in == "" {
 		fatal(errors.New("-in is required"))
@@ -177,7 +177,7 @@ func handleAssess(args []string) {
 	format := fs.String("format", "json", "output format: cli or json")
 	configPath := fs.String("config", "", "ops config json (optional)")
 	baselinePath := fs.String("baseline", "data/zero_trust_baseline.json", "zero-trust baseline")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 
 	if *in == "" || *envPath == "" {
 		fatal(errors.New("-in and -env are required"))
@@ -322,7 +322,7 @@ func handleAssess(args []string) {
 func handleKeys(args []string) {
 	fs := flag.NewFlagSet("keys", flag.ExitOnError)
 	out := fs.String("out", "", "output file (default stdout)")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 
 	pub, priv, err := approval.GenerateKeypair()
 	if err != nil {
@@ -344,7 +344,7 @@ func handleApprove(args []string) {
 	signer := fs.String("signer", "", "signer id")
 	role := fs.String("role", "", "signer role")
 	out := fs.String("out", "", "output file (default stdout)")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 
 	if *keyPath == "" || *id == "" {
 		fatal(errors.New("-key and -id are required"))
@@ -379,7 +379,7 @@ func handleApprove2(args []string) {
 	role1 := fs.String("role1", "approver", "signer role 1")
 	role2 := fs.String("role2", "approver", "signer role 2")
 	out := fs.String("out", "", "output file (default stdout)")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 
 	if *key1 == "" || *key2 == "" || *id == "" {
 		fatal(errors.New("-key1, -key2 and -id are required"))
@@ -399,7 +399,7 @@ func handleVerify(args []string) {
 	fs := flag.NewFlagSet("verify", flag.ExitOnError)
 	approvalPath := fs.String("approval", "", "approval file")
 	requireOkta := fs.Bool("require-okta", true, "require okta verified approvals")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 
 	if *approvalPath == "" {
 		fatal(errors.New("-approval is required"))
@@ -413,7 +413,7 @@ func handleVerify(args []string) {
 func handleAuditVerify(args []string) {
 	fs := flag.NewFlagSet("audit-verify", flag.ExitOnError)
 	auditPath := fs.String("audit", "", "audit log")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 	if *auditPath == "" {
 		fatal(errors.New("-audit is required"))
 	}
@@ -428,7 +428,7 @@ func handleAuditSign(args []string) {
 	auditPath := fs.String("audit", "", "audit log")
 	outPath := fs.String("out", "signed_audit.log", "signed audit log")
 	signer := fs.String("signer", "soc-admin", "signer id")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 	if *auditPath == "" {
 		fatal(errors.New("-audit is required"))
 	}
@@ -464,7 +464,7 @@ func handleGenerateScenarios(args []string) {
 	fs := flag.NewFlagSet("generate-scenarios", flag.ExitOnError)
 	out := fs.String("out", "scenarios.json", "output scenarios file")
 	rulesPath := fs.String("rules", "", "rules json (optional)")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 
 	rules, err := logic.LoadRules(*rulesPath)
 	if err != nil {
@@ -482,7 +482,7 @@ func handleEvaluate(args []string) {
 	scenariosPath := fs.String("scenarios", "", "scenarios json")
 	rulesPath := fs.String("rules", "", "rules json (optional)")
 	format := fs.String("format", "json", "output format: cli or json")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 
 	if *scenariosPath == "" {
 		fatal(errors.New("-scenarios is required"))
@@ -522,7 +522,7 @@ func handleEvaluate(args []string) {
 func handleIngestHTTP(args []string) {
 	fs := flag.NewFlagSet("ingest-http", flag.ExitOnError)
 	addr := fs.String("addr", ":8080", "listen address")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 
 	http.HandleFunc("/ingest", integration.IngestHandler)
 	http.HandleFunc("/healthz", integration.HealthHandler)
@@ -552,7 +552,7 @@ func handleUI(args []string) {
 	keyPath := fs.String("key", "", "keypair json")
 	basicUser := fs.String("basic-user", "", "basic auth user")
 	basicPass := fs.String("basic-pass", "", "basic auth pass")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 
 	server, err := ui.NewServer(*auditPath, *approvalsPath, *signedAuditPath, *reportPath, *profilesPath, *disagreementsPath, *keyPath, *basicUser, *basicPass)
 	if err != nil {
@@ -575,7 +575,7 @@ func handleUI(args []string) {
 func handleInitScan(args []string) {
 	fs := flag.NewFlagSet("init-scan", flag.ExitOnError)
 	baselinePath := fs.String("baseline", "data/zero_trust_baseline.json", "baseline output path")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 	root, _ := os.Getwd()
 	b, err := zerotrust.BuildBaseline(root, zerotrust.DefaultExclusions)
 	if err != nil {
@@ -591,7 +591,7 @@ func handleScan(args []string) {
 	fs := flag.NewFlagSet("scan", flag.ExitOnError)
 	baselinePath := fs.String("baseline", "data/zero_trust_baseline.json", "baseline path")
 	overrideApproval := fs.String("override-approval", "", "admin override approval")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 
 	root, _ := os.Getwd()
 	b, err := zerotrust.LoadBaseline(*baselinePath)
@@ -623,7 +623,7 @@ func handleProfileAdd(args []string) {
 	name := fs.String("name", "", "analyst name")
 	specialty := fs.String("specialty", "", "specialty (comma separated)")
 	notes := fs.String("notes", "", "notes")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 	if *id == "" || *name == "" {
 		fatal(errors.New("-id and -name are required"))
 	}
@@ -649,7 +649,7 @@ func handleConstraintAdd(args []string) {
 	forbid := fs.String("forbid", "", "forbidden evidence id (comma separated)")
 	author := fs.String("author", "", "author analyst id")
 	notes := fs.String("notes", "", "notes")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 	if *id == "" || *rule == "" {
 		fatal(errors.New("-id and -rule are required"))
 	}
@@ -677,7 +677,7 @@ func handleDisagreementAdd(args []string) {
 	expected := fs.String("expected", "", "expected outcome")
 	actual := fs.String("actual", "", "actual outcome")
 	rationale := fs.String("rationale", "", "rationale")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil { fatal(err) }
 	if *analyst == "" || *rule == "" {
 		fatal(errors.New("-analyst and -rule are required"))
 	}
@@ -696,6 +696,7 @@ func readJSON(path string, out interface{}) {
 	if !ops.IsSafePath(path) {
 		fatal(os.ErrInvalid)
 	}
+	//nolint:gosec // path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		fatal(err)
@@ -755,11 +756,11 @@ func splitCSV(v string) []string {
 	return out
 }
 
-func verifyApprovalFile(path string) error {
-	return verifyApprovalFileWithReq(path, true)
-}
-
 func verifyApprovalFileWithReq(path string, requireOkta bool) error {
+	if !ops.IsSafePath(path) {
+		return os.ErrInvalid
+	}
+	//nolint:gosec // path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return err
@@ -778,6 +779,10 @@ func verifyApprovalFileWithReq(path string, requireOkta bool) error {
 }
 
 func verifyApprovalFileWithReqAndMin(path string, requireOkta bool, min int) error {
+	if !ops.IsSafePath(path) {
+		return os.ErrInvalid
+	}
+	//nolint:gosec // path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return err
@@ -798,6 +803,10 @@ func verifyApprovalFileWithReqAndMin(path string, requireOkta bool, min int) err
 }
 
 func verifyApprovalFileWithPolicy(path string, policy governance.Policy) error {
+	if !ops.IsSafePath(path) {
+		return os.ErrInvalid
+	}
+	//nolint:gosec // path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return err
@@ -826,6 +835,10 @@ func verifyApprovalFileWithPolicy(path string, policy governance.Policy) error {
 }
 
 func verifyAdminOverride(path string) error {
+	if !ops.IsSafePath(path) {
+		return os.ErrInvalid
+	}
+	//nolint:gosec // path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return err

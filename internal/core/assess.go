@@ -143,15 +143,6 @@ func AssessWithMetrics(events []model.Event, rules []logic.Rule, environment env
 	}
 }
 
-func zoneReachable(reachable map[string]bool, zoneOf map[string]string, zone string) bool {
-	for host, ok := range reachable {
-		if ok && zoneOf[host] == zone {
-			return true
-		}
-	}
-	return false
-}
-
 func markZoneReachable(reachable map[string]bool, zoneOf map[string]string, zone string) bool {
 	changed := false
 	for host, z := range zoneOf {

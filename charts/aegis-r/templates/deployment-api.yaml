@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aegisr.fullname" . }}-api
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "aegisr.name" . }}
+      component: api
+  template:
+    metadata:
+      labels:
+        app: {{ include "aegisr.name" . }}
+        component: api
+    spec:
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ if .Values.serviceAccount.name }}{{ .Values.serviceAccount.name }}{{ else }}{{ include "aegisr.fullname" . }}{{ end }}
+      {{- else if .Values.serviceAccount.name }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      {{- end }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
+      securityContext:
+        runAsUser: {{ .Values.security.runAsUser }}
+        runAsGroup: {{ .Values.security.runAsGroup }}
+        fsGroup: {{ .Values.security.fsGroup }}
+        runAsNonRoot: {{ .Values.security.runAsNonRoot }}
+        seccompProfile:
+          type: {{ .Values.security.seccompProfile }}
+      containers:
+        - name: aegisr-api
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: {{ toJson .Values.api.args }}
+          ports:
+            - containerPort: {{ .Values.api.port }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: {{ .Values.security.readOnlyRootFilesystem }}
+            capabilities:
+              drop: ["ALL"]
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "aegisr.fullname" . }}-pvc
+          {{- else }}
+          emptyDir: {}
+          {{- end }}

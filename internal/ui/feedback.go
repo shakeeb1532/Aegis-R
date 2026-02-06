@@ -17,6 +17,7 @@ func loadProfiles(path string) ([]governance.AnalystProfile, error) {
 	if !ops.IsSafePath(path) {
 		return nil, os.ErrInvalid
 	}
+	//nolint:gosec // path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -35,11 +36,12 @@ func loadDisagreements(path string) ([]governance.Disagreement, error) {
 	if !ops.IsSafePath(path) {
 		return nil, os.ErrInvalid
 	}
+	//nolint:gosec // path validated via IsSafePath
 	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 	out := []governance.Disagreement{}
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {

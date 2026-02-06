@@ -19,6 +19,7 @@ func LoadConfig(path string) (Config, error) {
 	if !IsSafePath(path) {
 		return c, os.ErrInvalid
 	}
+	//nolint:gosec // path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return c, err

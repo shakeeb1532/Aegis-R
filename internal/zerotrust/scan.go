@@ -12,6 +12,8 @@ import (
 	"sort"
 	"strings"
 	"time"
+
+	"aegisr/internal/ops"
 )
 
 type Baseline struct {
@@ -78,6 +80,10 @@ func SaveBaseline(path string, b Baseline) error {
 }
 
 func LoadBaseline(path string) (Baseline, error) {
+	if !ops.IsSafePath(path) {
+		return Baseline{}, os.ErrInvalid
+	}
+	//nolint:gosec // path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return Baseline{}, err
@@ -120,11 +126,12 @@ func Compare(root string, baseline Baseline, exclusions []string) (Result, error
 }
 
 func hashFile(path string) (string, error) {
+	//nolint:gosec // path derived from filesystem walk under trusted root
 	f, err := os.Open(path)
 	if err != nil {
 		return "", err
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 	h := sha256.New()
 	if _, err := io.Copy(h, f); err != nil {
 		return "", err

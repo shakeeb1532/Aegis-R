@@ -22,6 +22,7 @@ func loadSignedArtifacts(path string) ([]SignedStatus, error) {
 	if !ops.IsSafePath(path) {
 		return nil, os.ErrInvalid
 	}
+	//nolint:gosec // path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err

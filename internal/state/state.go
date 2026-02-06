@@ -76,6 +76,7 @@ func Load(path string) (AttackState, error) {
 	if !ops.IsSafePath(path) {
 		return New(), os.ErrInvalid
 	}
+	//nolint:gosec // path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return New(), err

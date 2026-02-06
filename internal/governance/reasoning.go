@@ -41,6 +41,7 @@ func LoadProfiles(path string) ([]AnalystProfile, error) {
 	if !ops.IsSafePath(path) {
 		return nil, os.ErrInvalid
 	}
+	//nolint:gosec // path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -70,6 +71,7 @@ func LoadConstraints(path string) ([]ReasoningConstraint, error) {
 	if !ops.IsSafePath(path) {
 		return nil, os.ErrInvalid
 	}
+	//nolint:gosec // path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -104,11 +106,12 @@ func AppendDisagreement(path string, d Disagreement) error {
 		return err
 	}
 	data = append(data, '\n')
+	//nolint:gosec // path validated via IsSafePath
 	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0600)
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 	_, err = f.Write(data)
 	return err
 }
