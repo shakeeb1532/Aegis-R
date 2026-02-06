@@ -14,21 +14,26 @@ import (
 
 	"aegisr/internal/approval"
 	"aegisr/internal/audit"
+	"aegisr/internal/governance"
 	"aegisr/internal/model"
 	"aegisr/internal/ops"
 )
 
 type Server struct {
-	AuditPath       string
-	ApprovalsPath   string
-	SignedAuditPath string
-	ReportPath      string
-	Keypair         keypair
-	BasicUser       string
-	BasicPass       string
-	Sessions        map[string]string
-	Mu              sync.Mutex
-	Approvals       []approval.Approval
+	AuditPath         string
+	ApprovalsPath     string
+	SignedAuditPath   string
+	ReportPath        string
+	ProfilesPath      string
+	DisagreementsPath string
+	Keypair           keypair
+	BasicUser         string
+	BasicPass         string
+	Sessions          map[string]string
+	Mu                sync.Mutex
+	Approvals         []ApprovalRecord
+	Profiles          []governance.AnalystProfile
+	Disagreements     []governance.Disagreement
 }
 
 type keypair struct {
@@ -36,7 +41,7 @@ type keypair struct {
 	PrivateKey string `json:"private_key"`
 }
 
-func NewServer(auditPath string, approvalsPath string, signedAuditPath string, reportPath string, keypairPath string, basicUser string, basicPass string) (*Server, error) {
+func NewServer(auditPath string, approvalsPath string, signedAuditPath string, reportPath string, profilesPath string, disagreementsPath string, keypairPath string, basicUser string, basicPass string) (*Server, error) {
 	kp := keypair{}
 	if keypairPath != "" {
 		data, err := os.ReadFile(keypairPath)
@@ -50,16 +55,22 @@ func NewServer(auditPath string, approvalsPath string, signedAuditPath string, r
 		return nil, errors.New("keypair required for approvals")
 	}
 	approvals, _ := loadApprovals(approvalsPath)
+	profiles, _ := loadProfiles(profilesPath)
+	disagreements, _ := loadDisagreements(disagreementsPath)
 	return &Server{
-		AuditPath:       auditPath,
-		ApprovalsPath:   approvalsPath,
-		SignedAuditPath: signedAuditPath,
-		ReportPath:      reportPath,
-		Keypair:         kp,
-		BasicUser:       basicUser,
-		BasicPass:       basicPass,
-		Sessions:        map[string]string{},
-		Approvals:       approvals,
+		AuditPath:         auditPath,
+		ApprovalsPath:     approvalsPath,
+		SignedAuditPath:   signedAuditPath,
+		ReportPath:        reportPath,
+		ProfilesPath:      profilesPath,
+		DisagreementsPath: disagreementsPath,
+		Keypair:           kp,
+		BasicUser:         basicUser,
+		BasicPass:         basicPass,
+		Sessions:          map[string]string{},
+		Approvals:         approvals,
+		Profiles:          profiles,
+		Disagreements:     disagreements,
 	}, nil
 }
 
@@ -122,8 +133,12 @@ func (s *Server) index(w http.ResponseWriter, r *http.Request) {
 	signed, _ := loadSignedArtifacts(s.SignedAuditPath)
 	report, _ := loadReasoningReport(s.ReportPath)
 	s.Mu.Lock()
-	approvals := make([]approval.Approval, len(s.Approvals))
+	approvals := make([]ApprovalRecord, len(s.Approvals))
 	copy(approvals, s.Approvals)
+	profiles := make([]governance.AnalystProfile, len(s.Profiles))
+	copy(profiles, s.Profiles)
+	disagreements := make([]governance.Disagreement, len(s.Disagreements))
+	copy(disagreements, s.Disagreements)
 	s.Mu.Unlock()
 	q := strings.TrimSpace(r.URL.Query().Get("q"))
 	if q != "" {
@@ -134,14 +149,16 @@ func (s *Server) index(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.New("index").Parse(indexHTML))
 	_ = tmpl.Execute(w, struct {
 		Artifacts       []audit.Artifact
-		Approvals       []approval.Approval
+		Approvals       []ApprovalRecord
 		Signed          []SignedStatus
 		Report          model.ReasoningReport
+		Profiles        []governance.AnalystProfile
+		Disagreements   []governance.Disagreement
 		Role            string
 		AuditPath       string
 		SignedAuditPath string
 		Query           string
-	}{Artifacts: artifacts, Approvals: approvals, Signed: signed, Report: report, Role: s.currentRole(r), AuditPath: s.AuditPath, SignedAuditPath: s.SignedAuditPath, Query: q})
+	}{Artifacts: artifacts, Approvals: approvals, Signed: signed, Report: report, Profiles: profiles, Disagreements: disagreements, Role: s.currentRole(r), AuditPath: s.AuditPath, SignedAuditPath: s.SignedAuditPath, Query: q})
 }
 
 func (s *Server) approve(w http.ResponseWriter, r *http.Request) {
@@ -158,6 +175,8 @@ func (s *Server) approve(w http.ResponseWriter, r *http.Request) {
 	signer := r.FormValue("signer")
 	role := r.FormValue("role")
 	ttl := r.FormValue("ttl")
+	rationale := r.FormValue("rationale")
+	gaps := strings.Split(r.FormValue("gaps"), ",")
 	if id == "" || signer == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -174,9 +193,10 @@ func (s *Server) approve(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if s.ApprovalsPath != "" {
-		if err := appendApproval(s.ApprovalsPath, app); err == nil {
+		rec := ApprovalRecord{Approval: app, Rationale: rationale, EvidenceGaps: trimList(gaps)}
+		if err := appendApproval(s.ApprovalsPath, rec); err == nil {
 			s.Mu.Lock()
-			s.Approvals = append(s.Approvals, app)
+			s.Approvals = append(s.Approvals, rec)
 			s.Mu.Unlock()
 		}
 	}
@@ -199,8 +219,8 @@ func (s *Server) download(w http.ResponseWriter, r *http.Request) {
 	s.Mu.Lock()
 	defer s.Mu.Unlock()
 	for _, a := range s.Approvals {
-		if a.ID == id {
-			data, _ := json.MarshalIndent(a, "", "  ")
+		if a.Approval.ID == id {
+			data, _ := json.MarshalIndent(a.Approval, "", "  ")
 			w.Header().Set("Content-Type", "application/json")
 			w.Header().Set("Content-Disposition", "attachment; filename=approval.json")
 			_, _ = w.Write(data)
@@ -254,6 +274,17 @@ func roleForUser(user string) string {
 		return "approver"
 	}
 	return "analyst"
+}
+
+func trimList(in []string) []string {
+	out := []string{}
+	for _, v := range in {
+		v = strings.TrimSpace(v)
+		if v != "" {
+			out = append(out, v)
+		}
+	}
+	return out
 }
 
 func loadArtifacts(path string) ([]audit.Artifact, error) {
@@ -350,20 +381,52 @@ const indexHTML = `<!doctype html>
     {{end}}
   </table>
   {{end}}
+  {{if .Profiles}}
+  <h2>Analyst Profiles</h2>
+  <table>
+    <tr><th>ID</th><th>Name</th><th>Specialties</th><th>Notes</th></tr>
+    {{range .Profiles}}
+      <tr>
+        <td>{{.ID}}</td>
+        <td>{{.Name}}</td>
+        <td>{{range .Specialties}}{{.}} {{end}}</td>
+        <td>{{.Notes}}</td>
+      </tr>
+    {{end}}
+  </table>
+  {{end}}
+  {{if .Disagreements}}
+  <h2>Disagreement Feedback</h2>
+  <table>
+    <tr><th>At</th><th>Analyst</th><th>Rule</th><th>Expected</th><th>Actual</th><th>Rationale</th></tr>
+    {{range .Disagreements}}
+      <tr>
+        <td>{{.At}}</td>
+        <td>{{.AnalystID}}</td>
+        <td>{{.RuleID}}</td>
+        <td>{{.Expected}}</td>
+        <td>{{.Actual}}</td>
+        <td>{{.Rationale}}</td>
+      </tr>
+    {{end}}
+  </table>
+  {{end}}
   <div style="margin-top:12px;">
     <a href="/download?type=audit">Download Audit Log</a>
     {{if .SignedAuditPath}} | <a href="/download?type=signed">Download Signed Audit</a>{{end}}
   </div>
   <h2>Approval History</h2>
   <table>
-    <tr><th>ID</th><th>Signer</th><th>Role</th><th>Expires</th><th>Download</th></tr>
+    <tr><th>ID</th><th>Signer</th><th>Role</th><th>Expires</th><th>Rationale</th><th>Gaps</th><th>Download</th></tr>
     {{range .Approvals}}
       <tr>
-        <td>{{.ID}}</td>
-        <td>{{.SignerID}}</td>
-        <td>{{.SignerRole}}</td>
-        <td>{{.ExpiresAt}}</td>
-        <td><a href="/download?id={{.ID}}">Download</a></td>
+        <td>{{.Approval.ID}}</td>
+        <td>{{.Approval.SignerID}}</td>
+        <td>{{.Approval.SignerRole}}</td>
+        <td>{{.Approval.ExpiresAt}}</td>
+        <td>{{.Rationale}}</td>
+        <td>{{range .EvidenceGaps}}{{.}} {{end}}</td>
+        <td><a href="/download?id={{.Approval.ID}}">Download</a></td>
       </tr>
     {{end}}
   </table>
@@ -374,6 +437,8 @@ const indexHTML = `<!doctype html>
       <input name="signer" placeholder="signer" required />
       <input name="role" placeholder="role" value="approver" />
       <input name="ttl" placeholder="10m" />
+      <input name="gaps" placeholder="evidence gaps (comma separated)" />
+      <input name="rationale" placeholder="approval rationale" />
       <button type="submit">Approve</button>
     </form>
   {{else}}

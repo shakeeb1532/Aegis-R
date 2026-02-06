@@ -17,7 +17,7 @@ func TestUIAuthRequiresBasic(t *testing.T) {
 	f.WriteString(kp)
 	f.Close()
 
-	s, err := NewServer("", "", "", "", f.Name(), "user", "pass")
+	s, err := NewServer("", "", "", "", "", "", f.Name(), "user", "pass")
 	if err != nil {
 		t.Fatalf("server: %v", err)
 	}

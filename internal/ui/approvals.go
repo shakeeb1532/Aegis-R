@@ -4,12 +4,20 @@ import (
 	"encoding/json"
 	"os"
 	"strings"
+	"time"
 
 	"aegisr/internal/approval"
 	"aegisr/internal/ops"
 )
 
-func loadApprovals(path string) ([]approval.Approval, error) {
+type ApprovalRecord struct {
+	Approval     approval.Approval `json:"approval"`
+	Rationale    string            `json:"rationale"`
+	EvidenceGaps []string          `json:"evidence_gaps"`
+	CreatedAt    string            `json:"created_at"`
+}
+
+func loadApprovals(path string) ([]ApprovalRecord, error) {
 	if path == "" {
 		return nil, nil
 	}
@@ -21,25 +29,33 @@ func loadApprovals(path string) ([]approval.Approval, error) {
 		return nil, err
 	}
 	lines := strings.Split(strings.TrimSpace(string(data)), "\n")
-	out := []approval.Approval{}
+	out := []ApprovalRecord{}
 	for _, line := range lines {
 		if strings.TrimSpace(line) == "" {
+			continue
+		}
+		var rec ApprovalRecord
+		if err := json.Unmarshal([]byte(line), &rec); err == nil && rec.Approval.ID != "" {
+			out = append(out, rec)
 			continue
 		}
 		var a approval.Approval
 		if err := json.Unmarshal([]byte(line), &a); err != nil {
 			continue
 		}
-		out = append(out, a)
+		out = append(out, ApprovalRecord{Approval: a})
 	}
 	return out, nil
 }
 
-func appendApproval(path string, a approval.Approval) error {
+func appendApproval(path string, rec ApprovalRecord) error {
 	if !ops.IsSafePath(path) {
 		return os.ErrInvalid
 	}
-	data, err := json.Marshal(a)
+	if rec.CreatedAt == "" {
+		rec.CreatedAt = time.Now().UTC().Format(time.RFC3339)
+	}
+	data, err := json.Marshal(rec)
 	if err != nil {
 		return err
 	}

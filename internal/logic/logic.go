@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"aegisr/internal/governance"
 	"aegisr/internal/model"
 	"aegisr/internal/ops"
 )
@@ -120,6 +121,9 @@ func DefaultRules() []Rule {
 func LoadRules(path string) ([]Rule, error) {
 	if path == "" {
 		return DefaultRules(), nil
+	}
+	if !ops.IsSafePath(path) {
+		return nil, os.ErrInvalid
 	}
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -251,6 +255,42 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		Summary:     "Feasibility reasoning over evidence and preconditions.",
 		Results:     results,
 		Narrative:   narrative,
+	}
+}
+
+func ApplyConstraints(rep *model.ReasoningReport, constraints []governance.ReasoningConstraint) {
+	if len(constraints) == 0 {
+		return
+	}
+	byRule := map[string][]governance.ReasoningConstraint{}
+	for _, c := range constraints {
+		byRule[c.RuleID] = append(byRule[c.RuleID], c)
+	}
+	for i := range rep.Results {
+		r := &rep.Results[i]
+		for _, c := range byRule[r.RuleID] {
+			for _, req := range c.RequireEvidence {
+				found := false
+				for _, ev := range r.SupportingEventIDs {
+					if ev == req {
+						found = true
+						break
+					}
+				}
+				if !found {
+					r.MissingEvidence = append(r.MissingEvidence, model.EvidenceRequirement{Type: req, Description: "Required by analyst constraint"})
+					r.Feasible = false
+				}
+			}
+			for _, forbid := range c.ForbidEvidence {
+				for _, ev := range r.SupportingEventIDs {
+					if ev == forbid {
+						r.Feasible = false
+						r.Explanation += " Forbidden evidence present by analyst constraint."
+					}
+				}
+			}
+		}
 	}
 }
 

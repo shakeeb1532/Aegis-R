@@ -16,6 +16,43 @@ type AttackState struct {
 	ReachableIdentities map[string]bool `json:"reachable_identities"`
 	Signals             []string        `json:"signals"`
 	ReasoningChain      []string        `json:"reasoning_chain"`
+	Progression         []ProgressEvent `json:"progression"`
+	Position            Position        `json:"position"`
+	GraphOverlay        GraphOverlay    `json:"graph_overlay"`
+}
+
+type ProgressEvent struct {
+	Time       time.Time `json:"time"`
+	Source     string    `json:"source"`
+	Principal  string    `json:"principal"`
+	Asset      string    `json:"asset"`
+	Action     string    `json:"action"`
+	Confidence float64   `json:"confidence"`
+	Stage      string    `json:"stage"`
+	Rationale  string    `json:"rationale"`
+}
+
+func (p *ProgressEvent) GetTime() time.Time {
+	return p.Time
+}
+
+func (p *ProgressEvent) GetConfidence() float64 {
+	return p.Confidence
+}
+
+func (p *ProgressEvent) SetConfidence(v float64) {
+	p.Confidence = v
+}
+
+type Position struct {
+	Stage      string   `json:"stage"`
+	Principals []string `json:"principals"`
+	Assets     []string `json:"assets"`
+}
+
+type GraphOverlay struct {
+	CurrentNodes []string `json:"current_nodes"`
+	Reachable    []string `json:"reachable_nodes"`
 }
 
 func New() AttackState {
@@ -27,6 +64,8 @@ func New() AttackState {
 		ReachableIdentities: map[string]bool{},
 		Signals:             []string{},
 		ReasoningChain:      []string{},
+		Progression:         []ProgressEvent{},
+		GraphOverlay:        GraphOverlay{},
 	}
 }
 
@@ -56,6 +95,9 @@ func Load(path string) (AttackState, error) {
 	}
 	if s.ReachableIdentities == nil {
 		s.ReachableIdentities = map[string]bool{}
+	}
+	if s.Progression == nil {
+		s.Progression = []ProgressEvent{}
 	}
 	return s, nil
 }

@@ -9,6 +9,7 @@ import (
 	"aegisr/internal/logic"
 	"aegisr/internal/model"
 	"aegisr/internal/ops"
+	"aegisr/internal/progression"
 	"aegisr/internal/state"
 )
 
@@ -32,6 +33,11 @@ func AssessWithMetrics(events []model.Event, rules []logic.Rule, environment env
 	}
 	rep := logic.ReasonWithMetrics(events, rules, metrics, includeEvidence)
 	st.UpdatedAt = time.Now().UTC()
+
+	envelopes := progression.Normalize(events, environment)
+	progression.Update(envelopes, &st)
+	progression.ApplyWindowAndDecay(&st, 24*time.Hour)
+	progression.OverlayGraph(environment, &st)
 
 	index := make(map[string][]model.Event)
 	for _, e := range events {

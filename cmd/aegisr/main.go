@@ -71,6 +71,12 @@ func main() {
 		handleInitScan(os.Args[2:])
 	case "scan":
 		handleScan(os.Args[2:])
+	case "profile-add":
+		handleProfileAdd(os.Args[2:])
+	case "constraint-add":
+		handleConstraintAdd(os.Args[2:])
+	case "disagreement-add":
+		handleDisagreementAdd(os.Args[2:])
 	default:
 		usage()
 		os.Exit(1)
@@ -82,7 +88,7 @@ func usage() {
 	fmt.Println("Commands:")
 	fmt.Println("  generate -out events.json -count 60 -seed 42")
 	fmt.Println("  reason -in events.json [-approval approval.json] [-require-okta] [-rules rules.json] [-format cli|json]")
-	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log [-rules rules.json] [-approval approval.json] [-policy policy.json] [-config ops.json] [-format cli|json] [-baseline data/zero_trust_baseline.json]")
+	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log [-rules rules.json] [-approval approval.json] [-policy policy.json] [-constraints data/constraints.json] [-config ops.json] [-format cli|json] [-baseline data/zero_trust_baseline.json]")
 	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log -siem siem.json (optional)")
 	fmt.Println("  keys -out keypair.json")
 	fmt.Println("  approve -key keypair.json -id change-1 -ttl 10m -okta true -signer alice -role approver -out approval.json")
@@ -93,9 +99,12 @@ func usage() {
 	fmt.Println("  generate-scenarios -out scenarios.json [-rules rules.json]")
 	fmt.Println("  evaluate -scenarios scenarios.json [-rules rules.json]")
 	fmt.Println("  ingest-http -addr :8080 (schema: ecs|elastic_ecs|ocsf|cim|splunk_cim_auth|splunk_cim_net|mde)")
-	fmt.Println("  ui -addr :9090 -audit audit.log -signed-audit signed_audit.log -approvals approvals.log -report report.json -key keypair.json -basic-user user -basic-pass pass")
+	fmt.Println("  ui -addr :9090 -audit audit.log -signed-audit signed_audit.log -approvals approvals.log -report report.json -profiles data/analyst_profiles.json -disagreements data/disagreements.log -key keypair.json -basic-user user -basic-pass pass")
 	fmt.Println("  init-scan -baseline data/zero_trust_baseline.json")
 	fmt.Println("  scan -baseline data/zero_trust_baseline.json [-override-approval admin_approval.json]")
+	fmt.Println("  profile-add -file data/analyst_profiles.json -id a1 -name \"Analyst\" -specialty \"cloud\"")
+	fmt.Println("  constraint-add -file data/constraints.json -id c1 -rule TA0010.EXFIL -require e1 -forbid e2 -author a1")
+	fmt.Println("  disagreement-add -file data/disagreements.log -analyst a1 -rule TA0010.EXFIL -expected feasible -actual incomplete -rationale \"Missing staging evidence\"")
 }
 
 func handleGenerate(args []string) {
@@ -163,6 +172,7 @@ func handleAssess(args []string) {
 	siemPath := fs.String("siem", "", "siem export json (optional)")
 	approvalPath := fs.String("approval", "", "approval file (single or dual)")
 	policyPath := fs.String("policy", "", "governance policy json (optional)")
+	constraintsPath := fs.String("constraints", "", "reasoning constraints json (optional)")
 	rulesPath := fs.String("rules", "", "rules json (optional)")
 	format := fs.String("format", "json", "output format: cli or json")
 	configPath := fs.String("config", "", "ops config json (optional)")
@@ -208,6 +218,15 @@ func handleAssess(args []string) {
 
 	includeEvidence := cfg.StrictMode
 	out := core.AssessWithMetrics(events, rules, environment, st, metrics, includeEvidence)
+	if *constraintsPath != "" {
+		cons, err := governance.LoadConstraints(*constraintsPath)
+		if err != nil {
+			fatal(err)
+		}
+		rep := logic.ReasonWithMetrics(events, rules, metrics, includeEvidence)
+		logic.ApplyConstraints(&rep, cons)
+		out.Reasoning = rep
+	}
 	if err := state.Save(*statePath, out.State); err != nil {
 		fatal(err)
 	}
@@ -528,12 +547,14 @@ func handleUI(args []string) {
 	approvalsPath := fs.String("approvals", "", "approvals log")
 	signedAuditPath := fs.String("signed-audit", "", "signed audit log")
 	reportPath := fs.String("report", "", "reasoning report json")
+	profilesPath := fs.String("profiles", "", "analyst profiles json")
+	disagreementsPath := fs.String("disagreements", "", "disagreements log")
 	keyPath := fs.String("key", "", "keypair json")
 	basicUser := fs.String("basic-user", "", "basic auth user")
 	basicPass := fs.String("basic-pass", "", "basic auth pass")
 	fs.Parse(args)
 
-	server, err := ui.NewServer(*auditPath, *approvalsPath, *signedAuditPath, *reportPath, *keyPath, *basicUser, *basicPass)
+	server, err := ui.NewServer(*auditPath, *approvalsPath, *signedAuditPath, *reportPath, *profilesPath, *disagreementsPath, *keyPath, *basicUser, *basicPass)
 	if err != nil {
 		fatal(err)
 	}
@@ -595,6 +616,82 @@ func handleScan(args []string) {
 	fmt.Println("WARNING: Zero-Trust scan failed. Override applied by admin. No liability assumed; system integrity may be impacted.")
 }
 
+func handleProfileAdd(args []string) {
+	fs := flag.NewFlagSet("profile-add", flag.ExitOnError)
+	file := fs.String("file", "data/analyst_profiles.json", "profiles file")
+	id := fs.String("id", "", "analyst id")
+	name := fs.String("name", "", "analyst name")
+	specialty := fs.String("specialty", "", "specialty (comma separated)")
+	notes := fs.String("notes", "", "notes")
+	fs.Parse(args)
+	if *id == "" || *name == "" {
+		fatal(errors.New("-id and -name are required"))
+	}
+	profiles, _ := governance.LoadProfiles(*file)
+	profiles = append(profiles, governance.AnalystProfile{
+		ID:          *id,
+		Name:        *name,
+		Specialties: strings.Split(strings.TrimSpace(*specialty), ","),
+		Notes:       *notes,
+	})
+	if err := governance.SaveProfiles(*file, profiles); err != nil {
+		fatal(err)
+	}
+	fmt.Println("Profile added")
+}
+
+func handleConstraintAdd(args []string) {
+	fs := flag.NewFlagSet("constraint-add", flag.ExitOnError)
+	file := fs.String("file", "data/constraints.json", "constraints file")
+	id := fs.String("id", "", "constraint id")
+	rule := fs.String("rule", "", "rule id")
+	require := fs.String("require", "", "required evidence id (comma separated)")
+	forbid := fs.String("forbid", "", "forbidden evidence id (comma separated)")
+	author := fs.String("author", "", "author analyst id")
+	notes := fs.String("notes", "", "notes")
+	fs.Parse(args)
+	if *id == "" || *rule == "" {
+		fatal(errors.New("-id and -rule are required"))
+	}
+	cons, _ := governance.LoadConstraints(*file)
+	cons = append(cons, governance.ReasoningConstraint{
+		ID:              *id,
+		RuleID:          *rule,
+		RequireEvidence: splitCSV(*require),
+		ForbidEvidence:  splitCSV(*forbid),
+		Author:          *author,
+		CreatedAt:       time.Now().UTC().Format(time.RFC3339),
+		Notes:           *notes,
+	})
+	if err := governance.SaveConstraints(*file, cons); err != nil {
+		fatal(err)
+	}
+	fmt.Println("Constraint added")
+}
+
+func handleDisagreementAdd(args []string) {
+	fs := flag.NewFlagSet("disagreement-add", flag.ExitOnError)
+	file := fs.String("file", "data/disagreements.log", "disagreement log")
+	analyst := fs.String("analyst", "", "analyst id")
+	rule := fs.String("rule", "", "rule id")
+	expected := fs.String("expected", "", "expected outcome")
+	actual := fs.String("actual", "", "actual outcome")
+	rationale := fs.String("rationale", "", "rationale")
+	fs.Parse(args)
+	if *analyst == "" || *rule == "" {
+		fatal(errors.New("-analyst and -rule are required"))
+	}
+	if err := governance.AppendDisagreement(*file, governance.Disagreement{
+		AnalystID: *analyst,
+		RuleID:    *rule,
+		Expected:  *expected,
+		Actual:    *actual,
+		Rationale: *rationale,
+	}); err != nil {
+		fatal(err)
+	}
+	fmt.Println("Disagreement logged")
+}
 func readJSON(path string, out interface{}) {
 	if !ops.IsSafePath(path) {
 		fatal(os.ErrInvalid)
@@ -641,6 +738,21 @@ func signWithKeyfile(path, id string, ttl time.Duration, okta bool, signer strin
 		fatal(err)
 	}
 	return app
+}
+
+func splitCSV(v string) []string {
+	if strings.TrimSpace(v) == "" {
+		return []string{}
+	}
+	parts := strings.Split(v, ",")
+	out := []string{}
+	for _, p := range parts {
+		p = strings.TrimSpace(p)
+		if p != "" {
+			out = append(out, p)
+		}
+	}
+	return out
 }
 
 func verifyApprovalFile(path string) error {

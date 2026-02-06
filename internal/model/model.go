@@ -11,6 +11,17 @@ type Event struct {
 	Details map[string]interface{} `json:"details"`
 }
 
+type Envelope struct {
+	Timestamp  time.Time `json:"timestamp"`
+	Source     string    `json:"source"`
+	Principal  string    `json:"principal"`
+	Asset      string    `json:"asset"`
+	Action     string    `json:"action"`
+	Evidence   []string  `json:"evidence"`
+	Confidence float64   `json:"confidence"`
+	Tags       []string  `json:"tags"`
+}
+
 type EvidenceRequirement struct {
 	Type        string `json:"type"`
 	Description string `json:"description"`
