@@ -223,6 +223,14 @@ go run ./cmd/aegisr ingest-inventory -in data/inventory -out data/env.json
 
 See `docs/inventory_schema.md` for the JSON schema per provider.
 
+Adapter scaffolding (API-ready, requires credentials):
+
+```bash
+go run ./cmd/aegisr inventory-adapter -provider aws -config data/inventory/config.json -out data/env.json
+```
+
+Adapters currently validate config and return a clear \"not implemented\" error until credentials are supplied and live calls are wired in.
+
 Vendor field normalization details are in:
 - `docs/vendor_mappings.md`
 

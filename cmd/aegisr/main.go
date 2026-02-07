@@ -110,6 +110,8 @@ func main() {
 		handleIngestInventory(args[1:])
 	case "inventory-drift":
 		handleInventoryDrift(args[1:])
+	case "inventory-adapter":
+		handleInventoryAdapter(args[1:])
 	case "ui":
 		handleUI(args[1:])
 	case "init-scan":
@@ -152,6 +154,7 @@ func usage() {
 	fmt.Println("  ingest-http -addr :8080 (schema: ecs|elastic_ecs|ocsf|cim|splunk_cim_auth|splunk_cim_net|mde)")
 	fmt.Println("  ingest-inventory -in data/inventory -out data/env.json")
 	fmt.Println("  inventory-drift -base data/env.json -in data/inventory -out drift.json")
+	fmt.Println("  inventory-adapter -provider aws|okta|azure|gcp -config data/inventory/config.json -out data/env.json")
 	fmt.Println("  ui -addr :9090 -audit audit.log -signed-audit signed_audit.log -approvals approvals.log -report report.json -profiles data/analyst_profiles.json -disagreements data/disagreements.log -key keypair.json -basic-user user -basic-pass pass")
 	fmt.Println("  init-scan -baseline data/zero_trust_baseline.json")
 	fmt.Println("  scan -baseline data/zero_trust_baseline.json [-override-approval admin_approval.json]")
@@ -1715,6 +1718,37 @@ func handleInventoryDrift(args []string) {
 	fmt.Printf("Added hosts: %d, Removed hosts: %d\n", len(rep.AddedHosts), len(rep.RemovedHosts))
 	fmt.Printf("Added identities: %d, Removed identities: %d\n", len(rep.AddedIdentities), len(rep.RemovedIdentites))
 	fmt.Printf("Added trusts: %d, Removed trusts: %d\n", len(rep.AddedTrusts), len(rep.RemovedTrusts))
+}
+
+func handleInventoryAdapter(args []string) {
+	fs := flag.NewFlagSet("inventory-adapter", flag.ExitOnError)
+	provider := fs.String("provider", "", "adapter provider (aws|okta|azure|gcp)")
+	configPath := fs.String("config", "", "adapter config json")
+	out := fs.String("out", "data/env.json", "output environment json")
+	if err := fs.Parse(args); err != nil {
+		fatal(err)
+	}
+	if *provider == "" || *configPath == "" {
+		fatal(errors.New("-provider and -config are required"))
+	}
+	cfg, err := inventory.LoadConfig(*configPath)
+	if err != nil {
+		fatal(err)
+	}
+	adapter, err := inventory.NewAdapter(*provider)
+	if err != nil {
+		fatal(err)
+	}
+	inv, err := adapter.Load(cfg)
+	if err != nil {
+		fatal(err)
+	}
+	environment := inventory.BuildEnvironment(inv)
+	if err := validate.Environment(environment); err != nil {
+		fatal(validate.Must(err))
+	}
+	writeJSON(*out, environment)
+	fmt.Printf("Environment written: %s\n", *out)
 }
 
 func handleUI(args []string) {

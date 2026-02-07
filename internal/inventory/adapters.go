@@ -1,0 +1,99 @@
+package inventory
+
+import (
+	"errors"
+	"fmt"
+)
+
+type Adapter interface {
+	Name() string
+	Load(cfg AdapterConfig) (Inventory, error)
+}
+
+type AdapterConfig struct {
+	AWS   AWSConfig
+	Okta  OktaConfig
+	Azure AzureConfig
+	GCP   GCPConfig
+}
+
+type AWSConfig struct {
+	Region   string `json:"region"`
+	Profile  string `json:"profile"`
+	RoleARN  string `json:"role_arn"`
+	External string `json:"external_id"`
+}
+
+type OktaConfig struct {
+	OrgURL string `json:"org_url"`
+	Token  string `json:"token"`
+}
+
+type AzureConfig struct {
+	TenantID     string `json:"tenant_id"`
+	ClientID     string `json:"client_id"`
+	ClientSecret string `json:"client_secret"`
+	Subscription string `json:"subscription"`
+}
+
+type GCPConfig struct {
+	ProjectID   string `json:"project_id"`
+	CredsFile   string `json:"creds_file"`
+	CredsJSON   string `json:"creds_json"`
+	Impersonate string `json:"impersonate"`
+}
+
+func NewAdapter(name string) (Adapter, error) {
+	switch name {
+	case "aws":
+		return AWSAdapter{}, nil
+	case "okta":
+		return OktaAdapter{}, nil
+	case "azure":
+		return AzureAdapter{}, nil
+	case "gcp":
+		return GCPAdapter{}, nil
+	default:
+		return nil, fmt.Errorf("unknown adapter: %s", name)
+	}
+}
+
+type AWSAdapter struct{}
+
+func (AWSAdapter) Name() string { return "aws" }
+func (AWSAdapter) Load(cfg AdapterConfig) (Inventory, error) {
+	if cfg.AWS.Region == "" {
+		return Inventory{}, errors.New("aws adapter requires region")
+	}
+	return Inventory{}, errors.New("aws adapter not implemented; use file-based inventory")
+}
+
+type OktaAdapter struct{}
+
+func (OktaAdapter) Name() string { return "okta" }
+func (OktaAdapter) Load(cfg AdapterConfig) (Inventory, error) {
+	if cfg.Okta.OrgURL == "" || cfg.Okta.Token == "" {
+		return Inventory{}, errors.New("okta adapter requires org_url and token")
+	}
+	return Inventory{}, errors.New("okta adapter not implemented; use file-based inventory")
+}
+
+type AzureAdapter struct{}
+
+func (AzureAdapter) Name() string { return "azure" }
+func (AzureAdapter) Load(cfg AdapterConfig) (Inventory, error) {
+	if cfg.Azure.TenantID == "" || cfg.Azure.ClientID == "" || cfg.Azure.ClientSecret == "" {
+		return Inventory{}, errors.New("azure adapter requires tenant_id, client_id, client_secret")
+	}
+	return Inventory{}, errors.New("azure adapter not implemented; use file-based inventory")
+}
+
+type GCPAdapter struct{}
+
+func (GCPAdapter) Name() string { return "gcp" }
+func (GCPAdapter) Load(cfg AdapterConfig) (Inventory, error) {
+	if cfg.GCP.ProjectID == "" {
+		return Inventory{}, errors.New("gcp adapter requires project_id")
+	}
+	return Inventory{}, errors.New("gcp adapter not implemented; use file-based inventory")
+}

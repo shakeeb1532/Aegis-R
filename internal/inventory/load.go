@@ -2,7 +2,6 @@ package inventory
 
 import (
 	"encoding/json"
-	"errors"
 	"os"
 	"path/filepath"
 	"strings"
@@ -93,7 +92,7 @@ func loadFile(path string) (Inventory, error) {
 		}
 		inv.GCP = gcp
 	default:
-		return inv, errors.New("unknown inventory file")
+		return inv, nil
 	}
 	return inv, nil
 }
