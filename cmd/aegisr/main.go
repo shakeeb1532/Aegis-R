@@ -246,6 +246,40 @@ func loadEvents(path string) ([]model.Event, error) {
 	return events, nil
 }
 
+func loadReportFile(path string) (model.ReasoningReport, error) {
+	var rep model.ReasoningReport
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return rep, err
+	}
+	if err := json.Unmarshal(data, &rep); err == nil && len(rep.Results) > 0 {
+		return rep, nil
+	}
+	// Try to read full assess output
+	var out core.Output
+	if err := json.Unmarshal(data, &out); err != nil {
+		return rep, err
+	}
+	return out.Reasoning, nil
+}
+
+func confidenceBands(results []model.RuleResult) (int, int, int) {
+	high := 0
+	med := 0
+	low := 0
+	for _, r := range results {
+		switch {
+		case r.Confidence >= 0.8:
+			high++
+		case r.Confidence >= 0.6:
+			med++
+		default:
+			low++
+		}
+	}
+	return high, med, low
+}
+
 func handleIngest(args []string) {
 	if len(args) == 0 {
 		fatal(errors.New("ingest requires a subcommand: file|http|sample"))
@@ -885,7 +919,7 @@ func findArtifact(path string, id string) (audit.Artifact, error) {
 
 func handleSystem(args []string) {
 	if len(args) == 0 {
-		fatal(errors.New("system requires a subcommand: status|config|health|coverage"))
+		fatal(errors.New("system requires a subcommand: status|config|health|coverage|confidence"))
 	}
 	switch args[0] {
 	case "status":
@@ -911,6 +945,7 @@ func handleSystem(args []string) {
 	case "coverage":
 		fs := flag.NewFlagSet("system coverage", flag.ExitOnError)
 		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		envPath := fs.String("env", "", "environment json (optional)")
 		if err := fs.Parse(args[1:]); err != nil {
 			fatal(err)
 		}
@@ -919,14 +954,30 @@ func handleSystem(args []string) {
 			fatal(err)
 		}
 		report := logic.BuildMitreCoverage(rules)
+		if *envPath != "" {
+			environment, err := env.Load(*envPath)
+			if err != nil {
+				fatal(err)
+			}
+			report = logic.BuildMitreCoverageForEnv(rules, environment)
+		}
 		if gFlags.JSON {
 			outJSON(report)
 			return
 		}
 		outln("MITRE coverage")
 		outln(fmt.Sprintf("Rules total: %d", report.TotalRules))
+		if report.FilterNote != "" {
+			outln(fmt.Sprintf("Applicable rules: %d", report.ApplicableRules))
+		}
 		outln(fmt.Sprintf("Rules with MITRE: %d", report.RulesWithMitre))
 		outln(fmt.Sprintf("Rules missing MITRE: %d", len(report.RulesMissingMeta)))
+		if len(report.ExcludedRules) > 0 {
+			outln("Excluded by environment filter:")
+			for _, id := range report.ExcludedRules {
+				outln("- " + id)
+			}
+		}
 		if len(report.RulesMissingMeta) > 0 {
 			outln("Missing metadata:")
 			for _, id := range report.RulesMissingMeta {
@@ -944,6 +995,28 @@ func handleSystem(args []string) {
 				outln(fmt.Sprintf("  - %s: %d rules", label, tech.RuleCount))
 			}
 		}
+	case "confidence":
+		fs := flag.NewFlagSet("system confidence", flag.ExitOnError)
+		reportPath := fs.String("report", "", "reasoning report json")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		if *reportPath == "" {
+			fatal(errors.New("system confidence requires -report"))
+		}
+		rep, err := loadReportFile(*reportPath)
+		if err != nil {
+			fatal(err)
+		}
+		high, med, low := confidenceBands(rep.Results)
+		if gFlags.JSON {
+			outJSON(map[string]int{"high": high, "medium": med, "low": low})
+			return
+		}
+		outln("Confidence bands")
+		outln(fmt.Sprintf("High (>=0.80): %d", high))
+		outln(fmt.Sprintf("Medium (0.60-0.79): %d", med))
+		outln(fmt.Sprintf("Low (<0.60): %d", low))
 	default:
 		fatal(errors.New("unknown system subcommand"))
 	}

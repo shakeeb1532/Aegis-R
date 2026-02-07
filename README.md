@@ -130,6 +130,8 @@ go run ./cmd/aegisr init-scan \
 - `system status` — baseline + profile status
 - `system health` — component health summary
 - `system coverage` — MITRE coverage report (rules -> tactics/techniques)
+- `system coverage -env data/env.json` — environment-scoped coverage
+- `system confidence -report report.json` — confidence band report
 
 ### Integration
 - `ingest-http` — HTTP ingest endpoint

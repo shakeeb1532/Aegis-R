@@ -6,6 +6,7 @@ Aegis-R can summarize ATT&CK coverage directly from the rule catalog.
 ```bash
 go run ./cmd/aegisr system coverage -rules data/rules.json
 go run ./cmd/aegisr system coverage -rules data/rules.json --json
+go run ./cmd/aegisr system coverage -rules data/rules.json -env data/env.json
 ```
 
 ## Output

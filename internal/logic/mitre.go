@@ -3,13 +3,18 @@ package logic
 import (
 	"sort"
 	"time"
+
+	"aegisr/internal/env"
 )
 
 type MitreCoverageReport struct {
 	GeneratedAt      time.Time             `json:"generated_at"`
 	TotalRules       int                   `json:"total_rules"`
+	ApplicableRules  int                   `json:"applicable_rules"`
 	RulesWithMitre   int                   `json:"rules_with_mitre"`
 	RulesMissingMeta []string              `json:"rules_missing_mitre"`
+	ExcludedRules    []string              `json:"excluded_rules"`
+	FilterNote       string                `json:"filter_note"`
 	Tactics          []MitreTacticCoverage `json:"tactics"`
 }
 
@@ -96,10 +101,20 @@ func BuildMitreCoverage(rules []Rule) MitreCoverageReport {
 	return MitreCoverageReport{
 		GeneratedAt:      time.Now().UTC(),
 		TotalRules:       len(rules),
+		ApplicableRules:  len(rules),
 		RulesWithMitre:   withMitre,
 		RulesMissingMeta: missing,
 		Tactics:          tactics,
 	}
+}
+
+func BuildMitreCoverageForEnv(rules []Rule, environment env.Environment) MitreCoverageReport {
+	applicable, excluded := filterRulesForEnv(rules, environment)
+	report := BuildMitreCoverage(applicable)
+	report.ApplicableRules = len(applicable)
+	report.ExcludedRules = excluded
+	report.FilterNote = "Filtered by environment tags and asset types"
+	return report
 }
 
 func keysSorted(set map[string]bool) []string {
@@ -109,4 +124,59 @@ func keysSorted(set map[string]bool) []string {
 	}
 	sort.Strings(out)
 	return out
+}
+
+func filterRulesForEnv(rules []Rule, environment env.Environment) ([]Rule, []string) {
+	if len(rules) == 0 {
+		return rules, nil
+	}
+	envTags := map[string]bool{}
+	if len(environment.Hosts) > 0 {
+		envTags["endpoint"] = true
+	}
+	if len(environment.Identities) > 0 {
+		envTags["identity"] = true
+	}
+	for _, h := range environment.Hosts {
+		for _, t := range h.Tags {
+			envTags[t] = true
+		}
+		if h.Zone != "" {
+			envTags[h.Zone] = true
+		}
+	}
+	for _, id := range environment.Identities {
+		for _, t := range id.Tags {
+			envTags[t] = true
+		}
+		if id.Role != "" {
+			envTags[id.Role] = true
+		}
+		if id.PrivLevel != "" {
+			envTags[id.PrivLevel] = true
+		}
+	}
+
+	applicable := []Rule{}
+	excluded := []string{}
+	for _, r := range rules {
+		if len(r.Constraints.AppliesTo) == 0 {
+			applicable = append(applicable, r)
+			continue
+		}
+		matched := false
+		for _, tag := range r.Constraints.AppliesTo {
+			if envTags[tag] {
+				matched = true
+				break
+			}
+		}
+		if matched {
+			applicable = append(applicable, r)
+		} else {
+			excluded = append(excluded, r.ID)
+		}
+	}
+	sort.Strings(excluded)
+	return applicable, excluded
 }

@@ -6,6 +6,8 @@
 - Thread formation confidence + reason fields in outputs and UI.
 - Multi-entity synthetic thread suite (`data/synthetic_threads.json`).
 - MITRE coverage reporting (`system coverage`) and documentation.
+- Environment-scoped MITRE coverage (`system coverage -env`).
+- Confidence band reporting (`system confidence -report`).
 - Expanded realistic scenario suite + decision label/ticket status tests.
 - Vendor fixture expansion to produce threads.
 - Baseline validation report (`docs/BASELINE_REPORT.md`, `docs/BASELINE_REPORT.pdf`).
