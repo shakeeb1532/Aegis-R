@@ -11,6 +11,7 @@
 - Expanded realistic scenario suite + decision label/ticket status tests.
 - Vendor fixture expansion to produce threads.
 - Additional vendor auth fixtures for MDE and Sentinel.
+- Updated vendor field mapping documentation for auth and trust-boundary events.
 - Baseline validation report (`docs/BASELINE_REPORT.md`, `docs/BASELINE_REPORT.pdf`).
 
 ### Changed

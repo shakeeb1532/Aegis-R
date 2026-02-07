@@ -69,6 +69,9 @@ Key fields:
 ### Identity Events (`mde`, kind=`identity`)
 - Type mapping:
   - `ActionType` (same mapping rules as device events when present)
+  - `MFAReset|MFABypass|MFADisabled` -> `mfa_disabled`
+  - `AddUserToGroup|AddMemberToGroup` -> `admin_group_change`
+  - `OAuthGrant|TokenRefresh` -> `token_refresh_anomaly`
   - default: `identity_event`
 - Host: `DeviceName`
 - User: `TargetAccountUpn` or `AccountDisplayName` or `AccountName`
@@ -98,7 +101,8 @@ Key fields:
     - `CreateUser|CreateRole|CreatePolicy` -> `new_admin_account`
     - `AddUserToGroup|AttachGroupPolicy` -> `admin_group_change`
     - `AttachRolePolicy|PutRolePolicy|PutUserPolicy` -> `policy_override`
-    - `UpdateAssumeRolePolicy` -> `trust_boundary_change`
+    - `UpdateAssumeRolePolicy|AssumeRolePolicy|UpdateTrustPolicy` -> `trust_boundary_change`
+    - `AssumeRole` -> `role_assume`
     - otherwise -> `iam_change`
   - `eventSource` contains `ec2.amazonaws.com` + `AuthorizeSecurityGroupIngress|Egress` -> `new_firewall_rule`
   - otherwise -> `eventName`
@@ -116,6 +120,8 @@ Key fields:
   - `Fields.RegistryKey` contains `\\Run` -> `registry_run_key`
   - `Fields.RegistryKey` or `Fields.RegistryValue` -> `registry_change`
   - `Fields.ServiceName|ServiceFileName` -> `service_install`
+  - `Activity|DeviceAction` contains `AuthenticationSuccess` -> `authentication_success`
+  - `Activity|DeviceAction` contains `AuthenticationFailure` -> `authentication_failure`
   - otherwise -> `Activity` or `DeviceAction`
 - Host: `Computer`
 - User: `AccountName`
