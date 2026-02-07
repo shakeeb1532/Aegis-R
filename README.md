@@ -32,6 +32,7 @@ Aegis-R is a **human-governed security reasoning infrastructure** that evaluates
 - `docs/mitre_coverage.md` — rule catalog MITRE mapping notes
 - `docs/confidence_bands.md` — confidence band interpretation
 - `docs/ci_checklist.md` — CI checklist and local verification steps
+- `docs/release_checklist.md` — release steps and tagging guidance
 
 ---
 
