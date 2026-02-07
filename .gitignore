@@ -22,3 +22,5 @@
 
 /data/analyst_profiles.json
 /data/zero_trust_baseline.json
+
+.cache/

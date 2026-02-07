@@ -70,4 +70,5 @@ go run ./cmd/aegisr inventory-drift -base data/env.json -in data/inventory -out 
 Notes
 - The ingestion layer is deterministic and file-based.
 - AWS adapter now supports live API ingestion using the default AWS credential chain (env vars, shared config, instance profile), optional profile, and optional assume-role.
-- Other adapters (Okta/Azure/GCP) are stubbed until credentials are wired in.
+- Okta adapter supports live API ingestion using org URL + token (group/user/app data with best-effort permissions).
+- Azure/GCP adapters are stubbed until credentials are wired in.

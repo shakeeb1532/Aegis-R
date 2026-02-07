@@ -65,12 +65,6 @@ func (AWSAdapter) Name() string { return "aws" }
 type OktaAdapter struct{}
 
 func (OktaAdapter) Name() string { return "okta" }
-func (OktaAdapter) Load(cfg AdapterConfig) (Inventory, error) {
-	if cfg.Okta.OrgURL == "" || cfg.Okta.Token == "" {
-		return Inventory{}, errors.New("okta adapter requires org_url and token")
-	}
-	return Inventory{}, errors.New("okta adapter not implemented; use file-based inventory")
-}
 
 type AzureAdapter struct{}
 
