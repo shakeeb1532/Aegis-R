@@ -13,6 +13,12 @@ Then run:
 go run ./cmd/aegisr ingest-inventory -in data/inventory -out data/env.json
 ```
 
+To detect drift versus an existing `env.json`:
+
+```bash
+go run ./cmd/aegisr inventory-drift -base data/env.json -in data/inventory -out drift.json
+```
+
 ## AWS (`aws.json`)
 ```json
 {

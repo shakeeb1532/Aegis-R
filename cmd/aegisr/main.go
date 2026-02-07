@@ -108,6 +108,8 @@ func main() {
 		handleIngestHTTP(args[1:])
 	case "ingest-inventory":
 		handleIngestInventory(args[1:])
+	case "inventory-drift":
+		handleInventoryDrift(args[1:])
 	case "ui":
 		handleUI(args[1:])
 	case "init-scan":
@@ -149,6 +151,7 @@ func usage() {
 	fmt.Println("  evaluate -scenarios scenarios.json [-rules rules.json] [-format cli|json|md] [-out report.md]")
 	fmt.Println("  ingest-http -addr :8080 (schema: ecs|elastic_ecs|ocsf|cim|splunk_cim_auth|splunk_cim_net|mde)")
 	fmt.Println("  ingest-inventory -in data/inventory -out data/env.json")
+	fmt.Println("  inventory-drift -base data/env.json -in data/inventory -out drift.json")
 	fmt.Println("  ui -addr :9090 -audit audit.log -signed-audit signed_audit.log -approvals approvals.log -report report.json -profiles data/analyst_profiles.json -disagreements data/disagreements.log -key keypair.json -basic-user user -basic-pass pass")
 	fmt.Println("  init-scan -baseline data/zero_trust_baseline.json")
 	fmt.Println("  scan -baseline data/zero_trust_baseline.json [-override-approval admin_approval.json]")
@@ -1684,6 +1687,34 @@ func handleIngestInventory(args []string) {
 	writeJSON(*out, environment)
 	fmt.Printf("Environment written: %s\n", *out)
 	fmt.Printf("Hosts: %d, Identities: %d, Trust boundaries: %d\n", len(environment.Hosts), len(environment.Identities), len(environment.TrustBoundaries))
+}
+
+func handleInventoryDrift(args []string) {
+	fs := flag.NewFlagSet("inventory-drift", flag.ExitOnError)
+	basePath := fs.String("base", "", "existing env.json")
+	in := fs.String("in", "", "inventory directory or file")
+	out := fs.String("out", "drift.json", "output drift report")
+	if err := fs.Parse(args); err != nil {
+		fatal(err)
+	}
+	if *basePath == "" || *in == "" {
+		fatal(errors.New("-base and -in are required"))
+	}
+	baseEnv, err := env.Load(*basePath)
+	if err != nil {
+		fatal(err)
+	}
+	inv, err := inventory.Load(*in)
+	if err != nil {
+		fatal(err)
+	}
+	newEnv := inventory.BuildEnvironment(inv)
+	rep := inventory.DiffEnv(baseEnv, newEnv)
+	writeJSON(*out, rep)
+	fmt.Printf("Drift report written: %s\n", *out)
+	fmt.Printf("Added hosts: %d, Removed hosts: %d\n", len(rep.AddedHosts), len(rep.RemovedHosts))
+	fmt.Printf("Added identities: %d, Removed identities: %d\n", len(rep.AddedIdentities), len(rep.RemovedIdentites))
+	fmt.Printf("Added trusts: %d, Removed trusts: %d\n", len(rep.AddedTrusts), len(rep.RemovedTrusts))
 }
 
 func handleUI(args []string) {

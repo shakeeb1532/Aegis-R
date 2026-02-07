@@ -148,6 +148,7 @@ go run ./cmd/aegisr init-scan \
 ### Integration
 - `ingest-http` — HTTP ingest endpoint
 - `ingest-inventory` — build `env.json` from inventory exports
+- `inventory-drift` — compare inventory build to baseline env.json
 - `ui` — lightweight analyst UI
 
 ### Zero-Trust

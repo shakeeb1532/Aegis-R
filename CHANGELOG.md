@@ -19,6 +19,7 @@
 - CI now publishes a regression report artifact and documents CI checklist.
 - Release checklist documentation.
 - File-based state ingestion (AWS/Okta/Azure/GCP) with schema docs and CLI `ingest-inventory`.
+- Drift detection against existing env.json with `inventory-drift`.
 - Baseline validation report (`docs/BASELINE_REPORT.md`, `docs/BASELINE_REPORT.pdf`).
 
 ### Changed
