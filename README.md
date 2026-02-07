@@ -27,6 +27,7 @@ Aegis-R is a **human-governed security reasoning infrastructure** that evaluates
 
 ## Docs
 - `docs/sample_outputs.md` — example MITRE coverage and reasoning outputs
+- `docs/regression_report.md` — evaluate output with accuracy + mismatches
 - `docs/vendor_mappings.md` — field-level normalization per vendor
 - `docs/mitre_coverage.md` — rule catalog MITRE mapping notes
 - `docs/confidence_bands.md` — confidence band interpretation

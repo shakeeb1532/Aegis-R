@@ -143,7 +143,7 @@ func usage() {
 	fmt.Println("  audit-verify -audit audit.log")
 	fmt.Println("  audit-sign -audit audit.log -out signed_audit.log -signer soc-admin")
 	fmt.Println("  generate-scenarios -out scenarios.json [-rules rules.json]")
-	fmt.Println("  evaluate -scenarios scenarios.json [-rules rules.json]")
+	fmt.Println("  evaluate -scenarios scenarios.json [-rules rules.json] [-format cli|json|md] [-out report.md]")
 	fmt.Println("  ingest-http -addr :8080 (schema: ecs|elastic_ecs|ocsf|cim|splunk_cim_auth|splunk_cim_net|mde)")
 	fmt.Println("  ui -addr :9090 -audit audit.log -signed-audit signed_audit.log -approvals approvals.log -report report.json -profiles data/analyst_profiles.json -disagreements data/disagreements.log -key keypair.json -basic-user user -basic-pass pass")
 	fmt.Println("  init-scan -baseline data/zero_trust_baseline.json")
@@ -329,6 +329,38 @@ func renderCoverageMarkdown(report logic.MitreCoverageReport) string {
 				label = label + " (" + strings.Join(tech.Subtechniques, ", ") + ")"
 			}
 			fmt.Fprintf(buf, "  - %s: %d rules\n", label, tech.RuleCount)
+		}
+	}
+	return buf.String()
+}
+
+func renderEvalMarkdown(report eval.Report) string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "# Regression Report\n\n")
+	fmt.Fprintf(buf, "Generated: %s\n\n", time.Now().UTC().Format(time.RFC3339))
+	fmt.Fprintf(buf, "- Total labels: %d\n", report.Total)
+	fmt.Fprintf(buf, "- Accuracy: %.3f\n\n", report.Accuracy)
+	fmt.Fprintf(buf, "## Class Metrics\n\n")
+	fmt.Fprintf(buf, "| Class | Precision | Recall |\n")
+	fmt.Fprintf(buf, "| --- | --- | --- |\n")
+	for _, cls := range []eval.Outcome{eval.OutcomeFeasible, eval.OutcomeIncomplete, eval.OutcomeImpossible} {
+		m := report.ByClass[cls]
+		fmt.Fprintf(buf, "| %s | %.3f | %.3f |\n", cls, m.Precision, m.Recall)
+	}
+	if len(report.Mismatches) > 0 {
+		fmt.Fprintf(buf, "\n## Mismatches (first 20)\n\n")
+		fmt.Fprintf(buf, "| Scenario | Rule | Expected | Actual |\n")
+		fmt.Fprintf(buf, "| --- | --- | --- | --- |\n")
+		limit := 20
+		if len(report.Mismatches) < limit {
+			limit = len(report.Mismatches)
+		}
+		for i := 0; i < limit; i++ {
+			m := report.Mismatches[i]
+			fmt.Fprintf(buf, "| %s | %s | %s | %s |\n", m.ScenarioID, m.RuleID, m.Expected, m.Actual)
+		}
+		if len(report.Mismatches) > limit {
+			fmt.Fprintf(buf, "\nMore mismatches not shown: %d\n", len(report.Mismatches)-limit)
 		}
 	}
 	return buf.String()
@@ -1549,7 +1581,8 @@ func handleEvaluate(args []string) {
 	fs := flag.NewFlagSet("evaluate", flag.ExitOnError)
 	scenariosPath := fs.String("scenarios", "", "scenarios json")
 	rulesPath := fs.String("rules", "", "rules json (optional)")
-	format := fs.String("format", "json", "output format: cli or json")
+	format := fs.String("format", "json", "output format: cli, json, or md")
+	outPath := fs.String("out", "", "output file (optional)")
 	if err := fs.Parse(args); err != nil {
 		fatal(err)
 	}
@@ -1574,6 +1607,10 @@ func handleEvaluate(args []string) {
 		if err != nil {
 			fatal(err)
 		}
+		if *outPath != "" {
+			writeJSON(*outPath, rep)
+			return
+		}
 		fmt.Println(string(data))
 	case "cli":
 		fmt.Printf("Total labels: %d\n", rep.Total)
@@ -1584,6 +1621,16 @@ func handleEvaluate(args []string) {
 		if len(rep.Mismatches) > 0 {
 			fmt.Printf("Mismatches: %d\n", len(rep.Mismatches))
 		}
+		if *outPath != "" {
+			writeText(*outPath, renderEvalMarkdown(rep))
+		}
+	case "md":
+		md := renderEvalMarkdown(rep)
+		if *outPath != "" {
+			writeText(*outPath, md)
+			return
+		}
+		fmt.Println(md)
 	default:
 		fatal(errors.New("unknown format"))
 	}

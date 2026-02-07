@@ -14,6 +14,7 @@
 - Updated vendor field mapping documentation for auth and trust-boundary events.
 - Sample CLI outputs for MITRE coverage and reasoning (`docs/sample_outputs.md`).
 - README docs section linking outputs and vendor mappings.
+- Regression report output for `evaluate` (`docs/regression_report.md`).
 - Baseline validation report (`docs/BASELINE_REPORT.md`, `docs/BASELINE_REPORT.pdf`).
 
 ### Changed
