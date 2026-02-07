@@ -261,6 +261,7 @@ func (s *Server) render(w http.ResponseWriter, r *http.Request, page string) {
 	if statsTotal >= statsFeasible {
 		statsInfeasible = statsTotal - statsFeasible
 	}
+	confidencePercent := int(avgConfidence * 100)
 	verdict := "incomplete"
 	for _, rv := range ruleViews {
 		if rv.Status == "impossible" {
@@ -288,6 +289,7 @@ func (s *Server) render(w http.ResponseWriter, r *http.Request, page string) {
 		StatsInfeasible int
 		StatsGaps       int
 		AvgConfidence   float64
+		ConfidencePct   int
 		Verdict         string
 		DecayWindow     string
 		TopGaps         []GapStat
@@ -301,7 +303,7 @@ func (s *Server) render(w http.ResponseWriter, r *http.Request, page string) {
 		SelectedTicket  state.Ticket
 		TicketResults   []model.RuleResult
 		TicketApprovals []ApprovalRecord
-	}{Page: page, Artifacts: artifacts, Approvals: approvals, Signed: signed, Report: report, RuleViews: ruleViews, Suggestions: suggestions, StatsTotal: statsTotal, StatsFeasible: statsFeasible, StatsInfeasible: statsInfeasible, StatsGaps: statsGaps, AvgConfidence: avgConfidence, Verdict: verdict, DecayWindow: decayWindow, TopGaps: gapStats, Profiles: profiles, Disagreements: disagreements, Role: s.currentRole(r), AuditPath: s.AuditPath, SignedAuditPath: s.SignedAuditPath, Query: q, TicketID: ticketID, SelectedTicket: selectedTicket, TicketResults: ticketResults, TicketApprovals: ticketApprovals})
+	}{Page: page, Artifacts: artifacts, Approvals: approvals, Signed: signed, Report: report, RuleViews: ruleViews, Suggestions: suggestions, StatsTotal: statsTotal, StatsFeasible: statsFeasible, StatsInfeasible: statsInfeasible, StatsGaps: statsGaps, AvgConfidence: avgConfidence, ConfidencePct: confidencePercent, Verdict: verdict, DecayWindow: decayWindow, TopGaps: gapStats, Profiles: profiles, Disagreements: disagreements, Role: s.currentRole(r), AuditPath: s.AuditPath, SignedAuditPath: s.SignedAuditPath, Query: q, TicketID: ticketID, SelectedTicket: selectedTicket, TicketResults: ticketResults, TicketApprovals: ticketApprovals})
 }
 
 func selectTicket(report ReportView, approvals []ApprovalRecord, id string) (state.Ticket, []model.RuleResult, []ApprovalRecord) {
@@ -645,21 +647,68 @@ const indexHTML = `<!doctype html>
       margin: 0;
       font-family: "Sora", "Space Grotesk", system-ui, sans-serif;
       color: var(--ink);
-      background: radial-gradient(circle at 10% 10%, #111821 0, #0b1015 50%, #0a0f14 100%);
+      background: radial-gradient(circle at 15% 15%, #18212c 0, #0b1015 45%, #0a0f14 100%);
     }
-    header {
-      padding: 28px 48px 18px 48px;
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 80% 20%, rgba(79,209,197,0.08), transparent 35%),
+                  radial-gradient(circle at 20% 80%, rgba(96,165,250,0.08), transparent 40%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+    .sidebar {
+      padding: 28px 18px;
+      border-right: 1px solid var(--line);
+      background: linear-gradient(180deg, #0f1620 0%, #0c1218 100%);
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+    .brand-title {
+      font-size: 22px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .brand-sub {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+    }
+    .topbar {
+      padding: 24px 36px 18px;
       border-bottom: 1px solid var(--line);
-      background: linear-gradient(135deg, #0f1620 0%, #101923 50%, #0b1015 100%);
-    }
-    .title-row {
+      background: linear-gradient(135deg, rgba(15,22,32,0.9) 0%, rgba(16,25,35,0.95) 50%, rgba(11,16,21,0.95) 100%);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
       flex-wrap: wrap;
     }
-    h1 { margin: 0; font-size: 36px; letter-spacing: -0.5px; }
+    .page-title {
+      margin: 0;
+      font-size: 30px;
+      letter-spacing: -0.4px;
+    }
+    .page-sub {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 6px;
+    }
     .role-chip {
       padding: 6px 12px;
       border-radius: 999px;
@@ -671,7 +720,7 @@ const indexHTML = `<!doctype html>
       border: 1px solid rgba(167, 139, 250, 0.4);
     }
     .subtle { color: var(--muted); font-size: 14px; margin-top: 6px; }
-    main { padding: 24px 48px 64px; }
+    main { padding: 24px 36px 64px; }
     .grid {
       display: grid;
       gap: 18px;
@@ -693,6 +742,19 @@ const indexHTML = `<!doctype html>
     .kpi .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; }
     .kpi .value { font-size: 28px; font-weight: 600; color: var(--blue); }
     .kpi .trend { font-size: 12px; color: var(--muted); }
+    .meter {
+      height: 8px;
+      border-radius: 999px;
+      background: #0f1620;
+      border: 1px solid var(--line);
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .meter span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, rgba(79,209,197,0.8), rgba(96,165,250,0.9));
+    }
     .section-title {
       font-size: 20px;
       margin: 26px 0 12px;
@@ -758,24 +820,60 @@ const indexHTML = `<!doctype html>
     .approval-form { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
     .approval-form .full { grid-column: 1 / -1; }
     .footer-note { font-size: 12px; color: var(--muted); margin-top: 10px; }
-    nav {
-      display: flex;
-      gap: 16px;
-      margin-top: 16px;
-      flex-wrap: wrap;
+    .side-nav {
+      display: grid;
+      gap: 8px;
+      margin-top: 20px;
     }
-    nav a {
+    .side-nav a {
       color: var(--muted);
-      font-size: 13px;
+      font-size: 12px;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.12em;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid transparent;
     }
-    nav a.active { color: var(--teal); }
+    .side-nav a.active {
+      color: var(--teal);
+      border-color: rgba(79,209,197,0.4);
+      background: rgba(79,209,197,0.08);
+    }
+    .sidebar-card {
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #0f1620;
+      font-size: 12px;
+    }
+    .sidebar-card strong { display: block; font-size: 16px; margin-top: 6px; }
     .section-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 16px;
     }
+    .graph-canvas {
+      margin-top: 16px;
+      padding: 18px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: radial-gradient(circle at 30% 20%, rgba(96,165,250,0.08), transparent 40%), #0f1620;
+      min-height: 220px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .node {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid var(--line);
+      background: #0b1218;
+    }
+    .node.current { border-color: rgba(79,209,197,0.6); color: var(--teal); }
+    .node.reachable { border-color: rgba(96,165,250,0.5); color: var(--blue); }
     .list {
       display: grid;
       gap: 8px;
@@ -789,39 +887,68 @@ const indexHTML = `<!doctype html>
       border-radius: 10px;
       background: #0f1620;
     }
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { border-right: none; border-bottom: 1px solid var(--line); }
+    }
     @media (max-width: 720px) {
-      header, main { padding: 18px; }
+      main { padding: 18px; }
+      .topbar { padding: 18px; }
       .timeline-item { flex-direction: column; }
       .timeline-item .time { min-width: auto; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="title-row">
-      <div>
-        <h1>Aegis-R Analyst Review</h1>
-        <div class="subtle">{{.Report.Summary}}</div>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-title">Aegis-R</div>
+        <div class="brand-sub">Reasoning First</div>
       </div>
       <div class="role-chip">Role: {{.Role}}</div>
-    </div>
-    <nav>
-      <a class="{{if eq .Page "overview"}}active{{end}}" href="/overview">Overview</a>
-      <a class="{{if eq .Page "attack-graph"}}active{{end}}" href="/attack-graph">Attack Graph</a>
-      <a class="{{if eq .Page "reasoning"}}active{{end}}" href="/reasoning">Reasoning Panel</a>
-      <a class="{{if eq .Page "queue"}}active{{end}}" href="/queue">Reasoning Queue</a>
-      <a class="{{if eq .Page "governance"}}active{{end}}" href="/governance">Governance</a>
-      <a class="{{if eq .Page "audit"}}active{{end}}" href="/audit">Audit & Evidence</a>
-      <a class="{{if eq .Page "tickets"}}active{{end}}" href="/tickets">Tickets</a>
-      <a class="{{if eq .Page "evaluations"}}active{{end}}" href="/evaluations">Evaluations</a>
-    </nav>
-    <form method="GET" action="/" class="search-bar">
-      <input name="q" placeholder="Search ID / signer / summary" value="{{.Query}}" />
-      <button type="submit">Search</button>
-      <button class="secondary" type="button" onclick="window.location='/'">Reset</button>
-    </form>
-  </header>
-  <main>
+      <div class="side-nav">
+        <a class="{{if eq .Page "overview"}}active{{end}}" href="/overview">Overview</a>
+        <a class="{{if eq .Page "attack-graph"}}active{{end}}" href="/attack-graph">Attack Graph</a>
+        <a class="{{if eq .Page "reasoning"}}active{{end}}" href="/reasoning">Reasoning</a>
+        <a class="{{if eq .Page "queue"}}active{{end}}" href="/queue">Queue</a>
+        <a class="{{if eq .Page "governance"}}active{{end}}" href="/governance">Governance</a>
+        <a class="{{if eq .Page "audit"}}active{{end}}" href="/audit">Audit</a>
+        <a class="{{if eq .Page "tickets"}}active{{end}}" href="/tickets">Tickets</a>
+        <a class="{{if eq .Page "evaluations"}}active{{end}}" href="/evaluations">Evaluations</a>
+      </div>
+      <div class="sidebar-card">
+        <div class="muted">Current Verdict</div>
+        <strong>{{.Verdict}}</strong>
+        <div class="muted">Confidence {{printf "%.2f" .AvgConfidence}}</div>
+        <div class="muted">Decay {{.DecayWindow}}</div>
+      </div>
+      <div class="sidebar-card">
+        <div class="muted">Drift Signals</div>
+        <strong>{{len .Report.DriftSignals}}</strong>
+        <div class="muted">Evidence gaps {{.StatsGaps}}</div>
+      </div>
+    </aside>
+    <div class="content">
+      <header class="topbar">
+        <div>
+          {{if eq .Page "overview"}}<h1 class="page-title">Overview</h1>{{end}}
+          {{if eq .Page "attack-graph"}}<h1 class="page-title">Attack Graph</h1>{{end}}
+          {{if eq .Page "reasoning"}}<h1 class="page-title">Reasoning Panel</h1>{{end}}
+          {{if eq .Page "queue"}}<h1 class="page-title">Reasoning Queue</h1>{{end}}
+          {{if eq .Page "governance"}}<h1 class="page-title">Governance</h1>{{end}}
+          {{if eq .Page "audit"}}<h1 class="page-title">Audit & Evidence</h1>{{end}}
+          {{if eq .Page "tickets"}}<h1 class="page-title">Tickets</h1>{{end}}
+          {{if eq .Page "evaluations"}}<h1 class="page-title">Evaluations</h1>{{end}}
+          <div class="page-sub">{{.Report.Summary}}</div>
+        </div>
+        <form method="GET" action="/" class="search-bar">
+          <input name="q" placeholder="Search ID / signer / summary" value="{{.Query}}" />
+          <button type="submit">Search</button>
+          <button class="secondary" type="button" onclick="window.location='/'">Reset</button>
+        </form>
+      </header>
+      <main>
     {{if eq .Page "overview"}}
     <section class="grid">
       <div class="card kpi">
@@ -841,6 +968,7 @@ const indexHTML = `<!doctype html>
         {{if .Report.Reasoning.ConfidenceModel}}
           <div class="trend">Model: {{.Report.Reasoning.ConfidenceModel}}</div>
         {{end}}
+        <div class="meter"><span style="width: {{.ConfidencePct}}%"></span></div>
       </div>
       <div class="card kpi">
         <div class="label">Verdict</div>
@@ -922,6 +1050,18 @@ const indexHTML = `<!doctype html>
     {{if eq .Page "attack-graph"}}
     <section class="card">
       <div class="section-title">Attack Graph <span class="pill">Progression</span></div>
+      <div class="graph-canvas">
+        {{if or .Report.State.GraphOverlay.CurrentNodes .Report.State.GraphOverlay.Reachable}}
+          {{range .Report.State.GraphOverlay.CurrentNodes}}
+            <div class="node current">{{.}}</div>
+          {{end}}
+          {{range .Report.State.GraphOverlay.Reachable}}
+            <div class="node reachable">{{.}}</div>
+          {{end}}
+        {{else}}
+          <div class="muted">No active graph nodes for the selected window.</div>
+        {{end}}
+      </div>
       <div class="section-grid">
         <div>
           <div class="muted">Current Nodes</div>
@@ -1431,6 +1571,8 @@ const indexHTML = `<!doctype html>
       </div>
     </section>
     {{end}}
-  </main>
+      </main>
+    </div>
+  </div>
 </body>
 </html>`

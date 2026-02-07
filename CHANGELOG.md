@@ -15,6 +15,7 @@
 - Sample CLI outputs for MITRE coverage and reasoning (`docs/sample_outputs.md`).
 - README docs section linking outputs and vendor mappings.
 - Regression report output for `evaluate` (`docs/regression_report.md`).
+- UI layout refresh with sidebar navigation, confidence meter, and attack-graph canvas.
 - Baseline validation report (`docs/BASELINE_REPORT.md`, `docs/BASELINE_REPORT.pdf`).
 
 ### Changed
