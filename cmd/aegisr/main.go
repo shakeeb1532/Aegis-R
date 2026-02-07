@@ -21,6 +21,7 @@ import (
 	"aegisr/internal/env"
 	"aegisr/internal/eval"
 	"aegisr/internal/governance"
+	"aegisr/internal/inventory"
 	"aegisr/internal/integration"
 	"aegisr/internal/logic"
 	"aegisr/internal/model"
@@ -105,6 +106,8 @@ func main() {
 		handleEvaluate(args[1:])
 	case "ingest-http":
 		handleIngestHTTP(args[1:])
+	case "ingest-inventory":
+		handleIngestInventory(args[1:])
 	case "ui":
 		handleUI(args[1:])
 	case "init-scan":
@@ -145,6 +148,7 @@ func usage() {
 	fmt.Println("  generate-scenarios -out scenarios.json [-rules rules.json]")
 	fmt.Println("  evaluate -scenarios scenarios.json [-rules rules.json] [-format cli|json|md] [-out report.md]")
 	fmt.Println("  ingest-http -addr :8080 (schema: ecs|elastic_ecs|ocsf|cim|splunk_cim_auth|splunk_cim_net|mde)")
+	fmt.Println("  ingest-inventory -in data/inventory -out data/env.json")
 	fmt.Println("  ui -addr :9090 -audit audit.log -signed-audit signed_audit.log -approvals approvals.log -report report.json -profiles data/analyst_profiles.json -disagreements data/disagreements.log -key keypair.json -basic-user user -basic-pass pass")
 	fmt.Println("  init-scan -baseline data/zero_trust_baseline.json")
 	fmt.Println("  scan -baseline data/zero_trust_baseline.json [-override-approval admin_approval.json]")
@@ -1657,6 +1661,29 @@ func handleIngestHTTP(args []string) {
 	if err := srv.ListenAndServe(); err != nil {
 		fatal(err)
 	}
+}
+
+func handleIngestInventory(args []string) {
+	fs := flag.NewFlagSet("ingest-inventory", flag.ExitOnError)
+	in := fs.String("in", "", "inventory directory or file")
+	out := fs.String("out", "data/env.json", "output environment json")
+	if err := fs.Parse(args); err != nil {
+		fatal(err)
+	}
+	if *in == "" {
+		fatal(errors.New("-in is required"))
+	}
+	inv, err := inventory.Load(*in)
+	if err != nil {
+		fatal(err)
+	}
+	environment := inventory.BuildEnvironment(inv)
+	if err := validate.Environment(environment); err != nil {
+		fatal(validate.Must(err))
+	}
+	writeJSON(*out, environment)
+	fmt.Printf("Environment written: %s\n", *out)
+	fmt.Printf("Hosts: %d, Identities: %d, Trust boundaries: %d\n", len(environment.Hosts), len(environment.Identities), len(environment.TrustBoundaries))
 }
 
 func handleUI(args []string) {

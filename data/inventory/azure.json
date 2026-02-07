@@ -1,0 +1,22 @@
+{
+  "users": [
+    {"id": "azure-user-1", "upn": "bob@contoso.com", "priv_level": "standard", "groups": ["SecOps"]}
+  ],
+  "groups": [
+    {"id": "grp-secops", "name": "SecOps", "tags": ["team:soc"], "users": ["azure-user-1"]}
+  ],
+  "role_assignments": [
+    {"principal": "azure-user-1", "role": "Reader", "scope": "subscription:sub-01"}
+  ],
+  "networks": [
+    {"id": "vnet-01", "name": "core-vnet", "tags": ["region:eastus"]}
+  ],
+  "subnets": [
+    {"id": "subnet-az-1", "network": "vnet-01", "zone": "eastus-1", "tags": ["tier:app"]}
+  ],
+  "nsgs": [
+    {"id": "nsg-01", "name": "core-nsg", "network": "vnet-01", "rules": [
+      {"source": "10.0.0.0/24", "destination": "subnet-az-1", "protocol": "tcp", "port": "3389", "action": "allow", "notes": "admin rdp"}
+    ]}
+  ]
+}

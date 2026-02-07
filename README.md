@@ -33,6 +33,7 @@ Aegis-R is a **human-governed security reasoning infrastructure** that evaluates
 - `docs/confidence_bands.md` — confidence band interpretation
 - `docs/ci_checklist.md` — CI checklist and local verification steps
 - `docs/release_checklist.md` — release steps and tagging guidance
+- `docs/inventory_schema.md` — file-based inventory ingestion schema
 
 ---
 
@@ -146,6 +147,7 @@ go run ./cmd/aegisr init-scan \
 
 ### Integration
 - `ingest-http` — HTTP ingest endpoint
+- `ingest-inventory` — build `env.json` from inventory exports
 - `ui` — lightweight analyst UI
 
 ### Zero-Trust
@@ -207,6 +209,18 @@ Example:
 ```bash
 curl -X POST "http://localhost:8080/ingest?schema=ecs" -d @data/fixtures/ecs/sample.json
 ```
+
+---
+
+## State Ingestion (Inventory + Topology + IAM)
+
+Build the environment model directly from file-based inventory exports:
+
+```bash
+go run ./cmd/aegisr ingest-inventory -in data/inventory -out data/env.json
+```
+
+See `docs/inventory_schema.md` for the JSON schema per provider.
 
 Vendor field normalization details are in:
 - `docs/vendor_mappings.md`

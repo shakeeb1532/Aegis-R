@@ -1,0 +1,15 @@
+{
+  "users": [
+    {"id": "okta-user-1", "email": "analyst@example.com", "role": "analyst", "priv_level": "standard", "groups": ["SOC"], "status": "ACTIVE"},
+    {"id": "okta-user-2", "email": "approver@example.com", "role": "approver", "priv_level": "admin", "groups": ["SOC", "Approvers"], "status": "ACTIVE"}
+  ],
+  "groups": [
+    {"id": "grp-soc", "name": "SOC", "tags": ["team:soc"], "users": ["okta-user-1", "okta-user-2"]}
+  ],
+  "roles": [
+    {"id": "role-approver", "name": "Approver", "users": ["okta-user-2"]}
+  ],
+  "apps": [
+    {"id": "app-1", "name": "Aegis-R", "users": ["okta-user-1", "okta-user-2"], "tags": ["critical"]}
+  ]
+}

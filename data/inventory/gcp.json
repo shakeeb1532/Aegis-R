@@ -1,0 +1,23 @@
+{
+  "projects": [
+    {"id": "proj-01", "name": "prod", "tags": ["tier:prod"]}
+  ],
+  "users": [
+    {"id": "gcp-user-1", "email": "carol@example.com", "priv_level": "standard", "groups": ["SOC"]}
+  ],
+  "service_accounts": [
+    {"id": "sa-01", "email": "svc@app.iam.gserviceaccount.com", "priv_level": "elevated", "tags": ["service:app"]}
+  ],
+  "iam_bindings": [
+    {"member": "sa-01", "role": "roles/compute.admin", "scope": "project:proj-01"}
+  ],
+  "networks": [
+    {"id": "net-01", "name": "core", "tags": ["region:us-central1"]}
+  ],
+  "subnets": [
+    {"id": "subnet-gcp-1", "network": "net-01", "zone": "us-central1-a", "tags": ["tier:app"]}
+  ],
+  "firewall_rules": [
+    {"id": "fw-01", "network": "net-01", "direction": "INGRESS", "source": "0.0.0.0/0", "destination": "subnet-gcp-1", "protocol": "tcp", "port": "22", "action": "allow", "notes": "ssh"}
+  ]
+}

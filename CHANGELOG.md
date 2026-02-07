@@ -18,6 +18,7 @@
 - UI layout refresh with sidebar navigation, confidence meter, and attack-graph canvas.
 - CI now publishes a regression report artifact and documents CI checklist.
 - Release checklist documentation.
+- File-based state ingestion (AWS/Okta/Azure/GCP) with schema docs and CLI `ingest-inventory`.
 - Baseline validation report (`docs/BASELINE_REPORT.md`, `docs/BASELINE_REPORT.pdf`).
 
 ### Changed

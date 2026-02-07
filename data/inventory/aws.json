@@ -1,0 +1,27 @@
+{
+  "accounts": [
+    {"id": "111111111111", "name": "prod", "tags": ["tier:prod"]}
+  ],
+  "users": [
+    {"id": "aws-user-1", "username": "alice", "priv_level": "admin", "tags": ["team:soc"]}
+  ],
+  "roles": [
+    {"id": "role-app", "name": "app-role", "priv_level": "elevated", "trusts": ["aws-user-1"], "tags": ["service:app"]}
+  ],
+  "instances": [
+    {"id": "i-01", "name": "web-01", "vpc": "vpc-1", "subnet": "subnet-1", "zone": "us-east-1a", "critical": true, "tags": ["env:prod", "app:web"]}
+  ],
+  "security_groups": [
+    {"id": "sg-01", "name": "web-sg", "vpc": "vpc-1", "ingress": [
+      {"source": "0.0.0.0/0", "destination": "sg-01", "protocol": "tcp", "port": "443", "notes": "public https"}
+    ], "egress": [
+      {"source": "sg-01", "destination": "0.0.0.0/0", "protocol": "tcp", "port": "443", "notes": "outbound https"}
+    ], "tags": ["tier:web"]}
+  ],
+  "vpcs": [
+    {"id": "vpc-1", "name": "prod-vpc", "tags": ["region:us-east-1"]}
+  ],
+  "subnets": [
+    {"id": "subnet-1", "vpc": "vpc-1", "zone": "us-east-1a", "tags": ["tier:web"]}
+  ]
+}
