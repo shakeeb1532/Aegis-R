@@ -111,6 +111,7 @@ func BuildMitreCoverage(rules []Rule) MitreCoverageReport {
 func BuildMitreCoverageForEnv(rules []Rule, environment env.Environment) MitreCoverageReport {
 	applicable, excluded := filterRulesForEnv(rules, environment)
 	report := BuildMitreCoverage(applicable)
+	report.TotalRules = len(rules)
 	report.ApplicableRules = len(applicable)
 	report.ExcludedRules = excluded
 	report.FilterNote = "Filtered by environment tags and asset types"
@@ -131,6 +132,7 @@ func filterRulesForEnv(rules []Rule, environment env.Environment) ([]Rule, []str
 		return rules, nil
 	}
 	envTags := map[string]bool{}
+	envTags["corp"] = true
 	if len(environment.Hosts) > 0 {
 		envTags["endpoint"] = true
 	}
