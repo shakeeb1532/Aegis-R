@@ -34,6 +34,7 @@ Aegis-R is a **human-governed security reasoning infrastructure** that evaluates
 - `docs/ci_checklist.md` — CI checklist and local verification steps
 - `docs/release_checklist.md` — release steps and tagging guidance
 - `docs/inventory_schema.md` — file-based inventory ingestion schema
+- `docs/architecture.md` — system architecture diagram
 
 ---
 

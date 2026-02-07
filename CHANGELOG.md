@@ -26,6 +26,7 @@
 - Azure/Entra live inventory adapter (Graph users/groups/roles + ARM networks/NSGs).
 - GCP live inventory adapter (projects, IAM bindings, service accounts, networks, firewalls).
 - Inventory refresh + randomized scheduler with drift request output.
+- Architecture diagram (`docs/architecture.md`).
 - Baseline validation report (`docs/BASELINE_REPORT.md`, `docs/BASELINE_REPORT.pdf`).
 
 ### Changed
