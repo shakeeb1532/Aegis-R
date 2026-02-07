@@ -24,6 +24,14 @@ jobs:
         run: |
           go run ./cmd/aegisr generate-scenarios -out /tmp/scenarios.json -rules data/rules.json
           go run ./cmd/aegisr evaluate -scenarios /tmp/scenarios.json -rules data/rules.json -format cli
+      - name: Scenario evaluation (realistic regression)
+        run: |
+          go run ./cmd/aegisr evaluate -scenarios data/scenarios_realistic.json -rules data/rules.json -format md -out /tmp/regression_report.md
+      - name: Upload regression report
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-report
+          path: /tmp/regression_report.md
       - name: Benchmarks (short)
         run: |
           go test ./internal/logic -run ^$ -bench BenchmarkReason -benchmem -count=1

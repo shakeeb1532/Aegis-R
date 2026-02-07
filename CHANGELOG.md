@@ -16,6 +16,7 @@
 - README docs section linking outputs and vendor mappings.
 - Regression report output for `evaluate` (`docs/regression_report.md`).
 - UI layout refresh with sidebar navigation, confidence meter, and attack-graph canvas.
+- CI now publishes a regression report artifact and documents CI checklist.
 - Baseline validation report (`docs/BASELINE_REPORT.md`, `docs/BASELINE_REPORT.pdf`).
 
 ### Changed
