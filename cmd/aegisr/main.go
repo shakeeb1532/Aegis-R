@@ -280,6 +280,65 @@ func confidenceBands(results []model.RuleResult) (int, int, int) {
 	return high, med, low
 }
 
+func writeText(path string, content string) {
+	if path == "" {
+		fmt.Println(content)
+		return
+	}
+	if !ops.IsSafePath(path) {
+		fatal(os.ErrInvalid)
+	}
+	if err := os.WriteFile(path, []byte(content), 0600); err != nil {
+		fatal(err)
+	}
+}
+
+func renderCoverageMarkdown(report logic.MitreCoverageReport) string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "# MITRE Coverage Report\n\n")
+	fmt.Fprintf(buf, "Generated: %s\n\n", report.GeneratedAt.Format(time.RFC3339))
+	fmt.Fprintf(buf, "- Total rules: %d\n", report.TotalRules)
+	if report.FilterNote != "" {
+		fmt.Fprintf(buf, "- Applicable rules: %d\n", report.ApplicableRules)
+	}
+	fmt.Fprintf(buf, "- Rules with MITRE: %d\n", report.RulesWithMitre)
+	fmt.Fprintf(buf, "- Rules missing MITRE: %d\n\n", len(report.RulesMissingMeta))
+	if len(report.ExcludedRules) > 0 {
+		fmt.Fprintf(buf, "## Excluded by Environment Filter\n")
+		for _, id := range report.ExcludedRules {
+			fmt.Fprintf(buf, "- %s\n", id)
+		}
+		fmt.Fprintln(buf, "")
+	}
+	fmt.Fprintf(buf, "## Tactics\n")
+	for _, t := range report.Tactics {
+		fmt.Fprintf(buf, "- %s: %d rules, %d techniques\n", t.Tactic, t.RuleCount, len(t.Techniques))
+		for _, tech := range t.Techniques {
+			label := tech.Technique
+			if len(tech.Subtechniques) > 0 {
+				label = label + " (" + strings.Join(tech.Subtechniques, ", ") + ")"
+			}
+			fmt.Fprintf(buf, "  - %s: %d rules\n", label, tech.RuleCount)
+		}
+	}
+	return buf.String()
+}
+
+func renderConfidenceMarkdown(high int, med int, low int) string {
+	total := high + med + low
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "# Confidence Band Report\n\n")
+	fmt.Fprintf(buf, "Generated: %s\n\n", time.Now().UTC().Format(time.RFC3339))
+	fmt.Fprintf(buf, "- Total results: %d\n", total)
+	fmt.Fprintf(buf, "- High (>=0.80): %d\n", high)
+	fmt.Fprintf(buf, "- Medium (0.60-0.79): %d\n", med)
+	fmt.Fprintf(buf, "- Low (<0.60): %d\n\n", low)
+	fmt.Fprintf(buf, "Notes:\n")
+	fmt.Fprintf(buf, "- Confidence is heuristic and rule-based (not calibrated ML).\n")
+	fmt.Fprintf(buf, "- Use this banding for coarse calibration checks and audit summaries.\n")
+	return buf.String()
+}
+
 func handleIngest(args []string) {
 	if len(args) == 0 {
 		fatal(errors.New("ingest requires a subcommand: file|http|sample"))
@@ -946,6 +1005,7 @@ func handleSystem(args []string) {
 		fs := flag.NewFlagSet("system coverage", flag.ExitOnError)
 		rulesPath := fs.String("rules", "data/rules.json", "rules json")
 		envPath := fs.String("env", "", "environment json (optional)")
+		out := fs.String("out", "", "output file (optional)")
 		if err := fs.Parse(args[1:]); err != nil {
 			fatal(err)
 		}
@@ -960,6 +1020,14 @@ func handleSystem(args []string) {
 				fatal(err)
 			}
 			report = logic.BuildMitreCoverageForEnv(rules, environment)
+		}
+		if *out != "" {
+			if strings.HasSuffix(*out, ".md") {
+				writeText(*out, renderCoverageMarkdown(report))
+			} else {
+				writeJSON(*out, report)
+			}
+			return
 		}
 		if gFlags.JSON {
 			outJSON(report)
@@ -998,6 +1066,7 @@ func handleSystem(args []string) {
 	case "confidence":
 		fs := flag.NewFlagSet("system confidence", flag.ExitOnError)
 		reportPath := fs.String("report", "", "reasoning report json")
+		out := fs.String("out", "", "output file (optional)")
 		if err := fs.Parse(args[1:]); err != nil {
 			fatal(err)
 		}
@@ -1009,6 +1078,10 @@ func handleSystem(args []string) {
 			fatal(err)
 		}
 		high, med, low := confidenceBands(rep.Results)
+		if *out != "" {
+			writeText(*out, renderConfidenceMarkdown(high, med, low))
+			return
+		}
 		if gFlags.JSON {
 			outJSON(map[string]int{"high": high, "medium": med, "low": low})
 			return

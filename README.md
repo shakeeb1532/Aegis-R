@@ -132,6 +132,8 @@ go run ./cmd/aegisr init-scan \
 - `system coverage` — MITRE coverage report (rules -> tactics/techniques)
 - `system coverage -env data/env.json` — environment-scoped coverage
 - `system confidence -report report.json` — confidence band report
+- `system coverage -out docs/coverage_env.md` — save coverage as Markdown
+- `system confidence -out docs/confidence_report.md` — save confidence bands as Markdown
 
 ### Integration
 - `ingest-http` — HTTP ingest endpoint
