@@ -12,6 +12,7 @@
 - Vendor fixture expansion to produce threads.
 - Additional vendor auth fixtures for MDE and Sentinel.
 - Updated vendor field mapping documentation for auth and trust-boundary events.
+- Sample CLI outputs for MITRE coverage and reasoning (`docs/sample_outputs.md`).
 - Baseline validation report (`docs/BASELINE_REPORT.md`, `docs/BASELINE_REPORT.pdf`).
 
 ### Changed
