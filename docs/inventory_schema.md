@@ -71,4 +71,5 @@ Notes
 - The ingestion layer is deterministic and file-based.
 - AWS adapter now supports live API ingestion using the default AWS credential chain (env vars, shared config, instance profile), optional profile, and optional assume-role.
 - Okta adapter supports live API ingestion using org URL + token (group/user/app data with best-effort permissions).
-- Azure/GCP adapters are stubbed until credentials are wired in.
+- Azure adapter supports live API ingestion using tenant/client credentials + subscription.
+- GCP adapter is stubbed until credentials are wired in.

@@ -23,6 +23,7 @@
 - API adapter scaffolding for AWS/Okta/Azure/GCP (config schema + CLI).
 - AWS live inventory adapter (IAM + EC2 + SGs + VPCs + subnets).
 - Okta live inventory adapter (users, groups, roles, apps).
+- Azure/Entra live inventory adapter (Graph users/groups/roles + ARM networks/NSGs).
 - Baseline validation report (`docs/BASELINE_REPORT.md`, `docs/BASELINE_REPORT.pdf`).
 
 ### Changed

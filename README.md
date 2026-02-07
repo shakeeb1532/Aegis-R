@@ -229,7 +229,7 @@ Adapter scaffolding (API-ready, requires credentials):
 go run ./cmd/aegisr inventory-adapter -provider aws -config data/inventory/config.json -out data/env.json
 ```
 
-AWS and Okta adapters support live ingestion using standard credentials (AWS chain or Okta token). Azure/GCP remain stubbed until credentials are wired in.
+AWS, Okta, and Azure adapters support live ingestion using standard credentials (AWS chain, Okta token, Azure client credentials). GCP remains stubbed until credentials are wired in.
 
 Vendor field normalization details are in:
 - `docs/vendor_mappings.md`

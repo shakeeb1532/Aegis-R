@@ -69,12 +69,6 @@ func (OktaAdapter) Name() string { return "okta" }
 type AzureAdapter struct{}
 
 func (AzureAdapter) Name() string { return "azure" }
-func (AzureAdapter) Load(cfg AdapterConfig) (Inventory, error) {
-	if cfg.Azure.TenantID == "" || cfg.Azure.ClientID == "" || cfg.Azure.ClientSecret == "" {
-		return Inventory{}, errors.New("azure adapter requires tenant_id, client_id, client_secret")
-	}
-	return Inventory{}, errors.New("azure adapter not implemented; use file-based inventory")
-}
 
 type GCPAdapter struct{}
 
