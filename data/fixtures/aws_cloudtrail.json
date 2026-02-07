@@ -37,5 +37,18 @@
     "userIdentity": {"userName": "secops"},
     "requestParameters": {"roleName": "AppRole"},
     "responseElements": {}
+  },
+  {
+    "eventID": "ct-4",
+    "eventTime": "2026-02-06T12:38:00Z",
+    "eventSource": "iam.amazonaws.com",
+    "eventName": "AttachRolePolicy",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "198.51.100.13",
+    "userAgent": "aws-cli",
+    "recipientAccountId": "123456789012",
+    "userIdentity": {"userName": "secops"},
+    "requestParameters": {"roleName": "AppRole", "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"},
+    "responseElements": {}
   }
 ]

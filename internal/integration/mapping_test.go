@@ -37,6 +37,8 @@ func TestMappingElasticECS(t *testing.T) {
 	assertHasType(t, toLike(events), "new_device_login")
 	assertHasType(t, toLike(events), "lsass_access")
 	assertHasType(t, toLike(events), "registry_run_key")
+	assertHasType(t, toLike(events), "file_create")
+	assertHasType(t, toLike(events), "file_delete")
 }
 
 func TestMappingOkta(t *testing.T) {
@@ -53,6 +55,7 @@ func TestMappingOkta(t *testing.T) {
 	assertHasType(t, toLike(events), "mfa_disabled")
 	assertHasType(t, toLike(events), "admin_group_change")
 	assertHasType(t, toLike(events), "oauth_consent")
+	assertHasType(t, toLike(events), "token_refresh_anomaly")
 }
 
 func TestMappingCloudTrail(t *testing.T) {
@@ -68,6 +71,7 @@ func TestMappingCloudTrail(t *testing.T) {
 	assertHasType(t, toLike(events), "admin_group_change")
 	assertHasType(t, toLike(events), "new_firewall_rule")
 	assertHasType(t, toLike(events), "trust_boundary_change")
+	assertHasType(t, toLike(events), "policy_override")
 }
 
 func TestMappingSplunkAuth(t *testing.T) {
