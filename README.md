@@ -1,5 +1,7 @@
 # Aegis-R
 
+License: Apache-2.0
+
 Aegis-R is a **human-governed security reasoning infrastructure** that evaluates causal feasibility, maintains attack progression state, and produces audit-ready, tamper-evident explanations. It is designed to **reduce false positives** by eliminating impossible attack paths while preserving human authority and compliance.
 
 ## What It Does
