@@ -88,5 +88,33 @@
     "user": {"name": "frank"},
     "message": "Suspicious file deleted",
     "labels": {"ingest": "elastic"}
+  },
+  {
+    "@timestamp": "2026-02-06T12:26:00Z",
+    "event": {
+      "id": "elastic-7",
+      "action": "file_modify",
+      "category": ["file"],
+      "type": ["modify"],
+      "kind": "event"
+    },
+    "host": {"name": "host-4"},
+    "user": {"name": "frank"},
+    "message": "Suspicious file modified",
+    "labels": {"ingest": "elastic"}
+  },
+  {
+    "@timestamp": "2026-02-06T12:27:00Z",
+    "event": {
+      "id": "elastic-8",
+      "action": "registry_change",
+      "category": ["registry"],
+      "type": ["change"],
+      "kind": "event"
+    },
+    "host": {"name": "host-4"},
+    "user": {"name": "frank"},
+    "message": "Registry value changed",
+    "labels": {"ingest": "elastic"}
   }
 ]

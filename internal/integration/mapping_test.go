@@ -39,6 +39,8 @@ func TestMappingElasticECS(t *testing.T) {
 	assertHasType(t, toLike(events), "registry_run_key")
 	assertHasType(t, toLike(events), "file_create")
 	assertHasType(t, toLike(events), "file_delete")
+	assertHasType(t, toLike(events), "file_modify")
+	assertHasType(t, toLike(events), "registry_change")
 }
 
 func TestMappingOkta(t *testing.T) {
@@ -56,6 +58,7 @@ func TestMappingOkta(t *testing.T) {
 	assertHasType(t, toLike(events), "admin_group_change")
 	assertHasType(t, toLike(events), "oauth_consent")
 	assertHasType(t, toLike(events), "token_refresh_anomaly")
+	assertHasType(t, toLike(events), "token_refresh_anomaly")
 }
 
 func TestMappingCloudTrail(t *testing.T) {
@@ -72,6 +75,7 @@ func TestMappingCloudTrail(t *testing.T) {
 	assertHasType(t, toLike(events), "new_firewall_rule")
 	assertHasType(t, toLike(events), "trust_boundary_change")
 	assertHasType(t, toLike(events), "policy_override")
+	assertHasType(t, toLike(events), "new_admin_account")
 }
 
 func TestMappingSplunkAuth(t *testing.T) {
@@ -127,6 +131,36 @@ func TestMappingCrowdStrike(t *testing.T) {
 	assertHasType(t, toLike(events), "lolbin_execution")
 	assertHasType(t, toLike(events), "registry_run_key")
 	assertHasType(t, toLike(events), "service_install")
+}
+
+func TestMappingSentinel(t *testing.T) {
+	root := testutil.RepoRoot(t)
+	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "sentinel_csl.json"))
+	if err != nil {
+		t.Fatalf("read: %v", err)
+	}
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaSentinelCSL})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	assertHasType(t, toLike(events), "lolbin_execution")
+	assertHasType(t, toLike(events), "registry_run_key")
+	assertHasType(t, toLike(events), "service_install")
+}
+
+func TestMappingMDE(t *testing.T) {
+	root := testutil.RepoRoot(t)
+	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "mde_device.json"))
+	if err != nil {
+		t.Fatalf("read: %v", err)
+	}
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaMDE, Kind: "device"})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	assertHasType(t, toLike(events), "lolbin_execution")
+	assertHasType(t, toLike(events), "service_install")
+	assertHasType(t, toLike(events), "registry_run_key")
 }
 
 func toLike(events []model.Event) []EventLike {

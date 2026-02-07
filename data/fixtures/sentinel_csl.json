@@ -31,5 +31,16 @@
     "Activity": "RegistryValueSet",
     "Protocol": "tcp",
     "Fields": {"RegistryKey": "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run"}
+  },
+  {
+    "TimeGenerated": "2026-02-06T12:42:00Z",
+    "Computer": "win-02",
+    "AccountName": "jill",
+    "SourceIP": "10.0.0.15",
+    "DestinationIP": "10.0.0.16",
+    "DeviceAction": "ServiceInstalled",
+    "Activity": "ServiceInstalled",
+    "Protocol": "tcp",
+    "Fields": {"ServiceName": "Updater", "ServiceFileName": "C:\\\\Program Files\\\\Updater\\\\upd.exe"}
   }
 ]

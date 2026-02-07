@@ -50,5 +50,31 @@
     "userIdentity": {"userName": "secops"},
     "requestParameters": {"roleName": "AppRole", "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"},
     "responseElements": {}
+  },
+  {
+    "eventID": "ct-5",
+    "eventTime": "2026-02-06T12:39:00Z",
+    "eventSource": "iam.amazonaws.com",
+    "eventName": "CreatePolicy",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "198.51.100.14",
+    "userAgent": "aws-cli",
+    "recipientAccountId": "123456789012",
+    "userIdentity": {"userName": "secops"},
+    "requestParameters": {"policyName": "CustomPolicy"},
+    "responseElements": {}
+  },
+  {
+    "eventID": "ct-6",
+    "eventTime": "2026-02-06T12:40:00Z",
+    "eventSource": "iam.amazonaws.com",
+    "eventName": "AttachGroupPolicy",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "198.51.100.15",
+    "userAgent": "aws-cli",
+    "recipientAccountId": "123456789012",
+    "userIdentity": {"userName": "secops"},
+    "requestParameters": {"groupName": "Admins", "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"},
+    "responseElements": {}
   }
 ]
