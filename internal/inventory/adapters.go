@@ -1,7 +1,6 @@
 package inventory
 
 import (
-	"errors"
 	"fmt"
 )
 
@@ -73,9 +72,3 @@ func (AzureAdapter) Name() string { return "azure" }
 type GCPAdapter struct{}
 
 func (GCPAdapter) Name() string { return "gcp" }
-func (GCPAdapter) Load(cfg AdapterConfig) (Inventory, error) {
-	if cfg.GCP.ProjectID == "" {
-		return Inventory{}, errors.New("gcp adapter requires project_id")
-	}
-	return Inventory{}, errors.New("gcp adapter not implemented; use file-based inventory")
-}

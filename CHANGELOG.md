@@ -24,6 +24,7 @@
 - AWS live inventory adapter (IAM + EC2 + SGs + VPCs + subnets).
 - Okta live inventory adapter (users, groups, roles, apps).
 - Azure/Entra live inventory adapter (Graph users/groups/roles + ARM networks/NSGs).
+- GCP live inventory adapter (projects, IAM bindings, service accounts, networks, firewalls).
 - Baseline validation report (`docs/BASELINE_REPORT.md`, `docs/BASELINE_REPORT.pdf`).
 
 ### Changed
