@@ -25,6 +25,12 @@ Aegis-R is a **human-governed security reasoning infrastructure** that evaluates
 - **Governance**: Human approvals and constraints that bind reasoning outcomes.
 - **Zero-Trust Initialization**: A strict install-time scan that creates a baseline and prevents poisoning.
 
+## Docs
+- `docs/sample_outputs.md` — example MITRE coverage and reasoning outputs
+- `docs/vendor_mappings.md` — field-level normalization per vendor
+- `docs/mitre_coverage.md` — rule catalog MITRE mapping notes
+- `docs/confidence_bands.md` — confidence band interpretation
+
 ---
 
 ## Quick Start
