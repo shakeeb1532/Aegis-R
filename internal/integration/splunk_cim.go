@@ -2,6 +2,7 @@ package integration
 
 import (
 	"encoding/json"
+	"strings"
 
 	"aegisr/internal/model"
 )
@@ -40,7 +41,7 @@ func mapSplunkCIMAuth(raw []byte) ([]model.Event, error) {
 	out := make([]model.Event, 0, len(in))
 	for _, e := range in {
 		user := firstNonEmpty(e.User, e.SrcUser, e.DestUser)
-		typeVal := firstNonEmpty(e.Action, e.Signature, "authentication")
+		typeVal := mapSplunkAuthType(e.Action, e.Signature, e.Fields)
 		details := map[string]interface{}{
 			"src":       e.Src,
 			"dest":      e.Dest,
@@ -67,7 +68,7 @@ func mapSplunkCIMNet(raw []byte) ([]model.Event, error) {
 	}
 	out := make([]model.Event, 0, len(in))
 	for _, e := range in {
-		etype := firstNonEmpty(e.Action, e.Transport, "network")
+		etype := mapSplunkNetType(e.Action, e.Transport, e.DestPort, e.BytesOut)
 		details := map[string]interface{}{
 			"src":       e.Src,
 			"dest":      e.Dest,
@@ -88,6 +89,40 @@ func mapSplunkCIMNet(raw []byte) ([]model.Event, error) {
 		})
 	}
 	return out, nil
+}
+
+func mapSplunkAuthType(action string, signature string, fields map[string]interface{}) string {
+	joined := strings.ToLower(strings.Join([]string{action, signature, fieldString(fields, "message")}, " "))
+	switch {
+	case containsAny(joined, "impossible travel", "impossible_travel"):
+		return "impossible_travel"
+	case containsAny(joined, "new device", "new_device"):
+		return "new_device_login"
+	case containsAny(joined, "mfa") && containsAny(joined, "disable", "reset", "bypass"):
+		return "mfa_disabled"
+	case containsAny(joined, "token") && containsAny(joined, "refresh", "replay"):
+		return "token_refresh_anomaly"
+	case containsAny(joined, "password spray", "password_spray"):
+		return "password_spray"
+	case containsAny(joined, "credential stuffing", "credential_stuffing"):
+		return "credential_stuffing"
+	case containsAny(joined, "admin group", "privilege", "role change"):
+		return "admin_group_change"
+	case containsAny(joined, "oauth", "consent"):
+		return "oauth_consent"
+	default:
+		return firstNonEmpty(action, signature, "authentication")
+	}
+}
+
+func mapSplunkNetType(action string, transport string, destPort int, bytesOut int) string {
+	if destPort == 3389 || destPort == 445 || destPort == 5985 || destPort == 5986 || destPort == 22 {
+		return "new_inbound_admin_protocol"
+	}
+	if bytesOut > 10_000_000 {
+		return "large_outbound_transfer"
+	}
+	return firstNonEmpty(action, transport, "network")
 }
 
 func merge(dst map[string]interface{}, src map[string]interface{}) {

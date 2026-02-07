@@ -1,0 +1,13 @@
+[
+  {"id": "t1-1", "time": "2026-02-06T14:00:00Z", "host": "idp-01", "user": "alpha", "type": "impossible_travel", "details": {}},
+  {"id": "t1-2", "time": "2026-02-06T14:01:00Z", "host": "idp-01", "user": "alpha", "type": "new_device_login", "details": {}},
+
+  {"id": "t2-1", "time": "2026-02-06T14:10:00Z", "host": "web-01", "user": "bravo", "type": "email_attachment_open", "details": {}},
+  {"id": "t2-2", "time": "2026-02-06T14:10:10Z", "host": "web-01", "user": "bravo", "type": "macro_execution", "details": {}},
+  {"id": "t2-3", "time": "2026-02-06T14:11:00Z", "host": "web-01", "user": "bravo", "type": "process_creation", "details": {"command_line": "powershell -enc"}} ,
+  {"id": "t2-4", "time": "2026-02-06T14:11:10Z", "host": "web-01", "user": "bravo", "type": "lolbin_execution", "details": {}},
+
+  {"id": "t3-1", "time": "2026-02-06T14:20:00Z", "host": "app-01", "user": "charlie", "type": "lsass_access", "details": {}},
+  {"id": "t3-2", "time": "2026-02-06T14:20:10Z", "host": "app-01", "user": "charlie", "type": "new_inbound_admin_protocol", "details": {"protocol": "rdp"}},
+  {"id": "t3-3", "time": "2026-02-06T14:20:20Z", "host": "app-01", "user": "charlie", "type": "network_logon", "details": {}}
+]

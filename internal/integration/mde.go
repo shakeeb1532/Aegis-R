@@ -3,6 +3,7 @@ package integration
 import (
 	"encoding/json"
 	"errors"
+	"strings"
 
 	"aegisr/internal/model"
 )
@@ -22,6 +23,7 @@ type MDEIdentityEvent struct {
 	TargetAccountUpn   string                 `json:"TargetAccountUpn"`
 	AccountDisplayName string                 `json:"AccountDisplayName"`
 	ReportId           string                 `json:"ReportId"`
+	ActionType         string                 `json:"ActionType"`
 	Additional         map[string]interface{} `json:"AdditionalFields"`
 }
 
@@ -37,7 +39,7 @@ func mapMDEDevice(raw []byte) ([]model.Event, error) {
 			Time:    parseTime(e.Timestamp),
 			Host:    e.DeviceName,
 			User:    e.AccountName,
-			Type:    e.ActionType,
+			Type:    mapMDEAction(e.ActionType, e.Additional),
 			Details: e.Additional,
 		})
 	}
@@ -63,7 +65,7 @@ func mapMDEIdentity(raw []byte) ([]model.Event, error) {
 			Time:    parseTime(e.Timestamp),
 			Host:    e.DeviceName,
 			User:    user,
-			Type:    "identity_event",
+			Type:    mapMDEAction(e.ActionType, e.Additional),
 			Details: e.Additional,
 		})
 	}
@@ -79,4 +81,44 @@ func mapMDE(raw []byte, kind string) ([]model.Event, error) {
 	default:
 		return nil, errors.New("unknown mde kind")
 	}
+}
+
+func mapMDEAction(action string, details map[string]interface{}) string {
+	low := strings.ToLower(action)
+	cmd := strings.ToLower(fieldStringAny(details, "CommandLine", "InitiatingProcessCommandLine"))
+	if containsAny(low, "processcreated", "processcreation") || containsAny(cmd, "cmd.exe", "powershell", "wmic") {
+		if containsAny(cmd, "rundll32", "mshta", "certutil", "regsvr32") {
+			return "lolbin_execution"
+		}
+		if containsAny(cmd, "lsass") {
+			return "lsass_access"
+		}
+		return "process_creation"
+	}
+	if containsAny(low, "lsass") {
+		return "lsass_access"
+	}
+	if containsAny(low, "serviceinstalled", "servicecreated") {
+		return "service_install"
+	}
+	if containsAny(low, "registryvalue", "registrykey") {
+		reg := strings.ToLower(fieldStringAny(details, "RegistryKey", "RegistryValue"))
+		if containsAny(reg, "\\run", "\\runonce") {
+			return "registry_run_key"
+		}
+		return "registry_change"
+	}
+	if containsAny(low, "mfa", "auth") && containsAny(low, "disable", "reset", "bypass") {
+		return "mfa_disabled"
+	}
+	if containsAny(low, "token", "oauth") && containsAny(low, "refresh", "grant") {
+		return "token_refresh_anomaly"
+	}
+	if containsAny(low, "addusertogroup", "group") {
+		return "admin_group_change"
+	}
+	if action != "" {
+		return action
+	}
+	return "mde_event"
 }

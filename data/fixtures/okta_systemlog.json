@@ -1,9 +1,16 @@
 [
   {
     "eventType": "user.session.start",
-    "published": "2026-02-05T08:00:00Z",
-    "actor": {"id": "00u123", "displayName": "Alice", "alternateId": "alice@corp.com"},
-    "client": {"ipAddress": "203.0.113.10", "userAgent": "Chrome"},
-    "target": [{"type": "User", "id": "00u123", "displayName": "Alice"}]
+    "published": "2026-02-06T12:30:00Z",
+    "actor": {"id": "okta-user-1", "displayName": "Hank", "alternateId": "hank@example.com"},
+    "client": {"ipAddress": "203.0.113.55", "userAgent": "Chrome"},
+    "target": []
+  },
+  {
+    "eventType": "user.mfa.factor.deactivate",
+    "published": "2026-02-06T12:31:00Z",
+    "actor": {"id": "okta-user-1", "displayName": "Hank", "alternateId": "hank@example.com"},
+    "client": {"ipAddress": "203.0.113.55", "userAgent": "Chrome"},
+    "target": []
   }
 ]

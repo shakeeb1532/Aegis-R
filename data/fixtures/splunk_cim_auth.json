@@ -1,12 +1,14 @@
 [
   {
-    "_time": "2026-02-05 07:00:00",
-    "user": "alice",
-    "src": "10.0.0.1",
-    "dest": "host-7",
-    "action": "success",
-    "app": "ssh",
-    "signature": "login_success",
-    "fields": {"vendor_product": "splunk"}
+    "_time": "2026-02-06T12:25:00Z",
+    "user": "gina",
+    "src_user": "gina",
+    "dest_user": "gina",
+    "src": "198.51.100.5",
+    "dest": "idp-02",
+    "action": "impossible travel",
+    "app": "okta",
+    "signature": "mfa disable",
+    "fields": {"message": "impossible travel with mfa reset"}
   }
 ]

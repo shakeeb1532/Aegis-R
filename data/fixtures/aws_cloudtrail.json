@@ -1,13 +1,28 @@
 [
   {
-    "eventID": "c1",
-    "eventTime": "2026-02-05T09:00:00Z",
-    "eventSource": "ec2.amazonaws.com",
-    "eventName": "StartInstances",
+    "eventID": "ct-1",
+    "eventTime": "2026-02-06T12:35:00Z",
+    "eventSource": "iam.amazonaws.com",
+    "eventName": "AddUserToGroup",
     "awsRegion": "us-east-1",
-    "sourceIPAddress": "198.51.100.2",
-    "userAgent": "aws-cli/2.0",
+    "sourceIPAddress": "198.51.100.10",
+    "userAgent": "aws-cli",
     "recipientAccountId": "123456789012",
-    "userIdentity": {"type": "IAMUser", "userName": "alice", "arn": "arn:aws:iam::123456789012:user/alice"}
+    "userIdentity": {"userName": "admin", "arn": "arn:aws:iam::123456789012:user/admin"},
+    "requestParameters": {"groupName": "Admins", "userName": "jane"},
+    "responseElements": {}
+  },
+  {
+    "eventID": "ct-2",
+    "eventTime": "2026-02-06T12:36:00Z",
+    "eventSource": "ec2.amazonaws.com",
+    "eventName": "AuthorizeSecurityGroupIngress",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "198.51.100.11",
+    "userAgent": "aws-cli",
+    "recipientAccountId": "123456789012",
+    "userIdentity": {"userName": "secops"},
+    "requestParameters": {"groupId": "sg-123", "ipProtocol": "tcp", "fromPort": 22, "toPort": 22},
+    "responseElements": {}
   }
 ]

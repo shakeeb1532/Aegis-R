@@ -2,6 +2,7 @@ package integration
 
 import (
 	"encoding/json"
+	"strings"
 
 	"aegisr/internal/model"
 )
@@ -45,14 +46,29 @@ func mapSentinelCSL(raw []byte) ([]model.Event, error) {
 }
 
 func classifySentinel(e sentinelCSL) string {
-	if hasField(e.Fields, "ProcessName") || hasField(e.Fields, "CommandLine") {
+	cmd := strings.ToLower(fieldStringAny(e.Fields, "CommandLine", "ProcessCommandLine"))
+	proc := strings.ToLower(fieldStringAny(e.Fields, "ProcessName", "Image", "InitiatingProcessFileName"))
+	if proc != "" || cmd != "" {
+		if containsAny(cmd, "rundll32", "mshta", "certutil", "regsvr32") || containsAny(proc, "rundll32", "mshta", "certutil", "regsvr32") {
+			return "lolbin_execution"
+		}
+		if containsAny(cmd, "lsass") || containsAny(proc, "lsass") {
+			return "lsass_access"
+		}
 		return "process_creation"
 	}
 	if hasField(e.Fields, "FileName") || hasField(e.Fields, "FilePath") {
 		return "file_change"
 	}
 	if hasField(e.Fields, "RegistryKey") || hasField(e.Fields, "RegistryValue") {
+		reg := strings.ToLower(fieldStringAny(e.Fields, "RegistryKey", "RegistryValue"))
+		if containsAny(reg, "\\run", "\\runonce") {
+			return "registry_run_key"
+		}
 		return "registry_change"
+	}
+	if hasField(e.Fields, "ServiceName") || hasField(e.Fields, "ServiceFileName") {
+		return "service_install"
 	}
 	return firstNonEmpty(e.Activity, e.DeviceAction, "sentinel_event")
 }

@@ -1,10 +1,36 @@
 [
   {
-    "@timestamp": "2026-02-05T06:00:00Z",
-    "event": {"id": "el-1", "action": "process_start", "category": ["process"], "type": ["start"], "kind": "event"},
-    "host": {"name": "host-6"},
-    "user": {"name": "alice"},
-    "message": "Process started",
-    "labels": {"process.name": "powershell.exe"}
+    "@timestamp": "2026-02-06T12:20:00Z",
+    "event": {
+      "id": "elastic-1",
+      "action": "impossible_travel",
+      "category": ["authentication"],
+      "type": ["start"],
+      "kind": "event"
+    },
+    "source": {"ip": "203.0.113.10"},
+    "destination": {"ip": "10.0.0.20", "port": 3389},
+    "network": {"transport": "tcp"},
+    "host": {"name": "host-4"},
+    "user": {"name": "frank"},
+    "message": "Impossible travel detected",
+    "labels": {"ingest": "elastic"}
+  },
+  {
+    "@timestamp": "2026-02-06T12:21:00Z",
+    "event": {
+      "id": "elastic-2",
+      "action": "new_device",
+      "category": ["authentication"],
+      "type": ["start"],
+      "kind": "event"
+    },
+    "source": {"ip": "203.0.113.10"},
+    "destination": {"ip": "10.0.0.20", "port": 443},
+    "network": {"transport": "tcp"},
+    "host": {"name": "host-4"},
+    "user": {"name": "frank"},
+    "message": "New device login detected",
+    "labels": {"ingest": "elastic"}
   }
 ]

@@ -1,9 +1,9 @@
 [
   {
-    "Timestamp": "2026-02-05T05:00:00Z",
-    "DeviceName": "host-5",
-    "AccountName": "alice",
-    "ActionType": "beacon_outbound",
-    "AdditionalFields": {"foo": "bar"}
+    "Timestamp": "2026-02-06T12:15:00Z",
+    "DeviceName": "win-01",
+    "AccountName": "dana",
+    "ActionType": "ProcessCreated",
+    "AdditionalFields": {"CommandLine": "rundll32.exe shell32.dll,Control_RunDLL"}
   }
 ]

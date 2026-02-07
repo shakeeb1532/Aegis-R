@@ -1,18 +1,10 @@
 [
   {
     "event_uid": "ocsf-1",
-    "type_name": "remote_service_creation",
-    "time": "2026-02-05T02:00:00Z",
+    "type_name": "process_creation",
+    "time": "2026-02-06T12:05:00Z",
     "hostname": "host-2",
     "user_name": "bob",
-    "attributes": {"service": "psexec"}
-  },
-  {
-    "event_uid": "ocsf-2",
-    "type_name": "network_logon",
-    "time": "2026-02-05T02:01:00Z",
-    "hostname": "host-3",
-    "user_name": "bob",
-    "attributes": {"src_ip": "10.0.0.10"}
+    "attributes": {"process": "cmd.exe", "command_line": "cmd.exe /c whoami"}
   }
 ]

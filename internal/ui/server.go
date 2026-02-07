@@ -8,6 +8,7 @@ import (
 	"html/template"
 	"net/http"
 	"os"
+	"sort"
 	"strings"
 	"sync"
 	"time"
@@ -17,6 +18,7 @@ import (
 	"aegisr/internal/governance"
 	"aegisr/internal/model"
 	"aegisr/internal/ops"
+	"aegisr/internal/state"
 )
 
 type Server struct {
@@ -34,6 +36,15 @@ type Server struct {
 	Approvals         []ApprovalRecord
 	Profiles          []governance.AnalystProfile
 	Disagreements     []governance.Disagreement
+}
+
+type Suggestion struct {
+	RuleID      string
+	Name        string
+	Confidence  float64
+	Score       float64
+	Explanation string
+	EvidenceIDs []string
 }
 
 type keypair struct {
@@ -81,8 +92,17 @@ func NewServer(auditPath string, approvalsPath string, signedAuditPath string, r
 func (s *Server) Routes() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/login/ssostub", s.ssoStub)
-	mux.HandleFunc("/", s.auth(s.index))
+	mux.HandleFunc("/", s.auth(s.overview))
+	mux.HandleFunc("/overview", s.auth(s.overview))
+	mux.HandleFunc("/attack-graph", s.auth(s.attackGraph))
+	mux.HandleFunc("/reasoning", s.auth(s.reasoning))
+	mux.HandleFunc("/queue", s.auth(s.queue))
+	mux.HandleFunc("/governance", s.auth(s.governance))
+	mux.HandleFunc("/audit", s.auth(s.audit))
+	mux.HandleFunc("/tickets", s.auth(s.tickets))
+	mux.HandleFunc("/evaluations", s.auth(s.evaluations))
 	mux.HandleFunc("/approve", s.auth(s.approve))
+	mux.HandleFunc("/disagree", s.auth(s.disagree))
 	mux.HandleFunc("/download", s.auth(s.download))
 	return mux
 }
@@ -132,10 +152,42 @@ func (s *Server) ssoStub(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write([]byte("ok"))
 }
 
-func (s *Server) index(w http.ResponseWriter, r *http.Request) {
+func (s *Server) overview(w http.ResponseWriter, r *http.Request) {
+	s.render(w, r, "overview")
+}
+
+func (s *Server) attackGraph(w http.ResponseWriter, r *http.Request) {
+	s.render(w, r, "attack-graph")
+}
+
+func (s *Server) reasoning(w http.ResponseWriter, r *http.Request) {
+	s.render(w, r, "reasoning")
+}
+
+func (s *Server) queue(w http.ResponseWriter, r *http.Request) {
+	s.render(w, r, "queue")
+}
+
+func (s *Server) governance(w http.ResponseWriter, r *http.Request) {
+	s.render(w, r, "governance")
+}
+
+func (s *Server) audit(w http.ResponseWriter, r *http.Request) {
+	s.render(w, r, "audit")
+}
+
+func (s *Server) evaluations(w http.ResponseWriter, r *http.Request) {
+	s.render(w, r, "evaluations")
+}
+
+func (s *Server) tickets(w http.ResponseWriter, r *http.Request) {
+	s.render(w, r, "tickets")
+}
+
+func (s *Server) render(w http.ResponseWriter, r *http.Request, page string) {
 	artifacts, _ := loadArtifacts(s.AuditPath)
 	signed, _ := loadSignedArtifacts(s.SignedAuditPath)
-	report, _ := loadReasoningReport(s.ReportPath)
+	report, _ := loadReport(s.ReportPath)
 	s.Mu.Lock()
 	approvals := make([]ApprovalRecord, len(s.Approvals))
 	copy(approvals, s.Approvals)
@@ -145,24 +197,140 @@ func (s *Server) index(w http.ResponseWriter, r *http.Request) {
 	copy(disagreements, s.Disagreements)
 	s.Mu.Unlock()
 	q := strings.TrimSpace(r.URL.Query().Get("q"))
+	ticketID := strings.TrimSpace(r.URL.Query().Get("ticket"))
 	if q != "" {
 		artifacts = filterArtifacts(artifacts, q)
 		approvals = filterApprovals(approvals, q)
 		signed = filterSigned(signed, q)
 	}
+	type RuleView struct {
+		Rule      model.RuleResult
+		Status    string
+		GapCount  int
+		HasGaps   bool
+		HasEvents bool
+	}
+	// Suggestion is defined at top-level for reuse
+	ruleViews := make([]RuleView, 0, len(report.Reasoning.Results))
+	statsTotal := len(report.Reasoning.Results)
+	statsFeasible := 0
+	statsGaps := 0
+	avgConfidence := 0.0
+	gapCounts := map[string]int{}
+	for _, rr := range report.Reasoning.Results {
+		status := "incomplete"
+		if rr.Feasible && len(rr.MissingEvidence) == 0 {
+			status = "feasible"
+		} else if !rr.Feasible && len(rr.MissingEvidence) == 0 {
+			status = "impossible"
+		}
+		if rr.Feasible {
+			statsFeasible++
+		}
+		if len(rr.MissingEvidence) > 0 {
+			statsGaps++
+			for _, m := range rr.MissingEvidence {
+				gapCounts[m.Type]++
+			}
+		}
+		avgConfidence += rr.Confidence
+		ruleViews = append(ruleViews, RuleView{
+			Rule:      rr,
+			Status:    status,
+			GapCount:  len(rr.MissingEvidence),
+			HasGaps:   len(rr.MissingEvidence) > 0,
+			HasEvents: len(rr.SupportingEventIDs) > 0,
+		})
+	}
+	if statsTotal > 0 {
+		avgConfidence = avgConfidence / float64(statsTotal)
+	}
+	type GapStat struct {
+		Type  string
+		Count int
+	}
+	gapStats := make([]GapStat, 0, len(gapCounts))
+	for k, v := range gapCounts {
+		gapStats = append(gapStats, GapStat{Type: k, Count: v})
+	}
+	sort.Slice(gapStats, func(i, j int) bool { return gapStats[i].Count > gapStats[j].Count })
+	if len(gapStats) > 5 {
+		gapStats = gapStats[:5]
+	}
+	statsInfeasible := 0
+	if statsTotal >= statsFeasible {
+		statsInfeasible = statsTotal - statsFeasible
+	}
+	verdict := "incomplete"
+	for _, rv := range ruleViews {
+		if rv.Status == "impossible" {
+			verdict = "impossible"
+		}
+		if rv.Status == "feasible" {
+			verdict = "confirmed"
+			break
+		}
+	}
+	decayWindow := "24h"
+	suggestions := buildSuggestions(report.Reasoning.Results, approvals)
+	selectedTicket, ticketResults, ticketApprovals := selectTicket(report, approvals, ticketID)
 	tmpl := template.Must(template.New("index").Parse(indexHTML))
 	_ = tmpl.Execute(w, struct {
+		Page            string
 		Artifacts       []audit.Artifact
 		Approvals       []ApprovalRecord
 		Signed          []SignedStatus
-		Report          model.ReasoningReport
+		Report          ReportView
+		RuleViews       []RuleView
+		Suggestions     []Suggestion
+		StatsTotal      int
+		StatsFeasible   int
+		StatsInfeasible int
+		StatsGaps       int
+		AvgConfidence   float64
+		Verdict         string
+		DecayWindow     string
+		TopGaps         []GapStat
 		Profiles        []governance.AnalystProfile
 		Disagreements   []governance.Disagreement
 		Role            string
 		AuditPath       string
 		SignedAuditPath string
 		Query           string
-	}{Artifacts: artifacts, Approvals: approvals, Signed: signed, Report: report, Profiles: profiles, Disagreements: disagreements, Role: s.currentRole(r), AuditPath: s.AuditPath, SignedAuditPath: s.SignedAuditPath, Query: q})
+		TicketID        string
+		SelectedTicket  state.Ticket
+		TicketResults   []model.RuleResult
+		TicketApprovals []ApprovalRecord
+	}{Page: page, Artifacts: artifacts, Approvals: approvals, Signed: signed, Report: report, RuleViews: ruleViews, Suggestions: suggestions, StatsTotal: statsTotal, StatsFeasible: statsFeasible, StatsInfeasible: statsInfeasible, StatsGaps: statsGaps, AvgConfidence: avgConfidence, Verdict: verdict, DecayWindow: decayWindow, TopGaps: gapStats, Profiles: profiles, Disagreements: disagreements, Role: s.currentRole(r), AuditPath: s.AuditPath, SignedAuditPath: s.SignedAuditPath, Query: q, TicketID: ticketID, SelectedTicket: selectedTicket, TicketResults: ticketResults, TicketApprovals: ticketApprovals})
+}
+
+func selectTicket(report ReportView, approvals []ApprovalRecord, id string) (state.Ticket, []model.RuleResult, []ApprovalRecord) {
+	if id == "" {
+		return state.Ticket{}, nil, nil
+	}
+	var selected state.Ticket
+	for _, t := range report.State.Tickets {
+		if t.ID == id {
+			selected = t
+			break
+		}
+	}
+	if selected.ID == "" {
+		return state.Ticket{}, nil, nil
+	}
+	results := []model.RuleResult{}
+	for _, r := range report.Reasoning.Results {
+		if r.ThreadID == selected.ThreadID {
+			results = append(results, r)
+		}
+	}
+	relatedApprovals := []ApprovalRecord{}
+	for _, a := range approvals {
+		if a.Approval.ID == selected.ID || a.Approval.ID == selected.ThreadID {
+			relatedApprovals = append(relatedApprovals, a)
+		}
+	}
+	return selected, results, relatedApprovals
 }
 
 func (s *Server) approve(w http.ResponseWriter, r *http.Request) {
@@ -209,6 +377,44 @@ func (s *Server) approve(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write(data)
 }
 
+func (s *Server) disagree(w http.ResponseWriter, r *http.Request) {
+	role := s.currentRole(r)
+	if role == "auditor" {
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
+	if r.Method != http.MethodPost {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+	analyst := r.FormValue("analyst_id")
+	rule := r.FormValue("rule_id")
+	expected := r.FormValue("expected")
+	actual := r.FormValue("actual")
+	rationale := r.FormValue("rationale")
+	if analyst == "" || rule == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	d := governance.Disagreement{
+		AnalystID: analyst,
+		RuleID:    rule,
+		Expected:  expected,
+		Actual:    actual,
+		Rationale: rationale,
+	}
+	if s.DisagreementsPath != "" {
+		if err := governance.AppendDisagreement(s.DisagreementsPath, d); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+	}
+	s.Mu.Lock()
+	s.Disagreements = append(s.Disagreements, d)
+	s.Mu.Unlock()
+	http.Redirect(w, r, "/queue", http.StatusFound)
+}
+
 func (s *Server) download(w http.ResponseWriter, r *http.Request) {
 	kind := r.URL.Query().Get("type")
 	if kind == "audit" {
@@ -217,6 +423,57 @@ func (s *Server) download(w http.ResponseWriter, r *http.Request) {
 	}
 	if kind == "signed" {
 		s.serveFile(w, s.SignedAuditPath, "signed_audit.log")
+		return
+	}
+	if kind == "approvals" {
+		s.serveFile(w, s.ApprovalsPath, "approvals.log")
+		return
+	}
+	if kind == "ticket" {
+		id := r.URL.Query().Get("id")
+		if id == "" {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		report, err := loadReport(s.ReportPath)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		var ticket *state.Ticket
+		for i := range report.State.Tickets {
+			if report.State.Tickets[i].ID == id {
+				ticket = &report.State.Tickets[i]
+				break
+			}
+		}
+		if ticket == nil {
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+		results := []model.RuleResult{}
+		for _, r := range report.Reasoning.Results {
+			if r.ThreadID == ticket.ThreadID {
+				results = append(results, r)
+			}
+		}
+		approvals := []ApprovalRecord{}
+		s.Mu.Lock()
+		for _, a := range s.Approvals {
+			if a.Approval.ID == ticket.ID || a.Approval.ID == ticket.ThreadID {
+				approvals = append(approvals, a)
+			}
+		}
+		s.Mu.Unlock()
+		payload := map[string]interface{}{
+			"ticket":    ticket,
+			"rules":     results,
+			"approvals": approvals,
+		}
+		data, _ := json.MarshalIndent(payload, "", "  ")
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Disposition", "attachment; filename=ticket.json")
+		_, _ = w.Write(data)
 		return
 	}
 	id := r.URL.Query().Get("id")
@@ -278,6 +535,9 @@ func roleForUser(user string) string {
 	if strings.Contains(user, "approver") {
 		return "approver"
 	}
+	if strings.Contains(user, "auditor") {
+		return "auditor"
+	}
 	return "analyst"
 }
 
@@ -325,133 +585,852 @@ func randomToken() string {
 	return base64.StdEncoding.EncodeToString(b)
 }
 
+func buildSuggestions(results []model.RuleResult, approvals []ApprovalRecord) []Suggestion {
+	out := []Suggestion{}
+	for _, r := range results {
+		if len(r.MissingEvidence) > 0 {
+			continue
+		}
+		if r.Confidence < 0.7 {
+			continue
+		}
+		score := r.Confidence
+		matches := 0
+		for _, a := range approvals {
+			if strings.Contains(a.Approval.ID, r.RuleID) || strings.Contains(a.Rationale, r.RuleID) {
+				matches++
+			}
+		}
+		if matches > 0 {
+			score += 0.05 * float64(matches)
+		}
+		out = append(out, Suggestion{
+			RuleID:      r.RuleID,
+			Name:        r.Name,
+			Confidence:  r.Confidence,
+			Score:       score,
+			Explanation: r.Explanation,
+			EvidenceIDs: r.SupportingEventIDs,
+		})
+	}
+	sort.Slice(out, func(i, j int) bool { return out[i].Score > out[j].Score })
+	if len(out) > 5 {
+		out = out[:5]
+	}
+	return out
+}
+
 const indexHTML = `<!doctype html>
 <html>
 <head>
   <meta charset="utf-8" />
   <title>Aegis-R Review</title>
   <style>
-    body { font-family: Georgia, serif; margin: 24px; }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border-bottom: 1px solid #ddd; padding: 8px; text-align: left; }
-    .muted { color: #666; font-size: 0.9em; }
-    form { margin-top: 16px; }
-    input { padding: 6px; margin-right: 8px; }
+    :root {
+      --bg: #0b1015;
+      --surface: #111821;
+      --surface-2: #151f2b;
+      --line: #223141;
+      --ink: #e5eef7;
+      --muted: #8fa3b8;
+      --teal: #4fd1c5;
+      --blue: #60a5fa;
+      --amber: #f59e0b;
+      --red: #f87171;
+      --purple: #a78bfa;
+      --shadow: 0 20px 40px rgba(0,0,0,0.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Sora", "Space Grotesk", system-ui, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 10% 10%, #111821 0, #0b1015 50%, #0a0f14 100%);
+    }
+    header {
+      padding: 28px 48px 18px 48px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(135deg, #0f1620 0%, #101923 50%, #0b1015 100%);
+    }
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    h1 { margin: 0; font-size: 36px; letter-spacing: -0.5px; }
+    .role-chip {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(167, 139, 250, 0.15);
+      color: var(--purple);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(167, 139, 250, 0.4);
+    }
+    .subtle { color: var(--muted); font-size: 14px; margin-top: 6px; }
+    main { padding: 24px 48px 64px; }
+    .grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      margin-bottom: 22px;
+    }
+    .card {
+      background: linear-gradient(145deg, rgba(17,24,33,0.98) 0%, rgba(21,31,43,0.98) 100%);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 16px 18px;
+    }
+    .kpi {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .kpi .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; }
+    .kpi .value { font-size: 28px; font-weight: 600; color: var(--blue); }
+    .kpi .trend { font-size: 12px; color: var(--muted); }
+    .section-title {
+      font-size: 20px;
+      margin: 26px 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pill {
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid var(--line);
+      background: #0f1620;
+      color: var(--muted);
+    }
+    .status {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .status.feasible { background: rgba(79,209,197,0.12); color: var(--teal); border: 1px solid rgba(79,209,197,0.4); }
+    .status.incomplete { background: rgba(245,158,11,0.12); color: var(--amber); border: 1px solid rgba(245,158,11,0.45); }
+    .status.impossible { background: rgba(248,113,113,0.12); color: var(--red); border: 1px solid rgba(248,113,113,0.45); }
+    .status.govern { background: rgba(167,139,250,0.12); color: var(--purple); border: 1px solid rgba(167,139,250,0.45); }
+    .status.label-suppress { background: rgba(148,163,184,0.12); color: var(--muted); border: 1px solid rgba(148,163,184,0.35); }
+    .status.label-deprioritize { background: rgba(245,158,11,0.12); color: var(--amber); border: 1px solid rgba(245,158,11,0.45); }
+    .status.label-keep { background: rgba(96,165,250,0.12); color: var(--blue); border: 1px solid rgba(96,165,250,0.4); }
+    .status.label-escalate { background: rgba(248,113,113,0.12); color: var(--red); border: 1px solid rgba(248,113,113,0.45); }
+    .search-bar { display: flex; gap: 10px; margin-top: 12px; }
+    input, button, select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      font-size: 14px;
+      background: #0f1620;
+      color: var(--ink);
+    }
+    button { background: var(--teal); color: #071015; border: none; cursor: pointer; font-weight: 600; }
+    button.secondary { background: #0f1620; color: var(--muted); border: 1px solid var(--line); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 10px 8px; border-bottom: 1px solid var(--line); text-align: left; color: var(--ink); }
+    .timeline { display: grid; gap: 10px; }
+    .timeline-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface);
+    }
+    .timeline-item .time { font-weight: 600; min-width: 220px; }
+    .tag { font-size: 12px; padding: 2px 8px; border-radius: 6px; background: rgba(96,165,250,0.2); color: var(--blue); }
+    .rule-grid { display: grid; gap: 12px; }
+    .rule-card { padding: 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface-2); }
+    .chip-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:8px; }
+    details summary { cursor: pointer; font-weight: 600; margin-bottom: 6px; }
+    .muted { color: var(--muted); }
+    .link-row { margin-top: 10px; display: flex; gap: 12px; flex-wrap: wrap; }
+    a { color: var(--blue); text-decoration: none; }
+    .approval-form { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    .approval-form .full { grid-column: 1 / -1; }
+    .footer-note { font-size: 12px; color: var(--muted); margin-top: 10px; }
+    nav {
+      display: flex;
+      gap: 16px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: var(--muted);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    nav a.active { color: var(--teal); }
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .list li {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #0f1620;
+    }
+    @media (max-width: 720px) {
+      header, main { padding: 18px; }
+      .timeline-item { flex-direction: column; }
+      .timeline-item .time { min-width: auto; }
+    }
   </style>
 </head>
 <body>
-  <h1>Aegis-R Analyst Review</h1>
-  <p class="muted">Recent audit artifacts</p>
-  <form method="GET" action="/">
-    <input name="q" placeholder="search id/signer/summary" value="{{.Query}}" />
-    <button type="submit">Search</button>
-  </form>
-  <table>
-    <tr><th>ID</th><th>Created</th><th>Summary</th><th>Findings</th></tr>
-    {{range .Artifacts}}
-      <tr>
-        <td>{{.ID}}</td>
-        <td>{{.CreatedAt}}</td>
-        <td>{{.Summary}}</td>
-        <td>{{len .Findings}}</td>
-      </tr>
-    {{end}}
-  </table>
-  <h2>Audit Timeline</h2>
-  <ul>
-    {{range .Artifacts}}
-      <li>{{.CreatedAt}} — {{.ID}} — {{.Summary}}</li>
-    {{end}}
-  </ul>
-  {{if .Signed}}
-  <h2>Signed Artifacts</h2>
-  <table>
-    <tr><th>ID</th><th>Signer</th><th>Status</th></tr>
-    {{range .Signed}}
-      <tr>
-        <td>{{.ID}}</td>
-        <td>{{.Signer}}</td>
-        <td>{{.Status}}</td>
-      </tr>
-    {{end}}
-  </table>
-  {{end}}
-  {{if .Report.Results}}
-  <h2>Per-Rule Evidence</h2>
-  <table>
-    <tr><th>Rule</th><th>Feasible</th><th>Evidence IDs</th><th>Missing</th></tr>
-    {{range .Report.Results}}
-      <tr>
-        <td>{{.RuleID}}</td>
-        <td>{{.Feasible}}</td>
-        <td>{{range .SupportingEventIDs}}{{.}} {{end}}</td>
-        <td>{{range .MissingEvidence}}{{.Type}} {{end}}</td>
-      </tr>
-    {{end}}
-  </table>
-  {{end}}
-  {{if .Profiles}}
-  <h2>Analyst Profiles</h2>
-  <table>
-    <tr><th>ID</th><th>Name</th><th>Specialties</th><th>Notes</th></tr>
-    {{range .Profiles}}
-      <tr>
-        <td>{{.ID}}</td>
-        <td>{{.Name}}</td>
-        <td>{{range .Specialties}}{{.}} {{end}}</td>
-        <td>{{.Notes}}</td>
-      </tr>
-    {{end}}
-  </table>
-  {{end}}
-  {{if .Disagreements}}
-  <h2>Disagreement Feedback</h2>
-  <table>
-    <tr><th>At</th><th>Analyst</th><th>Rule</th><th>Expected</th><th>Actual</th><th>Rationale</th></tr>
-    {{range .Disagreements}}
-      <tr>
-        <td>{{.At}}</td>
-        <td>{{.AnalystID}}</td>
-        <td>{{.RuleID}}</td>
-        <td>{{.Expected}}</td>
-        <td>{{.Actual}}</td>
-        <td>{{.Rationale}}</td>
-      </tr>
-    {{end}}
-  </table>
-  {{end}}
-  <div style="margin-top:12px;">
-    <a href="/download?type=audit">Download Audit Log</a>
-    {{if .SignedAuditPath}} | <a href="/download?type=signed">Download Signed Audit</a>{{end}}
-  </div>
-  <h2>Approval History</h2>
-  <table>
-    <tr><th>ID</th><th>Signer</th><th>Role</th><th>Expires</th><th>Rationale</th><th>Gaps</th><th>Download</th></tr>
-    {{range .Approvals}}
-      <tr>
-        <td>{{.Approval.ID}}</td>
-        <td>{{.Approval.SignerID}}</td>
-        <td>{{.Approval.SignerRole}}</td>
-        <td>{{.Approval.ExpiresAt}}</td>
-        <td>{{.Rationale}}</td>
-        <td>{{range .EvidenceGaps}}{{.}} {{end}}</td>
-        <td><a href="/download?id={{.Approval.ID}}">Download</a></td>
-      </tr>
-    {{end}}
-  </table>
-  {{if or (eq .Role "approver") (eq .Role "admin")}}
-    <h2>Generate Approval</h2>
-    <form method="POST" action="/approve">
-      <input name="id" placeholder="approval id" required />
-      <input name="signer" placeholder="signer" required />
-      <input name="role" placeholder="role" value="approver" />
-      <input name="ttl" placeholder="10m" />
-      <input name="gaps" placeholder="evidence gaps (comma separated)" />
-      <input name="rationale" placeholder="approval rationale" />
-      <button type="submit">Approve</button>
+  <header>
+    <div class="title-row">
+      <div>
+        <h1>Aegis-R Analyst Review</h1>
+        <div class="subtle">{{.Report.Summary}}</div>
+      </div>
+      <div class="role-chip">Role: {{.Role}}</div>
+    </div>
+    <nav>
+      <a class="{{if eq .Page "overview"}}active{{end}}" href="/overview">Overview</a>
+      <a class="{{if eq .Page "attack-graph"}}active{{end}}" href="/attack-graph">Attack Graph</a>
+      <a class="{{if eq .Page "reasoning"}}active{{end}}" href="/reasoning">Reasoning Panel</a>
+      <a class="{{if eq .Page "queue"}}active{{end}}" href="/queue">Reasoning Queue</a>
+      <a class="{{if eq .Page "governance"}}active{{end}}" href="/governance">Governance</a>
+      <a class="{{if eq .Page "audit"}}active{{end}}" href="/audit">Audit & Evidence</a>
+      <a class="{{if eq .Page "tickets"}}active{{end}}" href="/tickets">Tickets</a>
+      <a class="{{if eq .Page "evaluations"}}active{{end}}" href="/evaluations">Evaluations</a>
+    </nav>
+    <form method="GET" action="/" class="search-bar">
+      <input name="q" placeholder="Search ID / signer / summary" value="{{.Query}}" />
+      <button type="submit">Search</button>
+      <button class="secondary" type="button" onclick="window.location='/'">Reset</button>
     </form>
-  {{else}}
-    <p class="muted">Approvals require approver/admin role.</p>
-  {{end}}
+  </header>
+  <main>
+    {{if eq .Page "overview"}}
+    <section class="grid">
+      <div class="card kpi">
+        <div class="label">Rules Evaluated</div>
+        <div class="value">{{.StatsTotal}}</div>
+        <div class="trend">Feasible: {{.StatsFeasible}} · Infeasible: {{.StatsInfeasible}}</div>
+      </div>
+      <div class="card kpi">
+        <div class="label">Evidence Gaps</div>
+        <div class="value">{{.StatsGaps}}</div>
+        <div class="trend">Missing preconditions & evidence</div>
+      </div>
+      <div class="card kpi">
+        <div class="label">Confidence</div>
+        <div class="value">{{printf "%.2f" .AvgConfidence}}</div>
+        <div class="trend">Decay window: {{.DecayWindow}}</div>
+        {{if .Report.Reasoning.ConfidenceModel}}
+          <div class="trend">Model: {{.Report.Reasoning.ConfidenceModel}}</div>
+        {{end}}
+      </div>
+      <div class="card kpi">
+        <div class="label">Verdict</div>
+        <div class="value">{{.Verdict}}</div>
+        <div class="trend">Human authority required for escalation</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">Drift Signals</div>
+      <ul class="list">
+        {{if .Report.DriftSignals}}
+          {{range .Report.DriftSignals}}
+            <li>{{.}}</li>
+          {{end}}
+        {{else}}
+          <li class="muted">No drift signals detected.</li>
+        {{end}}
+      </ul>
+    </section>
+
+    <section class="card">
+      <div class="section-title">Suggested Actions <span class="pill">Human approval required</span></div>
+      {{if .Suggestions}}
+        <div class="rule-grid">
+          {{range .Suggestions}}
+            <div class="rule-card">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+                <div>
+                  <strong>{{.RuleID}}</strong> — {{.Name}}
+                  <div class="muted">{{.Explanation}}</div>
+                </div>
+                <span class="status feasible">SUGGEST</span>
+              </div>
+              <div class="footer-note">Confidence: {{printf "%.2f" .Confidence}} · Score: {{printf "%.2f" .Score}}</div>
+              {{if .EvidenceIDs}}
+                <details>
+                  <summary>Evidence</summary>
+                  <div class="muted">Event IDs: {{range .EvidenceIDs}}{{.}} {{end}}</div>
+                </details>
+              {{end}}
+            </div>
+          {{end}}
+        </div>
+      {{else}}
+        <p class="muted">No suggestions. Guardrails active (low confidence or evidence gaps).</p>
+      {{end}}
+    </section>
+
+    <section class="card">
+      <div class="section-title">Top Evidence Gaps</div>
+      <ul class="list">
+        {{if .TopGaps}}
+          {{range .TopGaps}}
+            <li><span class="status incomplete">{{.Type}}</span> — {{.Count}} occurrences</li>
+          {{end}}
+        {{else}}
+          <li class="muted">No missing evidence categories.</li>
+        {{end}}
+      </ul>
+    </section>
+
+    <section class="card">
+      <div class="section-title">Recent Audit Artifacts</div>
+      <table>
+        <tr><th>ID</th><th>Created</th><th>Summary</th><th>Findings</th></tr>
+        {{range .Artifacts}}
+          <tr>
+            <td>{{.ID}}</td>
+            <td>{{.CreatedAt}}</td>
+            <td>{{.Summary}}</td>
+            <td>{{len .Findings}}</td>
+          </tr>
+        {{end}}
+      </table>
+    </section>
+    {{end}}
+
+    {{if eq .Page "attack-graph"}}
+    <section class="card">
+      <div class="section-title">Attack Graph <span class="pill">Progression</span></div>
+      <div class="section-grid">
+        <div>
+          <div class="muted">Current Nodes</div>
+          <ul class="list">
+            {{if .Report.State.GraphOverlay.CurrentNodes}}
+              {{range .Report.State.GraphOverlay.CurrentNodes}}
+                <li>{{.}}</li>
+              {{end}}
+            {{else}}
+              <li class="muted">No active nodes detected</li>
+            {{end}}
+          </ul>
+        </div>
+        <div>
+          <div class="muted">Reachable Nodes</div>
+          <ul class="list">
+            {{if .Report.State.GraphOverlay.Reachable}}
+              {{range .Report.State.GraphOverlay.Reachable}}
+                <li>{{.}}</li>
+              {{end}}
+            {{else}}
+              <li class="muted">No reachable expansion recorded</li>
+            {{end}}
+          </ul>
+        </div>
+      </div>
+      <div class="footer-note">Graph overlay shows current attacker position and reachable state transitions.</div>
+    </section>
+    <section class="card">
+      <div class="section-title">Progression Timeline</div>
+      <div class="timeline">
+        {{if .Report.State.Progression}}
+          {{range .Report.State.Progression}}
+            <div class="timeline-item">
+              <div class="time">{{.Time}}</div>
+              <div>
+                <div><span class="tag">{{.Stage}}</span> — {{.Action}}</div>
+                <div class="muted">Asset: {{.Asset}} · Principal: {{.Principal}} · Confidence: {{printf "%.2f" .Confidence}}</div>
+                <div class="muted">{{.Rationale}}</div>
+              </div>
+            </div>
+          {{end}}
+        {{else}}
+          <p class="muted">No progression events recorded.</p>
+        {{end}}
+      </div>
+    </section>
+    {{end}}
+
+    {{if eq .Page "reasoning"}}
+    <section class="card">
+      <div class="section-title">Reasoning Panel <span class="pill">Explainability</span></div>
+      <div class="section-grid">
+        <div>
+          <div class="muted">Verdict</div>
+          <div class="status {{.Verdict}}">{{.Verdict}}</div>
+          <div class="footer-note">Causal feasibility + evidence completeness</div>
+          {{if .Report.Reasoning.ConfidenceNote}}
+            <div class="footer-note">{{.Report.Reasoning.ConfidenceNote}}</div>
+          {{end}}
+        </div>
+        <div>
+          <div class="muted">Next Attacker Actions</div>
+          <ul class="list">
+            {{if .Report.NextMoves}}
+              {{range .Report.NextMoves}}
+                <li>{{.}}</li>
+              {{end}}
+            {{else}}
+              <li class="muted">No projected moves at this time</li>
+            {{end}}
+          </ul>
+        </div>
+        <div>
+          <div class="muted">Evidence Gaps</div>
+          <ul class="list">
+            {{if .Report.Findings}}
+              {{range .Report.Findings}}
+                <li>{{.}}</li>
+              {{end}}
+            {{else}}
+              <li class="muted">No evidence gaps recorded</li>
+            {{end}}
+          </ul>
+        </div>
+      </div>
+      <div class="section-title" style="margin-top:14px;">Causal Explanation</div>
+      {{if .Report.Reasoning.Narrative}}
+        <ol>
+          {{range .Report.Reasoning.Narrative}}
+            <li>{{.}}</li>
+          {{end}}
+        </ol>
+      {{else}}
+        <p class="muted">No narrative chain generated for this run.</p>
+      {{end}}
+    </section>
+    <section class="card">
+      <div class="section-title">Suggested Actions <span class="pill">Human approval required</span></div>
+      {{if .Suggestions}}
+        <div class="rule-grid">
+          {{range .Suggestions}}
+            <div class="rule-card">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+                <div>
+                  <strong>{{.RuleID}}</strong> — {{.Name}}
+                  <div class="muted">{{.Explanation}}</div>
+                </div>
+                <span class="status feasible">SUGGEST</span>
+              </div>
+              <div class="footer-note">Confidence: {{printf "%.2f" .Confidence}} · Score: {{printf "%.2f" .Score}}</div>
+              {{if .EvidenceIDs}}
+                <details>
+                  <summary>Evidence</summary>
+                  <div class="muted">Event IDs: {{range .EvidenceIDs}}{{.}} {{end}}</div>
+                </details>
+              {{end}}
+            </div>
+          {{end}}
+        </div>
+      {{else}}
+        <p class="muted">No suggestions. Guardrails active (low confidence or evidence gaps).</p>
+      {{end}}
+    </section>
+    <section class="card">
+      <div class="section-title">Evidence Used / Missing</div>
+      <div class="rule-grid">
+        {{range .RuleViews}}
+          <div class="rule-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+              <div>
+                <strong>{{.Rule.RuleID}}</strong> — {{.Rule.Name}}
+                <div class="muted">{{.Rule.Explanation}}</div>
+              </div>
+              <span class="status {{.Status}}">{{.Status}}</span>
+            </div>
+            <div class="chip-row">
+              {{if .Rule.DecisionLabel}}
+                <span class="status label-{{.Rule.DecisionLabel}}">{{.Rule.DecisionLabel}}</span>
+              {{end}}
+              {{if .Rule.ReasonCode}}
+                <span class="pill">{{.Rule.ReasonCode}}</span>
+              {{end}}
+              {{if .Rule.ThreadID}}
+                <span class="pill">Thread {{.Rule.ThreadID}}</span>
+              {{else if .Rule.ThreadReason}}
+                <span class="pill">Thread: {{.Rule.ThreadReason}}</span>
+              {{end}}
+              {{if gt .Rule.ThreadConfidence 0.0}}
+                <span class="pill">Thread confidence {{printf "%.2f" .Rule.ThreadConfidence}}</span>
+              {{end}}
+              {{if .Rule.CacheHit}}
+                <span class="pill">Cache HIT</span>
+              {{end}}
+            </div>
+            {{if .HasEvents}}
+              <details>
+                <summary>Evidence Used</summary>
+                <div class="muted">Event IDs: {{range .Rule.SupportingEventIDs}}{{.}} {{end}}</div>
+              </details>
+            {{end}}
+            {{if .HasGaps}}
+              <details>
+                <summary>Evidence Missing ({{.GapCount}})</summary>
+                <ul>
+                  {{range .Rule.MissingEvidence}}
+                    <li>{{.Type}} — {{.Description}}</li>
+                  {{end}}
+                </ul>
+              </details>
+            {{end}}
+          </div>
+        {{end}}
+      </div>
+    </section>
+    {{end}}
+
+    {{if eq .Page "queue"}}
+    <section>
+      <div class="section-title">Reasoning Queue</div>
+      <div class="rule-grid">
+        {{range .RuleViews}}
+          <div class="rule-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+              <div>
+                <strong>{{.Rule.RuleID}}</strong> — {{.Rule.Name}}
+                <div class="muted">{{.Rule.Explanation}}</div>
+              </div>
+              <span class="status {{.Status}}">{{.Status}}</span>
+            </div>
+            <div class="chip-row">
+              {{if .Rule.DecisionLabel}}
+                <span class="status label-{{.Rule.DecisionLabel}}">{{.Rule.DecisionLabel}}</span>
+              {{end}}
+              {{if .Rule.ReasonCode}}
+                <span class="pill">{{.Rule.ReasonCode}}</span>
+              {{end}}
+              {{if .Rule.ThreadID}}
+                <span class="pill">Thread {{.Rule.ThreadID}}</span>
+              {{else if .Rule.ThreadReason}}
+                <span class="pill">Thread: {{.Rule.ThreadReason}}</span>
+              {{end}}
+              {{if gt .Rule.ThreadConfidence 0.0}}
+                <span class="pill">Thread confidence {{printf "%.2f" .Rule.ThreadConfidence}}</span>
+              {{end}}
+              {{if .Rule.CacheHit}}
+                <span class="pill">Cache HIT</span>
+              {{end}}
+            </div>
+            <div class="footer-note">Confidence: {{printf "%.2f" .Rule.Confidence}}</div>
+            {{if .HasEvents}}
+              <details>
+                <summary>Evidence Used</summary>
+                <div class="muted">Event IDs: {{range .Rule.SupportingEventIDs}}{{.}} {{end}}</div>
+              </details>
+            {{end}}
+            {{if .HasGaps}}
+              <details>
+                <summary>Evidence Missing ({{.GapCount}})</summary>
+                <ul>
+                  {{range .Rule.MissingEvidence}}
+                    <li>{{.Type}} — {{.Description}}</li>
+                  {{end}}
+                </ul>
+              </details>
+            {{end}}
+          </div>
+        {{end}}
+      </div>
+    </section>
+    {{if ne .Role "auditor"}}
+      <section class="card">
+        <div class="section-title">Log Analyst Disagreement</div>
+        <form method="POST" action="/disagree" class="approval-form">
+          <input name="analyst_id" placeholder="analyst id" required />
+          <input name="rule_id" placeholder="rule id" required />
+          <input name="expected" placeholder="expected verdict" />
+          <input name="actual" placeholder="actual verdict" />
+          <input name="rationale" class="full" placeholder="rationale" />
+          <button type="submit">Log Disagreement</button>
+        </form>
+        <div class="footer-note">Disagreements are captured as signed reasoning constraints for governance review.</div>
+      </section>
+    {{else}}
+      <p class="muted">Auditor role is read-only.</p>
+    {{end}}
+    {{end}}
+
+    {{if eq .Page "governance"}}
+    <section>
+      <div class="section-title">Governance & Compliance</div>
+      <div class="section-grid">
+        <div class="card">
+          <div class="section-title">Signed Approvals <span class="pill">Human Authority</span></div>
+          <ul class="list">
+            {{if .Approvals}}
+              {{range .Approvals}}
+                <li>
+                  <strong>{{.Approval.ID}}</strong> — {{.Approval.SignerID}} ({{.Approval.SignerRole}})<br/>
+                  <span class="muted">Expires: {{.Approval.ExpiresAt}} · Gaps: {{range .EvidenceGaps}}{{.}} {{end}}</span>
+                </li>
+              {{end}}
+            {{else}}
+              <li class="muted">No approvals recorded.</li>
+            {{end}}
+          </ul>
+          <div class="footer-note">Dual-approval required for critical trust changes. No auto-remediation.</div>
+        </div>
+        <div class="card">
+          <div class="section-title">Signed Artifacts</div>
+          <ul class="list">
+            {{if .Signed}}
+              {{range .Signed}}
+                <li>{{.ID}} — {{.Signer}} <span class="status {{.Status}}">{{.Status}}</span></li>
+              {{end}}
+            {{else}}
+              <li class="muted">No signed artifacts available.</li>
+            {{end}}
+          </ul>
+          <div class="link-row">
+            <a href="/download?type=audit">Download Audit Log</a>
+            {{if .SignedAuditPath}}<a href="/download?type=signed">Download Signed Audit</a>{{end}}
+            <a href="/download?type=approvals">Download Approvals Log</a>
+          </div>
+        </div>
+      </div>
+      {{if or (eq .Role "approver") (eq .Role "admin")}}
+        <section class="card" style="margin-top:12px;">
+          <div class="section-title">Generate Approval</div>
+          <form method="POST" action="/approve" class="approval-form">
+            <input name="id" placeholder="approval id" required />
+            <input name="signer" placeholder="signer" required />
+            <input name="role" placeholder="role" value="approver" />
+            <input name="ttl" placeholder="10m" />
+            <input name="gaps" class="full" placeholder="evidence gaps (comma separated)" />
+            <input name="rationale" class="full" placeholder="approval rationale" />
+            <button type="submit">Approve</button>
+          </form>
+          <div class="footer-note">Approvals are cryptographically signed and auditable.</div>
+        </section>
+      {{else}}
+        <p class="muted">Approvals require approver/admin role.</p>
+      {{end}}
+    </section>
+    <section class="card">
+      <div class="section-title">Suggested Actions <span class="pill">Human approval required</span></div>
+      {{if .Suggestions}}
+        <div class="rule-grid">
+          {{range .Suggestions}}
+            <div class="rule-card">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+                <div>
+                  <strong>{{.RuleID}}</strong> — {{.Name}}
+                  <div class="muted">{{.Explanation}}</div>
+                </div>
+                <span class="status feasible">SUGGEST</span>
+              </div>
+              <div class="footer-note">Confidence: {{printf "%.2f" .Confidence}} · Score: {{printf "%.2f" .Score}}</div>
+              {{if .EvidenceIDs}}
+                <details>
+                  <summary>Evidence</summary>
+                  <div class="muted">Event IDs: {{range .EvidenceIDs}}{{.}} {{end}}</div>
+                </details>
+              {{end}}
+            </div>
+          {{end}}
+        </div>
+      {{else}}
+        <p class="muted">No suggestions. Guardrails active (low confidence or evidence gaps).</p>
+      {{end}}
+    </section>
+    {{end}}
+
+    {{if eq .Page "audit"}}
+    <section class="card">
+      <div class="section-title">Audit Artifacts</div>
+      <table>
+        <tr><th>ID</th><th>Created</th><th>Summary</th><th>Findings</th></tr>
+        {{range .Artifacts}}
+          <tr>
+            <td>{{.ID}}</td>
+            <td>{{.CreatedAt}}</td>
+            <td>{{.Summary}}</td>
+            <td>{{len .Findings}}</td>
+          </tr>
+        {{end}}
+      </table>
+      <div class="link-row">
+        <a href="/download?type=audit">Download Audit Log</a>
+        {{if .SignedAuditPath}}<a href="/download?type=signed">Download Signed Audit</a>{{end}}
+      </div>
+    </section>
+    <section>
+      <div class="section-title">Audit & Evidence</div>
+      <div class="timeline">
+        {{range .Artifacts}}
+          <div class="timeline-item">
+            <div class="time">{{.CreatedAt}}</div>
+            <div>
+              <div><span class="tag">{{.ID}}</span></div>
+              <div class="muted">{{.Summary}}</div>
+            </div>
+          </div>
+        {{end}}
+      </div>
+    </section>
+    {{end}}
+
+    {{if eq .Page "tickets"}}
+    <section class="card">
+      <div class="section-title">Tickets</div>
+      <table>
+        <tr><th>ID</th><th>Status</th><th>Label</th><th>Reason</th><th>Thread</th><th>Host</th><th>Principal</th><th>Updated</th></tr>
+        {{if .Report.State.Tickets}}
+          {{range .Report.State.Tickets}}
+            <tr>
+              <td><a href="/tickets?ticket={{.ID}}">{{.ID}}</a></td>
+              <td>{{.Status}}</td>
+              <td>{{.DecisionLabel}}</td>
+              <td>{{.ReasonCode}}</td>
+              <td>{{.ThreadID}}</td>
+              <td>{{.Host}}</td>
+              <td>{{.Principal}}</td>
+              <td>{{.UpdatedAt}}</td>
+            </tr>
+          {{end}}
+        {{else}}
+          <tr><td colspan="8" class="muted">No tickets yet.</td></tr>
+        {{end}}
+      </table>
+      <div class="footer-note">Tickets are created per thread (host + principal + 2h window).</div>
+    </section>
+
+    {{if .SelectedTicket.ID}}
+    <section class="card">
+      <div class="section-title">Ticket Detail</div>
+      <div class="section-grid">
+        <div>
+          <div class="muted">Ticket</div>
+          <div><strong>{{.SelectedTicket.ID}}</strong></div>
+          <div class="footer-note">Status: {{.SelectedTicket.Status}}</div>
+          <div class="footer-note">Label: {{.SelectedTicket.DecisionLabel}}</div>
+          <div class="footer-note">Reason: {{.SelectedTicket.ReasonCode}}</div>
+          <div class="footer-note">Thread: {{.SelectedTicket.ThreadID}}</div>
+          <div class="footer-note">Updated: {{.SelectedTicket.UpdatedAt}}</div>
+          <div class="link-row">
+            <a href="/download?type=ticket&id={{.SelectedTicket.ID}}">Download Ticket Export</a>
+          </div>
+        </div>
+        <div>
+          <div class="muted">Rules</div>
+          <ul class="list">
+            {{range .SelectedTicket.RuleIDs}}
+              <li>{{.}}</li>
+            {{end}}
+          </ul>
+        </div>
+      </div>
+      <div class="section-title" style="margin-top:14px;">Evidence & Decisions</div>
+      <div class="rule-grid">
+        {{range .TicketResults}}
+          <div class="rule-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+              <div>
+                <strong>{{.RuleID}}</strong> — {{.Name}}
+                <div class="muted">{{.Explanation}}</div>
+              </div>
+              <span class="status {{if .Feasible}}feasible{{else if .MissingEvidence}}incomplete{{else}}impossible{{end}}">{{if .Feasible}}feasible{{else if .MissingEvidence}}incomplete{{else}}impossible{{end}}</span>
+            </div>
+            <div class="chip-row">
+              {{if .DecisionLabel}}
+                <span class="status label-{{.DecisionLabel}}">{{.DecisionLabel}}</span>
+              {{end}}
+              {{if .ReasonCode}}
+                <span class="pill">{{.ReasonCode}}</span>
+              {{end}}
+              {{if .ThreadID}}
+                <span class="pill">Thread {{.ThreadID}}</span>
+              {{else if .ThreadReason}}
+                <span class="pill">Thread: {{.ThreadReason}}</span>
+              {{end}}
+              {{if gt .ThreadConfidence 0.0}}
+                <span class="pill">Thread confidence {{printf "%.2f" .ThreadConfidence}}</span>
+              {{end}}
+            </div>
+            {{if .SupportingEventIDs}}
+              <details>
+                <summary>Evidence IDs</summary>
+                <div class="muted">{{range .SupportingEventIDs}}{{.}} {{end}}</div>
+              </details>
+            {{end}}
+            {{if .MissingEvidence}}
+              <details>
+                <summary>Missing Evidence</summary>
+                <ul>
+                  {{range .MissingEvidence}}
+                    <li>{{.Type}} — {{.Description}}</li>
+                  {{end}}
+                </ul>
+              </details>
+            {{end}}
+          </div>
+        {{end}}
+      </div>
+      <div class="section-title" style="margin-top:14px;">Approvals</div>
+      {{if .TicketApprovals}}
+        <table>
+          <tr><th>ID</th><th>Signer</th><th>Role</th><th>Expires</th><th>Rationale</th></tr>
+          {{range .TicketApprovals}}
+            <tr>
+              <td>{{.Approval.ID}}</td>
+              <td>{{.Approval.SignerID}}</td>
+              <td>{{.Approval.Role}}</td>
+              <td>{{.Approval.ExpiresAt}}</td>
+              <td>{{.Rationale}}</td>
+            </tr>
+          {{end}}
+        </table>
+      {{else}}
+        <p class="muted">No approvals attached to this ticket.</p>
+      {{end}}
+    </section>
+    {{end}}
+    {{end}}
+
+    {{if eq .Page "evaluations"}}
+    <section class="card">
+      <div class="section-title">Evaluations</div>
+      <div class="section-grid">
+        <div>
+          <div class="muted">Baseline Accuracy</div>
+          <div class="value">{{printf "%.2f" .AvgConfidence}}</div>
+          <div class="footer-note">Latest evaluation run (synthetic + realistic).</div>
+        </div>
+        <div>
+          <div class="muted">Drift Signals</div>
+          <ul class="list">
+            {{if .Report.DriftSignals}}
+              {{range .Report.DriftSignals}}
+                <li>{{.}}</li>
+              {{end}}
+            {{else}}
+              <li class="muted">No drift signals detected.</li>
+            {{end}}
+          </ul>
+        </div>
+      </div>
+    </section>
+    {{end}}
+  </main>
 </body>
 </html>`

@@ -19,6 +19,9 @@ type AttackState struct {
 	Progression         []ProgressEvent `json:"progression"`
 	Position            Position        `json:"position"`
 	GraphOverlay        GraphOverlay    `json:"graph_overlay"`
+	DecisionCache       DecisionCache   `json:"decision_cache"`
+	Threads             []Thread        `json:"threads"`
+	Tickets             []Ticket        `json:"tickets"`
 }
 
 type ProgressEvent struct {
@@ -55,6 +58,43 @@ type GraphOverlay struct {
 	Reachable    []string `json:"reachable_nodes"`
 }
 
+type DecisionCache map[string]DecisionCacheEntry
+
+type DecisionCacheEntry struct {
+	Host        string    `json:"host"`
+	Principal   string    `json:"principal"`
+	RuleID      string    `json:"rule_id"`
+	Verdict     string    `json:"verdict"`
+	Label       string    `json:"label"`
+	ReasonCode  string    `json:"reason_code"`
+	UpdatedAt   time.Time `json:"updated_at"`
+	EvidenceIDs []string  `json:"evidence_ids"`
+}
+
+type Thread struct {
+	ID         string    `json:"id"`
+	Host       string    `json:"host"`
+	Principal  string    `json:"principal"`
+	FirstSeen  time.Time `json:"first_seen"`
+	LastSeen   time.Time `json:"last_seen"`
+	RuleIDs    []string  `json:"rule_ids"`
+	Confidence float64   `json:"confidence"`
+	Reason     string    `json:"reason"`
+}
+
+type Ticket struct {
+	ID            string    `json:"id"`
+	ThreadID      string    `json:"thread_id"`
+	Host          string    `json:"host"`
+	Principal     string    `json:"principal"`
+	Status        string    `json:"status"`
+	DecisionLabel string    `json:"decision_label"`
+	ReasonCode    string    `json:"reason_code"`
+	CreatedAt     time.Time `json:"created_at"`
+	UpdatedAt     time.Time `json:"updated_at"`
+	RuleIDs       []string  `json:"rule_ids"`
+}
+
 func New() AttackState {
 	return AttackState{
 		UpdatedAt:           time.Now().UTC(),
@@ -66,6 +106,9 @@ func New() AttackState {
 		ReasoningChain:      []string{},
 		Progression:         []ProgressEvent{},
 		GraphOverlay:        GraphOverlay{},
+		DecisionCache:       DecisionCache{},
+		Threads:             []Thread{},
+		Tickets:             []Ticket{},
 	}
 }
 
@@ -99,6 +142,15 @@ func Load(path string) (AttackState, error) {
 	}
 	if s.Progression == nil {
 		s.Progression = []ProgressEvent{}
+	}
+	if s.DecisionCache == nil {
+		s.DecisionCache = DecisionCache{}
+	}
+	if s.Threads == nil {
+		s.Threads = []Thread{}
+	}
+	if s.Tickets == nil {
+		s.Tickets = []Ticket{}
 	}
 	return s, nil
 }

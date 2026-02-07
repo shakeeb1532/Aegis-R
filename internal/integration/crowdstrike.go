@@ -3,6 +3,7 @@ package integration
 import (
 	"encoding/json"
 	"strconv"
+	"strings"
 	"time"
 
 	"aegisr/internal/model"
@@ -40,7 +41,7 @@ func mapCrowdStrike(raw []byte) ([]model.Event, error) {
 			Time:    t,
 			Host:    e.ComputerName,
 			User:    e.UserName,
-			Type:    mapCrowdStrikeType(e.EventSimpleName),
+			Type:    mapCrowdStrikeType(e.EventSimpleName, details),
 			Details: details,
 		})
 	}
@@ -58,9 +59,16 @@ func parseUnixMillis(v string) time.Time {
 	return time.Unix(0, ms*int64(time.Millisecond))
 }
 
-func mapCrowdStrikeType(name string) string {
+func mapCrowdStrikeType(name string, details map[string]interface{}) string {
 	switch name {
 	case "ProcessRollup2", "ProcessRollup":
+		cmd := strings.ToLower(fieldStringAny(details, "CommandLine", "cmdline"))
+		if containsAny(cmd, "rundll32", "mshta", "certutil", "regsvr32") {
+			return "lolbin_execution"
+		}
+		if containsAny(cmd, "lsass") {
+			return "lsass_access"
+		}
 		return "process_creation"
 	case "FileCreateInfo":
 		return "file_create"
@@ -69,7 +77,13 @@ func mapCrowdStrikeType(name string) string {
 	case "FileDeleteInfo":
 		return "file_delete"
 	case "RegistryValueSet", "RegistryKeyCreated":
+		reg := strings.ToLower(fieldStringAny(details, "RegistryKey", "RegistryValue"))
+		if containsAny(reg, "\\run", "\\runonce") {
+			return "registry_run_key"
+		}
 		return "registry_change"
+	case "ServiceInstalled", "ServiceCreate":
+		return "service_install"
 	default:
 		return name
 	}

@@ -1,11 +1,12 @@
 [
   {
-    "Timestamp": "2026-02-05T05:01:00Z",
-    "DeviceName": "host-5",
-    "AccountName": "alice",
-    "TargetAccountUpn": "alice@corp.com",
-    "AccountDisplayName": "Alice",
-    "ReportId": "r1",
-    "AdditionalFields": {"query": "ldap"}
+    "Timestamp": "2026-02-06T12:18:00Z",
+    "DeviceName": "idp-01",
+    "AccountName": "edgar",
+    "TargetAccountUpn": "edgar@example.com",
+    "AccountDisplayName": "Edgar Example",
+    "ReportId": "mde-id-1",
+    "ActionType": "MFAReset",
+    "AdditionalFields": {"Actor": "admin1"}
   }
 ]

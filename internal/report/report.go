@@ -15,6 +15,13 @@ func RenderCLI(rep model.ReasoningReport) string {
 	now := time.Now().UTC().Format(time.RFC3339)
 	fmt.Fprintf(buf, "Aegis-R Reasoning Report (%s)\n", now)
 	fmt.Fprintf(buf, "%s\n\n", rep.Summary)
+	if rep.ConfidenceModel != "" {
+		fmt.Fprintf(buf, "Confidence model: %s\n", rep.ConfidenceModel)
+		if rep.ConfidenceNote != "" {
+			fmt.Fprintf(buf, "Confidence note: %s\n", rep.ConfidenceNote)
+		}
+		fmt.Fprintln(buf, "")
+	}
 
 	sort.Slice(rep.Results, func(i, j int) bool {
 		if rep.Results[i].Feasible == rep.Results[j].Feasible {
@@ -29,6 +36,21 @@ func RenderCLI(rep model.ReasoningReport) string {
 			status = "FEASIBLE"
 		}
 		fmt.Fprintf(buf, "- [%s] %s (%s, %.2f)\n", status, r.Name, r.RuleID, r.Confidence)
+		if r.DecisionLabel != "" || r.ReasonCode != "" || r.ThreadID != "" {
+			fmt.Fprintf(buf, "  Decision: %s\n", r.DecisionLabel)
+			if r.ReasonCode != "" {
+				fmt.Fprintf(buf, "  Reason code: %s\n", r.ReasonCode)
+			}
+			if r.ThreadID != "" {
+				fmt.Fprintf(buf, "  Thread: %s\n", r.ThreadID)
+			}
+			if r.ThreadConfidence > 0 || r.ThreadReason != "" {
+				fmt.Fprintf(buf, "  Thread confidence: %.2f (%s)\n", r.ThreadConfidence, r.ThreadReason)
+			}
+			if r.CacheHit {
+				fmt.Fprintf(buf, "  Cache: HIT\n")
+			}
+		}
 		fmt.Fprintf(buf, "  %s\n", r.Explanation)
 		if r.GapNarrative != "" {
 			fmt.Fprintf(buf, "  Gap: %s\n", r.GapNarrative)

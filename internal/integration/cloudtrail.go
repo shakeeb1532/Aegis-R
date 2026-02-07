@@ -71,11 +71,25 @@ func extractUserIdentity(m map[string]interface{}) string {
 }
 
 func mapCloudTrailEventType(source string, name string) string {
+	nameLower := strings.ToLower(name)
 	if strings.Contains(source, "iam.amazonaws.com") || strings.Contains(source, "sts.amazonaws.com") {
-		if strings.Contains(name, "CreateUser") || strings.Contains(name, "CreateRole") {
+		switch {
+		case containsAny(nameLower, "createuser", "createrole", "createpolicy"):
 			return "new_admin_account"
+		case containsAny(nameLower, "addusertogroup", "addroletoinstanceprofile", "attachgrouppolicy"):
+			return "admin_group_change"
+		case containsAny(nameLower, "attachrolepolicy", "attachuserpolicy", "putrolepolicy", "putuserpolicy"):
+			return "policy_override"
+		case containsAny(nameLower, "updateassumerolepolicy", "updatetrustpolicy"):
+			return "trust_boundary_change"
+		default:
+			return "iam_change"
 		}
-		return "iam_change"
+	}
+	if strings.Contains(source, "ec2.amazonaws.com") {
+		if containsAny(nameLower, "authorizesecuritygroupingress", "authorizesecuritygroupegress") {
+			return "new_firewall_rule"
+		}
 	}
 	return name
 }

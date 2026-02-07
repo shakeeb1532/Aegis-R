@@ -114,6 +114,7 @@ go run ./cmd/aegisr init-scan \
 - `profile-add` — add analyst reasoning profile
 - `constraint-add` — add reasoning constraint
 - `disagreement-add` — record analyst disagreement
+- `govern ticket list|show|close` — ticket workflow over reasoning threads
 
 ### Audit
 - `audit-verify` — verify hash chain
@@ -122,6 +123,11 @@ go run ./cmd/aegisr init-scan \
 ### Evaluation
 - `generate-scenarios` — build synthetic labeled scenarios
 - `evaluate` — evaluate accuracy on scenarios
+
+### System
+- `system status` — baseline + profile status
+- `system health` — component health summary
+- `system coverage` — MITRE coverage report (rules -> tactics/techniques)
 
 ### Integration
 - `ingest-http` — HTTP ingest endpoint
@@ -204,6 +210,20 @@ Aegis-R adapters normalize events into a stable envelope:
 - `confidence` (scoring)
 - `tags` (zone, criticality)
 
+Confidence is **heuristic and rule-based**, not calibrated ML. Outputs and UI explicitly label the confidence model.
+
+Decision labels: `suppress` / `deprioritize` / `keep` / `escalate` are layered on top of feasibility verdicts.
+Local decision cache scope: host + principal + rule with a 24h TTL.
+Threads are clustered by host + principal within a 2h window.
+Thread formation includes a confidence score and reason for why clustering did or didn’t occur.
+
+Synthetic thread suite:
+- `data/synthetic_threads.json` (multi-entity events that yield 2–3 threads)
+
+Baseline validation report:
+- `docs/BASELINE_REPORT.md`
+- `docs/BASELINE_REPORT.pdf`
+
 ---
 
 ## Attack Progression Model
@@ -247,6 +267,8 @@ Features:
 - Per-rule evidence drilldown
 - Search/filter for audit + approvals
 - Export buttons for audit + signed artifacts
+- Tickets list + detail view
+- Ticket export (JSON) for compliance
 
 ---
 
@@ -373,6 +395,7 @@ docker run -p 8080:8080 aegisr
 - `internal/eval/` — evaluation harness
 - `data/` — sample rules/env/scenarios/fixtures
 - `docs/` — vendor mapping documentation
+- `docs/mitre_coverage.md` — MITRE coverage reporting usage
 
 ---
 

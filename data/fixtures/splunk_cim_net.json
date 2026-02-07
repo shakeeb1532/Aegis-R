@@ -1,14 +1,14 @@
 [
   {
-    "_time": "2026-02-05 07:01:00",
-    "src": "10.0.0.2",
-    "dest": "host-8",
-    "src_port": 51514,
-    "dest_port": 443,
+    "_time": "2026-02-06T12:28:00Z",
+    "src": "10.0.0.5",
+    "dest": "app-10",
+    "src_port": 51515,
+    "dest_port": 3389,
     "transport": "tcp",
     "action": "allowed",
-    "bytes_in": 2048,
-    "bytes_out": 4096,
-    "fields": {"vendor_product": "splunk"}
+    "bytes_in": 1024,
+    "bytes_out": 25000000,
+    "fields": {"sensor": "netflow"}
   }
 ]

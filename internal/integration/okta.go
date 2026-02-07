@@ -50,12 +50,29 @@ func mapOktaSystemLog(raw []byte) ([]model.Event, error) {
 }
 
 func mapOktaEventType(eventType string) string {
+	etype := strings.ToLower(eventType)
 	switch {
-	case strings.HasPrefix(eventType, "user.lifecycle"):
+	case strings.Contains(etype, "impossible_travel"):
+		return "impossible_travel"
+	case strings.Contains(etype, "new_device"):
+		return "new_device_login"
+	case strings.Contains(etype, "mfa.factor.deactivate") || strings.Contains(etype, "mfa.factor.reset") || strings.Contains(etype, "mfa.factor.suspend"):
+		return "mfa_disabled"
+	case strings.Contains(etype, "token") && strings.Contains(etype, "refresh"):
+		return "token_refresh_anomaly"
+	case strings.Contains(etype, "token") && strings.Contains(etype, "revoke"):
+		return "token_refresh_anomaly"
+	case strings.Contains(etype, "oauth") && strings.Contains(etype, "consent"):
+		return "oauth_consent"
+	case strings.Contains(etype, "user.session.start") || strings.Contains(etype, "user.authentication") || strings.Contains(etype, "user.session.launch"):
+		return "valid_account_login"
+	case strings.Contains(etype, "admin") && strings.Contains(etype, "role"):
+		return "new_admin_role"
+	case strings.HasPrefix(etype, "user.lifecycle"):
 		return "iam_change"
-	case strings.HasPrefix(eventType, "group.user_membership"):
-		return "iam_change"
-	case strings.HasPrefix(eventType, "policy.rule"):
+	case strings.HasPrefix(etype, "group.user_membership"):
+		return "admin_group_change"
+	case strings.HasPrefix(etype, "policy.rule"):
 		return "policy_override"
 	default:
 		return eventType

@@ -1,18 +1,18 @@
 [
   {
-    "_time": "2026-02-05 03:00:00",
-    "source": "windows_event",
+    "_time": "2026-02-06T12:10:00Z",
+    "source": "cim",
     "user": "carol",
-    "host": "host-4",
-    "action": "token_manipulation",
-    "fields": {"event_code": "4672"}
+    "host": "host-3",
+    "action": "authentication",
+    "fields": {"signature": "login_success", "src": "10.0.0.10"}
   },
   {
-    "_time": "2026-02-05 03:01:00",
-    "source": "windows_event",
-    "user": "carol",
-    "host": "host-4",
-    "action": "admin_group_change",
-    "fields": {"group": "Administrators"}
+    "_time": "2026-02-06T12:12:00Z",
+    "source": "cim",
+    "user": "svc1",
+    "host": "app-10",
+    "action": "network_logon",
+    "fields": {"signature": "netlogon", "src": "10.0.0.5"}
   }
 ]

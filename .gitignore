@@ -1,0 +1,24 @@
+.DS_Store
+*.log
+*.tmp
+/tmp
+
+# Secrets / approvals / keys
+/data/*keypair*.json
+/data/*approval*.json
+/data/approvals.log
+/data/audit.log
+/data/signed_audit.log
+/data/report.json
+/data/state.json
+/data/*events.json
+/data/*_events.json
+/data/mitre_expansion_events.json
+/data/failures_events.json
+/data/batchA_events.json
+/data/batchB_events.json
+/data/admin_approval.json
+/data/admin_keypair.json
+
+/data/analyst_profiles.json
+/data/zero_trust_baseline.json
