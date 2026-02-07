@@ -116,11 +116,11 @@ func mapSplunkAuthType(action string, signature string, fields map[string]interf
 }
 
 func mapSplunkNetType(action string, transport string, destPort int, bytesOut int) string {
-	if destPort == 3389 || destPort == 445 || destPort == 5985 || destPort == 5986 || destPort == 22 {
-		return "new_inbound_admin_protocol"
-	}
 	if bytesOut > 10_000_000 {
 		return "large_outbound_transfer"
+	}
+	if destPort == 3389 || destPort == 445 || destPort == 5985 || destPort == 5986 || destPort == 22 {
+		return "new_inbound_admin_protocol"
 	}
 	return firstNonEmpty(action, transport, "network")
 }

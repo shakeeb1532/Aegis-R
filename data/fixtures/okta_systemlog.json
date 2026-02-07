@@ -26,5 +26,12 @@
     "actor": {"id": "okta-user-2", "displayName": "Ivy", "alternateId": "ivy@example.com"},
     "client": {"ipAddress": "203.0.113.57", "userAgent": "Chrome"},
     "target": [{"type": "App", "displayName": "ThirdPartyApp"}]
+  },
+  {
+    "eventType": "user.mfa.factor.reset",
+    "published": "2026-02-06T12:34:00Z",
+    "actor": {"id": "okta-user-3", "displayName": "Jill", "alternateId": "jill@example.com"},
+    "client": {"ipAddress": "203.0.113.58", "userAgent": "Chrome"},
+    "target": []
   }
 ]

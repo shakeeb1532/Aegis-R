@@ -84,6 +84,47 @@ func TestMappingSplunkAuth(t *testing.T) {
 	assertHasType(t, toLike(events), "password_spray")
 }
 
+func TestMappingSplunkNet(t *testing.T) {
+	root := testutil.RepoRoot(t)
+	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "splunk_cim_net.json"))
+	if err != nil {
+		t.Fatalf("read: %v", err)
+	}
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaSplunkNet})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	seen := toLike(events)
+	hasAdmin := false
+	hasExfil := false
+	for _, e := range seen {
+		if e.Type == "new_inbound_admin_protocol" {
+			hasAdmin = true
+		}
+		if e.Type == "large_outbound_transfer" {
+			hasExfil = true
+		}
+	}
+	if !hasAdmin || !hasExfil {
+		t.Fatalf("expected both admin protocol and large transfer; got admin=%v exfil=%v", hasAdmin, hasExfil)
+	}
+}
+
+func TestMappingCrowdStrike(t *testing.T) {
+	root := testutil.RepoRoot(t)
+	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "crowdstrike_fdr.json"))
+	if err != nil {
+		t.Fatalf("read: %v", err)
+	}
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaCrowdStrike})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	assertHasType(t, toLike(events), "lolbin_execution")
+	assertHasType(t, toLike(events), "registry_run_key")
+	assertHasType(t, toLike(events), "service_install")
+}
+
 func toLike(events []model.Event) []EventLike {
 	out := make([]EventLike, 0, len(events))
 	for _, e := range events {

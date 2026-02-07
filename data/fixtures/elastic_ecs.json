@@ -60,5 +60,19 @@
     "user": {"name": "frank"},
     "message": "Run key modified",
     "labels": {"ingest": "elastic"}
+  },
+  {
+    "@timestamp": "2026-02-06T12:24:00Z",
+    "event": {
+      "id": "elastic-5",
+      "action": "file_create",
+      "category": ["file"],
+      "type": ["creation"],
+      "kind": "event"
+    },
+    "host": {"name": "host-4"},
+    "user": {"name": "frank"},
+    "message": "Suspicious file created",
+    "labels": {"ingest": "elastic"}
   }
 ]
