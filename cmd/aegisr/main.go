@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -252,6 +253,7 @@ func loadReportFile(path string) (model.ReasoningReport, error) {
 	if err != nil {
 		return rep, err
 	}
+	data = stripLeadingStatus(data)
 	if err := json.Unmarshal(data, &rep); err == nil && len(rep.Results) > 0 {
 		return rep, nil
 	}
@@ -278,6 +280,14 @@ func confidenceBands(results []model.RuleResult) (int, int, int) {
 		}
 	}
 	return high, med, low
+}
+
+func stripLeadingStatus(data []byte) []byte {
+	idx := bytes.IndexByte(data, '{')
+	if idx == -1 {
+		return data
+	}
+	return data[idx:]
 }
 
 func writeText(path string, content string) {
