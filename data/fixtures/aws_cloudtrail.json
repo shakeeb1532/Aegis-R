@@ -24,5 +24,18 @@
     "userIdentity": {"userName": "secops"},
     "requestParameters": {"groupId": "sg-123", "ipProtocol": "tcp", "fromPort": 22, "toPort": 22},
     "responseElements": {}
+  },
+  {
+    "eventID": "ct-3",
+    "eventTime": "2026-02-06T12:37:00Z",
+    "eventSource": "iam.amazonaws.com",
+    "eventName": "UpdateAssumeRolePolicy",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "198.51.100.12",
+    "userAgent": "aws-cli",
+    "recipientAccountId": "123456789012",
+    "userIdentity": {"userName": "secops"},
+    "requestParameters": {"roleName": "AppRole"},
+    "responseElements": {}
   }
 ]

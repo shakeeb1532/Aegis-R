@@ -32,5 +32,33 @@
     "user": {"name": "frank"},
     "message": "New device login detected",
     "labels": {"ingest": "elastic"}
+  },
+  {
+    "@timestamp": "2026-02-06T12:22:00Z",
+    "event": {
+      "id": "elastic-3",
+      "action": "process_start",
+      "category": ["process"],
+      "type": ["start"],
+      "kind": "event"
+    },
+    "host": {"name": "host-4"},
+    "user": {"name": "frank"},
+    "message": "lsass.exe accessed by suspicious process",
+    "labels": {"ingest": "elastic"}
+  },
+  {
+    "@timestamp": "2026-02-06T12:23:00Z",
+    "event": {
+      "id": "elastic-4",
+      "action": "registry_run",
+      "category": ["registry"],
+      "type": ["change"],
+      "kind": "event"
+    },
+    "host": {"name": "host-4"},
+    "user": {"name": "frank"},
+    "message": "Run key modified",
+    "labels": {"ingest": "elastic"}
   }
 ]

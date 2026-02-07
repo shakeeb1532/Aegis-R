@@ -12,5 +12,19 @@
     "actor": {"id": "okta-user-1", "displayName": "Hank", "alternateId": "hank@example.com"},
     "client": {"ipAddress": "203.0.113.55", "userAgent": "Chrome"},
     "target": []
+  },
+  {
+    "eventType": "group.user_membership.add",
+    "published": "2026-02-06T12:32:00Z",
+    "actor": {"id": "okta-admin-1", "displayName": "Admin", "alternateId": "admin@example.com"},
+    "client": {"ipAddress": "203.0.113.56", "userAgent": "Chrome"},
+    "target": [{"type": "Group", "displayName": "Admins"}]
+  },
+  {
+    "eventType": "oauth2.consent.grant",
+    "published": "2026-02-06T12:33:00Z",
+    "actor": {"id": "okta-user-2", "displayName": "Ivy", "alternateId": "ivy@example.com"},
+    "client": {"ipAddress": "203.0.113.57", "userAgent": "Chrome"},
+    "target": [{"type": "App", "displayName": "ThirdPartyApp"}]
   }
 ]

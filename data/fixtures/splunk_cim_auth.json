@@ -10,5 +10,17 @@
     "app": "okta",
     "signature": "mfa disable",
     "fields": {"message": "impossible travel with mfa reset"}
+  },
+  {
+    "_time": "2026-02-06T12:26:00Z",
+    "user": "harry",
+    "src_user": "harry",
+    "dest_user": "harry",
+    "src": "198.51.100.6",
+    "dest": "idp-03",
+    "action": "password spray",
+    "app": "okta",
+    "signature": "password_spray",
+    "fields": {"message": "password spray detected"}
   }
 ]
