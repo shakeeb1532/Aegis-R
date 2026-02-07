@@ -225,13 +225,13 @@ go run ./cmd/aegisr ingest-inventory -in data/inventory -out data/env.json
 
 See `docs/inventory_schema.md` for the JSON schema per provider.
 
-Adapter scaffolding (API-ready, requires credentials):
+Live adapters (API-ready, requires credentials):
 
 ```bash
 go run ./cmd/aegisr inventory-adapter -provider aws -config data/inventory/config.json -out data/env.json
 ```
 
-AWS, Okta, Azure, and GCP adapters support live ingestion using standard credentials (AWS chain, Okta token, Azure client credentials, GCP ADC or service account).
+AWS, Okta, Azure, and GCP adapters support live ingestion using standard credentials (AWS chain, Okta token, Azure client credentials, GCP ADC or service account). Use `inventory-refresh` for one-shot refresh + drift, or `inventory-schedule` for continuous refreshes.
 
 Randomized scheduling to avoid fixed cadence targeting:
 
@@ -244,6 +244,18 @@ go run ./cmd/aegisr inventory-schedule \\
   -drift drift.json \\
   -interval 6h \\
   -jitter 30m
+```
+
+One-shot refresh + drift report:
+
+```bash
+go run ./cmd/aegisr inventory-refresh \\
+  -provider all \\
+  -config data/inventory/config.json \\
+  -base data/env.json \\
+  -out data/env.json \\
+  -drift drift.json \\
+  -require-approval
 ```
 
 Vendor field normalization details are in:
