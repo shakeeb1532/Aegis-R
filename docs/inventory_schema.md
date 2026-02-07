@@ -19,6 +19,18 @@ To detect drift versus an existing `env.json`:
 go run ./cmd/aegisr inventory-drift -base data/env.json -in data/inventory -out drift.json
 ```
 
+To refresh from live adapters and write a drift request if changes are detected:
+
+```bash
+go run ./cmd/aegisr inventory-refresh -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json -require-approval
+```
+
+To schedule randomized refreshes (avoid fixed cadence):
+
+```bash
+go run ./cmd/aegisr inventory-schedule -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json -interval 6h -jitter 30m
+```
+
 ## AWS (`aws.json`)
 ```json
 {

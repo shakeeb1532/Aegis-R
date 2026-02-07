@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -10,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"math/big"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -112,6 +114,10 @@ func main() {
 		handleInventoryDrift(args[1:])
 	case "inventory-adapter":
 		handleInventoryAdapter(args[1:])
+	case "inventory-refresh":
+		handleInventoryRefresh(args[1:])
+	case "inventory-schedule":
+		handleInventorySchedule(args[1:])
 	case "ui":
 		handleUI(args[1:])
 	case "init-scan":
@@ -155,6 +161,8 @@ func usage() {
 	fmt.Println("  ingest-inventory -in data/inventory -out data/env.json")
 	fmt.Println("  inventory-drift -base data/env.json -in data/inventory -out drift.json")
 	fmt.Println("  inventory-adapter -provider aws|okta|azure|gcp -config data/inventory/config.json -out data/env.json")
+	fmt.Println("  inventory-refresh -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json")
+	fmt.Println("  inventory-schedule -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json -interval 6h -jitter 30m")
 	fmt.Println("  ui -addr :9090 -audit audit.log -signed-audit signed_audit.log -approvals approvals.log -report report.json -profiles data/analyst_profiles.json -disagreements data/disagreements.log -key keypair.json -basic-user user -basic-pass pass")
 	fmt.Println("  init-scan -baseline data/zero_trust_baseline.json")
 	fmt.Println("  scan -baseline data/zero_trust_baseline.json [-override-approval admin_approval.json]")
@@ -1749,6 +1757,157 @@ func handleInventoryAdapter(args []string) {
 	}
 	writeJSON(*out, environment)
 	fmt.Printf("Environment written: %s\n", *out)
+}
+
+func handleInventoryRefresh(args []string) {
+	fs := flag.NewFlagSet("inventory-refresh", flag.ExitOnError)
+	provider := fs.String("provider", "all", "adapter provider (aws|okta|azure|gcp|all)")
+	configPath := fs.String("config", "", "adapter config json (optional)")
+	in := fs.String("in", "", "inventory directory or file (optional)")
+	basePath := fs.String("base", "", "existing env.json (optional)")
+	out := fs.String("out", "data/env.json", "output environment json")
+	driftPath := fs.String("drift", "drift.json", "drift report output")
+	requestPath := fs.String("drift-request", "drift_request.json", "drift approval request output")
+	requireApproval := fs.Bool("require-approval", false, "write drift request when drift detected")
+	if err := fs.Parse(args); err != nil {
+		fatal(err)
+	}
+
+	var inv inventory.Inventory
+	if *in != "" {
+		loaded, err := inventory.Load(*in)
+		if err != nil {
+			fatal(err)
+		}
+		inv = loaded
+	} else {
+		if *configPath == "" {
+			fatal(errors.New("-config or -in is required"))
+		}
+		cfg, err := inventory.LoadConfig(*configPath)
+		if err != nil {
+			fatal(err)
+		}
+		inv, err = loadFromProviders(*provider, cfg)
+		if err != nil {
+			fatal(err)
+		}
+	}
+
+	environment := inventory.BuildEnvironment(inv)
+	if err := validate.Environment(environment); err != nil {
+		fatal(validate.Must(err))
+	}
+	writeJSON(*out, environment)
+	fmt.Printf("Environment written: %s\n", *out)
+
+	if *basePath != "" {
+		baseEnv, err := env.Load(*basePath)
+		if err != nil {
+			fatal(err)
+		}
+		drift := inventory.DiffEnv(baseEnv, environment)
+		writeJSON(*driftPath, drift)
+		fmt.Printf("Drift report written: %s\n", *driftPath)
+		if *requireApproval && hasDrift(drift) {
+			req := inventory.NewDriftRequest(*driftPath, drift)
+			writeJSON(*requestPath, req)
+			fmt.Printf("Drift request written: %s\n", *requestPath)
+		}
+	}
+}
+
+func handleInventorySchedule(args []string) {
+	fs := flag.NewFlagSet("inventory-schedule", flag.ExitOnError)
+	provider := fs.String("provider", "all", "adapter provider (aws|okta|azure|gcp|all)")
+	configPath := fs.String("config", "", "adapter config json")
+	basePath := fs.String("base", "", "existing env.json (optional)")
+	out := fs.String("out", "data/env.json", "output environment json")
+	driftPath := fs.String("drift", "drift.json", "drift report output")
+	requestPath := fs.String("drift-request", "drift_request.json", "drift approval request output")
+	interval := fs.Duration("interval", 6*time.Hour, "refresh interval")
+	jitter := fs.Duration("jitter", 30*time.Minute, "random jitter added to interval")
+	if err := fs.Parse(args); err != nil {
+		fatal(err)
+	}
+	if *configPath == "" {
+		fatal(errors.New("-config is required"))
+	}
+	cfg, err := inventory.LoadConfig(*configPath)
+	if err != nil {
+		fatal(err)
+	}
+	for {
+		inv, err := loadFromProviders(*provider, cfg)
+		if err != nil {
+			fmt.Printf("inventory refresh error: %v\n", err)
+		} else {
+			environment := inventory.BuildEnvironment(inv)
+			if err := validate.Environment(environment); err != nil {
+				fmt.Printf("inventory validate error: %v\n", err)
+			} else {
+				writeJSON(*out, environment)
+				if *basePath != "" {
+					baseEnv, err := env.Load(*basePath)
+					if err == nil {
+						drift := inventory.DiffEnv(baseEnv, environment)
+						writeJSON(*driftPath, drift)
+						if hasDrift(drift) {
+							req := inventory.NewDriftRequest(*driftPath, drift)
+							writeJSON(*requestPath, req)
+						}
+					}
+				}
+			}
+		}
+		sleepWithJitter(*interval, *jitter)
+	}
+}
+
+func loadFromProviders(provider string, cfg inventory.AdapterConfig) (inventory.Inventory, error) {
+	if provider == "all" {
+		out := inventory.Inventory{}
+		for _, p := range []string{"aws", "okta", "azure", "gcp"} {
+			adapter, err := inventory.NewAdapter(p)
+			if err != nil {
+				return out, err
+			}
+			inv, err := adapter.Load(cfg)
+			if err != nil {
+				return out, err
+			}
+			out = inventory.MergeInventory(out, inv)
+		}
+		return out, nil
+	}
+	adapter, err := inventory.NewAdapter(provider)
+	if err != nil {
+		return inventory.Inventory{}, err
+	}
+	return adapter.Load(cfg)
+}
+
+func hasDrift(drift inventory.DriftReport) bool {
+	return len(drift.AddedHosts)+len(drift.RemovedHosts)+len(drift.AddedIdentities)+len(drift.RemovedIdentites)+len(drift.AddedTrusts)+len(drift.RemovedTrusts) > 0
+}
+
+func sleepWithJitter(interval time.Duration, jitter time.Duration) {
+	wait := interval
+	if jitter > 0 {
+		wait += randomJitter(jitter)
+	}
+	time.Sleep(wait)
+}
+
+func randomJitter(max time.Duration) time.Duration {
+	if max <= 0 {
+		return 0
+	}
+	n, err := rand.Int(rand.Reader, big.NewInt(int64(max)))
+	if err != nil {
+		return 0
+	}
+	return time.Duration(n.Int64())
 }
 
 func handleUI(args []string) {

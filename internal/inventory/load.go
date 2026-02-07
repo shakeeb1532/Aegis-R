@@ -112,3 +112,8 @@ func merge(a Inventory, b Inventory) Inventory {
 	}
 	return a
 }
+
+// MergeInventory exposes merge logic for multi-provider refresh.
+func MergeInventory(a Inventory, b Inventory) Inventory {
+	return merge(a, b)
+}
