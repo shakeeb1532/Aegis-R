@@ -70,6 +70,15 @@ func classifySentinel(e sentinelCSL) string {
 	if hasField(e.Fields, "ServiceName") || hasField(e.Fields, "ServiceFileName") {
 		return "service_install"
 	}
+	act := strings.ToLower(firstNonEmpty(e.Activity, e.DeviceAction, ""))
+	if act != "" {
+		if containsAny(act, "authenticationsuccess", "authentication success", "signin success", "sign-in success", "login success") {
+			return "authentication_success"
+		}
+		if containsAny(act, "authenticationfailure", "authentication failure", "signin failure", "sign-in failure", "login failure") {
+			return "authentication_failure"
+		}
+	}
 	return firstNonEmpty(e.Activity, e.DeviceAction, "sentinel_event")
 }
 

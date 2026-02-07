@@ -166,6 +166,34 @@ func TestMappingMDE(t *testing.T) {
 	assertHasType(t, toLike(events), "registry_run_key")
 }
 
+func TestMappingMDEIdentity(t *testing.T) {
+	root := testutil.RepoRoot(t)
+	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "mde_identity.json"))
+	if err != nil {
+		t.Fatalf("read: %v", err)
+	}
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaMDE, Kind: "identity"})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	assertHasType(t, toLike(events), "mfa_disabled")
+	assertHasType(t, toLike(events), "admin_group_change")
+	assertHasType(t, toLike(events), "token_refresh_anomaly")
+}
+
+func TestMappingSentinelAuth(t *testing.T) {
+	root := testutil.RepoRoot(t)
+	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "sentinel_csl.json"))
+	if err != nil {
+		t.Fatalf("read: %v", err)
+	}
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaSentinelCSL})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	assertHasType(t, toLike(events), "authentication_success")
+}
+
 func toLike(events []model.Event) []EventLike {
 	out := make([]EventLike, 0, len(events))
 	for _, e := range events {

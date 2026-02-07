@@ -8,5 +8,25 @@
     "ReportId": "mde-id-1",
     "ActionType": "MFAReset",
     "AdditionalFields": {"Actor": "admin1"}
+  },
+  {
+    "Timestamp": "2026-02-06T12:19:00Z",
+    "DeviceName": "idp-01",
+    "AccountName": "edgar",
+    "TargetAccountUpn": "edgar@example.com",
+    "AccountDisplayName": "Edgar Example",
+    "ReportId": "mde-id-2",
+    "ActionType": "AddUserToGroup",
+    "AdditionalFields": {"Group": "Admins"}
+  },
+  {
+    "Timestamp": "2026-02-06T12:20:00Z",
+    "DeviceName": "idp-01",
+    "AccountName": "edgar",
+    "TargetAccountUpn": "edgar@example.com",
+    "AccountDisplayName": "Edgar Example",
+    "ReportId": "mde-id-3",
+    "ActionType": "OAuthGrant",
+    "AdditionalFields": {"App": "ThirdPartyApp"}
   }
 ]
