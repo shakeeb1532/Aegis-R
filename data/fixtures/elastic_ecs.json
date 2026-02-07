@@ -116,5 +116,19 @@
     "user": {"name": "frank"},
     "message": "Registry value changed",
     "labels": {"ingest": "elastic"}
+  },
+  {
+    "@timestamp": "2026-02-06T12:28:00Z",
+    "event": {
+      "id": "elastic-9",
+      "action": "mfa_disable",
+      "category": ["authentication"],
+      "type": ["change"],
+      "kind": "event"
+    },
+    "host": {"name": "host-4"},
+    "user": {"name": "frank"},
+    "message": "MFA disabled",
+    "labels": {"ingest": "elastic"}
   }
 ]

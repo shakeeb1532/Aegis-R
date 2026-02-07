@@ -76,5 +76,18 @@
     "userIdentity": {"userName": "secops"},
     "requestParameters": {"groupName": "Admins", "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"},
     "responseElements": {}
+  },
+  {
+    "eventID": "ct-7",
+    "eventTime": "2026-02-06T12:41:00Z",
+    "eventSource": "sts.amazonaws.com",
+    "eventName": "AssumeRole",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "198.51.100.16",
+    "userAgent": "aws-cli",
+    "recipientAccountId": "123456789012",
+    "userIdentity": {"userName": "secops"},
+    "requestParameters": {"roleArn": "arn:aws:iam::123456789012:role/AppRole"},
+    "responseElements": {}
   }
 ]

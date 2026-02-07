@@ -47,5 +47,19 @@
     "actor": {"id": "okta-user-4", "displayName": "Kyle", "alternateId": "kyle@example.com"},
     "client": {"ipAddress": "203.0.113.59", "userAgent": "Chrome"},
     "target": []
+  },
+  {
+    "eventType": "policy.rule.update",
+    "published": "2026-02-06T12:37:00Z",
+    "actor": {"id": "okta-admin-2", "displayName": "PolicyAdmin", "alternateId": "policy@example.com"},
+    "client": {"ipAddress": "203.0.113.60", "userAgent": "Chrome"},
+    "target": [{"type": "PolicyRule", "displayName": "MFA Rule"}]
+  },
+  {
+    "eventType": "user.lifecycle.deactivate",
+    "published": "2026-02-06T12:38:00Z",
+    "actor": {"id": "okta-admin-2", "displayName": "PolicyAdmin", "alternateId": "policy@example.com"},
+    "client": {"ipAddress": "203.0.113.60", "userAgent": "Chrome"},
+    "target": [{"type": "User", "displayName": "old-user@example.com"}]
   }
 ]
