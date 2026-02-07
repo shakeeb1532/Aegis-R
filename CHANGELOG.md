@@ -21,6 +21,7 @@
 - File-based state ingestion (AWS/Okta/Azure/GCP) with schema docs and CLI `ingest-inventory`.
 - Drift detection against existing env.json with `inventory-drift`.
 - API adapter scaffolding for AWS/Okta/Azure/GCP (config schema + CLI).
+- AWS live inventory adapter (IAM + EC2 + SGs + VPCs + subnets).
 - Baseline validation report (`docs/BASELINE_REPORT.md`, `docs/BASELINE_REPORT.pdf`).
 
 ### Changed

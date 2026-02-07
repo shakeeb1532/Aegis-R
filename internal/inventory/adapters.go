@@ -61,12 +61,6 @@ func NewAdapter(name string) (Adapter, error) {
 type AWSAdapter struct{}
 
 func (AWSAdapter) Name() string { return "aws" }
-func (AWSAdapter) Load(cfg AdapterConfig) (Inventory, error) {
-	if cfg.AWS.Region == "" {
-		return Inventory{}, errors.New("aws adapter requires region")
-	}
-	return Inventory{}, errors.New("aws adapter not implemented; use file-based inventory")
-}
 
 type OktaAdapter struct{}
 
