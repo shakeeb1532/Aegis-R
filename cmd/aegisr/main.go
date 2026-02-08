@@ -381,6 +381,18 @@ func renderEvalMarkdown(report eval.Report) string {
 			fmt.Fprintf(buf, "\nMore mismatches not shown: %d\n", len(report.Mismatches)-limit)
 		}
 	}
+	if len(report.Calibration) > 0 {
+		fmt.Fprintf(buf, "\n## Calibration\n\n")
+		fmt.Fprintf(buf, "| Bin | Count | Avg Confidence | Accuracy |\n")
+		fmt.Fprintf(buf, "| --- | --- | --- | --- |\n")
+		for _, b := range report.Calibration {
+			label := fmt.Sprintf("%.2f-%.2f", b.Lower, b.Upper)
+			fmt.Fprintf(buf, "| %s | %d | %.3f | %.3f |\n", label, b.Count, b.AvgConfidence, b.Accuracy)
+		}
+		if report.CalibrationNote != "" {
+			fmt.Fprintf(buf, "\nNote: %s\n", report.CalibrationNote)
+		}
+	}
 	return buf.String()
 }
 
@@ -397,6 +409,76 @@ func renderConfidenceMarkdown(high int, med int, low int) string {
 	fmt.Fprintf(buf, "- Confidence is heuristic and rule-based (not calibrated ML).\n")
 	fmt.Fprintf(buf, "- Use this banding for coarse calibration checks and audit summaries.\n")
 	return buf.String()
+}
+
+func buildDecisionRecords(results []model.RuleResult) []audit.DecisionRecord {
+	out := make([]audit.DecisionRecord, 0, len(results))
+	for _, r := range results {
+		out = append(out, audit.DecisionRecord{
+			RuleID:           r.RuleID,
+			Verdict:          verdictForResult(r),
+			DecisionLabel:    r.DecisionLabel,
+			ReasonCode:       r.ReasonCode,
+			Confidence:       r.Confidence,
+			ThreadID:         r.ThreadID,
+			ThreadConfidence: r.ThreadConfidence,
+			CacheHit:         r.CacheHit,
+		})
+	}
+	return out
+}
+
+func verdictForResult(r model.RuleResult) string {
+	if r.Feasible {
+		return "confirmed"
+	}
+	if len(r.MissingEvidence) > 0 {
+		return "incomplete"
+	}
+	return "impossible"
+}
+
+func countDecisionLabels(results []model.RuleResult) map[string]int {
+	out := map[string]int{}
+	for _, r := range results {
+		label := r.DecisionLabel
+		if label == "" {
+			label = "unset"
+		}
+		out[label]++
+	}
+	return out
+}
+
+func countVerdicts(results []model.RuleResult) map[string]int {
+	out := map[string]int{}
+	for _, r := range results {
+		out[verdictForResult(r)]++
+	}
+	return out
+}
+
+func countCacheHits(results []model.RuleResult) int {
+	total := 0
+	for _, r := range results {
+		if r.CacheHit {
+			total++
+		}
+	}
+	return total
+}
+
+func renderCounts(m map[string]int) string {
+	keys := make([]string, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	parts := make([]string, 0, len(keys))
+	for _, k := range keys {
+		parts = append(parts, fmt.Sprintf("%s:%d", k, m[k]))
+	}
+	return strings.Join(parts, ",")
 }
 
 func handleIngest(args []string) {
@@ -1270,6 +1352,7 @@ func handleAssess(args []string) {
 	approvalPath := fs.String("approval", "", "approval file (single or dual)")
 	adminApproval := fs.String("admin-approval", "", "admin approval for gated rule packs")
 	policyPath := fs.String("policy", "", "governance policy json (optional)")
+	policyHistoryPath := fs.String("policy-history", "", "policy history json (optional)")
 	constraintsPath := fs.String("constraints", "", "reasoning constraints json (optional)")
 	rulesPath := fs.String("rules", "", "rules json (optional)")
 	format := fs.String("format", "json", "output format: cli or json")
@@ -1337,7 +1420,21 @@ func handleAssess(args []string) {
 
 	var decision governance.Decision
 	var policy governance.Policy
-	if *policyPath != "" {
+	if *policyHistoryPath != "" {
+		history, err := governance.LoadHistory(*policyHistoryPath)
+		if err != nil {
+			fatal(err)
+		}
+		active, err := governance.ResolveActive(history, time.Now().UTC())
+		if err != nil {
+			fatal(err)
+		}
+		if err := validate.Policy(active); err != nil {
+			fatal(validate.Must(err))
+		}
+		policy = active
+	}
+	if policy.ID == "" && *policyPath != "" {
 		pol, err := governance.Load(*policyPath)
 		if err != nil {
 			fatal(err)
@@ -1346,7 +1443,9 @@ func handleAssess(args []string) {
 			fatal(validate.Must(err))
 		}
 		policy = pol
-		decision = governance.Evaluate(pol, out.DriftSignals)
+	}
+	if policy.ID != "" {
+		decision = governance.Evaluate(policy, out.DriftSignals)
 		if decision.RequireDual {
 			if *approvalPath == "" {
 				fatal(errors.New("dual approval required by policy"))
@@ -1369,10 +1468,29 @@ func handleAssess(args []string) {
 		Summary:   out.Summary,
 		Findings:  out.Findings,
 		Reasoning: out.State.ReasoningChain,
+		Decisions: buildDecisionRecords(out.Reasoning.Results),
 		Metadata: map[string]string{
 			"rules_source": *rulesPath,
 			"env_source":   *envPath,
 		},
+	}
+	if policy.ID != "" {
+		artifact.Metadata["policy_id"] = policy.ID
+		artifact.Metadata["policy_version"] = policy.Version
+		if policy.UpdatedAt != "" {
+			artifact.Metadata["policy_updated_at"] = policy.UpdatedAt
+		}
+		if policy.ActiveFrom != "" {
+			artifact.Metadata["policy_active_from"] = policy.ActiveFrom
+		}
+		if len(policy.Supersedes) > 0 {
+			artifact.Metadata["policy_supersedes"] = strings.Join(policy.Supersedes, ",")
+		}
+	}
+	if len(out.Reasoning.Results) > 0 {
+		artifact.Metadata["decision_labels"] = renderCounts(countDecisionLabels(out.Reasoning.Results))
+		artifact.Metadata["verdicts"] = renderCounts(countVerdicts(out.Reasoning.Results))
+		artifact.Metadata["decision_cache_hits"] = fmt.Sprintf("%d", countCacheHits(out.Reasoning.Results))
 	}
 	if decision.RequireDual {
 		artifact.Metadata["policy_dual_required"] = "true"
@@ -1635,6 +1753,13 @@ func handleEvaluate(args []string) {
 		fmt.Printf("Accuracy: %.3f\n", rep.Accuracy)
 		for cls, m := range rep.ByClass {
 			fmt.Printf("%s precision=%.3f recall=%.3f\n", cls, m.Precision, m.Recall)
+		}
+		if len(rep.Calibration) > 0 {
+			fmt.Println("Calibration:")
+			for _, b := range rep.Calibration {
+				label := fmt.Sprintf("%.2f-%.2f", b.Lower, b.Upper)
+				fmt.Printf("%s count=%d avg_conf=%.3f acc=%.3f\n", label, b.Count, b.AvgConfidence, b.Accuracy)
+			}
 		}
 		if len(rep.Mismatches) > 0 {
 			fmt.Printf("Mismatches: %d\n", len(rep.Mismatches))

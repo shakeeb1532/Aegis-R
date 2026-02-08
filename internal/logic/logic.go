@@ -402,6 +402,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 	for _, e := range events {
 		index[e.Type] = append(index[e.Type], e)
 	}
+	now := time.Now().UTC()
 	facts := make(map[string]bool)
 	// derive high-level facts from evidence
 	facts["initial_access"] = len(index["email_attachment_open"]) > 0 && len(index["macro_execution"]) > 0
@@ -420,10 +421,18 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		missing := []model.EvidenceRequirement{}
 		supporting := []model.Event{}
 		supportingIDs := []string{}
+		presentReqs := 0
+		coverageScore := 0.0
+		evidenceStrength := 0.0
+		recencyAvg := 0.0
 		for _, req := range rule.Requirements {
 			if len(index[req.Type]) == 0 {
 				missing = append(missing, req)
 			} else {
+				presentReqs++
+				strength, recency := requirementStrength(index[req.Type], now)
+				evidenceStrength += strength
+				recencyAvg += recency
 				if includeEvidence {
 					supporting = append(supporting, index[req.Type]...)
 				}
@@ -434,6 +443,13 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 				}
 			}
 		}
+		if len(rule.Requirements) > 0 {
+			coverageScore = float64(presentReqs) / float64(len(rule.Requirements))
+		}
+		if presentReqs > 0 {
+			evidenceStrength = evidenceStrength / float64(presentReqs)
+			recencyAvg = recencyAvg / float64(presentReqs)
+		}
 		precondOK := true
 		for _, p := range rule.Preconds {
 			if !facts[p] {
@@ -441,12 +457,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 			}
 		}
 		feasible := precondOK && len(missing) == 0
-		confidence := 0.4
-		if feasible {
-			confidence = 0.85
-		} else if precondOK && len(missing) > 0 {
-			confidence = 0.55
-		}
+		confidence := confidenceScore(coverageScore, evidenceStrength, precondOK, len(missing) > 0)
 		if feasible && rule.Constraints.MinConfidence > 0 && confidence < rule.Constraints.MinConfidence {
 			feasible = false
 			missing = append(missing, model.EvidenceRequirement{
@@ -470,6 +481,16 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		} else if !precondOK {
 			gapNarrative = "Preconditions are not satisfied in the current environment state."
 		}
+		factors := map[string]float64{
+			"coverage":          coverageScore,
+			"evidence_strength": evidenceStrength,
+			"recency":           recencyAvg,
+		}
+		if precondOK {
+			factors["preconditions"] = 1
+		} else {
+			factors["preconditions"] = 0
+		}
 		narrative = append(narrative, narrativeLine(rule, feasible, precondOK, missing))
 		results = append(results, model.RuleResult{
 			RuleID:             rule.ID,
@@ -477,6 +498,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 			Feasible:           feasible,
 			PrecondOK:          precondOK,
 			Confidence:         confidence,
+			ConfidenceFactors:  factors,
 			MissingEvidence:    missing,
 			SupportingEvents:   supporting,
 			SupportingEventIDs: supportingIDs,
@@ -490,8 +512,8 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		Summary:         "Feasibility reasoning over evidence and preconditions.",
 		Results:         results,
 		Narrative:       narrative,
-		ConfidenceModel: "heuristic",
-		ConfidenceNote:  "Rule-based heuristic confidence; not calibrated.",
+		ConfidenceModel: "evidence_weighted_v2",
+		ConfidenceNote:  "Evidence coverage, recency, and signal strength heuristic; not calibrated.",
 	}
 }
 
@@ -506,6 +528,84 @@ func reasonCode(precondOK bool, missing []model.EvidenceRequirement, eventCount 
 	default:
 		return ""
 	}
+}
+
+func requirementStrength(events []model.Event, now time.Time) (float64, float64) {
+	if len(events) == 0 {
+		return 0, 0
+	}
+	totalStrength := 0.0
+	totalRecency := 0.0
+	for _, ev := range events {
+		conf := eventConfidence(ev)
+		rec := recencyScore(ev, now)
+		strength := (conf + rec) / 2
+		totalStrength += strength
+		totalRecency += rec
+	}
+	return totalStrength / float64(len(events)), totalRecency / float64(len(events))
+}
+
+func eventConfidence(ev model.Event) float64 {
+	if ev.Details == nil {
+		return 0.6
+	}
+	if v, ok := ev.Details["confidence"]; ok {
+		switch t := v.(type) {
+		case float64:
+			return clampScore(t)
+		case int:
+			return clampScore(float64(t))
+		}
+	}
+	return 0.6
+}
+
+func recencyScore(ev model.Event, now time.Time) float64 {
+	if ev.Time.IsZero() {
+		return 0.5
+	}
+	age := now.Sub(ev.Time)
+	switch {
+	case age <= time.Hour:
+		return 1.0
+	case age <= 6*time.Hour:
+		return 0.9
+	case age <= 24*time.Hour:
+		return 0.75
+	case age <= 72*time.Hour:
+		return 0.55
+	case age <= 7*24*time.Hour:
+		return 0.35
+	default:
+		return 0.2
+	}
+}
+
+func confidenceScore(coverage float64, evidenceStrength float64, precondOK bool, hasMissing bool) float64 {
+	precond := 0.0
+	if precondOK {
+		precond = 1.0
+	}
+	support := coverage * evidenceStrength
+	score := 0.15 + 0.65*support + 0.2*precond
+	if hasMissing {
+		score -= 0.1
+	}
+	if !precondOK {
+		score -= 0.1
+	}
+	return clampScore(score)
+}
+
+func clampScore(v float64) float64 {
+	if v < 0.05 {
+		return 0.05
+	}
+	if v > 0.98 {
+		return 0.98
+	}
+	return v
 }
 
 func ApplyConstraints(rep *model.ReasoningReport, constraints []governance.ReasoningConstraint) {

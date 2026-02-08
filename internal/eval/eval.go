@@ -40,11 +40,13 @@ type ClassMetrics struct {
 }
 
 type Report struct {
-	Total      int                      `json:"total"`
-	Accuracy   float64                  `json:"accuracy"`
-	ByClass    map[Outcome]ClassMetrics `json:"by_class"`
-	ByRuleID   map[string]float64       `json:"accuracy_by_rule"`
-	Mismatches []Mismatch               `json:"mismatches"`
+	Total           int                      `json:"total"`
+	Accuracy        float64                  `json:"accuracy"`
+	ByClass         map[Outcome]ClassMetrics `json:"by_class"`
+	ByRuleID        map[string]float64       `json:"accuracy_by_rule"`
+	Mismatches      []Mismatch               `json:"mismatches"`
+	Calibration     []CalibrationBin         `json:"calibration"`
+	CalibrationNote string                   `json:"calibration_note"`
 }
 
 type Mismatch struct {
@@ -52,6 +54,15 @@ type Mismatch struct {
 	RuleID     string  `json:"rule_id"`
 	Expected   Outcome `json:"expected"`
 	Actual     Outcome `json:"actual"`
+}
+
+type CalibrationBin struct {
+	Lower          float64 `json:"lower"`
+	Upper          float64 `json:"upper"`
+	Count          int     `json:"count"`
+	Correct        int     `json:"correct"`
+	Accuracy       float64 `json:"accuracy"`
+	AvgConfidence  float64 `json:"avg_confidence"`
 }
 
 func LoadScenarios(path string) (ScenariosFile, error) {

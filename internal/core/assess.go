@@ -38,7 +38,10 @@ func AssessWithMetrics(events []model.Event, rules []logic.Rule, environment env
 	envelopes := progression.Normalize(events, environment)
 	progression.Update(envelopes, &st)
 	progression.ApplyWindowAndDecay(&st, 24*time.Hour)
+	progression.ApplyPositionDecay(&st, time.Now().UTC(), 24*time.Hour)
 	progression.OverlayGraph(environment, &st)
+	st.PositionSummaries = progression.BuildPositionSummaries(st.Progression)
+	st.PathScores, st.PathScoreOverall = progression.BuildPathScores(st.Progression, time.Now().UTC())
 
 	index := make(map[string][]model.Event)
 	for _, e := range events {
@@ -58,6 +61,18 @@ func AssessWithMetrics(events []model.Event, rules []logic.Rule, environment env
 			st.ReasoningChain = append(st.ReasoningChain, fmt.Sprintf("LSASS access by %s implies credential exposure", e.User))
 		}
 	}
+	for _, e := range index["token_manipulation"] {
+		if e.User != "" {
+			st.CompromisedUsers[e.User] = true
+			st.ReasoningChain = append(st.ReasoningChain, fmt.Sprintf("Token manipulation by %s implies identity compromise", e.User))
+		}
+	}
+	for _, e := range index["admin_group_change"] {
+		if e.User != "" {
+			st.CompromisedUsers[e.User] = true
+			st.ReasoningChain = append(st.ReasoningChain, fmt.Sprintf("Admin group change for %s implies identity compromise", e.User))
+		}
+	}
 	for _, e := range index["remote_service_creation"] {
 		if e.Host != "" {
 			st.CompromisedHosts[e.Host] = true
@@ -72,6 +87,9 @@ func AssessWithMetrics(events []model.Event, rules []logic.Rule, environment env
 		if st.CompromisedHosts[h.ID] {
 			st.ReachableHosts[h.ID] = true
 		}
+	}
+	for user := range st.CompromisedUsers {
+		st.ReachableIdentities[user] = true
 	}
 
 	graph := env.BuildGraph(environment)
@@ -146,6 +164,7 @@ func AssessWithMetrics(events []model.Event, rules []logic.Rule, environment env
 		eventIndex[e.Type] = append(eventIndex[e.Type], e)
 	}
 
+	applyReachabilityGates(&rep, &st)
 	applyDecisionCacheAndThreads(&rep, events, &st, reqs, eventIndex)
 
 	return Output{
@@ -491,6 +510,122 @@ func zonesFromReachable(reachable map[string]bool, zoneOf map[string]string) []s
 func trimPrefix(val string, prefix string) string {
 	if len(val) >= len(prefix) && val[:len(prefix)] == prefix {
 		return val[len(prefix):]
+	}
+	return ""
+}
+
+var reachabilityGates = map[string]string{
+	"TA0008.LATERAL":             "host",
+	"TA0008.ADMIN_PROTOCOL_LATERAL": "host",
+	"TA0004.PRIVESCA":            "identity",
+	"TA0011.C2":                  "host",
+	"TA0011.APP_LAYER_C2":        "host",
+	"TA0010.EXFIL":               "host",
+	"TA0010.EXFIL_WEB":           "host",
+	"TA0010.BULK_EXFIL":          "host",
+	"TA0003.PERSIST":             "host",
+	"TA0003.PERSIST_EXTENDED":    "host",
+	"TA0040.IMPACT_ENCRYPT":      "host",
+	"TA0003.MAILBOX_PERSIST":     "identity",
+	"TA0004.ACCOUNT_MANIP":       "identity",
+	"TA0004.MFA_BYPASS":          "identity",
+}
+
+func applyReachabilityGates(rep *model.ReasoningReport, st *state.AttackState) {
+	if rep == nil || st == nil {
+		return
+	}
+	for i := range rep.Results {
+		r := &rep.Results[i]
+		req, ok := reachabilityGates[r.RuleID]
+		if !ok {
+			continue
+		}
+		status, note := reachabilityStatus(r, st, req)
+		if status == "" || status == "ok" {
+			continue
+		}
+		r.ReachabilityStatus = status
+		r.ReachabilityNote = note
+		addReachabilityGap(r, req)
+		if r.Feasible {
+			r.Feasible = false
+		}
+		if status == "unknown" && (r.ReasonCode == "" || r.ReasonCode == "evidence_gap" || r.ReasonCode == "precond_missing") {
+			r.ReasonCode = "environment_unknown"
+		}
+	}
+}
+
+func reachabilityStatus(r *model.RuleResult, st *state.AttackState, req string) (string, string) {
+	switch req {
+	case "host":
+		host := firstHost(r.SupportingEvents)
+		if host == "" {
+			if len(st.ReachableHosts) == 0 {
+				return "unknown", "No reachable hosts in attack graph."
+			}
+			return "unknown", "Rule lacks host context for reachability."
+		}
+		if len(st.ReachableHosts) == 0 {
+			return "unknown", "No reachable hosts in attack graph."
+		}
+		if st.ReachableHosts[host] {
+			return "ok", ""
+		}
+		return "unreachable", fmt.Sprintf("Host %s not reachable from current attacker position", host)
+	case "identity":
+		user := firstUser(r.SupportingEvents)
+		if user == "" {
+			if len(st.ReachableIdentities) == 0 {
+				return "unknown", "No reachable identities in attack graph."
+			}
+			return "unknown", "Rule lacks identity context for reachability."
+		}
+		if len(st.ReachableIdentities) == 0 {
+			return "unknown", "No reachable identities in attack graph."
+		}
+		if st.ReachableIdentities[user] {
+			return "ok", ""
+		}
+		return "unreachable", fmt.Sprintf("Identity %s not reachable from current attacker position", user)
+	default:
+		return "", ""
+	}
+}
+
+func addReachabilityGap(r *model.RuleResult, req string) {
+	missingType := "reachable_host"
+	desc := "Reachable host path in environment graph"
+	if req == "identity" {
+		missingType = "reachable_identity"
+		desc = "Reachable identity path in environment graph"
+	}
+	for _, m := range r.MissingEvidence {
+		if m.Type == missingType {
+			return
+		}
+	}
+	r.MissingEvidence = append(r.MissingEvidence, model.EvidenceRequirement{
+		Type:        missingType,
+		Description: desc,
+	})
+}
+
+func firstHost(events []model.Event) string {
+	for _, e := range events {
+		if e.Host != "" {
+			return e.Host
+		}
+	}
+	return ""
+}
+
+func firstUser(events []model.Event) string {
+	for _, e := range events {
+		if e.User != "" {
+			return e.User
+		}
 	}
 	return ""
 }

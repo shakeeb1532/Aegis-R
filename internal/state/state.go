@@ -18,6 +18,9 @@ type AttackState struct {
 	ReasoningChain      []string        `json:"reasoning_chain"`
 	Progression         []ProgressEvent `json:"progression"`
 	Position            Position        `json:"position"`
+	PositionSummaries   []PositionSummary `json:"position_summaries"`
+	PathScores          []PathScore     `json:"path_scores"`
+	PathScoreOverall    float64         `json:"path_score_overall"`
 	GraphOverlay        GraphOverlay    `json:"graph_overlay"`
 	DecisionCache       DecisionCache   `json:"decision_cache"`
 	Threads             []Thread        `json:"threads"`
@@ -48,9 +51,27 @@ func (p *ProgressEvent) SetConfidence(v float64) {
 }
 
 type Position struct {
-	Stage      string   `json:"stage"`
-	Principals []string `json:"principals"`
-	Assets     []string `json:"assets"`
+	Stage      string    `json:"stage"`
+	Principals []string  `json:"principals"`
+	Assets     []string  `json:"assets"`
+	Confidence float64   `json:"confidence"`
+	UpdatedAt  time.Time `json:"updated_at"`
+}
+
+type PositionSummary struct {
+	Stage          string    `json:"stage"`
+	PrincipalCount int       `json:"principal_count"`
+	AssetCount     int       `json:"asset_count"`
+	LastSeen       time.Time `json:"last_seen"`
+	Confidence     float64   `json:"confidence"`
+}
+
+type PathScore struct {
+	Stage         string    `json:"stage"`
+	Score         float64   `json:"score"`
+	EvidenceCount int       `json:"evidence_count"`
+	AvgConfidence float64   `json:"avg_confidence"`
+	LastSeen      time.Time `json:"last_seen"`
 }
 
 type GraphOverlay struct {
@@ -105,6 +126,8 @@ func New() AttackState {
 		Signals:             []string{},
 		ReasoningChain:      []string{},
 		Progression:         []ProgressEvent{},
+		PositionSummaries:   []PositionSummary{},
+		PathScores:          []PathScore{},
 		GraphOverlay:        GraphOverlay{},
 		DecisionCache:       DecisionCache{},
 		Threads:             []Thread{},
@@ -142,6 +165,12 @@ func Load(path string) (AttackState, error) {
 	}
 	if s.Progression == nil {
 		s.Progression = []ProgressEvent{}
+	}
+	if s.PositionSummaries == nil {
+		s.PositionSummaries = []PositionSummary{}
+	}
+	if s.PathScores == nil {
+		s.PathScores = []PathScore{}
 	}
 	if s.DecisionCache == nil {
 		s.DecisionCache = DecisionCache{}

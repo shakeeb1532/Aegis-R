@@ -19,9 +19,21 @@ type Artifact struct {
 	Summary   string            `json:"summary"`
 	Findings  []string          `json:"findings"`
 	Reasoning []string          `json:"reasoning"`
+	Decisions []DecisionRecord  `json:"decisions,omitempty"`
 	PrevHash  string            `json:"prev_hash"`
 	Hash      string            `json:"hash"`
 	Metadata  map[string]string `json:"metadata"`
+}
+
+type DecisionRecord struct {
+	RuleID           string  `json:"rule_id"`
+	Verdict          string  `json:"verdict"`
+	DecisionLabel    string  `json:"decision_label"`
+	ReasonCode       string  `json:"reason_code"`
+	Confidence       float64 `json:"confidence"`
+	ThreadID         string  `json:"thread_id,omitempty"`
+	ThreadConfidence float64 `json:"thread_confidence,omitempty"`
+	CacheHit         bool    `json:"cache_hit"`
 }
 
 func HashArtifact(a Artifact) (string, error) {

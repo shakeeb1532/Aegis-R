@@ -33,6 +33,7 @@ type RuleResult struct {
 	Feasible           bool                  `json:"feasible"`
 	PrecondOK          bool                  `json:"precond_ok"`
 	Confidence         float64               `json:"confidence"`
+	ConfidenceFactors  map[string]float64    `json:"confidence_factors,omitempty"`
 	MissingEvidence    []EvidenceRequirement `json:"missing_evidence"`
 	SupportingEvents   []Event               `json:"supporting_events"`
 	SupportingEventIDs []string              `json:"supporting_event_ids"`
@@ -41,6 +42,8 @@ type RuleResult struct {
 	ReasonCode         string                `json:"reason_code"`
 	DecisionLabel      string                `json:"decision_label"`
 	CacheHit           bool                  `json:"cache_hit"`
+	ReachabilityStatus string                `json:"reachability_status"`
+	ReachabilityNote   string                `json:"reachability_note"`
 	ThreadID           string                `json:"thread_id"`
 	ThreadConfidence   float64               `json:"thread_confidence"`
 	ThreadReason       string                `json:"thread_reason"`

@@ -3,6 +3,7 @@ package validate
 import (
 	"errors"
 	"fmt"
+	"time"
 
 	"aegisr/internal/env"
 	"aegisr/internal/governance"
@@ -56,6 +57,16 @@ func Policy(p governance.Policy) error {
 	issues := ValidationErrors{}
 	if p.ID == "" {
 		issues = append(issues, ValidationError{Field: "policy.id", Message: "policy id required"})
+	}
+	if p.UpdatedAt != "" {
+		if _, err := time.Parse(time.RFC3339, p.UpdatedAt); err != nil {
+			issues = append(issues, ValidationError{Field: "policy.updated_at", Message: "must be RFC3339 timestamp"})
+		}
+	}
+	if p.ActiveFrom != "" {
+		if _, err := time.Parse(time.RFC3339, p.ActiveFrom); err != nil {
+			issues = append(issues, ValidationError{Field: "policy.active_from", Message: "must be RFC3339 timestamp"})
+		}
 	}
 	if p.MinApprovals < 1 {
 		issues = append(issues, ValidationError{Field: "policy.min_approvals", Message: "must be >= 1"})

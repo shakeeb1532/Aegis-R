@@ -9,6 +9,10 @@ import (
 
 type Policy struct {
 	ID                    string   `json:"id"`
+	Version               string   `json:"version"`
+	UpdatedAt             string   `json:"updated_at"`
+	ActiveFrom            string   `json:"active_from"`
+	Supersedes            []string `json:"supersedes"`
 	RequireDualForSignals []string `json:"require_dual_for_signals"`
 	MinApprovals          int      `json:"min_approvals"`
 	AllowedSignerRoles    []string `json:"allowed_signer_roles"`
@@ -35,6 +39,12 @@ func Load(path string) (Policy, error) {
 	}
 	if err := json.Unmarshal(data, &p); err != nil {
 		return p, err
+	}
+	if p.Version == "" {
+		p.Version = "v1"
+	}
+	if p.ActiveFrom == "" {
+		p.ActiveFrom = p.UpdatedAt
 	}
 	if p.MinApprovals <= 0 {
 		p.MinApprovals = 2

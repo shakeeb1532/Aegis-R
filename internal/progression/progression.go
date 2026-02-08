@@ -76,12 +76,16 @@ func Update(envelopes []model.Envelope, st *state.AttackState) {
 		if env.Asset != "" {
 			st.CompromisedHosts[env.Asset] = true
 		}
-		st.Position.Stage = stage
 		if env.Principal != "" && !contains(st.Position.Principals, env.Principal) {
 			st.Position.Principals = append(st.Position.Principals, env.Principal)
 		}
 		if env.Asset != "" && !contains(st.Position.Assets, env.Asset) {
 			st.Position.Assets = append(st.Position.Assets, env.Asset)
+		}
+		if env.Timestamp.After(st.Position.UpdatedAt) {
+			st.Position.Stage = stage
+			st.Position.Confidence = env.Confidence
+			st.Position.UpdatedAt = env.Timestamp
 		}
 	}
 }
