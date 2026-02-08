@@ -5,7 +5,10 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"html"
 	"html/template"
+	"math"
 	"net/http"
 	"os"
 	"sort"
@@ -280,6 +283,8 @@ func (s *Server) render(w http.ResponseWriter, r *http.Request, page string) {
 		Page            string
 		Artifacts       []audit.Artifact
 		Approvals       []ApprovalRecord
+		ApprovalsByID   map[string]int
+		DualCount       int
 		Signed          []SignedStatus
 		Report          ReportView
 		RuleViews       []RuleView
@@ -303,8 +308,99 @@ func (s *Server) render(w http.ResponseWriter, r *http.Request, page string) {
 		SelectedTicket  state.Ticket
 		TicketResults   []model.RuleResult
 		TicketApprovals []ApprovalRecord
-	}{Page: page, Artifacts: artifacts, Approvals: approvals, Signed: signed, Report: report, RuleViews: ruleViews, Suggestions: suggestions, StatsTotal: statsTotal, StatsFeasible: statsFeasible, StatsInfeasible: statsInfeasible, StatsGaps: statsGaps, AvgConfidence: avgConfidence, ConfidencePct: confidencePercent, Verdict: verdict, DecayWindow: decayWindow, TopGaps: gapStats, Profiles: profiles, Disagreements: disagreements, Role: s.currentRole(r), AuditPath: s.AuditPath, SignedAuditPath: s.SignedAuditPath, Query: q, TicketID: ticketID, SelectedTicket: selectedTicket, TicketResults: ticketResults, TicketApprovals: ticketApprovals})
+		GraphSVG        template.HTML
+	}{
+		Page:            page,
+		Artifacts:       artifacts,
+		Approvals:       approvals,
+		ApprovalsByID:   countApprovals(approvals),
+		DualCount:       countDualApprovals(approvals),
+		Signed:          signed,
+		Report:          report,
+		RuleViews:       ruleViews,
+		Suggestions:     suggestions,
+		StatsTotal:      statsTotal,
+		StatsFeasible:   statsFeasible,
+		StatsInfeasible: statsInfeasible,
+		StatsGaps:       statsGaps,
+		AvgConfidence:   avgConfidence,
+		ConfidencePct:   confidencePercent,
+		Verdict:         verdict,
+		DecayWindow:     decayWindow,
+		TopGaps:         gapStats,
+		Profiles:        profiles,
+		Disagreements:   disagreements,
+		Role:            s.currentRole(r),
+		AuditPath:       s.AuditPath,
+		SignedAuditPath: s.SignedAuditPath,
+		Query:           q,
+		TicketID:        ticketID,
+		SelectedTicket:  selectedTicket,
+		TicketResults:   ticketResults,
+		TicketApprovals: ticketApprovals,
+		GraphSVG:        buildGraphSVG(report.State.GraphOverlay.CurrentNodes, report.State.GraphOverlay.Reachable),
+	})
 }
+
+func countApprovals(approvals []ApprovalRecord) map[string]int {
+	out := map[string]int{}
+	for _, a := range approvals {
+		out[a.Approval.ID]++
+	}
+	return out
+}
+
+func countDualApprovals(approvals []ApprovalRecord) int {
+	counts := countApprovals(approvals)
+	dual := 0
+	for _, c := range counts {
+		if c >= 2 {
+			dual++
+		}
+	}
+	return dual
+}
+
+func buildGraphSVG(current []string, reachable []string) template.HTML {
+	nodes := append([]string{}, current...)
+	nodes = append(nodes, reachable...)
+	if len(nodes) == 0 {
+		return template.HTML("")
+	}
+	size := 420
+	radius := 160
+	cx := float64(size / 2)
+	cy := float64(size / 2)
+	angleStep := 360.0 / float64(len(nodes))
+	var b strings.Builder
+	b.WriteString(`<svg viewBox="0 0 420 420" width="100%" height="220" role="img" aria-label="attack graph">`)
+	for i, n := range nodes {
+		angle := (angleStep * float64(i)) * (3.14159 / 180.0)
+		x := cx + float64(radius)*cos(angle)
+		y := cy + float64(radius)*sin(angle)
+		color := "#60a5fa"
+		for _, c := range current {
+			if c == n {
+				color = "#4fd1c5"
+				break
+			}
+		}
+		b.WriteString(fmt.Sprintf(`<circle cx="%.1f" cy="%.1f" r="18" fill="rgba(15,22,32,0.9)" stroke="%s" stroke-width="2"></circle>`, x, y, color))
+		b.WriteString(fmt.Sprintf(`<text x="%.1f" y="%.1f" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="%s">%s</text>`, x, y, color, html.EscapeString(shortenLabel(n, 10))))
+	}
+	b.WriteString(`</svg>`)
+	return template.HTML(b.String())
+}
+
+func shortenLabel(v string, max int) string {
+	if len(v) <= max {
+		return v
+	}
+	return v[:max]
+}
+
+func sin(v float64) float64 { return math.Sin(v) }
+func cos(v float64) float64 { return math.Cos(v) }
 
 func selectTicket(report ReportView, approvals []ApprovalRecord, id string) (state.Ticket, []model.RuleResult, []ApprovalRecord) {
 	if id == "" {
@@ -1051,15 +1147,19 @@ const indexHTML = `<!doctype html>
     <section class="card">
       <div class="section-title">Attack Graph <span class="pill">Progression</span></div>
       <div class="graph-canvas">
-        {{if or .Report.State.GraphOverlay.CurrentNodes .Report.State.GraphOverlay.Reachable}}
-          {{range .Report.State.GraphOverlay.CurrentNodes}}
-            <div class="node current">{{.}}</div>
-          {{end}}
-          {{range .Report.State.GraphOverlay.Reachable}}
-            <div class="node reachable">{{.}}</div>
-          {{end}}
+        {{if .GraphSVG}}
+          {{.GraphSVG}}
         {{else}}
-          <div class="muted">No active graph nodes for the selected window.</div>
+          {{if or .Report.State.GraphOverlay.CurrentNodes .Report.State.GraphOverlay.Reachable}}
+            {{range .Report.State.GraphOverlay.CurrentNodes}}
+              <div class="node current">{{.}}</div>
+            {{end}}
+            {{range .Report.State.GraphOverlay.Reachable}}
+              <div class="node reachable">{{.}}</div>
+            {{end}}
+          {{else}}
+            <div class="muted">No active graph nodes for the selected window.</div>
+          {{end}}
         {{end}}
       </div>
       <div class="section-grid">
@@ -1320,7 +1420,9 @@ const indexHTML = `<!doctype html>
             {{if .Approvals}}
               {{range .Approvals}}
                 <li>
-                  <strong>{{.Approval.ID}}</strong> — {{.Approval.SignerID}} ({{.Approval.SignerRole}})<br/>
+                  <strong>{{.Approval.ID}}</strong>
+                  {{if ge (index $.ApprovalsByID .Approval.ID) 2}}<span class="status govern">DUAL</span>{{end}}
+                  — {{.Approval.SignerID}} ({{.Approval.SignerRole}})<br/>
                   <span class="muted">Expires: {{.Approval.ExpiresAt}} · Gaps: {{range .EvidenceGaps}}{{.}} {{end}}</span>
                 </li>
               {{end}}
@@ -1329,6 +1431,14 @@ const indexHTML = `<!doctype html>
             {{end}}
           </ul>
           <div class="footer-note">Dual-approval required for critical trust changes. No auto-remediation.</div>
+        </div>
+        <div class="card">
+          <div class="section-title">Approval Summary</div>
+          <ul class="list">
+            <li>Total approvals: {{len .Approvals}}</li>
+            <li>Dual-approval IDs: {{.DualCount}}</li>
+          </ul>
+          <div class="footer-note">Dual approvals are flagged when two or more signatures share the same ID.</div>
         </div>
         <div class="card">
           <div class="section-title">Signed Artifacts</div>
@@ -1423,6 +1533,19 @@ const indexHTML = `<!doctype html>
             <div>
               <div><span class="tag">{{.ID}}</span></div>
               <div class="muted">{{.Summary}}</div>
+              <details>
+                <summary>Replay Details</summary>
+                <div class="muted">Hash: {{.Hash}}</div>
+                <div class="muted">Prev Hash: {{.PrevHash}}</div>
+                {{if .Reasoning}}
+                  <div class="muted">Reasoning Chain:</div>
+                  <ul>
+                    {{range .Reasoning}}
+                      <li>{{.}}</li>
+                    {{end}}
+                  </ul>
+                {{end}}
+              </details>
             </div>
           </div>
         {{end}}
