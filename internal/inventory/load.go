@@ -98,16 +98,16 @@ func loadFile(path string) (Inventory, error) {
 }
 
 func merge(a Inventory, b Inventory) Inventory {
-	if len(b.AWS.Accounts) > 0 || len(b.AWS.Users) > 0 || len(b.AWS.Roles) > 0 || len(b.AWS.Instances) > 0 || len(b.AWS.SecurityGroups) > 0 {
+	if len(b.AWS.Accounts) > 0 || len(b.AWS.Users) > 0 || len(b.AWS.Roles) > 0 || len(b.AWS.Instances) > 0 || len(b.AWS.SecurityGroups) > 0 || len(b.AWS.RouteTables) > 0 || len(b.AWS.Peerings) > 0 || len(b.AWS.InternetGateways) > 0 {
 		a.AWS = b.AWS
 	}
 	if len(b.Okta.Users) > 0 || len(b.Okta.Groups) > 0 || len(b.Okta.Roles) > 0 || len(b.Okta.Apps) > 0 {
 		a.Okta = b.Okta
 	}
-	if len(b.Azure.Users) > 0 || len(b.Azure.Groups) > 0 || len(b.Azure.RoleAssignments) > 0 || len(b.Azure.Networks) > 0 || len(b.Azure.Subnets) > 0 || len(b.Azure.NSGs) > 0 {
+	if len(b.Azure.Users) > 0 || len(b.Azure.Groups) > 0 || len(b.Azure.RoleAssignments) > 0 || len(b.Azure.Networks) > 0 || len(b.Azure.Subnets) > 0 || len(b.Azure.NSGs) > 0 || len(b.Azure.RouteTables) > 0 || len(b.Azure.Peerings) > 0 {
 		a.Azure = b.Azure
 	}
-	if len(b.GCP.Users) > 0 || len(b.GCP.ServiceAccounts) > 0 || len(b.GCP.IAMBindings) > 0 || len(b.GCP.Networks) > 0 || len(b.GCP.Subnets) > 0 || len(b.GCP.FirewallRules) > 0 {
+	if len(b.GCP.Users) > 0 || len(b.GCP.ServiceAccounts) > 0 || len(b.GCP.IAMBindings) > 0 || len(b.GCP.Networks) > 0 || len(b.GCP.Subnets) > 0 || len(b.GCP.FirewallRules) > 0 || len(b.GCP.Routes) > 0 || len(b.GCP.Peerings) > 0 {
 		a.GCP = b.GCP
 	}
 	return a

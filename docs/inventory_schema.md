@@ -40,7 +40,10 @@ go run ./cmd/aegisr inventory-schedule -provider all -config data/inventory/conf
   "instances": [{"id": "i-01", "name": "web-01", "vpc": "vpc-1", "subnet": "subnet-1", "zone": "us-east-1a", "critical": true, "tags": ["env:prod"]}],
   "security_groups": [{"id": "sg-01", "name": "web-sg", "vpc": "vpc-1", "ingress": [{"source": "0.0.0.0/0", "destination": "sg-01", "protocol": "tcp", "port": "443", "notes": "public https"}], "egress": []}],
   "vpcs": [{"id": "vpc-1", "name": "prod-vpc", "tags": []}],
-  "subnets": [{"id": "subnet-1", "vpc": "vpc-1", "zone": "us-east-1a", "tags": []}]
+  "subnets": [{"id": "subnet-1", "vpc": "vpc-1", "zone": "us-east-1a", "tags": []}],
+  "route_tables": [{"id": "rtb-1", "vpc": "vpc-1", "routes": [{"destination": "0.0.0.0/0", "target": "igw-1", "target_type": "gateway"}], "associations": ["subnet-1"]}],
+  "peerings": [{"id": "pcx-1", "from_vpc": "vpc-1", "to_vpc": "vpc-2", "status": "active"}],
+  "internet_gateways": [{"id": "igw-1", "vpc": "vpc-1"}]
 }
 ```
 
@@ -62,7 +65,9 @@ go run ./cmd/aegisr inventory-schedule -provider all -config data/inventory/conf
   "role_assignments": [{"principal": "azure-user-1", "role": "Reader", "scope": "subscription:sub-01"}],
   "networks": [{"id": "vnet-01", "name": "core-vnet", "tags": ["region:eastus"]}],
   "subnets": [{"id": "subnet-az-1", "network": "vnet-01", "zone": "eastus-1", "tags": ["tier:app"]}],
-  "nsgs": [{"id": "nsg-01", "name": "core-nsg", "network": "vnet-01", "rules": [{"source": "10.0.0.0/24", "destination": "subnet-az-1", "protocol": "tcp", "port": "3389", "action": "allow", "notes": "admin rdp"}]}]
+  "nsgs": [{"id": "nsg-01", "name": "core-nsg", "network": "vnet-01", "rules": [{"source": "10.0.0.0/24", "destination": "subnet-az-1", "protocol": "tcp", "port": "3389", "action": "allow", "notes": "admin rdp"}]}],
+  "route_tables": [{"id": "rt-1", "network": "vnet-01", "routes": [{"address_prefix": "0.0.0.0/0", "next_hop_type": "Internet", "notes": "default"}]}],
+  "peerings": [{"id": "peer-1", "from_vnet": "vnet-01", "to_vnet": "vnet-02", "mode": "Connected"}]
 }
 ```
 
@@ -75,7 +80,9 @@ go run ./cmd/aegisr inventory-schedule -provider all -config data/inventory/conf
   "iam_bindings": [{"member": "sa-01", "role": "roles/compute.admin", "scope": "project:proj-01"}],
   "networks": [{"id": "net-01", "name": "core", "tags": ["region:us-central1"]}],
   "subnets": [{"id": "subnet-gcp-1", "network": "net-01", "zone": "us-central1-a", "tags": ["tier:app"]}],
-  "firewall_rules": [{"id": "fw-01", "network": "net-01", "direction": "INGRESS", "source": "0.0.0.0/0", "destination": "subnet-gcp-1", "protocol": "tcp", "port": "22", "action": "allow", "notes": "ssh"}]
+  "firewall_rules": [{"id": "fw-01", "network": "net-01", "direction": "INGRESS", "source": "0.0.0.0/0", "destination": "subnet-gcp-1", "protocol": "tcp", "port": "22", "action": "allow", "notes": "ssh"}],
+  "routes": [{"id": "route-1", "network": "net-01", "destination_range": "0.0.0.0/0", "next_hop": "internetGateway", "next_hop_type": "internet"}],
+  "peerings": [{"id": "peer-1", "network": "net-01", "peer": "net-02", "state": "ACTIVE"}]
 }
 ```
 

@@ -59,6 +59,9 @@ func (AWSAdapter) Load(cfg AdapterConfig) (Inventory, error) {
 	if err := loadEC2(ctx, ec2Client, &inv); err != nil {
 		return Inventory{}, err
 	}
+	if err := loadAWSRouting(ctx, ec2Client, &inv); err != nil {
+		return Inventory{}, err
+	}
 	return inv, nil
 }
 
@@ -166,6 +169,91 @@ func loadEC2(ctx context.Context, client *ec2.Client, inv *Inventory) error {
 		}
 	}
 	return nil
+}
+
+func loadAWSRouting(ctx context.Context, client *ec2.Client, inv *Inventory) error {
+	rtPager := ec2.NewDescribeRouteTablesPaginator(client, &ec2.DescribeRouteTablesInput{})
+	for rtPager.HasMorePages() {
+		page, err := rtPager.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		for _, rt := range page.RouteTables {
+			routes := []AWSRoute{}
+			assocs := []string{}
+			for _, a := range rt.Associations {
+				if a.SubnetId != nil {
+					assocs = append(assocs, aws.ToString(a.SubnetId))
+				}
+			}
+			for _, r := range rt.Routes {
+				dest := firstNonEmpty(aws.ToString(r.DestinationCidrBlock), aws.ToString(r.DestinationIpv6CidrBlock))
+				target, ttype := routeTarget(r)
+				routes = append(routes, AWSRoute{Destination: dest, Target: target, TargetType: ttype})
+			}
+			inv.AWS.RouteTables = append(inv.AWS.RouteTables, AWSRouteTable{
+				ID:           aws.ToString(rt.RouteTableId),
+				VPC:          aws.ToString(rt.VpcId),
+				Routes:       routes,
+				Associations: assocs,
+			})
+		}
+	}
+
+	peerPager := ec2.NewDescribeVpcPeeringConnectionsPaginator(client, &ec2.DescribeVpcPeeringConnectionsInput{})
+	for peerPager.HasMorePages() {
+		page, err := peerPager.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		for _, p := range page.VpcPeeringConnections {
+				inv.AWS.Peerings = append(inv.AWS.Peerings, AWSPeering{
+					ID:      aws.ToString(p.VpcPeeringConnectionId),
+					FromVPC: aws.ToString(p.RequesterVpcInfo.VpcId),
+					ToVPC:   aws.ToString(p.AccepterVpcInfo.VpcId),
+					Status:  string(p.Status.Code),
+				})
+			}
+		}
+
+	igwPager := ec2.NewDescribeInternetGatewaysPaginator(client, &ec2.DescribeInternetGatewaysInput{})
+	for igwPager.HasMorePages() {
+		page, err := igwPager.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		for _, g := range page.InternetGateways {
+			for _, a := range g.Attachments {
+				if a.VpcId == nil {
+					continue
+				}
+				inv.AWS.InternetGateways = append(inv.AWS.InternetGateways, AWSInternetGateway{
+					ID:  aws.ToString(g.InternetGatewayId),
+					VPC: aws.ToString(a.VpcId),
+				})
+			}
+		}
+	}
+	return nil
+}
+
+func routeTarget(r ec2types.Route) (string, string) {
+	if r.GatewayId != nil {
+		return aws.ToString(r.GatewayId), "gateway"
+	}
+	if r.NatGatewayId != nil {
+		return aws.ToString(r.NatGatewayId), "nat"
+	}
+	if r.VpcPeeringConnectionId != nil {
+		return aws.ToString(r.VpcPeeringConnectionId), "peering"
+	}
+	if r.TransitGatewayId != nil {
+		return aws.ToString(r.TransitGatewayId), "tgw"
+	}
+	if r.InstanceId != nil {
+		return aws.ToString(r.InstanceId), "instance"
+	}
+	return "", ""
 }
 
 func parseEC2Tags(tags []ec2types.Tag) ([]string, string, bool) {

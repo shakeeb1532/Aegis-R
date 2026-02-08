@@ -22,6 +22,9 @@ type AWSInventory struct {
 	SecurityGroups []AWSSecurityGroup `json:"security_groups"`
 	VPCs           []AWSVPC           `json:"vpcs"`
 	Subnets        []AWSSubnet        `json:"subnets"`
+	RouteTables    []AWSRouteTable    `json:"route_tables"`
+	Peerings       []AWSPeering       `json:"peerings"`
+	InternetGateways []AWSInternetGateway `json:"internet_gateways"`
 }
 
 type AWSAccount struct {
@@ -66,6 +69,31 @@ type AWSSubnet struct {
 	VPC  string   `json:"vpc"`
 	Zone string   `json:"zone"`
 	Tags []string `json:"tags"`
+}
+
+type AWSRouteTable struct {
+	ID           string     `json:"id"`
+	VPC          string     `json:"vpc"`
+	Routes       []AWSRoute `json:"routes"`
+	Associations []string   `json:"associations"`
+}
+
+type AWSRoute struct {
+	Destination string `json:"destination"`
+	Target      string `json:"target"`
+	TargetType  string `json:"target_type"`
+}
+
+type AWSPeering struct {
+	ID     string `json:"id"`
+	FromVPC string `json:"from_vpc"`
+	ToVPC   string `json:"to_vpc"`
+	Status  string `json:"status"`
+}
+
+type AWSInternetGateway struct {
+	ID  string `json:"id"`
+	VPC string `json:"vpc"`
 }
 
 type AWSSecurityGroup struct {
@@ -128,6 +156,8 @@ type AzureInventory struct {
 	Networks        []AzureNetwork        `json:"networks"`
 	Subnets         []AzureSubnet         `json:"subnets"`
 	NSGs            []AzureNSG            `json:"nsgs"`
+	RouteTables     []AzureRouteTable     `json:"route_tables"`
+	Peerings        []AzurePeering        `json:"peerings"`
 }
 
 type AzureUser struct {
@@ -170,6 +200,25 @@ type AzureNSG struct {
 	Rules   []AzureRule  `json:"rules"`
 }
 
+type AzureRouteTable struct {
+	ID      string       `json:"id"`
+	Network string       `json:"network"`
+	Routes  []AzureRoute `json:"routes"`
+}
+
+type AzureRoute struct {
+	AddressPrefix string `json:"address_prefix"`
+	NextHopType   string `json:"next_hop_type"`
+	Notes         string `json:"notes"`
+}
+
+type AzurePeering struct {
+	ID        string `json:"id"`
+	FromVNet  string `json:"from_vnet"`
+	ToVNet    string `json:"to_vnet"`
+	Mode      string `json:"mode"`
+}
+
 type AzureRule struct {
 	Source      string `json:"source"`
 	Destination string `json:"destination"`
@@ -187,6 +236,8 @@ type GCPInventory struct {
 	Networks       []GCPNetwork      `json:"networks"`
 	Subnets        []GCPSubnet       `json:"subnets"`
 	FirewallRules  []GCPFirewallRule `json:"firewall_rules"`
+	Routes         []GCPRoute        `json:"routes"`
+	Peerings       []GCPPeering      `json:"peerings"`
 }
 
 type GCPProject struct {
@@ -240,6 +291,21 @@ type GCPFirewallRule struct {
 	Notes       string   `json:"notes"`
 }
 
+type GCPRoute struct {
+	ID               string `json:"id"`
+	Network          string `json:"network"`
+	DestinationRange string `json:"destination_range"`
+	NextHop          string `json:"next_hop"`
+	NextHopType      string `json:"next_hop_type"`
+}
+
+type GCPPeering struct {
+	ID       string `json:"id"`
+	Network  string `json:"network"`
+	Peer     string `json:"peer"`
+	State    string `json:"state"`
+}
+
 func BuildEnvironment(inv Inventory) env.Environment {
 	hosts := map[string]env.Host{}
 	idents := map[string]env.Identity{}
@@ -289,6 +355,25 @@ func BuildEnvironment(inv Inventory) env.Environment {
 			addTrust(env.TrustBoundary{ID: id, From: sg.ID, To: rule.Destination, Mode: "allow", Notes: rule.Notes})
 		}
 	}
+	for _, p := range inv.AWS.Peerings {
+		if p.FromVPC != "" && p.ToVPC != "" {
+			id := strings.Join([]string{"aws", "peering", p.ID, p.FromVPC, p.ToVPC}, ":")
+			addTrust(env.TrustBoundary{ID: id, From: p.FromVPC, To: p.ToVPC, Mode: "allow", Notes: "vpc peering"})
+		}
+	}
+	for _, rt := range inv.AWS.RouteTables {
+		for _, r := range rt.Routes {
+			if isDefaultRoute(r.Destination) && isInternetTarget(r.TargetType, r.Target) {
+				id := strings.Join([]string{"aws", "route", rt.ID, "egress", r.Destination}, ":")
+				from := firstNonEmpty(rt.VPC, "aws")
+				addTrust(env.TrustBoundary{ID: id, From: from, To: "internet", Mode: "allow", Notes: r.TargetType})
+			}
+			if r.TargetType == "peering" && r.Target != "" && rt.VPC != "" {
+				id := strings.Join([]string{"aws", "route", rt.ID, "peering", r.Target}, ":")
+				addTrust(env.TrustBoundary{ID: id, From: rt.VPC, To: r.Target, Mode: "allow", Notes: "route peering"})
+			}
+		}
+	}
 
 	for _, u := range inv.Okta.Users {
 		role := firstNonEmpty(u.Role, u.Email, u.ID)
@@ -317,6 +402,21 @@ func BuildEnvironment(inv Inventory) env.Environment {
 			addTrust(env.TrustBoundary{ID: id, From: rule.Source, To: rule.Destination, Mode: mode, Notes: rule.Notes})
 		}
 	}
+	for _, p := range inv.Azure.Peerings {
+		if p.FromVNet != "" && p.ToVNet != "" {
+			id := strings.Join([]string{"azure", "peering", p.ID, p.FromVNet, p.ToVNet}, ":")
+			addTrust(env.TrustBoundary{ID: id, From: p.FromVNet, To: p.ToVNet, Mode: "allow", Notes: p.Mode})
+		}
+	}
+	for _, rt := range inv.Azure.RouteTables {
+		for _, r := range rt.Routes {
+			if strings.EqualFold(r.NextHopType, "Internet") {
+				id := strings.Join([]string{"azure", "route", rt.ID, "egress", r.AddressPrefix}, ":")
+				from := firstNonEmpty(rt.Network, "azure")
+				addTrust(env.TrustBoundary{ID: id, From: from, To: "internet", Mode: "allow", Notes: "route"})
+			}
+		}
+	}
 
 	for _, u := range inv.GCP.Users {
 		role := firstNonEmpty(u.Email, u.ID)
@@ -337,6 +437,23 @@ func BuildEnvironment(inv Inventory) env.Environment {
 		}
 		id := strings.Join([]string{"gcp", "fw", r.ID, r.Source, r.Destination, r.Port}, ":")
 		addTrust(env.TrustBoundary{ID: id, From: r.Source, To: r.Destination, Mode: mode, Notes: r.Notes})
+	}
+	for _, p := range inv.GCP.Peerings {
+		if p.Network != "" && p.Peer != "" {
+			id := strings.Join([]string{"gcp", "peering", p.ID, p.Network, p.Peer}, ":")
+			addTrust(env.TrustBoundary{ID: id, From: p.Network, To: p.Peer, Mode: "allow", Notes: p.State})
+		}
+	}
+	for _, r := range inv.GCP.Routes {
+		if isDefaultRoute(r.DestinationRange) && r.NextHopType == "internet" {
+			id := strings.Join([]string{"gcp", "route", r.ID, "egress", r.DestinationRange}, ":")
+			from := firstNonEmpty(r.Network, "gcp")
+			addTrust(env.TrustBoundary{ID: id, From: from, To: "internet", Mode: "allow", Notes: r.NextHopType})
+		}
+		if r.NextHopType == "peering" && r.NextHop != "" && r.Network != "" {
+			id := strings.Join([]string{"gcp", "route", r.ID, "peering", r.NextHop}, ":")
+			addTrust(env.TrustBoundary{ID: id, From: r.Network, To: r.NextHop, Mode: "allow", Notes: "route peering"})
+		}
 	}
 
 	envOut := env.Environment{
@@ -381,4 +498,18 @@ func firstNonEmpty(v ...string) string {
 		}
 	}
 	return ""
+}
+
+func isDefaultRoute(dest string) bool {
+	return dest == "0.0.0.0/0" || dest == "::/0"
+}
+
+func isInternetTarget(targetType string, target string) bool {
+	if strings.Contains(strings.ToLower(targetType), "internet") {
+		return true
+	}
+	if strings.HasPrefix(target, "igw-") || strings.Contains(strings.ToLower(target), "internet") {
+		return true
+	}
+	return false
 }

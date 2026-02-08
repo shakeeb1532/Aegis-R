@@ -49,6 +49,9 @@ func (GCPAdapter) Load(cfg AdapterConfig) (Inventory, error) {
 	if err := loadGCPNetworks(ctx, computeSvc, &inv, cfg.GCP.ProjectID); err != nil {
 		return Inventory{}, err
 	}
+	if err := loadGCPRoutes(ctx, computeSvc, &inv, cfg.GCP.ProjectID); err != nil {
+		return Inventory{}, err
+	}
 	return inv, nil
 }
 
@@ -112,6 +115,14 @@ func loadGCPNetworks(ctx context.Context, svc *compute.Service, inv *Inventory, 
 	}
 	for _, n := range networks.Items {
 		inv.GCP.Networks = append(inv.GCP.Networks, GCPNetwork{ID: n.SelfLink, Name: n.Name, Tags: []string{}})
+		for _, p := range n.Peerings {
+			inv.GCP.Peerings = append(inv.GCP.Peerings, GCPPeering{
+				ID:      p.Name,
+				Network: n.SelfLink,
+				Peer:    p.Network,
+				State:   p.State,
+			})
+		}
 	}
 
 	subnets, err := svc.Subnetworks.AggregatedList(projectID).Do()
@@ -157,6 +168,41 @@ func loadGCPNetworks(ctx context.Context, svc *compute.Service, inv *Inventory, 
 			Port:        port,
 			Action:      action,
 			Notes:       f.Name,
+		})
+	}
+	return nil
+}
+
+func loadGCPRoutes(ctx context.Context, svc *compute.Service, inv *Inventory, projectID string) error {
+	routes, err := svc.Routes.List(projectID).Do()
+	if err != nil {
+		return err
+	}
+	for _, r := range routes.Items {
+		nextHop := firstNonEmpty(r.NextHopGateway, r.NextHopIlb, r.NextHopInstance, r.NextHopVpnTunnel, r.NextHopPeering)
+		nextType := "other"
+		switch {
+		case r.NextHopGateway != "":
+			if strings.Contains(r.NextHopGateway, "internetGateway") {
+				nextType = "internet"
+			} else {
+				nextType = "gateway"
+			}
+		case r.NextHopPeering != "":
+			nextType = "peering"
+		case r.NextHopIlb != "":
+			nextType = "ilb"
+		case r.NextHopVpnTunnel != "":
+			nextType = "vpn"
+		case r.NextHopInstance != "":
+			nextType = "instance"
+		}
+		inv.GCP.Routes = append(inv.GCP.Routes, GCPRoute{
+			ID:               r.SelfLink,
+			Network:          r.Network,
+			DestinationRange: r.DestRange,
+			NextHop:          nextHop,
+			NextHopType:      nextType,
 		})
 	}
 	return nil

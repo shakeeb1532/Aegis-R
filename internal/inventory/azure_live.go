@@ -41,6 +41,14 @@ func (AzureAdapter) Load(cfg AdapterConfig) (Inventory, error) {
 	if err != nil {
 		return Inventory{}, err
 	}
+	peerings, err := client.listPeerings()
+	if err != nil {
+		return Inventory{}, err
+	}
+	routeTables, err := client.listRouteTables()
+	if err != nil {
+		return Inventory{}, err
+	}
 	nsgs, err := client.listNSGs()
 	if err != nil {
 		return Inventory{}, err
@@ -69,6 +77,8 @@ func (AzureAdapter) Load(cfg AdapterConfig) (Inventory, error) {
 	inv.Azure.Networks = vnets
 	inv.Azure.Subnets = subnets
 	inv.Azure.NSGs = nsgs
+	inv.Azure.Peerings = peerings
+	inv.Azure.RouteTables = routeTables
 	return inv, nil
 }
 
@@ -256,6 +266,85 @@ func (c *azureClient) listNetworks() ([]AzureNetwork, []AzureSubnet, error) {
 			for _, s := range v.Props.Subnets {
 				subnets = append(subnets, AzureSubnet{ID: s.ID, Network: v.ID, Zone: v.Location, Tags: []string{}})
 			}
+		}
+		return nil
+	})
+}
+
+func (c *azureClient) listPeerings() ([]AzurePeering, error) {
+	peerings := []AzurePeering{}
+	path := fmt.Sprintf("https://management.azure.com/subscriptions/%s/providers/Microsoft.Network/virtualNetworks?api-version=2023-05-01", c.sub)
+	return peerings, c.paginateARM(path, func(body []byte) error {
+		var resp struct {
+			Value []struct {
+				ID    string `json:"id"`
+				Name  string `json:"name"`
+				Props struct {
+					Peerings []struct {
+						ID    string `json:"id"`
+						Name  string `json:"name"`
+						Props struct {
+							Remote struct {
+								ID string `json:"id"`
+							} `json:"remoteVirtualNetwork"`
+							State string `json:"peeringState"`
+						} `json:"properties"`
+					} `json:"virtualNetworkPeerings"`
+				} `json:"properties"`
+			} `json:"value"`
+		}
+		if err := json.Unmarshal(body, &resp); err != nil {
+			return err
+		}
+		for _, v := range resp.Value {
+			for _, p := range v.Props.Peerings {
+				peerings = append(peerings, AzurePeering{
+					ID:       p.ID,
+					FromVNet: v.ID,
+					ToVNet:   p.Props.Remote.ID,
+					Mode:     p.Props.State,
+				})
+			}
+		}
+		return nil
+	})
+}
+
+func (c *azureClient) listRouteTables() ([]AzureRouteTable, error) {
+	tables := []AzureRouteTable{}
+	path := fmt.Sprintf("https://management.azure.com/subscriptions/%s/providers/Microsoft.Network/routeTables?api-version=2023-05-01", c.sub)
+	return tables, c.paginateARM(path, func(body []byte) error {
+		var resp struct {
+			Value []struct {
+				ID    string `json:"id"`
+				Name  string `json:"name"`
+				Props struct {
+					Routes []struct {
+						Name  string `json:"name"`
+						Props struct {
+							AddressPrefix string `json:"addressPrefix"`
+							NextHopType   string `json:"nextHopType"`
+						} `json:"properties"`
+					} `json:"routes"`
+				} `json:"properties"`
+			} `json:"value"`
+		}
+		if err := json.Unmarshal(body, &resp); err != nil {
+			return err
+		}
+		for _, r := range resp.Value {
+			routes := []AzureRoute{}
+			for _, route := range r.Props.Routes {
+				routes = append(routes, AzureRoute{
+					AddressPrefix: route.Props.AddressPrefix,
+					NextHopType:   route.Props.NextHopType,
+					Notes:         route.Name,
+				})
+			}
+			tables = append(tables, AzureRouteTable{
+				ID:     r.ID,
+				Routes: routes,
+			})
 		}
 		return nil
 	})
