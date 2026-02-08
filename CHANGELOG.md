@@ -29,6 +29,7 @@
 - Architecture diagram (`docs/architecture.md`).
 - Embedded architecture diagram in README.
 - Topology ingestion (routes/peerings) for AWS/Azure/GCP with trust-boundary derivation.
+- Expanded vendor fixtures and mapping tests (Elastic ECS IAM/auth, Splunk auth, Okta admin role, Sentinel auth failure, CrowdStrike file events).
 - Baseline validation report (`docs/BASELINE_REPORT.md`, `docs/BASELINE_REPORT.pdf`).
 
 ### Changed

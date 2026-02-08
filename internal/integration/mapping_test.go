@@ -42,6 +42,9 @@ func TestMappingElasticECS(t *testing.T) {
 	assertHasType(t, toLike(events), "file_modify")
 	assertHasType(t, toLike(events), "registry_change")
 	assertHasType(t, toLike(events), "mfa_disabled")
+	assertHasType(t, toLike(events), "token_refresh_anomaly")
+	assertHasType(t, toLike(events), "admin_group_change")
+	assertHasType(t, toLike(events), "policy_override")
 }
 
 func TestMappingOkta(t *testing.T) {
@@ -61,6 +64,7 @@ func TestMappingOkta(t *testing.T) {
 	assertHasType(t, toLike(events), "token_refresh_anomaly")
 	assertHasType(t, toLike(events), "policy_override")
 	assertHasType(t, toLike(events), "iam_change")
+	assertHasType(t, toLike(events), "new_admin_role")
 }
 
 func TestMappingCloudTrail(t *testing.T) {
@@ -93,6 +97,8 @@ func TestMappingSplunkAuth(t *testing.T) {
 	}
 	assertHasType(t, toLike(events), "impossible_travel")
 	assertHasType(t, toLike(events), "password_spray")
+	assertHasType(t, toLike(events), "credential_stuffing")
+	assertHasType(t, toLike(events), "token_refresh_anomaly")
 }
 
 func TestMappingSplunkNet(t *testing.T) {
@@ -134,6 +140,9 @@ func TestMappingCrowdStrike(t *testing.T) {
 	assertHasType(t, toLike(events), "lolbin_execution")
 	assertHasType(t, toLike(events), "registry_run_key")
 	assertHasType(t, toLike(events), "service_install")
+	assertHasType(t, toLike(events), "file_create")
+	assertHasType(t, toLike(events), "file_modify")
+	assertHasType(t, toLike(events), "file_delete")
 }
 
 func TestMappingSentinel(t *testing.T) {
@@ -192,6 +201,7 @@ func TestMappingSentinelAuth(t *testing.T) {
 		t.Fatalf("ingest: %v", err)
 	}
 	assertHasType(t, toLike(events), "authentication_success")
+	assertHasType(t, toLike(events), "authentication_failure")
 }
 
 func toLike(events []model.Event) []EventLike {

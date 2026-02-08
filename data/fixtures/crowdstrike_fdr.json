@@ -25,5 +25,32 @@
     "ComputerName": "win-03",
     "UserName": "kim",
     "details": {"ServiceName": "Updater", "ServiceFileName": "C:\\\\Program Files\\\\Updater\\\\upd.exe"}
+  },
+  {
+    "timestamp": "2026-02-06T12:48:00Z",
+    "event_simpleName": "FileCreateInfo",
+    "aid": "aid-123",
+    "aip": "10.0.0.20",
+    "ComputerName": "win-03",
+    "UserName": "kim",
+    "details": {"FileName": "evil.dll", "FilePath": "C:\\\\Temp\\\\evil.dll"}
+  },
+  {
+    "timestamp": "2026-02-06T12:49:00Z",
+    "event_simpleName": "FileWriteInfo",
+    "aid": "aid-123",
+    "aip": "10.0.0.20",
+    "ComputerName": "win-03",
+    "UserName": "kim",
+    "details": {"FileName": "evil.dll", "FilePath": "C:\\\\Temp\\\\evil.dll"}
+  },
+  {
+    "timestamp": "2026-02-06T12:50:00Z",
+    "event_simpleName": "FileDeleteInfo",
+    "aid": "aid-123",
+    "aip": "10.0.0.20",
+    "ComputerName": "win-03",
+    "UserName": "kim",
+    "details": {"FileName": "evil.dll", "FilePath": "C:\\\\Temp\\\\evil.dll"}
   }
 ]

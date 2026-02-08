@@ -22,5 +22,29 @@
     "app": "okta",
     "signature": "password_spray",
     "fields": {"message": "password spray detected"}
+  },
+  {
+    "_time": "2026-02-06T12:27:00Z",
+    "user": "irene",
+    "src_user": "irene",
+    "dest_user": "irene",
+    "src": "198.51.100.7",
+    "dest": "idp-04",
+    "action": "credential stuffing",
+    "app": "okta",
+    "signature": "credential_stuffing",
+    "fields": {"message": "credential stuffing detected"}
+  },
+  {
+    "_time": "2026-02-06T12:28:00Z",
+    "user": "james",
+    "src_user": "james",
+    "dest_user": "james",
+    "src": "198.51.100.8",
+    "dest": "idp-05",
+    "action": "token refresh anomaly",
+    "app": "okta",
+    "signature": "token refresh",
+    "fields": {"message": "token refresh anomaly"}
   }
 ]

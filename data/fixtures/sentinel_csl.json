@@ -53,5 +53,16 @@
     "Activity": "AuthenticationSuccess",
     "Protocol": "tcp",
     "Fields": {"UserName": "jill", "Result": "Success"}
+  },
+  {
+    "TimeGenerated": "2026-02-06T12:43:30Z",
+    "Computer": "win-02",
+    "AccountName": "jill",
+    "SourceIP": "10.0.0.15",
+    "DestinationIP": "10.0.0.16",
+    "DeviceAction": "AuthenticationFailure",
+    "Activity": "AuthenticationFailure",
+    "Protocol": "tcp",
+    "Fields": {"UserName": "jill", "Result": "Failure"}
   }
 ]
