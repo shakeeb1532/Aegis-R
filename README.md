@@ -247,6 +247,7 @@ go run ./cmd/aegisr ingest-inventory -in data/inventory -out data/env.json
 ```
 
 See `docs/inventory_schema.md` for the JSON schema per provider.
+Topology depth now includes routes, peerings, and internet egress paths (AWS/Azure/GCP).
 
 Live adapters (API-ready, requires credentials):
 
@@ -283,6 +284,7 @@ go run ./cmd/aegisr inventory-refresh \\
 
 Vendor field normalization details are in:
 - `docs/vendor_mappings.md`
+Fixture coverage lives under `data/fixtures/` and is exercised by mapping tests.
 
 ---
 
