@@ -344,8 +344,8 @@
       "expectations": [
         {
           "rule_id": "TA0006.IDENTITY_ANOMALY",
-          "decision_label": "escalate",
-          "reason_code": "environment_unknown"
+          "decision_label": "keep",
+          "reason_code": "context_missing"
         }
       ]
     },
@@ -2949,6 +2949,62 @@
       "labels": [
         {
           "rule_id": "TA0004.PRIVESCA",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "context-missing-host-exfil",
+      "description": "Exfil evidence without host context",
+      "events": [
+        {
+          "id": "cx1",
+          "time": "2026-02-06T17:01:00Z",
+          "host": "",
+          "user": "carl",
+          "type": "data_staging",
+          "details": {}
+        },
+        {
+          "id": "cx2",
+          "time": "2026-02-06T17:02:00Z",
+          "host": "",
+          "user": "carl",
+          "type": "large_outbound_transfer",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "context-missing-identity-valid-accounts",
+      "description": "Valid account signals without user context",
+      "events": [
+        {
+          "id": "cx3",
+          "time": "2026-02-06T17:03:00Z",
+          "host": "host-1",
+          "user": "",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "cx4",
+          "time": "2026-02-06T17:04:00Z",
+          "host": "host-1",
+          "user": "",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.VALID_ACCOUNTS",
           "outcome": "impossible"
         }
       ]

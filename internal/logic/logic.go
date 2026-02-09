@@ -441,6 +441,12 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 			}
 		}
 		contradiction := hasContradiction(rule.ID, index)
+		contextReq := requiresContext(rule.ID)
+		missingContext := false
+		if contextReq != "" && !hasContext(index, contextReq) {
+			precondOK = false
+			missingContext = true
+		}
 		if contradiction {
 			precondOK = false
 		}
@@ -467,6 +473,11 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		if contradiction {
 			missing = []model.EvidenceRequirement{}
 			reason += " Contradictory evidence observed."
+		} else if missingContext {
+			missing = []model.EvidenceRequirement{
+				{Type: "context_missing", Description: "Required context not present for rule evaluation"},
+			}
+			reason += " Required context missing."
 		} else if len(missing) > 0 {
 			missingNames = requirementNames(missing)
 			reason += " Missing evidence: " + strings.Join(missingNames, ", ")
@@ -474,6 +485,8 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		gapNarrative := ""
 		if contradiction {
 			gapNarrative = "Contradictory evidence observed that makes this attack impossible."
+		} else if missingContext {
+			gapNarrative = "Required context is missing to evaluate this rule; treat as impossible until context is provided."
 		} else if len(missing) > 0 {
 			gapNarrative = "This attack would require " + strings.Join(missingNames, ", ") + " but no such evidence was observed."
 		} else if !precondOK {
@@ -491,7 +504,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 			SupportingEventIDs: supportingIDs,
 			Explanation:        reason,
 			GapNarrative:       gapNarrative,
-			ReasonCode:         reasonCodeWithContradiction(precondOK, missing, len(events), contradiction),
+			ReasonCode:         reasonCodeWithContradiction(precondOK, missing, len(events), contradiction, missingContext),
 		})
 	}
 	return model.ReasoningReport{
@@ -517,9 +530,12 @@ func reasonCode(precondOK bool, missing []model.EvidenceRequirement, eventCount 
 	}
 }
 
-func reasonCodeWithContradiction(precondOK bool, missing []model.EvidenceRequirement, eventCount int, contradiction bool) string {
+func reasonCodeWithContradiction(precondOK bool, missing []model.EvidenceRequirement, eventCount int, contradiction bool, missingContext bool) string {
 	if contradiction {
 		return "contradiction"
+	}
+	if missingContext {
+		return "context_missing"
 	}
 	return reasonCode(precondOK, missing, eventCount)
 }
@@ -540,6 +556,51 @@ func hasContradiction(ruleID string, index map[string][]model.Event) bool {
 	for _, t := range types {
 		if len(index[t]) > 0 {
 			return true
+		}
+	}
+	return false
+}
+
+func requiresContext(ruleID string) string {
+	hostRules := map[string]bool{
+		"TA0010.EXFIL": true,
+		"TA0010.BULK_EXFIL": true,
+		"TA0011.C2": true,
+		"TA0011.APP_LAYER_C2": true,
+		"TA0008.LATERAL": true,
+		"TA0008.ADMIN_PROTOCOL_LATERAL": true,
+		"TA0003.PERSIST": true,
+		"TA0003.PERSIST_EXTENDED": true,
+		"TA0040.IMPACT_ENCRYPT": true,
+	}
+	identityRules := map[string]bool{
+		"TA0006.VALID_ACCOUNTS": true,
+		"TA0006.IDENTITY_ANOMALY": true,
+		"TA0004.MFA_BYPASS": true,
+		"TA0004.ACCOUNT_MANIP": true,
+		"TA0003.MAILBOX_PERSIST": true,
+	}
+	if hostRules[ruleID] {
+		return "host"
+	}
+	if identityRules[ruleID] {
+		return "identity"
+	}
+	return ""
+}
+
+func hasContext(index map[string][]model.Event, kind string) bool {
+	if kind == "" {
+		return true
+	}
+	for _, events := range index {
+		for _, ev := range events {
+			if kind == "host" && ev.Host != "" {
+				return true
+			}
+			if kind == "identity" && ev.User != "" {
+				return true
+			}
 		}
 	}
 	return false

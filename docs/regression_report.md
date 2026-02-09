@@ -1,23 +1,24 @@
 # Regression Report
 
-Generated: 2026-02-09T01:53:29Z
+Generated: 2026-02-09T02:03:57Z
 
-- Total labels: 104
-- Accuracy: 0.894
+- Total labels: 106
+- Accuracy: 0.887
 
 ## Class Metrics
 
 | Class | Precision | Recall |
 | --- | --- | --- |
-| feasible | 1.000 | 1.000 |
+| feasible | 1.000 | 0.984 |
 | incomplete | 0.850 | 0.680 |
-| impossible | 0.619 | 0.812 |
+| impossible | 0.625 | 0.833 |
 
 ## Mismatches (first 20)
 
 | Scenario | Rule | Expected | Actual |
 | --- | --- | --- | --- |
 | realistic-2 | TA0002.LOLBIN_CHAIN | incomplete | impossible |
+| realistic-10 | TA0006.IDENTITY_ANOMALY | feasible | impossible |
 | realistic-11 | TA0005.LOG_TAMPER | incomplete | impossible |
 | realistic-16 | TA0011.C2 | incomplete | impossible |
 | realistic-17 | TA0010.EXFIL | incomplete | impossible |
