@@ -1,17 +1,17 @@
 # Regression Report
 
-Generated: 2026-02-09T01:30:29Z
+Generated: 2026-02-09T01:40:26Z
 
-- Total labels: 21
-- Accuracy: 0.762
+- Total labels: 101
+- Accuracy: 0.842
 
 ## Class Metrics
 
 | Class | Precision | Recall |
 | --- | --- | --- |
 | feasible | 1.000 | 1.000 |
-| incomplete | 1.000 | 0.545 |
-| impossible | 0.286 | 1.000 |
+| incomplete | 0.645 | 0.800 |
+| impossible | 0.286 | 0.154 |
 
 ## Mismatches (first 20)
 
@@ -22,3 +22,14 @@ Generated: 2026-02-09T01:30:29Z
 | realistic-18 | TA0006.CREDDUMP | incomplete | impossible |
 | realistic-19 | TA0008.ADMIN_PROTOCOL_LATERAL | incomplete | impossible |
 | realistic-20 | TA0003.MAILBOX_PERSIST | incomplete | impossible |
+| edge-impossible-TA0011.C2 | TA0011.C2 | impossible | incomplete |
+| edge-impossible-TA0010.EXFIL | TA0010.EXFIL | impossible | incomplete |
+| edge-impossible-TA0008.LATERAL | TA0008.LATERAL | impossible | incomplete |
+| edge-impossible-TA0003.PERSIST | TA0003.PERSIST | impossible | incomplete |
+| realistic-impossible-TA0006.IDENTITY_ANOMALY | TA0006.IDENTITY_ANOMALY | impossible | incomplete |
+| realistic-impossible-TA0004.PRIVESCA | TA0004.PRIVESCA | impossible | incomplete |
+| realistic-impossible-TA0006.CREDDUMP | TA0006.CREDDUMP | impossible | incomplete |
+| realistic-impossible-TA0008.LATERAL | TA0008.LATERAL | impossible | incomplete |
+| realistic-impossible-TA0003.PERSIST | TA0003.PERSIST | impossible | incomplete |
+| realistic-impossible-TA0005.LOG_TAMPER | TA0005.LOG_TAMPER | impossible | incomplete |
+| realistic-impossible-TA0006.VALID_ACCOUNTS | TA0006.VALID_ACCOUNTS | impossible | incomplete |

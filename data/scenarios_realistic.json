@@ -4,239 +4,2893 @@
       "id": "realistic-1",
       "description": "Identity anomaly with impossible travel and new device",
       "events": [
-        {"id": "s1-1", "time": "2026-02-06T10:00:00Z", "host": "", "user": "alice", "type": "impossible_travel", "details": {}},
-        {"id": "s1-2", "time": "2026-02-06T10:01:00Z", "host": "", "user": "alice", "type": "new_device_login", "details": {}}
+        {
+          "id": "s1-1",
+          "time": "2026-02-06T10:00:00Z",
+          "host": "",
+          "user": "alice",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "s1-2",
+          "time": "2026-02-06T10:01:00Z",
+          "host": "",
+          "user": "alice",
+          "type": "new_device_login",
+          "details": {}
+        }
       ],
       "labels": [
-        {"rule_id": "TA0006.IDENTITY_ANOMALY", "outcome": "feasible"}
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
       ]
     },
     {
       "id": "realistic-2",
       "description": "LOLBin chain missing execution evidence",
       "events": [
-        {"id": "s2-1", "time": "2026-02-06T11:00:00Z", "host": "web-01", "user": "bob", "type": "process_creation", "details": {"command_line": "powershell.exe -enc"}}
+        {
+          "id": "s2-1",
+          "time": "2026-02-06T11:00:00Z",
+          "host": "web-01",
+          "user": "bob",
+          "type": "process_creation",
+          "details": {
+            "command_line": "powershell.exe -enc"
+          }
+        }
       ],
       "labels": [
-        {"rule_id": "TA0002.LOLBIN_CHAIN", "outcome": "incomplete"}
+        {
+          "rule_id": "TA0002.LOLBIN_CHAIN",
+          "outcome": "incomplete"
+        }
       ]
     },
     {
       "id": "realistic-3",
       "description": "Exfiltration attempt with missing transfer",
       "events": [
-        {"id": "s3-1", "time": "2026-02-06T11:30:00Z", "host": "db-01", "user": "carl", "type": "data_staging", "details": {}},
-        {"id": "s3-2", "time": "2026-02-06T11:31:00Z", "host": "db-01", "user": "carl", "type": "beacon_outbound", "details": {}},
-        {"id": "s3-3", "time": "2026-02-06T11:32:00Z", "host": "db-01", "user": "carl", "type": "lsass_access", "details": {}}
+        {
+          "id": "s3-1",
+          "time": "2026-02-06T11:30:00Z",
+          "host": "db-01",
+          "user": "carl",
+          "type": "data_staging",
+          "details": {}
+        },
+        {
+          "id": "s3-2",
+          "time": "2026-02-06T11:31:00Z",
+          "host": "db-01",
+          "user": "carl",
+          "type": "beacon_outbound",
+          "details": {}
+        },
+        {
+          "id": "s3-3",
+          "time": "2026-02-06T11:32:00Z",
+          "host": "db-01",
+          "user": "carl",
+          "type": "lsass_access",
+          "details": {}
+        }
       ],
       "labels": [
-        {"rule_id": "TA0010.EXFIL", "outcome": "incomplete"}
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "incomplete"
+        }
       ]
     },
     {
       "id": "realistic-4",
       "description": "Credential dumping without privilege escalation",
       "events": [
-        {"id": "s4-1", "time": "2026-02-06T11:45:00Z", "host": "win-04", "user": "dana", "type": "process_creation", "details": {"tool": "procdump"}},
-        {"id": "s4-2", "time": "2026-02-06T11:45:30Z", "host": "win-04", "user": "dana", "type": "lsass_access", "details": {}}
+        {
+          "id": "s4-1",
+          "time": "2026-02-06T11:45:00Z",
+          "host": "win-04",
+          "user": "dana",
+          "type": "process_creation",
+          "details": {
+            "tool": "procdump"
+          }
+        },
+        {
+          "id": "s4-2",
+          "time": "2026-02-06T11:45:30Z",
+          "host": "win-04",
+          "user": "dana",
+          "type": "lsass_access",
+          "details": {}
+        }
       ],
       "labels": [
-        {"rule_id": "TA0006.CREDDUMP", "outcome": "impossible"}
+        {
+          "rule_id": "TA0006.CREDDUMP",
+          "outcome": "impossible"
+        }
       ]
     },
     {
       "id": "realistic-5",
       "description": "Logging tamper after initial access",
       "events": [
-        {"id": "s5-1", "time": "2026-02-06T12:00:00Z", "host": "srv-01", "user": "eve", "type": "email_attachment_open", "details": {}},
-        {"id": "s5-2", "time": "2026-02-06T12:00:10Z", "host": "srv-01", "user": "eve", "type": "macro_execution", "details": {}},
-        {"id": "s5-3", "time": "2026-02-06T12:01:00Z", "host": "srv-01", "user": "eve", "type": "disable_logging", "details": {}},
-        {"id": "s5-4", "time": "2026-02-06T12:01:10Z", "host": "srv-01", "user": "eve", "type": "policy_bypass", "details": {}}
+        {
+          "id": "s5-1",
+          "time": "2026-02-06T12:00:00Z",
+          "host": "srv-01",
+          "user": "eve",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "s5-2",
+          "time": "2026-02-06T12:00:10Z",
+          "host": "srv-01",
+          "user": "eve",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "s5-3",
+          "time": "2026-02-06T12:01:00Z",
+          "host": "srv-01",
+          "user": "eve",
+          "type": "disable_logging",
+          "details": {}
+        },
+        {
+          "id": "s5-4",
+          "time": "2026-02-06T12:01:10Z",
+          "host": "srv-01",
+          "user": "eve",
+          "type": "policy_bypass",
+          "details": {}
+        }
       ],
       "labels": [
-        {"rule_id": "TA0005.LOG_TAMPER", "outcome": "feasible"}
+        {
+          "rule_id": "TA0005.LOG_TAMPER",
+          "outcome": "feasible"
+        }
       ]
     },
     {
       "id": "realistic-6",
       "description": "Admin protocol lateral movement with credential access",
       "events": [
-        {"id": "s6-1", "time": "2026-02-06T12:10:00Z", "host": "app-01", "user": "fred", "type": "lsass_access", "details": {}},
-        {"id": "s6-2", "time": "2026-02-06T12:10:30Z", "host": "app-01", "user": "fred", "type": "new_inbound_admin_protocol", "details": {"protocol": "rdp"}},
-        {"id": "s6-3", "time": "2026-02-06T12:10:40Z", "host": "app-01", "user": "fred", "type": "network_logon", "details": {}}
+        {
+          "id": "s6-1",
+          "time": "2026-02-06T12:10:00Z",
+          "host": "app-01",
+          "user": "fred",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "s6-2",
+          "time": "2026-02-06T12:10:30Z",
+          "host": "app-01",
+          "user": "fred",
+          "type": "new_inbound_admin_protocol",
+          "details": {
+            "protocol": "rdp"
+          }
+        },
+        {
+          "id": "s6-3",
+          "time": "2026-02-06T12:10:40Z",
+          "host": "app-01",
+          "user": "fred",
+          "type": "network_logon",
+          "details": {}
+        }
       ],
       "labels": [
-        {"rule_id": "TA0008.ADMIN_PROTOCOL_LATERAL", "outcome": "feasible"}
+        {
+          "rule_id": "TA0008.ADMIN_PROTOCOL_LATERAL",
+          "outcome": "feasible"
+        }
       ]
     },
     {
       "id": "realistic-7",
       "description": "Identity anomaly escalation with clear host/principal",
       "events": [
-        {"id": "s7-1", "time": "2026-02-06T13:00:00Z", "host": "idp-01", "user": "sam", "type": "impossible_travel", "details": {}},
-        {"id": "s7-2", "time": "2026-02-06T13:01:00Z", "host": "idp-01", "user": "sam", "type": "new_device_login", "details": {}}
+        {
+          "id": "s7-1",
+          "time": "2026-02-06T13:00:00Z",
+          "host": "idp-01",
+          "user": "sam",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "s7-2",
+          "time": "2026-02-06T13:01:00Z",
+          "host": "idp-01",
+          "user": "sam",
+          "type": "new_device_login",
+          "details": {}
+        }
       ],
       "labels": [
-        {"rule_id": "TA0006.IDENTITY_ANOMALY", "outcome": "feasible"}
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
       ],
       "expectations": [
-        {"rule_id": "TA0006.IDENTITY_ANOMALY", "decision_label": "escalate", "ticket_status": "in_review"}
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
       ]
     },
     {
       "id": "realistic-8",
       "description": "Exfil chain with missing transfer evidence",
       "events": [
-        {"id": "s8-1", "time": "2026-02-06T13:10:00Z", "host": "db-02", "user": "tina", "type": "data_staging", "details": {}},
-        {"id": "s8-2", "time": "2026-02-06T13:10:10Z", "host": "db-02", "user": "tina", "type": "beacon_outbound", "details": {}},
-        {"id": "s8-3", "time": "2026-02-06T13:10:20Z", "host": "db-02", "user": "tina", "type": "lsass_access", "details": {}}
+        {
+          "id": "s8-1",
+          "time": "2026-02-06T13:10:00Z",
+          "host": "db-02",
+          "user": "tina",
+          "type": "data_staging",
+          "details": {}
+        },
+        {
+          "id": "s8-2",
+          "time": "2026-02-06T13:10:10Z",
+          "host": "db-02",
+          "user": "tina",
+          "type": "beacon_outbound",
+          "details": {}
+        },
+        {
+          "id": "s8-3",
+          "time": "2026-02-06T13:10:20Z",
+          "host": "db-02",
+          "user": "tina",
+          "type": "lsass_access",
+          "details": {}
+        }
       ],
       "labels": [
-        {"rule_id": "TA0010.EXFIL", "outcome": "incomplete"}
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "incomplete"
+        }
       ],
       "expectations": [
-        {"rule_id": "TA0010.EXFIL", "decision_label": "deprioritize", "ticket_status": "open"}
+        {
+          "rule_id": "TA0010.EXFIL",
+          "decision_label": "deprioritize",
+          "ticket_status": "open"
+        }
       ]
     },
     {
       "id": "realistic-9",
       "description": "LOLBin chain with preconditions missing",
       "events": [
-        {"id": "s9-1", "time": "2026-02-06T13:20:00Z", "host": "web-02", "user": "uma", "type": "process_creation", "details": {"command_line": "mshta.exe http://evil"}},
-        {"id": "s9-2", "time": "2026-02-06T13:20:10Z", "host": "web-02", "user": "uma", "type": "lolbin_execution", "details": {}}
+        {
+          "id": "s9-1",
+          "time": "2026-02-06T13:20:00Z",
+          "host": "web-02",
+          "user": "uma",
+          "type": "process_creation",
+          "details": {
+            "command_line": "mshta.exe http://evil"
+          }
+        },
+        {
+          "id": "s9-2",
+          "time": "2026-02-06T13:20:10Z",
+          "host": "web-02",
+          "user": "uma",
+          "type": "lolbin_execution",
+          "details": {}
+        }
       ],
       "labels": [
-        {"rule_id": "TA0002.LOLBIN_CHAIN", "outcome": "impossible"}
+        {
+          "rule_id": "TA0002.LOLBIN_CHAIN",
+          "outcome": "impossible"
+        }
       ],
       "expectations": [
-        {"rule_id": "TA0002.LOLBIN_CHAIN", "decision_label": "keep", "ticket_status": "open", "reason_code": "precond_missing"}
+        {
+          "rule_id": "TA0002.LOLBIN_CHAIN",
+          "decision_label": "keep",
+          "ticket_status": "open",
+          "reason_code": "precond_missing"
+        }
       ]
     },
     {
       "id": "realistic-10",
       "description": "Identity anomaly without context",
       "events": [
-        {"id": "s10-1", "time": "2026-02-06T13:30:00Z", "host": "", "user": "", "type": "impossible_travel", "details": {}},
-        {"id": "s10-2", "time": "2026-02-06T13:30:10Z", "host": "", "user": "", "type": "new_device_login", "details": {}}
+        {
+          "id": "s10-1",
+          "time": "2026-02-06T13:30:00Z",
+          "host": "",
+          "user": "",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "s10-2",
+          "time": "2026-02-06T13:30:10Z",
+          "host": "",
+          "user": "",
+          "type": "new_device_login",
+          "details": {}
+        }
       ],
       "labels": [
-        {"rule_id": "TA0006.IDENTITY_ANOMALY", "outcome": "feasible"}
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
       ],
       "expectations": [
-        {"rule_id": "TA0006.IDENTITY_ANOMALY", "decision_label": "escalate", "reason_code": "environment_unknown"}
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "decision_label": "escalate",
+          "reason_code": "environment_unknown"
+        }
       ]
     },
     {
       "id": "realistic-11",
       "description": "Cloud logging disabled without firewall change",
       "events": [
-        {"id": "s11-1", "time": "2026-02-06T14:00:00Z", "host": "cloud-1", "user": "svc-admin", "type": "disable_logging", "details": {"service": "cloudtrail"}}
+        {
+          "id": "s11-1",
+          "time": "2026-02-06T14:00:00Z",
+          "host": "cloud-1",
+          "user": "svc-admin",
+          "type": "disable_logging",
+          "details": {
+            "service": "cloudtrail"
+          }
+        }
       ],
       "labels": [
-        {"rule_id": "TA0005.IMPAIR_DEFENSES", "outcome": "incomplete"},
-        {"rule_id": "TA0005.LOG_TAMPER", "outcome": "incomplete"}
+        {
+          "rule_id": "TA0005.IMPAIR_DEFENSES",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0005.LOG_TAMPER",
+          "outcome": "incomplete"
+        }
       ]
     },
     {
       "id": "realistic-12",
       "description": "Valid account login from new device",
       "events": [
-        {"id": "s12-1", "time": "2026-02-06T14:10:00Z", "host": "", "user": "alice", "type": "valid_account_login", "details": {}},
-        {"id": "s12-2", "time": "2026-02-06T14:11:00Z", "host": "", "user": "alice", "type": "new_device_login", "details": {}}
+        {
+          "id": "s12-1",
+          "time": "2026-02-06T14:10:00Z",
+          "host": "",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "s12-2",
+          "time": "2026-02-06T14:11:00Z",
+          "host": "",
+          "user": "alice",
+          "type": "new_device_login",
+          "details": {}
+        }
       ],
       "labels": [
-        {"rule_id": "TA0006.VALID_ACCOUNTS", "outcome": "feasible"}
+        {
+          "rule_id": "TA0006.VALID_ACCOUNTS",
+          "outcome": "feasible"
+        }
       ]
     },
     {
       "id": "realistic-13",
       "description": "Persistence with scheduled task and run key after initial access",
       "events": [
-        {"id": "s13-1", "time": "2026-02-06T14:20:00Z", "host": "host-1", "user": "bob", "type": "email_attachment_open", "details": {}},
-        {"id": "s13-2", "time": "2026-02-06T14:20:10Z", "host": "host-1", "user": "bob", "type": "macro_execution", "details": {}},
-        {"id": "s13-3", "time": "2026-02-06T14:21:00Z", "host": "host-1", "user": "bob", "type": "registry_run_key", "details": {}},
-        {"id": "s13-4", "time": "2026-02-06T14:21:30Z", "host": "host-1", "user": "bob", "type": "scheduled_task", "details": {}}
+        {
+          "id": "s13-1",
+          "time": "2026-02-06T14:20:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "s13-2",
+          "time": "2026-02-06T14:20:10Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "s13-3",
+          "time": "2026-02-06T14:21:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "registry_run_key",
+          "details": {}
+        },
+        {
+          "id": "s13-4",
+          "time": "2026-02-06T14:21:30Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "scheduled_task",
+          "details": {}
+        }
       ],
       "labels": [
-        {"rule_id": "TA0003.PERSIST", "outcome": "feasible"}
+        {
+          "rule_id": "TA0003.PERSIST",
+          "outcome": "feasible"
+        }
       ]
     },
     {
       "id": "realistic-14",
       "description": "Lateral movement with credential access and remote service creation",
       "events": [
-        {"id": "s14-1", "time": "2026-02-06T14:30:00Z", "host": "host-2", "user": "alice", "type": "beacon_outbound", "details": {}},
-        {"id": "s14-2", "time": "2026-02-06T14:30:20Z", "host": "host-2", "user": "alice", "type": "lsass_access", "details": {}},
-        {"id": "s14-3", "time": "2026-02-06T14:31:00Z", "host": "host-2", "user": "alice", "type": "remote_service_creation", "details": {}},
-        {"id": "s14-4", "time": "2026-02-06T14:31:20Z", "host": "host-2", "user": "alice", "type": "network_logon", "details": {}}
+        {
+          "id": "s14-1",
+          "time": "2026-02-06T14:30:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "beacon_outbound",
+          "details": {}
+        },
+        {
+          "id": "s14-2",
+          "time": "2026-02-06T14:30:20Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "s14-3",
+          "time": "2026-02-06T14:31:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "remote_service_creation",
+          "details": {}
+        },
+        {
+          "id": "s14-4",
+          "time": "2026-02-06T14:31:20Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "network_logon",
+          "details": {}
+        }
       ],
       "labels": [
-        {"rule_id": "TA0008.LATERAL", "outcome": "feasible"}
+        {
+          "rule_id": "TA0008.LATERAL",
+          "outcome": "feasible"
+        }
       ]
     },
     {
       "id": "realistic-15",
       "description": "Privilege escalation with token manipulation only",
       "events": [
-        {"id": "s15-1", "time": "2026-02-06T14:40:00Z", "host": "host-3", "user": "svc-admin", "type": "token_manipulation", "details": {}}
+        {
+          "id": "s15-1",
+          "time": "2026-02-06T14:40:00Z",
+          "host": "host-3",
+          "user": "svc-admin",
+          "type": "token_manipulation",
+          "details": {}
+        }
       ],
       "labels": [
-        {"rule_id": "TA0004.PRIVESCA", "outcome": "incomplete"}
+        {
+          "rule_id": "TA0004.PRIVESCA",
+          "outcome": "incomplete"
+        }
       ]
     },
     {
       "id": "realistic-16",
       "description": "C2 evidence without initial access (ambiguous)",
       "events": [
-        {"id": "s16-1", "time": "2026-02-06T14:50:00Z", "host": "host-2", "user": "alice", "type": "beacon_outbound", "details": {}},
-        {"id": "s16-2", "time": "2026-02-06T14:50:20Z", "host": "host-2", "user": "alice", "type": "dns_tunneling", "details": {}}
+        {
+          "id": "s16-1",
+          "time": "2026-02-06T14:50:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "beacon_outbound",
+          "details": {}
+        },
+        {
+          "id": "s16-2",
+          "time": "2026-02-06T14:50:20Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "dns_tunneling",
+          "details": {}
+        }
       ],
       "labels": [
-        {"rule_id": "TA0011.C2", "outcome": "incomplete"}
+        {
+          "rule_id": "TA0011.C2",
+          "outcome": "incomplete"
+        }
       ]
     },
     {
       "id": "realistic-17",
       "description": "Exfil transfer without C2 or credential access (ambiguous)",
       "events": [
-        {"id": "s17-1", "time": "2026-02-06T15:00:00Z", "host": "db-01", "user": "carl", "type": "large_outbound_transfer", "details": {}},
-        {"id": "s17-2", "time": "2026-02-06T15:00:10Z", "host": "db-01", "user": "carl", "type": "data_staging", "details": {}}
+        {
+          "id": "s17-1",
+          "time": "2026-02-06T15:00:00Z",
+          "host": "db-01",
+          "user": "carl",
+          "type": "large_outbound_transfer",
+          "details": {}
+        },
+        {
+          "id": "s17-2",
+          "time": "2026-02-06T15:00:10Z",
+          "host": "db-01",
+          "user": "carl",
+          "type": "data_staging",
+          "details": {}
+        }
       ],
       "labels": [
-        {"rule_id": "TA0010.EXFIL", "outcome": "incomplete"}
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "incomplete"
+        }
       ]
     },
     {
       "id": "realistic-18",
       "description": "Credential dumping evidence without privilege escalation (ambiguous)",
       "events": [
-        {"id": "s18-1", "time": "2026-02-06T15:10:00Z", "host": "win-04", "user": "dana", "type": "lsass_access", "details": {}},
-        {"id": "s18-2", "time": "2026-02-06T15:10:10Z", "host": "win-04", "user": "dana", "type": "process_creation", "details": {"tool": "procdump"}}
+        {
+          "id": "s18-1",
+          "time": "2026-02-06T15:10:00Z",
+          "host": "win-04",
+          "user": "dana",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "s18-2",
+          "time": "2026-02-06T15:10:10Z",
+          "host": "win-04",
+          "user": "dana",
+          "type": "process_creation",
+          "details": {
+            "tool": "procdump"
+          }
+        }
       ],
       "labels": [
-        {"rule_id": "TA0006.CREDDUMP", "outcome": "incomplete"}
+        {
+          "rule_id": "TA0006.CREDDUMP",
+          "outcome": "incomplete"
+        }
       ]
     },
     {
       "id": "realistic-19",
       "description": "Admin protocol lateral without credential access (ambiguous)",
       "events": [
-        {"id": "s19-1", "time": "2026-02-06T15:20:00Z", "host": "host-3", "user": "alice", "type": "new_inbound_admin_protocol", "details": {}},
-        {"id": "s19-2", "time": "2026-02-06T15:20:10Z", "host": "host-3", "user": "alice", "type": "network_logon", "details": {}}
+        {
+          "id": "s19-1",
+          "time": "2026-02-06T15:20:00Z",
+          "host": "host-3",
+          "user": "alice",
+          "type": "new_inbound_admin_protocol",
+          "details": {}
+        },
+        {
+          "id": "s19-2",
+          "time": "2026-02-06T15:20:10Z",
+          "host": "host-3",
+          "user": "alice",
+          "type": "network_logon",
+          "details": {}
+        }
       ],
       "labels": [
-        {"rule_id": "TA0008.ADMIN_PROTOCOL_LATERAL", "outcome": "incomplete"}
+        {
+          "rule_id": "TA0008.ADMIN_PROTOCOL_LATERAL",
+          "outcome": "incomplete"
+        }
       ]
     },
     {
       "id": "realistic-20",
       "description": "Mailbox rule change without valid account login (ambiguous)",
       "events": [
-        {"id": "s20-1", "time": "2026-02-06T15:30:00Z", "host": "", "user": "alice", "type": "mailbox_rule_create", "details": {}},
-        {"id": "s20-2", "time": "2026-02-06T15:30:10Z", "host": "", "user": "alice", "type": "forwarding_rule_set", "details": {}}
+        {
+          "id": "s20-1",
+          "time": "2026-02-06T15:30:00Z",
+          "host": "",
+          "user": "alice",
+          "type": "mailbox_rule_create",
+          "details": {}
+        },
+        {
+          "id": "s20-2",
+          "time": "2026-02-06T15:30:10Z",
+          "host": "",
+          "user": "alice",
+          "type": "forwarding_rule_set",
+          "details": {}
+        }
       ],
       "labels": [
-        {"rule_id": "TA0003.MAILBOX_PERSIST", "outcome": "incomplete"}
+        {
+          "rule_id": "TA0003.MAILBOX_PERSIST",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "edge-incomplete-TA0011.C2",
+      "description": "Edge incomplete for TA0011.C2",
+      "events": [
+        {
+          "id": "e21-ia1",
+          "time": "2026-02-06T10:21:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "e21-ia2",
+          "time": "2026-02-06T10:22:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "e21-req",
+          "time": "2026-02-06T10:23:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "beacon_outbound",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.C2",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "edge-impossible-TA0011.C2",
+      "description": "Edge impossible for TA0011.C2",
+      "events": [
+        {
+          "id": "e22-req",
+          "time": "2026-02-06T10:25:00Z",
+          "host": "host-3",
+          "user": "carl",
+          "type": "beacon_outbound",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.C2",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "edge-incomplete-TA0010.EXFIL",
+      "description": "Edge incomplete for TA0010.EXFIL",
+      "events": [
+        {
+          "id": "e23-c2",
+          "time": "2026-02-06T10:23:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "beacon_outbound",
+          "details": {}
+        },
+        {
+          "id": "e23-ca",
+          "time": "2026-02-06T10:24:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "e23-req",
+          "time": "2026-02-06T10:25:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "data_staging",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "edge-impossible-TA0010.EXFIL",
+      "description": "Edge impossible for TA0010.EXFIL",
+      "events": [
+        {
+          "id": "e24-req",
+          "time": "2026-02-06T10:27:00Z",
+          "host": "host-3",
+          "user": "carl",
+          "type": "data_staging",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "edge-incomplete-TA0008.LATERAL",
+      "description": "Edge incomplete for TA0008.LATERAL",
+      "events": [
+        {
+          "id": "e25-ca",
+          "time": "2026-02-06T10:25:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "e25-req",
+          "time": "2026-02-06T10:26:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "remote_service_creation",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.LATERAL",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "edge-impossible-TA0008.LATERAL",
+      "description": "Edge impossible for TA0008.LATERAL",
+      "events": [
+        {
+          "id": "e26-req",
+          "time": "2026-02-06T10:28:00Z",
+          "host": "host-3",
+          "user": "carl",
+          "type": "remote_service_creation",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.LATERAL",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "edge-incomplete-TA0003.PERSIST",
+      "description": "Edge incomplete for TA0003.PERSIST",
+      "events": [
+        {
+          "id": "e27-ia1",
+          "time": "2026-02-06T10:27:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "e27-ia2",
+          "time": "2026-02-06T10:28:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "e27-req",
+          "time": "2026-02-06T10:29:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "registry_run_key",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.PERSIST",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "edge-impossible-TA0003.PERSIST",
+      "description": "Edge impossible for TA0003.PERSIST",
+      "events": [
+        {
+          "id": "e28-req",
+          "time": "2026-02-06T10:31:00Z",
+          "host": "host-3",
+          "user": "carl",
+          "type": "registry_run_key",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.PERSIST",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "adversarial-TA0006.BRUTE_FORCE",
+      "description": "Adversarial partial evidence for TA0006.BRUTE_FORCE",
+      "events": [
+        {
+          "id": "a29-noise1",
+          "time": "2026-02-06T10:29:00Z",
+          "host": "host-9",
+          "user": "noise",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "a29-noise2",
+          "time": "2026-02-06T10:30:00Z",
+          "host": "host-9",
+          "user": "noise",
+          "type": "bulk_download",
+          "details": {}
+        },
+        {
+          "id": "a29-req",
+          "time": "2026-02-06T10:31:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "password_spray",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.BRUTE_FORCE",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "adversarial-TA0002.LOLBIN_CHAIN",
+      "description": "Adversarial partial evidence for TA0002.LOLBIN_CHAIN",
+      "events": [
+        {
+          "id": "a30-noise1",
+          "time": "2026-02-06T10:30:00Z",
+          "host": "host-9",
+          "user": "noise",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "a30-noise2",
+          "time": "2026-02-06T10:31:00Z",
+          "host": "host-9",
+          "user": "noise",
+          "type": "bulk_download",
+          "details": {}
+        },
+        {
+          "id": "a30-req",
+          "time": "2026-02-06T10:32:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "process_creation",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.LOLBIN_CHAIN",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "adversarial-TA0005.IMPAIR_DEFENSES",
+      "description": "Adversarial partial evidence for TA0005.IMPAIR_DEFENSES",
+      "events": [
+        {
+          "id": "a31-noise1",
+          "time": "2026-02-06T10:31:00Z",
+          "host": "host-9",
+          "user": "noise",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "a31-noise2",
+          "time": "2026-02-06T10:32:00Z",
+          "host": "host-9",
+          "user": "noise",
+          "type": "bulk_download",
+          "details": {}
+        },
+        {
+          "id": "a31-req",
+          "time": "2026-02-06T10:33:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "disable_logging",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.IMPAIR_DEFENSES",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "realistic-feasible-TA0006.IDENTITY_ANOMALY",
+      "description": "Feasible chain for TA0006.IDENTITY_ANOMALY",
+      "events": [
+        {
+          "id": "r32-impossible_travel",
+          "time": "2026-02-06T10:32:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "r32-new_device_login",
+          "time": "2026-02-06T10:33:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-incomplete-TA0006.IDENTITY_ANOMALY",
+      "description": "Incomplete chain for TA0006.IDENTITY_ANOMALY",
+      "events": [
+        {
+          "id": "r33-impossible_travel",
+          "time": "2026-02-06T10:33:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "impossible_travel",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "realistic-impossible-TA0006.IDENTITY_ANOMALY",
+      "description": "Impossible chain for TA0006.IDENTITY_ANOMALY",
+      "events": [
+        {
+          "id": "r34-impossible_travel",
+          "time": "2026-02-06T10:35:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "impossible_travel",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-feasible-TA0004.PRIVESCA",
+      "description": "Feasible chain for TA0004.PRIVESCA",
+      "events": [
+        {
+          "id": "r35-token_manipulation",
+          "time": "2026-02-06T10:35:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "r35-admin_group_change",
+          "time": "2026-02-06T10:36:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "admin_group_change",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.PRIVESCA",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-incomplete-TA0004.PRIVESCA",
+      "description": "Incomplete chain for TA0004.PRIVESCA",
+      "events": [
+        {
+          "id": "r36-token_manipulation",
+          "time": "2026-02-06T10:36:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "token_manipulation",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.PRIVESCA",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "realistic-impossible-TA0004.PRIVESCA",
+      "description": "Impossible chain for TA0004.PRIVESCA",
+      "events": [
+        {
+          "id": "r37-token_manipulation",
+          "time": "2026-02-06T10:38:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "token_manipulation",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.PRIVESCA",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-feasible-TA0006.CREDDUMP",
+      "description": "Feasible chain for TA0006.CREDDUMP",
+      "events": [
+        {
+          "id": "r38-pe",
+          "time": "2026-02-06T10:38:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "r38-process_creation",
+          "time": "2026-02-06T10:39:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "process_creation",
+          "details": {}
+        },
+        {
+          "id": "r38-lsass_access",
+          "time": "2026-02-06T10:40:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "lsass_access",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.CREDDUMP",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-incomplete-TA0006.CREDDUMP",
+      "description": "Incomplete chain for TA0006.CREDDUMP",
+      "events": [
+        {
+          "id": "r39-pe",
+          "time": "2026-02-06T10:39:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "r39-process_creation",
+          "time": "2026-02-06T10:40:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "process_creation",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.CREDDUMP",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "realistic-impossible-TA0006.CREDDUMP",
+      "description": "Impossible chain for TA0006.CREDDUMP",
+      "events": [
+        {
+          "id": "r40-process_creation",
+          "time": "2026-02-06T10:42:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "process_creation",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.CREDDUMP",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-feasible-TA0008.LATERAL",
+      "description": "Feasible chain for TA0008.LATERAL",
+      "events": [
+        {
+          "id": "r41-ca",
+          "time": "2026-02-06T10:41:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "r41-remote_service_creation",
+          "time": "2026-02-06T10:42:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "remote_service_creation",
+          "details": {}
+        },
+        {
+          "id": "r41-network_logon",
+          "time": "2026-02-06T10:43:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "network_logon",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.LATERAL",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-incomplete-TA0008.LATERAL",
+      "description": "Incomplete chain for TA0008.LATERAL",
+      "events": [
+        {
+          "id": "r42-ca",
+          "time": "2026-02-06T10:42:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "r42-remote_service_creation",
+          "time": "2026-02-06T10:43:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "remote_service_creation",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.LATERAL",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "realistic-impossible-TA0008.LATERAL",
+      "description": "Impossible chain for TA0008.LATERAL",
+      "events": [
+        {
+          "id": "r43-remote_service_creation",
+          "time": "2026-02-06T10:45:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "remote_service_creation",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.LATERAL",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-feasible-TA0003.PERSIST",
+      "description": "Feasible chain for TA0003.PERSIST",
+      "events": [
+        {
+          "id": "r44-ia1",
+          "time": "2026-02-06T10:44:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "r44-ia2",
+          "time": "2026-02-06T10:45:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "r44-registry_run_key",
+          "time": "2026-02-06T10:46:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "registry_run_key",
+          "details": {}
+        },
+        {
+          "id": "r44-scheduled_task",
+          "time": "2026-02-06T10:47:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "scheduled_task",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.PERSIST",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-incomplete-TA0003.PERSIST",
+      "description": "Incomplete chain for TA0003.PERSIST",
+      "events": [
+        {
+          "id": "r45-ia1",
+          "time": "2026-02-06T10:45:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "r45-ia2",
+          "time": "2026-02-06T10:46:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "r45-registry_run_key",
+          "time": "2026-02-06T10:47:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "registry_run_key",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.PERSIST",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "realistic-impossible-TA0003.PERSIST",
+      "description": "Impossible chain for TA0003.PERSIST",
+      "events": [
+        {
+          "id": "r46-registry_run_key",
+          "time": "2026-02-06T10:49:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "registry_run_key",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.PERSIST",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-feasible-TA0005.LOG_TAMPER",
+      "description": "Feasible chain for TA0005.LOG_TAMPER",
+      "events": [
+        {
+          "id": "r47-ia1",
+          "time": "2026-02-06T10:47:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "r47-ia2",
+          "time": "2026-02-06T10:48:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "r47-disable_logging",
+          "time": "2026-02-06T10:49:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "disable_logging",
+          "details": {}
+        },
+        {
+          "id": "r47-policy_bypass",
+          "time": "2026-02-06T10:50:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "policy_bypass",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.LOG_TAMPER",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-incomplete-TA0005.LOG_TAMPER",
+      "description": "Incomplete chain for TA0005.LOG_TAMPER",
+      "events": [
+        {
+          "id": "r48-ia1",
+          "time": "2026-02-06T10:48:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "r48-ia2",
+          "time": "2026-02-06T10:49:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "r48-disable_logging",
+          "time": "2026-02-06T10:50:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "disable_logging",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.LOG_TAMPER",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "realistic-impossible-TA0005.LOG_TAMPER",
+      "description": "Impossible chain for TA0005.LOG_TAMPER",
+      "events": [
+        {
+          "id": "r49-disable_logging",
+          "time": "2026-02-06T10:52:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "disable_logging",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.LOG_TAMPER",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-feasible-TA0006.VALID_ACCOUNTS",
+      "description": "Feasible chain for TA0006.VALID_ACCOUNTS",
+      "events": [
+        {
+          "id": "r50-valid_account_login",
+          "time": "2026-02-06T10:50:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "r50-new_device_login",
+          "time": "2026-02-06T10:51:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.VALID_ACCOUNTS",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-incomplete-TA0006.VALID_ACCOUNTS",
+      "description": "Incomplete chain for TA0006.VALID_ACCOUNTS",
+      "events": [
+        {
+          "id": "r51-valid_account_login",
+          "time": "2026-02-06T10:51:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "valid_account_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.VALID_ACCOUNTS",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "realistic-impossible-TA0006.VALID_ACCOUNTS",
+      "description": "Impossible chain for TA0006.VALID_ACCOUNTS",
+      "events": [
+        {
+          "id": "r52-valid_account_login",
+          "time": "2026-02-06T10:53:00Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "valid_account_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.VALID_ACCOUNTS",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-0",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-0-1",
+          "time": "2026-02-06T10:53:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-0-2",
+          "time": "2026-02-06T10:54:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-1",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-1-1",
+          "time": "2026-02-06T10:54:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-1-2",
+          "time": "2026-02-06T10:55:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-2",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-2-1",
+          "time": "2026-02-06T10:55:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-2-2",
+          "time": "2026-02-06T10:56:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-3",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-3-1",
+          "time": "2026-02-06T10:56:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-3-2",
+          "time": "2026-02-06T10:57:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-4",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-4-1",
+          "time": "2026-02-06T10:57:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-4-2",
+          "time": "2026-02-06T10:58:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-5",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-5-1",
+          "time": "2026-02-06T10:58:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-5-2",
+          "time": "2026-02-06T10:59:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-6",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-6-1",
+          "time": "2026-02-06T10:59:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-6-2",
+          "time": "2026-02-06T11:00:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-7",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-7-1",
+          "time": "2026-02-06T11:00:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-7-2",
+          "time": "2026-02-06T11:01:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-8",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-8-1",
+          "time": "2026-02-06T11:01:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-8-2",
+          "time": "2026-02-06T11:02:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-9",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-9-1",
+          "time": "2026-02-06T11:02:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-9-2",
+          "time": "2026-02-06T11:03:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-10",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-10-1",
+          "time": "2026-02-06T11:03:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-10-2",
+          "time": "2026-02-06T11:04:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-11",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-11-1",
+          "time": "2026-02-06T11:04:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-11-2",
+          "time": "2026-02-06T11:05:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-12",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-12-1",
+          "time": "2026-02-06T11:05:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-12-2",
+          "time": "2026-02-06T11:06:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-13",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-13-1",
+          "time": "2026-02-06T11:06:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-13-2",
+          "time": "2026-02-06T11:07:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-14",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-14-1",
+          "time": "2026-02-06T11:07:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-14-2",
+          "time": "2026-02-06T11:08:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-15",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-15-1",
+          "time": "2026-02-06T11:08:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-15-2",
+          "time": "2026-02-06T11:09:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-16",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-16-1",
+          "time": "2026-02-06T11:09:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-16-2",
+          "time": "2026-02-06T11:10:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-17",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-17-1",
+          "time": "2026-02-06T11:10:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-17-2",
+          "time": "2026-02-06T11:11:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-18",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-18-1",
+          "time": "2026-02-06T11:11:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-18-2",
+          "time": "2026-02-06T11:12:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-19",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-19-1",
+          "time": "2026-02-06T11:12:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-19-2",
+          "time": "2026-02-06T11:13:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-20",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-20-1",
+          "time": "2026-02-06T11:13:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-20-2",
+          "time": "2026-02-06T11:14:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-21",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-21-1",
+          "time": "2026-02-06T11:14:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-21-2",
+          "time": "2026-02-06T11:15:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-22",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-22-1",
+          "time": "2026-02-06T11:15:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-22-2",
+          "time": "2026-02-06T11:16:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-23",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-23-1",
+          "time": "2026-02-06T11:16:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-23-2",
+          "time": "2026-02-06T11:17:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-24",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-24-1",
+          "time": "2026-02-06T11:17:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-24-2",
+          "time": "2026-02-06T11:18:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-25",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-25-1",
+          "time": "2026-02-06T11:18:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-25-2",
+          "time": "2026-02-06T11:19:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-26",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-26-1",
+          "time": "2026-02-06T11:19:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-26-2",
+          "time": "2026-02-06T11:20:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-27",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-27-1",
+          "time": "2026-02-06T11:20:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-27-2",
+          "time": "2026-02-06T11:21:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-28",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-28-1",
+          "time": "2026-02-06T11:21:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-28-2",
+          "time": "2026-02-06T11:22:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-29",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-29-1",
+          "time": "2026-02-06T11:22:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-29-2",
+          "time": "2026-02-06T11:23:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-30",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-30-1",
+          "time": "2026-02-06T11:23:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-30-2",
+          "time": "2026-02-06T11:24:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-31",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-31-1",
+          "time": "2026-02-06T11:24:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-31-2",
+          "time": "2026-02-06T11:25:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-32",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-32-1",
+          "time": "2026-02-06T11:25:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-32-2",
+          "time": "2026-02-06T11:26:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-33",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-33-1",
+          "time": "2026-02-06T11:26:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-33-2",
+          "time": "2026-02-06T11:27:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-34",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-34-1",
+          "time": "2026-02-06T11:27:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-34-2",
+          "time": "2026-02-06T11:28:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-35",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-35-1",
+          "time": "2026-02-06T11:28:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-35-2",
+          "time": "2026-02-06T11:29:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-36",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-36-1",
+          "time": "2026-02-06T11:29:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-36-2",
+          "time": "2026-02-06T11:30:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-37",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-37-1",
+          "time": "2026-02-06T11:30:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-37-2",
+          "time": "2026-02-06T11:31:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-38",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-38-1",
+          "time": "2026-02-06T11:31:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-38-2",
+          "time": "2026-02-06T11:32:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-39",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-39-1",
+          "time": "2026-02-06T11:32:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-39-2",
+          "time": "2026-02-06T11:33:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-40",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-40-1",
+          "time": "2026-02-06T11:33:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-40-2",
+          "time": "2026-02-06T11:34:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-41",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-41-1",
+          "time": "2026-02-06T11:34:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-41-2",
+          "time": "2026-02-06T11:35:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-42",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-42-1",
+          "time": "2026-02-06T11:35:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-42-2",
+          "time": "2026-02-06T11:36:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-43",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-43-1",
+          "time": "2026-02-06T11:36:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-43-2",
+          "time": "2026-02-06T11:37:00Z",
+          "host": "",
+          "user": "user3",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-44",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-44-1",
+          "time": "2026-02-06T11:37:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-44-2",
+          "time": "2026-02-06T11:38:00Z",
+          "host": "",
+          "user": "user4",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-45",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-45-1",
+          "time": "2026-02-06T11:38:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-45-2",
+          "time": "2026-02-06T11:39:00Z",
+          "host": "",
+          "user": "user0",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-46",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-46-1",
+          "time": "2026-02-06T11:39:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-46-2",
+          "time": "2026-02-06T11:40:00Z",
+          "host": "",
+          "user": "user1",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "fill-identity-47",
+      "description": "Identity anomaly filler",
+      "events": [
+        {
+          "id": "fill-47-1",
+          "time": "2026-02-06T11:40:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "fill-47-2",
+          "time": "2026-02-06T11:41:00Z",
+          "host": "",
+          "user": "user2",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
       ]
     }
   ]
