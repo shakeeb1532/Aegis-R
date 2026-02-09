@@ -36,6 +36,7 @@ Aegis-R is a **human-governed security reasoning infrastructure** that evaluates
 - `docs/release_checklist.md` — release steps and tagging guidance
 - `PRIVATE_FEATURES.md` — protected components tracker
 - `docs/pilot_demo_pack.md` — pilot-grade demo pack guide
+- `docs/metrics_report.md` — synthetic vs public vs pilot metrics summary
 - `docs/inventory_schema.md` — file-based inventory ingestion schema
 - `docs/architecture.md` — system architecture diagram
 
@@ -56,6 +57,12 @@ Regression (latest run):
 - Accuracy: 1.000 (Total labels: 10)
 - Class metrics (Precision/Recall): feasible 1.000/1.000, incomplete 1.000/1.000, impossible 1.000/1.000
 - Full report + calibration: `docs/regression_report.md`
+
+Public dataset consistency:
+- Report: `docs/public_dataset_report.md`
+
+Pilot dataset impact:
+- Pending pilot data (see `docs/metrics_report.md`)
 
 ---
 

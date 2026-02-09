@@ -1,0 +1,99 @@
+{
+  "scenarios": [
+    {
+      "id": "public-cloudtrail-auth",
+      "description": "CloudTrail console login failures plus valid login",
+      "events": [
+        {
+          "id": "ct-1",
+          "time": "2026-02-08T12:00:00Z",
+          "host": "111111111111",
+          "user": "arn:aws:iam::111111111111:user/console",
+          "type": "password_spray",
+          "details": {"source": "cloudtrail"}
+        },
+        {
+          "id": "ct-2",
+          "time": "2026-02-08T12:01:00Z",
+          "host": "111111111111",
+          "user": "arn:aws:iam::111111111111:user/console",
+          "type": "valid_account_login",
+          "details": {"source": "cloudtrail"}
+        }
+      ],
+      "labels": [
+        {"rule_id": "TA0006.BRUTE_FORCE", "outcome": "incomplete"},
+        {"rule_id": "TA0006.VALID_ACCOUNTS", "outcome": "incomplete"}
+      ]
+    },
+    {
+      "id": "public-cloudtrail-exfil",
+      "description": "CloudTrail bulk access with access-denied discovery",
+      "events": [
+        {
+          "id": "ct-3",
+          "time": "2026-02-08T12:10:00Z",
+          "host": "111111111111",
+          "user": "arn:aws:iam::111111111111:user/console",
+          "type": "bulk_download",
+          "details": {"source": "cloudtrail"}
+        },
+        {
+          "id": "ct-4",
+          "time": "2026-02-08T12:11:00Z",
+          "host": "111111111111",
+          "user": "arn:aws:iam::111111111111:user/console",
+          "type": "unusual_access_scope",
+          "details": {"source": "cloudtrail"}
+        },
+        {
+          "id": "ct-5",
+          "time": "2026-02-08T12:12:00Z",
+          "host": "111111111111",
+          "user": "arn:aws:iam::111111111111:user/console",
+          "type": "valid_account_login",
+          "details": {"source": "cloudtrail"}
+        }
+      ],
+      "labels": [
+        {"rule_id": "TA0010.BULK_EXFIL", "outcome": "incomplete"},
+        {"rule_id": "TA0006.INSIDER_EXFIL", "outcome": "feasible"}
+      ]
+    },
+    {
+      "id": "public-windows-lolbin",
+      "description": "Windows event log LOLBin execution with log clear",
+      "events": [
+        {
+          "id": "win-1",
+          "time": "2026-02-08T12:20:00Z",
+          "host": "WORKSTATION5",
+          "user": "wardog",
+          "type": "process_creation",
+          "details": {"image": "C:\\Windows\\System32\\mshta.exe"}
+        },
+        {
+          "id": "win-2",
+          "time": "2026-02-08T12:20:01Z",
+          "host": "WORKSTATION5",
+          "user": "wardog",
+          "type": "lolbin_execution",
+          "details": {"image": "C:\\Windows\\System32\\mshta.exe"}
+        },
+        {
+          "id": "win-3",
+          "time": "2026-02-08T12:20:02Z",
+          "host": "WORKSTATION5",
+          "user": "wardog",
+          "type": "disable_logging",
+          "details": {"channel": "Security"}
+        }
+      ],
+      "labels": [
+        {"rule_id": "TA0002.LOLBIN_CHAIN", "outcome": "impossible"},
+        {"rule_id": "TA0005.IMPAIR_DEFENSES", "outcome": "incomplete"},
+        {"rule_id": "TA0005.LOG_TAMPER", "outcome": "incomplete"}
+      ]
+    }
+  ]
+}
