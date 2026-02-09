@@ -183,6 +183,61 @@
       "labels": [
         {"rule_id": "TA0004.PRIVESCA", "outcome": "incomplete"}
       ]
+    },
+    {
+      "id": "realistic-16",
+      "description": "C2 evidence without initial access (ambiguous)",
+      "events": [
+        {"id": "s16-1", "time": "2026-02-06T14:50:00Z", "host": "host-2", "user": "alice", "type": "beacon_outbound", "details": {}},
+        {"id": "s16-2", "time": "2026-02-06T14:50:20Z", "host": "host-2", "user": "alice", "type": "dns_tunneling", "details": {}}
+      ],
+      "labels": [
+        {"rule_id": "TA0011.C2", "outcome": "incomplete"}
+      ]
+    },
+    {
+      "id": "realistic-17",
+      "description": "Exfil transfer without C2 or credential access (ambiguous)",
+      "events": [
+        {"id": "s17-1", "time": "2026-02-06T15:00:00Z", "host": "db-01", "user": "carl", "type": "large_outbound_transfer", "details": {}},
+        {"id": "s17-2", "time": "2026-02-06T15:00:10Z", "host": "db-01", "user": "carl", "type": "data_staging", "details": {}}
+      ],
+      "labels": [
+        {"rule_id": "TA0010.EXFIL", "outcome": "incomplete"}
+      ]
+    },
+    {
+      "id": "realistic-18",
+      "description": "Credential dumping evidence without privilege escalation (ambiguous)",
+      "events": [
+        {"id": "s18-1", "time": "2026-02-06T15:10:00Z", "host": "win-04", "user": "dana", "type": "lsass_access", "details": {}},
+        {"id": "s18-2", "time": "2026-02-06T15:10:10Z", "host": "win-04", "user": "dana", "type": "process_creation", "details": {"tool": "procdump"}}
+      ],
+      "labels": [
+        {"rule_id": "TA0006.CREDDUMP", "outcome": "incomplete"}
+      ]
+    },
+    {
+      "id": "realistic-19",
+      "description": "Admin protocol lateral without credential access (ambiguous)",
+      "events": [
+        {"id": "s19-1", "time": "2026-02-06T15:20:00Z", "host": "host-3", "user": "alice", "type": "new_inbound_admin_protocol", "details": {}},
+        {"id": "s19-2", "time": "2026-02-06T15:20:10Z", "host": "host-3", "user": "alice", "type": "network_logon", "details": {}}
+      ],
+      "labels": [
+        {"rule_id": "TA0008.ADMIN_PROTOCOL_LATERAL", "outcome": "incomplete"}
+      ]
+    },
+    {
+      "id": "realistic-20",
+      "description": "Mailbox rule change without valid account login (ambiguous)",
+      "events": [
+        {"id": "s20-1", "time": "2026-02-06T15:30:00Z", "host": "", "user": "alice", "type": "mailbox_rule_create", "details": {}},
+        {"id": "s20-2", "time": "2026-02-06T15:30:10Z", "host": "", "user": "alice", "type": "forwarding_rule_set", "details": {}}
+      ],
+      "labels": [
+        {"rule_id": "TA0003.MAILBOX_PERSIST", "outcome": "incomplete"}
+      ]
     }
   ]
 }

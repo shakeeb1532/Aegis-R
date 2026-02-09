@@ -54,8 +54,8 @@ Summary:
 - Detailed output: `docs/test_results.md`
 
 Regression (latest run):
-- Accuracy: 1.000 (Total labels: 16)
-- Class metrics (Precision/Recall): feasible 1.000/1.000, incomplete 1.000/1.000, impossible 1.000/1.000
+- Accuracy: 0.762 (Total labels: 21)
+- Class metrics (Precision/Recall): feasible 1.000/1.000, incomplete 1.000/0.545, impossible 0.286/1.000
 - Full report + calibration: `docs/regression_report.md`
 
 Public dataset consistency:
