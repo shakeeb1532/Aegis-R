@@ -1,0 +1,349 @@
+{
+  "updated_at": "2026-02-08T16:03:13.409567Z",
+  "compromised_hosts": {
+    "WORKSTATION5": true
+  },
+  "compromised_users": {
+    "WORKSTATION5\\wardog": true,
+    "wardog": true
+  },
+  "reachable_hosts": {},
+  "reachable_identities": {
+    "WORKSTATION5\\wardog": true,
+    "wardog": true
+  },
+  "signals": null,
+  "reasoning_chain": null,
+  "progression": [],
+  "position": {
+    "stage": "host_execution",
+    "principals": [
+      "wardog",
+      "WORKSTATION5\\wardog"
+    ],
+    "assets": [
+      "WORKSTATION5"
+    ],
+    "confidence": 0,
+    "updated_at": "2020-10-22T02:58:00.57Z"
+  },
+  "position_summaries": null,
+  "path_scores": null,
+  "path_score_overall": 0,
+  "graph_overlay": {
+    "current_nodes": [
+      "host:WORKSTATION5",
+      "id:wardog",
+      "id:WORKSTATION5\\wardog"
+    ],
+    "reachable_nodes": [
+      "host:WORKSTATION5",
+      "id:wardog",
+      "id:WORKSTATION5\\wardog"
+    ]
+  },
+  "decision_cache": {
+    "||TA0001.PHISHING": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0001.PHISHING",
+      "verdict": "incomplete",
+      "label": "deprioritize",
+      "reason_code": "evidence_gap",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0001.PHISH_LINK": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0001.PHISH_LINK",
+      "verdict": "incomplete",
+      "label": "deprioritize",
+      "reason_code": "evidence_gap",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0002.LOLBIN_CHAIN": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0002.LOLBIN_CHAIN",
+      "verdict": "impossible",
+      "label": "keep",
+      "reason_code": "precond_missing",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": [
+        "2020-10-22T02:57:59.856Z-4688-WORKSTATION5-proc",
+        "2020-10-22T02:58:00.462Z-4688-WORKSTATION5-proc",
+        "2020-10-22T02:58:00.568Z-4688-WORKSTATION5-proc",
+        "2020-10-22T02:57:59.857Z-1-WORKSTATION5-proc",
+        "2020-10-22T02:58:00.489Z-1-WORKSTATION5-proc",
+        "2020-10-22T02:58:00.570Z-1-WORKSTATION5-proc",
+        "2020-10-22T02:57:59.856Z-4688-WORKSTATION5-lolbin",
+        "2020-10-22T02:57:59.857Z-1-WORKSTATION5-lolbin"
+      ]
+    },
+    "||TA0003.MAILBOX_PERSIST": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0003.MAILBOX_PERSIST",
+      "verdict": "incomplete",
+      "label": "keep",
+      "reason_code": "environment_unknown",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0003.PERSIST": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0003.PERSIST",
+      "verdict": "incomplete",
+      "label": "keep",
+      "reason_code": "environment_unknown",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0003.PERSIST_EXTENDED": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0003.PERSIST_EXTENDED",
+      "verdict": "incomplete",
+      "label": "keep",
+      "reason_code": "environment_unknown",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0004.ACCOUNT_MANIP": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0004.ACCOUNT_MANIP",
+      "verdict": "incomplete",
+      "label": "keep",
+      "reason_code": "environment_unknown",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0004.MFA_BYPASS": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0004.MFA_BYPASS",
+      "verdict": "incomplete",
+      "label": "keep",
+      "reason_code": "environment_unknown",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0004.PRIVESCA": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0004.PRIVESCA",
+      "verdict": "incomplete",
+      "label": "deprioritize",
+      "reason_code": "environment_unknown",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0004.SAAS_ADMIN": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0004.SAAS_ADMIN",
+      "verdict": "incomplete",
+      "label": "keep",
+      "reason_code": "precond_missing",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0005.AUTH_PROCESS_MOD": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0005.AUTH_PROCESS_MOD",
+      "verdict": "incomplete",
+      "label": "keep",
+      "reason_code": "precond_missing",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0005.IMPAIR_DEFENSES": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0005.IMPAIR_DEFENSES",
+      "verdict": "incomplete",
+      "label": "deprioritize",
+      "reason_code": "evidence_gap",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": [
+        "2020-10-22T02:57:56.178Z-1102-WORKSTATION5-logclear"
+      ]
+    },
+    "||TA0005.LOG_TAMPER": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0005.LOG_TAMPER",
+      "verdict": "incomplete",
+      "label": "keep",
+      "reason_code": "precond_missing",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": [
+        "2020-10-22T02:57:56.178Z-1102-WORKSTATION5-logclear"
+      ]
+    },
+    "||TA0006.BRUTE_FORCE": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0006.BRUTE_FORCE",
+      "verdict": "incomplete",
+      "label": "deprioritize",
+      "reason_code": "evidence_gap",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0006.CREDDUMP": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0006.CREDDUMP",
+      "verdict": "incomplete",
+      "label": "keep",
+      "reason_code": "precond_missing",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": [
+        "2020-10-22T02:57:59.856Z-4688-WORKSTATION5-proc",
+        "2020-10-22T02:58:00.462Z-4688-WORKSTATION5-proc",
+        "2020-10-22T02:58:00.568Z-4688-WORKSTATION5-proc",
+        "2020-10-22T02:57:59.857Z-1-WORKSTATION5-proc",
+        "2020-10-22T02:58:00.489Z-1-WORKSTATION5-proc",
+        "2020-10-22T02:58:00.570Z-1-WORKSTATION5-proc"
+      ]
+    },
+    "||TA0006.IDENTITY_ANOMALY": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0006.IDENTITY_ANOMALY",
+      "verdict": "incomplete",
+      "label": "deprioritize",
+      "reason_code": "evidence_gap",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0006.INSIDER_EXFIL": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0006.INSIDER_EXFIL",
+      "verdict": "incomplete",
+      "label": "keep",
+      "reason_code": "precond_missing",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0006.VALID_ACCOUNTS": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0006.VALID_ACCOUNTS",
+      "verdict": "incomplete",
+      "label": "deprioritize",
+      "reason_code": "evidence_gap",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0008.ADMIN_PROTOCOL_LATERAL": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0008.ADMIN_PROTOCOL_LATERAL",
+      "verdict": "incomplete",
+      "label": "deprioritize",
+      "reason_code": "environment_unknown",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0008.CLOUD_PIVOT": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0008.CLOUD_PIVOT",
+      "verdict": "incomplete",
+      "label": "deprioritize",
+      "reason_code": "evidence_gap",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0008.LATERAL": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0008.LATERAL",
+      "verdict": "incomplete",
+      "label": "deprioritize",
+      "reason_code": "environment_unknown",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0010.BULK_EXFIL": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0010.BULK_EXFIL",
+      "verdict": "incomplete",
+      "label": "deprioritize",
+      "reason_code": "environment_unknown",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0010.EXFIL": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0010.EXFIL",
+      "verdict": "incomplete",
+      "label": "keep",
+      "reason_code": "environment_unknown",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0010.EXFIL_WEB": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0010.EXFIL_WEB",
+      "verdict": "incomplete",
+      "label": "keep",
+      "reason_code": "environment_unknown",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0011.APP_LAYER_C2": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0011.APP_LAYER_C2",
+      "verdict": "incomplete",
+      "label": "keep",
+      "reason_code": "environment_unknown",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0011.C2": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0011.C2",
+      "verdict": "incomplete",
+      "label": "keep",
+      "reason_code": "environment_unknown",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0040.RECOVERY_INHIBIT": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0040.RECOVERY_INHIBIT",
+      "verdict": "incomplete",
+      "label": "deprioritize",
+      "reason_code": "evidence_gap",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    },
+    "||TA0043.SUPPLY_CHAIN": {
+      "host": "",
+      "principal": "",
+      "rule_id": "TA0043.SUPPLY_CHAIN",
+      "verdict": "incomplete",
+      "label": "deprioritize",
+      "reason_code": "evidence_gap",
+      "updated_at": "2026-02-08T16:03:13.409624Z",
+      "evidence_ids": []
+    }
+  },
+  "threads": [],
+  "tickets": []
+}

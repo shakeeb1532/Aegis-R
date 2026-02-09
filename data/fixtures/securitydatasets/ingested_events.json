@@ -1,0 +1,107 @@
+[
+  {
+    "id": "2020-10-22T02:57:56.178Z-1102-WORKSTATION5-logclear",
+    "time": "2020-10-22T02:57:56.178Z",
+    "host": "WORKSTATION5",
+    "user": "",
+    "type": "disable_logging",
+    "details": {
+      "channel": "Security",
+      "message": "The audit log was cleared.\r\nSubject:\r\n\tSecurity ID:\tS-1-5-21-3940915590-64593676-1414006259-500\r\n\tAccount Name:\twardog\r\n\tDomain Name:\tWORKSTATION5\r\n\tLogon ID:\t0xC61D9"
+    }
+  },
+  {
+    "id": "2020-10-22T02:57:59.856Z-4688-WORKSTATION5-proc",
+    "time": "2020-10-22T02:57:59.856Z",
+    "host": "WORKSTATION5",
+    "user": "wardog",
+    "type": "process_creation",
+    "details": {
+      "command_line": "mshta  vbscript:Execute(\"CreateObject(\"\"Wscript.Shell\"\").Run \"\"powershell -noexit -command Get-Service sysmon\"\":close\")",
+      "image": "C:\\Windows\\System32\\mshta.exe",
+      "parent": "C:\\Windows\\System32\\cmd.exe"
+    }
+  },
+  {
+    "id": "2020-10-22T02:57:59.856Z-4688-WORKSTATION5-lolbin",
+    "time": "2020-10-22T02:57:59.856Z",
+    "host": "WORKSTATION5",
+    "user": "wardog",
+    "type": "lolbin_execution",
+    "details": {
+      "command_line": "mshta  vbscript:Execute(\"CreateObject(\"\"Wscript.Shell\"\").Run \"\"powershell -noexit -command Get-Service sysmon\"\":close\")",
+      "image": "C:\\Windows\\System32\\mshta.exe"
+    }
+  },
+  {
+    "id": "2020-10-22T02:58:00.462Z-4688-WORKSTATION5-proc",
+    "time": "2020-10-22T02:58:00.462Z",
+    "host": "WORKSTATION5",
+    "user": "wardog",
+    "type": "process_creation",
+    "details": {
+      "command_line": "\"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -noexit -command Get-Service sysmon",
+      "image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "parent": "C:\\Windows\\System32\\mshta.exe"
+    }
+  },
+  {
+    "id": "2020-10-22T02:58:00.568Z-4688-WORKSTATION5-proc",
+    "time": "2020-10-22T02:58:00.568Z",
+    "host": "WORKSTATION5",
+    "user": "wardog",
+    "type": "process_creation",
+    "details": {
+      "command_line": "\\??\\C:\\windows\\system32\\conhost.exe 0xffffffff -ForceV1",
+      "image": "C:\\Windows\\System32\\conhost.exe",
+      "parent": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+    }
+  },
+  {
+    "id": "2020-10-22T02:57:59.857Z-1-WORKSTATION5-proc",
+    "time": "2020-10-22T02:57:59.857Z",
+    "host": "WORKSTATION5",
+    "user": "WORKSTATION5\\wardog",
+    "type": "process_creation",
+    "details": {
+      "command_line": "mshta  vbscript:Execute(\"CreateObject(\"\"Wscript.Shell\"\").Run \"\"powershell -noexit -command Get-Service sysmon\"\":close\")",
+      "image": "",
+      "parent": ""
+    }
+  },
+  {
+    "id": "2020-10-22T02:57:59.857Z-1-WORKSTATION5-lolbin",
+    "time": "2020-10-22T02:57:59.857Z",
+    "host": "WORKSTATION5",
+    "user": "WORKSTATION5\\wardog",
+    "type": "lolbin_execution",
+    "details": {
+      "command_line": "mshta  vbscript:Execute(\"CreateObject(\"\"Wscript.Shell\"\").Run \"\"powershell -noexit -command Get-Service sysmon\"\":close\")",
+      "image": ""
+    }
+  },
+  {
+    "id": "2020-10-22T02:58:00.489Z-1-WORKSTATION5-proc",
+    "time": "2020-10-22T02:58:00.489Z",
+    "host": "WORKSTATION5",
+    "user": "WORKSTATION5\\wardog",
+    "type": "process_creation",
+    "details": {
+      "command_line": "\"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -noexit -command Get-Service sysmon",
+      "image": "",
+      "parent": ""
+    }
+  },
+  {
+    "id": "2020-10-22T02:58:00.570Z-1-WORKSTATION5-proc",
+    "time": "2020-10-22T02:58:00.57Z",
+    "host": "WORKSTATION5",
+    "user": "WORKSTATION5\\wardog",
+    "type": "process_creation",
+    "details": {
+      "command_line": "\\??\\C:\\windows\\system32\\conhost.exe 0xffffffff -ForceV1",
+      "image": "",
+      "parent": ""
+    }
+  }
+]

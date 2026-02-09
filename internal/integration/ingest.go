@@ -22,6 +22,7 @@ const (
 	SchemaCloudTrail  Schema = "aws_cloudtrail"
 	SchemaSentinelCSL Schema = "sentinel_csl"
 	SchemaCrowdStrike Schema = "crowdstrike_fdr"
+	SchemaWindowsLog  Schema = "windows_eventlog"
 )
 
 type IngestOptions struct {
@@ -31,6 +32,9 @@ type IngestOptions struct {
 
 // IngestEvents maps supported schemas to the internal event model.
 func IngestEvents(raw []byte, opts IngestOptions) ([]model.Event, error) {
+	if opts.Schema == "" || opts.Schema == Schema("auto") {
+		opts.Schema = detectSchema(raw, opts.Kind)
+	}
 	switch opts.Schema {
 	case SchemaNative:
 		var events []model.Event
@@ -60,9 +64,138 @@ func IngestEvents(raw []byte, opts IngestOptions) ([]model.Event, error) {
 		return mapSentinelCSL(raw)
 	case SchemaCrowdStrike:
 		return mapCrowdStrike(raw)
+	case SchemaWindowsLog:
+		return mapWindowsEventLog(raw)
 	default:
 		return nil, errors.New("unsupported schema")
 	}
+}
+
+func detectSchema(raw []byte, kind string) Schema {
+	// Try to decode a single object or array for shape inspection.
+	var single map[string]interface{}
+	if err := json.Unmarshal(raw, &single); err == nil && len(single) > 0 {
+		if looksLikeCloudTrail(single) {
+			return SchemaCloudTrail
+		}
+		if looksLikeWindowsEvent(single) {
+			return SchemaWindowsLog
+		}
+		if looksLikeOkta(single) {
+			return SchemaOkta
+		}
+	}
+	var list []map[string]interface{}
+	if err := json.Unmarshal(raw, &list); err == nil && len(list) > 0 {
+		if looksLikeCloudTrail(list[0]) {
+			return SchemaCloudTrail
+		}
+		if looksLikeWindowsEvent(list[0]) {
+			return SchemaWindowsLog
+		}
+		if looksLikeOkta(list[0]) {
+			return SchemaOkta
+		}
+		if looksLikeECS(list[0]) {
+			return SchemaECS
+		}
+		if looksLikeOCSF(list[0]) {
+			return SchemaOCSF
+		}
+		if looksLikeCIM(list[0]) {
+			return SchemaCIM
+		}
+		if looksLikeElasticECS(list[0]) {
+			return SchemaElasticECS
+		}
+		if looksLikeSplunkCIMAuth(list[0]) {
+			return SchemaSplunkAuth
+		}
+		if looksLikeSplunkCIMNet(list[0]) {
+			return SchemaSplunkNet
+		}
+		if looksLikeSentinel(list[0]) {
+			return SchemaSentinelCSL
+		}
+		if looksLikeCrowdStrike(list[0]) {
+			return SchemaCrowdStrike
+		}
+	}
+	if kind != "" {
+		return SchemaMDE
+	}
+	return SchemaNative
+}
+
+func looksLikeCloudTrail(m map[string]interface{}) bool {
+	_, ok1 := m["eventID"]
+	_, ok2 := m["eventSource"]
+	_, ok3 := m["eventName"]
+	return ok1 && ok2 && ok3
+}
+
+func looksLikeWindowsEvent(m map[string]interface{}) bool {
+	_, ok1 := m["EventID"]
+	_, ok2 := m["Hostname"]
+	return ok1 && ok2
+}
+
+func looksLikeOkta(m map[string]interface{}) bool {
+	_, ok1 := m["eventType"]
+	_, ok2 := m["actor"]
+	return ok1 && ok2
+}
+
+func looksLikeECS(m map[string]interface{}) bool {
+	_, ok1 := m["event"]
+	_, ok2 := m["@timestamp"]
+	return ok1 && ok2
+}
+
+func looksLikeElasticECS(m map[string]interface{}) bool {
+	_, ok1 := m["event"]
+	_, ok2 := m["agent"]
+	return ok1 && ok2
+}
+
+func looksLikeOCSF(m map[string]interface{}) bool {
+	_, ok1 := m["type_name"]
+	_, ok2 := m["event_uid"]
+	return ok1 && ok2
+}
+
+func looksLikeCIM(m map[string]interface{}) bool {
+	_, ok1 := m["action"]
+	_, ok2 := m["host"]
+	return ok1 && ok2
+}
+
+func looksLikeSplunkCIMAuth(m map[string]interface{}) bool {
+	if v, ok := m["action"].(string); ok && v != "" {
+		_, ok2 := m["user"]
+		return ok2
+	}
+	return false
+}
+
+func looksLikeSplunkCIMNet(m map[string]interface{}) bool {
+	if v, ok := m["dest"].(string); ok && v != "" {
+		_, ok2 := m["src"]
+		return ok2
+	}
+	return false
+}
+
+func looksLikeSentinel(m map[string]interface{}) bool {
+	_, ok1 := m["TimeGenerated"]
+	_, ok2 := m["Computer"]
+	return ok1 && ok2
+}
+
+func looksLikeCrowdStrike(m map[string]interface{}) bool {
+	_, ok1 := m["event_simpleName"]
+	_, ok2 := m["timestamp"]
+	return ok1 && ok2
 }
 
 type ecsEvent struct {

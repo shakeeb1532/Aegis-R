@@ -1,0 +1,101 @@
+[
+  {
+    "eventVersion": "1.08",
+    "userIdentity": {
+      "type": "IAMUser",
+      "principalId": "AIDAYTOGP2RLEHRX5YWNV",
+      "arn": "arn:aws:iam::111111111111:user/bhavin_cli",
+      "accountId": "111111111111",
+      "accessKeyId": "AKIAYTOGP2RLKQ3U2PDY",
+      "userName": "bhavin_cli"
+    },
+    "eventTime": "2022-06-30T21:26:49Z",
+    "eventSource": "cloudtrail.amazonaws.com",
+    "eventName": "StopLogging",
+    "awsRegion": "us-west-2",
+    "sourceIPAddress": "72.193.184.209",
+    "userAgent": "stratus-red-team_a6a8f8f2-d560-4062-bd0d-c232130cfcc5",
+    "requestParameters": {
+      "name": "my-cloudtrail-trail"
+    },
+    "responseElements": null,
+    "requestID": "d8b79caa-08d2-4f7e-b93a-73bb7b85f260",
+    "eventID": "9f8d2b82-6e9d-45b8-9055-78d8c00ca416",
+    "readOnly": false,
+    "eventType": "AwsApiCall",
+    "managementEvent": true,
+    "recipientAccountId": "111111111111",
+    "eventCategory": "Management",
+    "tlsDetails": {
+      "tlsVersion": "TLSv1.2",
+      "cipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
+      "clientProvidedHostHeader": "cloudtrail.us-west-2.amazonaws.com"
+    }
+  },
+  {
+    "eventVersion": "1.08",
+    "userIdentity": {
+      "type": "IAMUser",
+      "principalId": "AIDAYTOGP2RLEHRX5YWNV",
+      "arn": "arn:aws:iam::111111111111:user/bhavin_cli",
+      "accountId": "111111111111",
+      "accessKeyId": "AKIAYTOGP2RLKQ3U2PDY",
+      "userName": "bhavin_cli"
+    },
+    "eventTime": "2022-07-13T19:03:51Z",
+    "eventSource": "cloudtrail.amazonaws.com",
+    "eventName": "DeleteTrail",
+    "awsRegion": "us-west-2",
+    "sourceIPAddress": "192.184.242.57",
+    "userAgent": "aws-cli/2.0.62 Python/3.9.2 Darwin/21.5.0 source/x86_64 command/cloudtrail.delete-trail",
+    "requestParameters": {
+      "name": "redatomictesttrail"
+    },
+    "responseElements": null,
+    "requestID": "2ba0af54-1451-4a2c-846e-18436bcee01e",
+    "eventID": "1c53bcce-650d-486a-b3f6-f64fd853e509",
+    "readOnly": false,
+    "eventType": "AwsApiCall",
+    "managementEvent": true,
+    "recipientAccountId": "111111111111",
+    "eventCategory": "Management",
+    "tlsDetails": {
+      "tlsVersion": "TLSv1.2",
+      "cipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
+      "clientProvidedHostHeader": "cloudtrail.us-west-2.amazonaws.com"
+    }
+  },
+  {
+    "eventVersion": "1.08",
+    "userIdentity": {
+      "type": "IAMUser",
+      "principalId": "AIDAYTOGP2RLEHRX5YWNV",
+      "arn": "arn:aws:iam::111111111111:user/bhavin_cli",
+      "accountId": "111111111111",
+      "accessKeyId": "AKIAYTOGP2RLKQ3U2PDY",
+      "userName": "bhavin_cli"
+    },
+    "eventTime": "2022-07-13T19:02:13Z",
+    "eventSource": "cloudtrail.amazonaws.com",
+    "eventName": "DeleteTrail",
+    "awsRegion": "us-west-2",
+    "sourceIPAddress": "192.184.242.57",
+    "userAgent": "aws-cli/2.0.62 Python/3.9.2 Darwin/21.5.0 source/x86_64 command/cloudtrail.delete-trail",
+    "requestParameters": {
+      "name": "redatomictesttrail"
+    },
+    "responseElements": null,
+    "requestID": "961ec5d2-5abf-4c80-aef0-6d4f0f90c8cd",
+    "eventID": "8e04d926-0020-469b-87af-d68493fc2e39",
+    "readOnly": false,
+    "eventType": "AwsApiCall",
+    "managementEvent": true,
+    "recipientAccountId": "111111111111",
+    "eventCategory": "Management",
+    "tlsDetails": {
+      "tlsVersion": "TLSv1.2",
+      "cipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
+      "clientProvidedHostHeader": "cloudtrail.us-west-2.amazonaws.com"
+    }
+  }
+]

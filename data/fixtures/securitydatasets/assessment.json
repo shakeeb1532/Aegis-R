@@ -1,0 +1,1689 @@
+SIEM export written: data/fixtures/securitydatasets/siem.json
+2026-02-08T16:03:13Z [INFO] metrics events=9 rules=28 findings=27
+{
+  "generated_at": "2026-02-08T16:03:13.409647Z",
+  "summary": "Causal feasibility, progression state, and evidence gaps evaluated.",
+  "reasoning": {
+    "generated_at": "2026-02-08T16:03:13.409566Z",
+    "summary": "Feasibility reasoning over evidence and preconditions.",
+    "results": [
+      {
+        "rule_id": "TA0001.PHISHING",
+        "name": "Initial Access via Phishing",
+        "feasible": false,
+        "precond_ok": true,
+        "confidence": 0.24999999999999997,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 1,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "email_attachment_open",
+            "description": "User opened malicious attachment"
+          },
+          {
+            "type": "macro_execution",
+            "description": "Macro executed from attachment"
+          },
+          {
+            "type": "beacon_outbound",
+            "description": "Outbound beacon to known C2"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "User interaction and macro execution leading to outbound beaconing. Missing evidence: email_attachment_open, macro_execution, beacon_outbound",
+        "gap_narrative": "This attack would require email_attachment_open, macro_execution, beacon_outbound but no such evidence was observed.",
+        "reason_code": "evidence_gap",
+        "decision_label": "deprioritize",
+        "cache_hit": false,
+        "reachability_status": "",
+        "reachability_note": "",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0004.PRIVESCA",
+        "name": "Privilege Escalation",
+        "feasible": false,
+        "precond_ok": true,
+        "confidence": 0.24999999999999997,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 1,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "token_manipulation",
+            "description": "Token manipulation activity"
+          },
+          {
+            "type": "admin_group_change",
+            "description": "User added to admin group"
+          },
+          {
+            "type": "reachable_identity",
+            "description": "Reachable identity path in environment graph"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Evidence of elevating access beyond initial privileges. Missing evidence: token_manipulation, admin_group_change",
+        "gap_narrative": "This attack would require token_manipulation, admin_group_change but no such evidence was observed.",
+        "reason_code": "environment_unknown",
+        "decision_label": "deprioritize",
+        "cache_hit": false,
+        "reachability_status": "unknown",
+        "reachability_note": "Rule lacks identity context for reachability.",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0006.CREDDUMP",
+        "name": "Credential Dumping (preconditions unmet)",
+        "feasible": false,
+        "precond_ok": false,
+        "confidence": 0.07999999999999996,
+        "confidence_factors": {
+          "coverage": 0.5,
+          "evidence_strength": 0.39999999999999997,
+          "preconditions": 0,
+          "recency": 0.19999999999999998
+        },
+        "missing_evidence": [
+          {
+            "type": "lsass_access",
+            "description": "Access to LSASS"
+          }
+        ],
+        "supporting_events": [
+          {
+            "id": "2020-10-22T02:57:59.856Z-4688-WORKSTATION5-proc",
+            "time": "2020-10-22T02:57:59.856Z",
+            "host": "WORKSTATION5",
+            "user": "wardog",
+            "type": "process_creation",
+            "details": {
+              "command_line": "mshta  vbscript:Execute(\"CreateObject(\"\"Wscript.Shell\"\").Run \"\"powershell -noexit -command Get-Service sysmon\"\":close\")",
+              "image": "C:\\Windows\\System32\\mshta.exe",
+              "parent": "C:\\Windows\\System32\\cmd.exe"
+            }
+          },
+          {
+            "id": "2020-10-22T02:58:00.462Z-4688-WORKSTATION5-proc",
+            "time": "2020-10-22T02:58:00.462Z",
+            "host": "WORKSTATION5",
+            "user": "wardog",
+            "type": "process_creation",
+            "details": {
+              "command_line": "\"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -noexit -command Get-Service sysmon",
+              "image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+              "parent": "C:\\Windows\\System32\\mshta.exe"
+            }
+          },
+          {
+            "id": "2020-10-22T02:58:00.568Z-4688-WORKSTATION5-proc",
+            "time": "2020-10-22T02:58:00.568Z",
+            "host": "WORKSTATION5",
+            "user": "wardog",
+            "type": "process_creation",
+            "details": {
+              "command_line": "\\??\\C:\\windows\\system32\\conhost.exe 0xffffffff -ForceV1",
+              "image": "C:\\Windows\\System32\\conhost.exe",
+              "parent": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+            }
+          },
+          {
+            "id": "2020-10-22T02:57:59.857Z-1-WORKSTATION5-proc",
+            "time": "2020-10-22T02:57:59.857Z",
+            "host": "WORKSTATION5",
+            "user": "WORKSTATION5\\wardog",
+            "type": "process_creation",
+            "details": {
+              "command_line": "mshta  vbscript:Execute(\"CreateObject(\"\"Wscript.Shell\"\").Run \"\"powershell -noexit -command Get-Service sysmon\"\":close\")",
+              "image": "",
+              "parent": ""
+            }
+          },
+          {
+            "id": "2020-10-22T02:58:00.489Z-1-WORKSTATION5-proc",
+            "time": "2020-10-22T02:58:00.489Z",
+            "host": "WORKSTATION5",
+            "user": "WORKSTATION5\\wardog",
+            "type": "process_creation",
+            "details": {
+              "command_line": "\"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -noexit -command Get-Service sysmon",
+              "image": "",
+              "parent": ""
+            }
+          },
+          {
+            "id": "2020-10-22T02:58:00.570Z-1-WORKSTATION5-proc",
+            "time": "2020-10-22T02:58:00.57Z",
+            "host": "WORKSTATION5",
+            "user": "WORKSTATION5\\wardog",
+            "type": "process_creation",
+            "details": {
+              "command_line": "\\??\\C:\\windows\\system32\\conhost.exe 0xffffffff -ForceV1",
+              "image": "",
+              "parent": ""
+            }
+          }
+        ],
+        "supporting_event_ids": [
+          "2020-10-22T02:57:59.856Z-4688-WORKSTATION5-proc",
+          "2020-10-22T02:58:00.462Z-4688-WORKSTATION5-proc",
+          "2020-10-22T02:58:00.568Z-4688-WORKSTATION5-proc",
+          "2020-10-22T02:57:59.857Z-1-WORKSTATION5-proc",
+          "2020-10-22T02:58:00.489Z-1-WORKSTATION5-proc",
+          "2020-10-22T02:58:00.570Z-1-WORKSTATION5-proc"
+        ],
+        "explanation": "Requires elevated privileges to access credential stores. Missing evidence: lsass_access",
+        "gap_narrative": "This attack would require lsass_access but no such evidence was observed.",
+        "reason_code": "precond_missing",
+        "decision_label": "keep",
+        "cache_hit": false,
+        "reachability_status": "",
+        "reachability_note": "",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0008.LATERAL",
+        "name": "Lateral Movement",
+        "feasible": false,
+        "precond_ok": true,
+        "confidence": 0.24999999999999997,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 1,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "remote_service_creation",
+            "description": "Remote service created"
+          },
+          {
+            "type": "network_logon",
+            "description": "Successful network logon"
+          },
+          {
+            "type": "reachable_host",
+            "description": "Reachable host path in environment graph"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Requires valid credentials before remote execution. Missing evidence: remote_service_creation, network_logon",
+        "gap_narrative": "This attack would require remote_service_creation, network_logon but no such evidence was observed.",
+        "reason_code": "environment_unknown",
+        "decision_label": "deprioritize",
+        "cache_hit": false,
+        "reachability_status": "unknown",
+        "reachability_note": "No reachable hosts in attack graph.",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0003.PERSIST",
+        "name": "Persistence (preconditions unmet)",
+        "feasible": false,
+        "precond_ok": false,
+        "confidence": 0.05,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 0,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "registry_run_key",
+            "description": "Registry run key set"
+          },
+          {
+            "type": "scheduled_task",
+            "description": "Scheduled task created"
+          },
+          {
+            "type": "reachable_host",
+            "description": "Reachable host path in environment graph"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Persistence established after initial access. Missing evidence: registry_run_key, scheduled_task",
+        "gap_narrative": "This attack would require registry_run_key, scheduled_task but no such evidence was observed.",
+        "reason_code": "environment_unknown",
+        "decision_label": "keep",
+        "cache_hit": false,
+        "reachability_status": "unknown",
+        "reachability_note": "No reachable hosts in attack graph.",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0011.C2",
+        "name": "Command and Control (preconditions unmet)",
+        "feasible": false,
+        "precond_ok": false,
+        "confidence": 0.05,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 0,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "beacon_outbound",
+            "description": "Outbound beacon to known C2"
+          },
+          {
+            "type": "dns_tunneling",
+            "description": "DNS tunneling patterns"
+          },
+          {
+            "type": "reachable_host",
+            "description": "Reachable host path in environment graph"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "C2 established after initial access. Missing evidence: beacon_outbound, dns_tunneling",
+        "gap_narrative": "This attack would require beacon_outbound, dns_tunneling but no such evidence was observed.",
+        "reason_code": "environment_unknown",
+        "decision_label": "keep",
+        "cache_hit": false,
+        "reachability_status": "unknown",
+        "reachability_note": "No reachable hosts in attack graph.",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0010.EXFIL",
+        "name": "Exfiltration (preconditions unmet)",
+        "feasible": false,
+        "precond_ok": false,
+        "confidence": 0.05,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 0,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "data_staging",
+            "description": "Data staged in archive"
+          },
+          {
+            "type": "large_outbound_transfer",
+            "description": "Large outbound data transfer"
+          },
+          {
+            "type": "reachable_host",
+            "description": "Reachable host path in environment graph"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Exfiltration typically follows C2 and credential access. Missing evidence: data_staging, large_outbound_transfer",
+        "gap_narrative": "This attack would require data_staging, large_outbound_transfer but no such evidence was observed.",
+        "reason_code": "environment_unknown",
+        "decision_label": "keep",
+        "cache_hit": false,
+        "reachability_status": "unknown",
+        "reachability_note": "No reachable hosts in attack graph.",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0006.IDENTITY_ANOMALY",
+        "name": "Identity Anomaly (Impossible Travel / New Device)",
+        "feasible": false,
+        "precond_ok": true,
+        "confidence": 0.24999999999999997,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 1,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "impossible_travel",
+            "description": "Login from distant geographies"
+          },
+          {
+            "type": "new_device_login",
+            "description": "New device or unknown client"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Identity anomalies indicate possible account compromise. Missing evidence: impossible_travel, new_device_login",
+        "gap_narrative": "This attack would require impossible_travel, new_device_login but no such evidence was observed.",
+        "reason_code": "evidence_gap",
+        "decision_label": "deprioritize",
+        "cache_hit": false,
+        "reachability_status": "",
+        "reachability_note": "",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0004.MFA_BYPASS",
+        "name": "MFA Disable or Bypass (preconditions unmet)",
+        "feasible": false,
+        "precond_ok": false,
+        "confidence": 0.05,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 0,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "mfa_disabled",
+            "description": "MFA disabled or reset"
+          },
+          {
+            "type": "token_refresh_anomaly",
+            "description": "Unusual token refresh or replay"
+          },
+          {
+            "type": "reachable_identity",
+            "description": "Reachable identity path in environment graph"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "MFA changes combined with token anomalies indicate bypass. Missing evidence: mfa_disabled, token_refresh_anomaly",
+        "gap_narrative": "This attack would require mfa_disabled, token_refresh_anomaly but no such evidence was observed.",
+        "reason_code": "environment_unknown",
+        "decision_label": "keep",
+        "cache_hit": false,
+        "reachability_status": "unknown",
+        "reachability_note": "Rule lacks identity context for reachability.",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0002.LOLBIN_CHAIN",
+        "name": "Suspicious LOLBin Execution Chain (preconditions unmet)",
+        "feasible": false,
+        "precond_ok": false,
+        "confidence": 0.31000000000000005,
+        "confidence_factors": {
+          "coverage": 1,
+          "evidence_strength": 0.4,
+          "preconditions": 0,
+          "recency": 0.2
+        },
+        "missing_evidence": [],
+        "supporting_events": [
+          {
+            "id": "2020-10-22T02:57:59.856Z-4688-WORKSTATION5-proc",
+            "time": "2020-10-22T02:57:59.856Z",
+            "host": "WORKSTATION5",
+            "user": "wardog",
+            "type": "process_creation",
+            "details": {
+              "command_line": "mshta  vbscript:Execute(\"CreateObject(\"\"Wscript.Shell\"\").Run \"\"powershell -noexit -command Get-Service sysmon\"\":close\")",
+              "image": "C:\\Windows\\System32\\mshta.exe",
+              "parent": "C:\\Windows\\System32\\cmd.exe"
+            }
+          },
+          {
+            "id": "2020-10-22T02:58:00.462Z-4688-WORKSTATION5-proc",
+            "time": "2020-10-22T02:58:00.462Z",
+            "host": "WORKSTATION5",
+            "user": "wardog",
+            "type": "process_creation",
+            "details": {
+              "command_line": "\"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -noexit -command Get-Service sysmon",
+              "image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+              "parent": "C:\\Windows\\System32\\mshta.exe"
+            }
+          },
+          {
+            "id": "2020-10-22T02:58:00.568Z-4688-WORKSTATION5-proc",
+            "time": "2020-10-22T02:58:00.568Z",
+            "host": "WORKSTATION5",
+            "user": "wardog",
+            "type": "process_creation",
+            "details": {
+              "command_line": "\\??\\C:\\windows\\system32\\conhost.exe 0xffffffff -ForceV1",
+              "image": "C:\\Windows\\System32\\conhost.exe",
+              "parent": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+            }
+          },
+          {
+            "id": "2020-10-22T02:57:59.857Z-1-WORKSTATION5-proc",
+            "time": "2020-10-22T02:57:59.857Z",
+            "host": "WORKSTATION5",
+            "user": "WORKSTATION5\\wardog",
+            "type": "process_creation",
+            "details": {
+              "command_line": "mshta  vbscript:Execute(\"CreateObject(\"\"Wscript.Shell\"\").Run \"\"powershell -noexit -command Get-Service sysmon\"\":close\")",
+              "image": "",
+              "parent": ""
+            }
+          },
+          {
+            "id": "2020-10-22T02:58:00.489Z-1-WORKSTATION5-proc",
+            "time": "2020-10-22T02:58:00.489Z",
+            "host": "WORKSTATION5",
+            "user": "WORKSTATION5\\wardog",
+            "type": "process_creation",
+            "details": {
+              "command_line": "\"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -noexit -command Get-Service sysmon",
+              "image": "",
+              "parent": ""
+            }
+          },
+          {
+            "id": "2020-10-22T02:58:00.570Z-1-WORKSTATION5-proc",
+            "time": "2020-10-22T02:58:00.57Z",
+            "host": "WORKSTATION5",
+            "user": "WORKSTATION5\\wardog",
+            "type": "process_creation",
+            "details": {
+              "command_line": "\\??\\C:\\windows\\system32\\conhost.exe 0xffffffff -ForceV1",
+              "image": "",
+              "parent": ""
+            }
+          },
+          {
+            "id": "2020-10-22T02:57:59.856Z-4688-WORKSTATION5-lolbin",
+            "time": "2020-10-22T02:57:59.856Z",
+            "host": "WORKSTATION5",
+            "user": "wardog",
+            "type": "lolbin_execution",
+            "details": {
+              "command_line": "mshta  vbscript:Execute(\"CreateObject(\"\"Wscript.Shell\"\").Run \"\"powershell -noexit -command Get-Service sysmon\"\":close\")",
+              "image": "C:\\Windows\\System32\\mshta.exe"
+            }
+          },
+          {
+            "id": "2020-10-22T02:57:59.857Z-1-WORKSTATION5-lolbin",
+            "time": "2020-10-22T02:57:59.857Z",
+            "host": "WORKSTATION5",
+            "user": "WORKSTATION5\\wardog",
+            "type": "lolbin_execution",
+            "details": {
+              "command_line": "mshta  vbscript:Execute(\"CreateObject(\"\"Wscript.Shell\"\").Run \"\"powershell -noexit -command Get-Service sysmon\"\":close\")",
+              "image": ""
+            }
+          }
+        ],
+        "supporting_event_ids": [
+          "2020-10-22T02:57:59.856Z-4688-WORKSTATION5-proc",
+          "2020-10-22T02:58:00.462Z-4688-WORKSTATION5-proc",
+          "2020-10-22T02:58:00.568Z-4688-WORKSTATION5-proc",
+          "2020-10-22T02:57:59.857Z-1-WORKSTATION5-proc",
+          "2020-10-22T02:58:00.489Z-1-WORKSTATION5-proc",
+          "2020-10-22T02:58:00.570Z-1-WORKSTATION5-proc",
+          "2020-10-22T02:57:59.856Z-4688-WORKSTATION5-lolbin",
+          "2020-10-22T02:57:59.857Z-1-WORKSTATION5-lolbin"
+        ],
+        "explanation": "LOLBin execution following initial access suggests hands-on-keyboard activity.",
+        "gap_narrative": "Preconditions are not satisfied in the current environment state.",
+        "reason_code": "precond_missing",
+        "decision_label": "keep",
+        "cache_hit": false,
+        "reachability_status": "",
+        "reachability_note": "",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0003.PERSIST_EXTENDED",
+        "name": "Extended Persistence Mechanisms (preconditions unmet)",
+        "feasible": false,
+        "precond_ok": false,
+        "confidence": 0.05,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 0,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "registry_run_key",
+            "description": "Registry run key set"
+          },
+          {
+            "type": "service_install",
+            "description": "Service installed for persistence"
+          },
+          {
+            "type": "reachable_host",
+            "description": "Reachable host path in environment graph"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Persistence via registry and services after initial access. Missing evidence: registry_run_key, service_install",
+        "gap_narrative": "This attack would require registry_run_key, service_install but no such evidence was observed.",
+        "reason_code": "environment_unknown",
+        "decision_label": "keep",
+        "cache_hit": false,
+        "reachability_status": "unknown",
+        "reachability_note": "No reachable hosts in attack graph.",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0006.VALID_ACCOUNTS",
+        "name": "Valid Accounts Abuse",
+        "feasible": false,
+        "precond_ok": true,
+        "confidence": 0.24999999999999997,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 1,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "valid_account_login",
+            "description": "Login using valid credentials in unusual context"
+          },
+          {
+            "type": "new_device_login",
+            "description": "New device or unknown client"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Compromised valid accounts enable access without malware. Missing evidence: valid_account_login, new_device_login",
+        "gap_narrative": "This attack would require valid_account_login, new_device_login but no such evidence was observed.",
+        "reason_code": "evidence_gap",
+        "decision_label": "deprioritize",
+        "cache_hit": false,
+        "reachability_status": "",
+        "reachability_note": "",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0006.BRUTE_FORCE",
+        "name": "Brute Force / Credential Stuffing",
+        "feasible": false,
+        "precond_ok": true,
+        "confidence": 0.24999999999999997,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 1,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "password_spray",
+            "description": "Password spraying pattern detected"
+          },
+          {
+            "type": "credential_stuffing",
+            "description": "Credential stuffing pattern detected"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "High-volume authentication failures followed by access attempts. Missing evidence: password_spray, credential_stuffing",
+        "gap_narrative": "This attack would require password_spray, credential_stuffing but no such evidence was observed.",
+        "reason_code": "evidence_gap",
+        "decision_label": "deprioritize",
+        "cache_hit": false,
+        "reachability_status": "",
+        "reachability_note": "",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0004.ACCOUNT_MANIP",
+        "name": "Account Manipulation (preconditions unmet)",
+        "feasible": false,
+        "precond_ok": false,
+        "confidence": 0.05,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 0,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "account_manipulation",
+            "description": "Account permissions or credentials modified"
+          },
+          {
+            "type": "admin_group_change",
+            "description": "User added to privileged group"
+          },
+          {
+            "type": "reachable_identity",
+            "description": "Reachable identity path in environment graph"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Account changes used to persist or elevate access. Missing evidence: account_manipulation, admin_group_change",
+        "gap_narrative": "This attack would require account_manipulation, admin_group_change but no such evidence was observed.",
+        "reason_code": "environment_unknown",
+        "decision_label": "keep",
+        "cache_hit": false,
+        "reachability_status": "unknown",
+        "reachability_note": "Rule lacks identity context for reachability.",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0005.AUTH_PROCESS_MOD",
+        "name": "Modify Authentication Process (preconditions unmet)",
+        "feasible": false,
+        "precond_ok": false,
+        "confidence": 0.05,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 0,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "auth_process_modify",
+            "description": "Authentication process modified"
+          },
+          {
+            "type": "mfa_disabled",
+            "description": "MFA disabled or bypassed"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Authentication controls were altered to bypass access checks. Missing evidence: auth_process_modify, mfa_disabled",
+        "gap_narrative": "This attack would require auth_process_modify, mfa_disabled but no such evidence was observed.",
+        "reason_code": "precond_missing",
+        "decision_label": "keep",
+        "cache_hit": false,
+        "reachability_status": "",
+        "reachability_note": "",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0011.APP_LAYER_C2",
+        "name": "Application Layer Protocol C2 (preconditions unmet)",
+        "feasible": false,
+        "precond_ok": false,
+        "confidence": 0.05,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 0,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "app_layer_c2",
+            "description": "C2 over web/mail/DNS protocols"
+          },
+          {
+            "type": "beacon_outbound",
+            "description": "Outbound beaconing to known C2"
+          },
+          {
+            "type": "reachable_host",
+            "description": "Reachable host path in environment graph"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "C2 over common application protocols for stealth. Missing evidence: app_layer_c2, beacon_outbound",
+        "gap_narrative": "This attack would require app_layer_c2, beacon_outbound but no such evidence was observed.",
+        "reason_code": "environment_unknown",
+        "decision_label": "keep",
+        "cache_hit": false,
+        "reachability_status": "unknown",
+        "reachability_note": "No reachable hosts in attack graph.",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0005.IMPAIR_DEFENSES",
+        "name": "Impair Defenses",
+        "feasible": false,
+        "precond_ok": true,
+        "confidence": 0.38,
+        "confidence_factors": {
+          "coverage": 0.5,
+          "evidence_strength": 0.4,
+          "preconditions": 1,
+          "recency": 0.2
+        },
+        "missing_evidence": [
+          {
+            "type": "cloud_firewall_change",
+            "description": "Cloud firewall or security group opened"
+          }
+        ],
+        "supporting_events": [
+          {
+            "id": "2020-10-22T02:57:56.178Z-1102-WORKSTATION5-logclear",
+            "time": "2020-10-22T02:57:56.178Z",
+            "host": "WORKSTATION5",
+            "user": "",
+            "type": "disable_logging",
+            "details": {
+              "channel": "Security",
+              "message": "The audit log was cleared.\r\nSubject:\r\n\tSecurity ID:\tS-1-5-21-3940915590-64593676-1414006259-500\r\n\tAccount Name:\twardog\r\n\tDomain Name:\tWORKSTATION5\r\n\tLogon ID:\t0xC61D9"
+            }
+          }
+        ],
+        "supporting_event_ids": [
+          "2020-10-22T02:57:56.178Z-1102-WORKSTATION5-logclear"
+        ],
+        "explanation": "Defensive controls weakened to evade detection. Missing evidence: cloud_firewall_change",
+        "gap_narrative": "This attack would require cloud_firewall_change but no such evidence was observed.",
+        "reason_code": "evidence_gap",
+        "decision_label": "deprioritize",
+        "cache_hit": false,
+        "reachability_status": "",
+        "reachability_note": "",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0010.EXFIL_WEB",
+        "name": "Exfiltration Over Web Service (preconditions unmet)",
+        "feasible": false,
+        "precond_ok": false,
+        "confidence": 0.05,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 0,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "exfil_web_service",
+            "description": "Data exfil via web service"
+          },
+          {
+            "type": "large_outbound_transfer",
+            "description": "Large outbound data transfer"
+          },
+          {
+            "type": "reachable_host",
+            "description": "Reachable host path in environment graph"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Exfiltration using legitimate web services. Missing evidence: exfil_web_service, large_outbound_transfer",
+        "gap_narrative": "This attack would require exfil_web_service, large_outbound_transfer but no such evidence was observed.",
+        "reason_code": "environment_unknown",
+        "decision_label": "keep",
+        "cache_hit": false,
+        "reachability_status": "unknown",
+        "reachability_note": "No reachable hosts in attack graph.",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0001.PHISH_LINK",
+        "name": "Phishing via Link and OAuth Consent",
+        "feasible": false,
+        "precond_ok": true,
+        "confidence": 0.24999999999999997,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 1,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "phish_link_click",
+            "description": "User clicked phishing link"
+          },
+          {
+            "type": "oauth_consent",
+            "description": "OAuth consent granted to suspicious app"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Link phishing followed by OAuth consent indicates account compromise. Missing evidence: phish_link_click, oauth_consent",
+        "gap_narrative": "This attack would require phish_link_click, oauth_consent but no such evidence was observed.",
+        "reason_code": "evidence_gap",
+        "decision_label": "deprioritize",
+        "cache_hit": false,
+        "reachability_status": "",
+        "reachability_note": "",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0003.MAILBOX_PERSIST",
+        "name": "Mailbox Rule Persistence (preconditions unmet)",
+        "feasible": false,
+        "precond_ok": false,
+        "confidence": 0.05,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 0,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "mailbox_rule_create",
+            "description": "Mailbox rule created"
+          },
+          {
+            "type": "forwarding_rule_set",
+            "description": "Auto-forwarding rule set"
+          },
+          {
+            "type": "reachable_identity",
+            "description": "Reachable identity path in environment graph"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Persistence through mailbox rules and forwarding. Missing evidence: mailbox_rule_create, forwarding_rule_set",
+        "gap_narrative": "This attack would require mailbox_rule_create, forwarding_rule_set but no such evidence was observed.",
+        "reason_code": "environment_unknown",
+        "decision_label": "keep",
+        "cache_hit": false,
+        "reachability_status": "unknown",
+        "reachability_note": "Rule lacks identity context for reachability.",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0040.RECOVERY_INHIBIT",
+        "name": "Inhibit System Recovery",
+        "feasible": false,
+        "precond_ok": true,
+        "confidence": 0.24999999999999997,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 1,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "shadow_copy_delete",
+            "description": "Shadow copies deleted"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Recovery features disabled to prevent restoration. Missing evidence: shadow_copy_delete",
+        "gap_narrative": "This attack would require shadow_copy_delete but no such evidence was observed.",
+        "reason_code": "evidence_gap",
+        "decision_label": "deprioritize",
+        "cache_hit": false,
+        "reachability_status": "",
+        "reachability_note": "",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0006.INSIDER_EXFIL",
+        "name": "Insider Data Exfiltration (preconditions unmet)",
+        "feasible": false,
+        "precond_ok": false,
+        "confidence": 0.05,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 0,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "bulk_download",
+            "description": "Bulk download or data access"
+          },
+          {
+            "type": "unusual_access_scope",
+            "description": "Unusual access scope"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Large-scale access without compromise signals suggests insider misuse. Missing evidence: bulk_download, unusual_access_scope",
+        "gap_narrative": "This attack would require bulk_download, unusual_access_scope but no such evidence was observed.",
+        "reason_code": "precond_missing",
+        "decision_label": "keep",
+        "cache_hit": false,
+        "reachability_status": "",
+        "reachability_note": "",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0043.SUPPLY_CHAIN",
+        "name": "Supply Chain Compromise",
+        "feasible": false,
+        "precond_ok": true,
+        "confidence": 0.24999999999999997,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 1,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "ci_runner_compromise",
+            "description": "CI runner compromise"
+          },
+          {
+            "type": "artifact_tamper",
+            "description": "Build artifact tampering"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Build pipeline compromise with artifact tampering. Missing evidence: ci_runner_compromise, artifact_tamper",
+        "gap_narrative": "This attack would require ci_runner_compromise, artifact_tamper but no such evidence was observed.",
+        "reason_code": "evidence_gap",
+        "decision_label": "deprioritize",
+        "cache_hit": false,
+        "reachability_status": "",
+        "reachability_note": "",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0008.CLOUD_PIVOT",
+        "name": "Cloud Lateral Movement",
+        "feasible": false,
+        "precond_ok": true,
+        "confidence": 0.24999999999999997,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 1,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "role_assume",
+            "description": "Role assumed"
+          },
+          {
+            "type": "trust_policy_change",
+            "description": "Trust policy modified"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Cross-account pivot using trust policy changes. Missing evidence: role_assume, trust_policy_change",
+        "gap_narrative": "This attack would require role_assume, trust_policy_change but no such evidence was observed.",
+        "reason_code": "evidence_gap",
+        "decision_label": "deprioritize",
+        "cache_hit": false,
+        "reachability_status": "",
+        "reachability_note": "",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0004.SAAS_ADMIN",
+        "name": "SaaS Admin Takeover (preconditions unmet)",
+        "feasible": false,
+        "precond_ok": false,
+        "confidence": 0.05,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 0,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "new_admin_role",
+            "description": "Admin role granted"
+          },
+          {
+            "type": "oauth_app_grant",
+            "description": "High-privilege OAuth grant"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Admin access gained through OAuth grants and role changes. Missing evidence: new_admin_role, oauth_app_grant",
+        "gap_narrative": "This attack would require new_admin_role, oauth_app_grant but no such evidence was observed.",
+        "reason_code": "precond_missing",
+        "decision_label": "keep",
+        "cache_hit": false,
+        "reachability_status": "",
+        "reachability_note": "",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0005.LOG_TAMPER",
+        "name": "Disable or Modify Security Logging (preconditions unmet)",
+        "feasible": false,
+        "precond_ok": false,
+        "confidence": 0.08000000000000002,
+        "confidence_factors": {
+          "coverage": 0.5,
+          "evidence_strength": 0.4,
+          "preconditions": 0,
+          "recency": 0.2
+        },
+        "missing_evidence": [
+          {
+            "type": "policy_bypass",
+            "description": "Control policy bypassed"
+          }
+        ],
+        "supporting_events": [
+          {
+            "id": "2020-10-22T02:57:56.178Z-1102-WORKSTATION5-logclear",
+            "time": "2020-10-22T02:57:56.178Z",
+            "host": "WORKSTATION5",
+            "user": "",
+            "type": "disable_logging",
+            "details": {
+              "channel": "Security",
+              "message": "The audit log was cleared.\r\nSubject:\r\n\tSecurity ID:\tS-1-5-21-3940915590-64593676-1414006259-500\r\n\tAccount Name:\twardog\r\n\tDomain Name:\tWORKSTATION5\r\n\tLogon ID:\t0xC61D9"
+            }
+          }
+        ],
+        "supporting_event_ids": [
+          "2020-10-22T02:57:56.178Z-1102-WORKSTATION5-logclear"
+        ],
+        "explanation": "Disabling logging to hide attacker activity. Missing evidence: policy_bypass",
+        "gap_narrative": "This attack would require policy_bypass but no such evidence was observed.",
+        "reason_code": "precond_missing",
+        "decision_label": "keep",
+        "cache_hit": false,
+        "reachability_status": "",
+        "reachability_note": "",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0010.BULK_EXFIL",
+        "name": "Bulk Data Exfiltration",
+        "feasible": false,
+        "precond_ok": true,
+        "confidence": 0.24999999999999997,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 1,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "bulk_download",
+            "description": "Bulk data access or download"
+          },
+          {
+            "type": "large_outbound_transfer",
+            "description": "Large outbound data transfer"
+          },
+          {
+            "type": "reachable_host",
+            "description": "Reachable host path in environment graph"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Bulk data access followed by outbound transfer. Missing evidence: bulk_download, large_outbound_transfer",
+        "gap_narrative": "This attack would require bulk_download, large_outbound_transfer but no such evidence was observed.",
+        "reason_code": "environment_unknown",
+        "decision_label": "deprioritize",
+        "cache_hit": false,
+        "reachability_status": "unknown",
+        "reachability_note": "No reachable hosts in attack graph.",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0008.ADMIN_PROTOCOL_LATERAL",
+        "name": "Admin Protocol Lateral Movement",
+        "feasible": false,
+        "precond_ok": true,
+        "confidence": 0.24999999999999997,
+        "confidence_factors": {
+          "coverage": 0,
+          "evidence_strength": 0,
+          "preconditions": 1,
+          "recency": 0
+        },
+        "missing_evidence": [
+          {
+            "type": "new_inbound_admin_protocol",
+            "description": "New inbound admin protocol used"
+          },
+          {
+            "type": "network_logon",
+            "description": "Successful network logon"
+          },
+          {
+            "type": "reachable_host",
+            "description": "Reachable host path in environment graph"
+          }
+        ],
+        "supporting_events": [],
+        "supporting_event_ids": [],
+        "explanation": "Lateral movement over admin protocols with valid credentials. Missing evidence: new_inbound_admin_protocol, network_logon",
+        "gap_narrative": "This attack would require new_inbound_admin_protocol, network_logon but no such evidence was observed.",
+        "reason_code": "environment_unknown",
+        "decision_label": "deprioritize",
+        "cache_hit": false,
+        "reachability_status": "unknown",
+        "reachability_note": "No reachable hosts in attack graph.",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": "ambiguous_context"
+      },
+      {
+        "rule_id": "TA0040.IMPACT_ENCRYPT",
+        "name": "Data Encrypted for Impact (admin approval required)",
+        "feasible": false,
+        "precond_ok": true,
+        "confidence": 0,
+        "missing_evidence": null,
+        "supporting_events": null,
+        "supporting_event_ids": null,
+        "explanation": "Rule pack gated by admin approval.",
+        "gap_narrative": "Admin approval required to enable this rule pack.",
+        "reason_code": "admin_hold",
+        "decision_label": "keep",
+        "cache_hit": false,
+        "reachability_status": "",
+        "reachability_note": "",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": ""
+      },
+      {
+        "rule_id": "TA0005.EVASION_C2",
+        "name": "Network Evasion via Proxy/Tunnel (admin approval required)",
+        "feasible": false,
+        "precond_ok": true,
+        "confidence": 0,
+        "missing_evidence": null,
+        "supporting_events": null,
+        "supporting_event_ids": null,
+        "explanation": "Rule pack gated by admin approval.",
+        "gap_narrative": "Admin approval required to enable this rule pack.",
+        "reason_code": "admin_hold",
+        "decision_label": "keep",
+        "cache_hit": false,
+        "reachability_status": "",
+        "reachability_note": "",
+        "thread_id": "",
+        "thread_confidence": 0,
+        "thread_reason": ""
+      }
+    ],
+    "narrative": [
+      "Incomplete: TA0001.PHISHING (Initial Access via Phishing) missing evidence email_attachment_open, macro_execution, beacon_outbound.",
+      "Incomplete: TA0004.PRIVESCA (Privilege Escalation) missing evidence token_manipulation, admin_group_change.",
+      "Not feasible: TA0006.CREDDUMP (Credential Dumping) because preconditions are unmet.",
+      "Incomplete: TA0008.LATERAL (Lateral Movement) missing evidence remote_service_creation, network_logon.",
+      "Not feasible: TA0003.PERSIST (Persistence) because preconditions are unmet.",
+      "Not feasible: TA0011.C2 (Command and Control) because preconditions are unmet.",
+      "Not feasible: TA0010.EXFIL (Exfiltration) because preconditions are unmet.",
+      "Incomplete: TA0006.IDENTITY_ANOMALY (Identity Anomaly (Impossible Travel / New Device)) missing evidence impossible_travel, new_device_login.",
+      "Not feasible: TA0004.MFA_BYPASS (MFA Disable or Bypass) because preconditions are unmet.",
+      "Not feasible: TA0002.LOLBIN_CHAIN (Suspicious LOLBin Execution Chain) because preconditions are unmet.",
+      "Not feasible: TA0003.PERSIST_EXTENDED (Extended Persistence Mechanisms) because preconditions are unmet.",
+      "Incomplete: TA0006.VALID_ACCOUNTS (Valid Accounts Abuse) missing evidence valid_account_login, new_device_login.",
+      "Incomplete: TA0006.BRUTE_FORCE (Brute Force / Credential Stuffing) missing evidence password_spray, credential_stuffing.",
+      "Not feasible: TA0004.ACCOUNT_MANIP (Account Manipulation) because preconditions are unmet.",
+      "Not feasible: TA0005.AUTH_PROCESS_MOD (Modify Authentication Process) because preconditions are unmet.",
+      "Not feasible: TA0011.APP_LAYER_C2 (Application Layer Protocol C2) because preconditions are unmet.",
+      "Incomplete: TA0005.IMPAIR_DEFENSES (Impair Defenses) missing evidence cloud_firewall_change.",
+      "Not feasible: TA0010.EXFIL_WEB (Exfiltration Over Web Service) because preconditions are unmet.",
+      "Incomplete: TA0001.PHISH_LINK (Phishing via Link and OAuth Consent) missing evidence phish_link_click, oauth_consent.",
+      "Not feasible: TA0003.MAILBOX_PERSIST (Mailbox Rule Persistence) because preconditions are unmet.",
+      "Incomplete: TA0040.RECOVERY_INHIBIT (Inhibit System Recovery) missing evidence shadow_copy_delete.",
+      "Not feasible: TA0006.INSIDER_EXFIL (Insider Data Exfiltration) because preconditions are unmet.",
+      "Incomplete: TA0043.SUPPLY_CHAIN (Supply Chain Compromise) missing evidence ci_runner_compromise, artifact_tamper.",
+      "Incomplete: TA0008.CLOUD_PIVOT (Cloud Lateral Movement) missing evidence role_assume, trust_policy_change.",
+      "Not feasible: TA0004.SAAS_ADMIN (SaaS Admin Takeover) because preconditions are unmet.",
+      "Not feasible: TA0005.LOG_TAMPER (Disable or Modify Security Logging) because preconditions are unmet.",
+      "Incomplete: TA0010.BULK_EXFIL (Bulk Data Exfiltration) missing evidence bulk_download, large_outbound_transfer.",
+      "Incomplete: TA0008.ADMIN_PROTOCOL_LATERAL (Admin Protocol Lateral Movement) missing evidence new_inbound_admin_protocol, network_logon."
+    ],
+    "confidence_model": "evidence_weighted_v2",
+    "confidence_note": "Evidence coverage, recency, and signal strength heuristic; not calibrated."
+  },
+  "state": {
+    "updated_at": "2026-02-08T16:03:13.409567Z",
+    "compromised_hosts": {
+      "WORKSTATION5": true
+    },
+    "compromised_users": {
+      "WORKSTATION5\\wardog": true,
+      "wardog": true
+    },
+    "reachable_hosts": {},
+    "reachable_identities": {
+      "WORKSTATION5\\wardog": true,
+      "wardog": true
+    },
+    "signals": null,
+    "reasoning_chain": null,
+    "progression": [],
+    "position": {
+      "stage": "host_execution",
+      "principals": [
+        "wardog",
+        "WORKSTATION5\\wardog"
+      ],
+      "assets": [
+        "WORKSTATION5"
+      ],
+      "confidence": 0,
+      "updated_at": "2020-10-22T02:58:00.57Z"
+    },
+    "position_summaries": null,
+    "path_scores": null,
+    "path_score_overall": 0,
+    "graph_overlay": {
+      "current_nodes": [
+        "host:WORKSTATION5",
+        "id:wardog",
+        "id:WORKSTATION5\\wardog"
+      ],
+      "reachable_nodes": [
+        "host:WORKSTATION5",
+        "id:wardog",
+        "id:WORKSTATION5\\wardog"
+      ]
+    },
+    "decision_cache": {
+      "||TA0001.PHISHING": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0001.PHISHING",
+        "verdict": "incomplete",
+        "label": "deprioritize",
+        "reason_code": "evidence_gap",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0001.PHISH_LINK": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0001.PHISH_LINK",
+        "verdict": "incomplete",
+        "label": "deprioritize",
+        "reason_code": "evidence_gap",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0002.LOLBIN_CHAIN": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0002.LOLBIN_CHAIN",
+        "verdict": "impossible",
+        "label": "keep",
+        "reason_code": "precond_missing",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": [
+          "2020-10-22T02:57:59.856Z-4688-WORKSTATION5-proc",
+          "2020-10-22T02:58:00.462Z-4688-WORKSTATION5-proc",
+          "2020-10-22T02:58:00.568Z-4688-WORKSTATION5-proc",
+          "2020-10-22T02:57:59.857Z-1-WORKSTATION5-proc",
+          "2020-10-22T02:58:00.489Z-1-WORKSTATION5-proc",
+          "2020-10-22T02:58:00.570Z-1-WORKSTATION5-proc",
+          "2020-10-22T02:57:59.856Z-4688-WORKSTATION5-lolbin",
+          "2020-10-22T02:57:59.857Z-1-WORKSTATION5-lolbin"
+        ]
+      },
+      "||TA0003.MAILBOX_PERSIST": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0003.MAILBOX_PERSIST",
+        "verdict": "incomplete",
+        "label": "keep",
+        "reason_code": "environment_unknown",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0003.PERSIST": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0003.PERSIST",
+        "verdict": "incomplete",
+        "label": "keep",
+        "reason_code": "environment_unknown",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0003.PERSIST_EXTENDED": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0003.PERSIST_EXTENDED",
+        "verdict": "incomplete",
+        "label": "keep",
+        "reason_code": "environment_unknown",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0004.ACCOUNT_MANIP": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0004.ACCOUNT_MANIP",
+        "verdict": "incomplete",
+        "label": "keep",
+        "reason_code": "environment_unknown",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0004.MFA_BYPASS": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0004.MFA_BYPASS",
+        "verdict": "incomplete",
+        "label": "keep",
+        "reason_code": "environment_unknown",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0004.PRIVESCA": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0004.PRIVESCA",
+        "verdict": "incomplete",
+        "label": "deprioritize",
+        "reason_code": "environment_unknown",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0004.SAAS_ADMIN": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0004.SAAS_ADMIN",
+        "verdict": "incomplete",
+        "label": "keep",
+        "reason_code": "precond_missing",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0005.AUTH_PROCESS_MOD": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0005.AUTH_PROCESS_MOD",
+        "verdict": "incomplete",
+        "label": "keep",
+        "reason_code": "precond_missing",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0005.IMPAIR_DEFENSES": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0005.IMPAIR_DEFENSES",
+        "verdict": "incomplete",
+        "label": "deprioritize",
+        "reason_code": "evidence_gap",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": [
+          "2020-10-22T02:57:56.178Z-1102-WORKSTATION5-logclear"
+        ]
+      },
+      "||TA0005.LOG_TAMPER": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0005.LOG_TAMPER",
+        "verdict": "incomplete",
+        "label": "keep",
+        "reason_code": "precond_missing",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": [
+          "2020-10-22T02:57:56.178Z-1102-WORKSTATION5-logclear"
+        ]
+      },
+      "||TA0006.BRUTE_FORCE": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0006.BRUTE_FORCE",
+        "verdict": "incomplete",
+        "label": "deprioritize",
+        "reason_code": "evidence_gap",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0006.CREDDUMP": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0006.CREDDUMP",
+        "verdict": "incomplete",
+        "label": "keep",
+        "reason_code": "precond_missing",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": [
+          "2020-10-22T02:57:59.856Z-4688-WORKSTATION5-proc",
+          "2020-10-22T02:58:00.462Z-4688-WORKSTATION5-proc",
+          "2020-10-22T02:58:00.568Z-4688-WORKSTATION5-proc",
+          "2020-10-22T02:57:59.857Z-1-WORKSTATION5-proc",
+          "2020-10-22T02:58:00.489Z-1-WORKSTATION5-proc",
+          "2020-10-22T02:58:00.570Z-1-WORKSTATION5-proc"
+        ]
+      },
+      "||TA0006.IDENTITY_ANOMALY": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0006.IDENTITY_ANOMALY",
+        "verdict": "incomplete",
+        "label": "deprioritize",
+        "reason_code": "evidence_gap",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0006.INSIDER_EXFIL": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0006.INSIDER_EXFIL",
+        "verdict": "incomplete",
+        "label": "keep",
+        "reason_code": "precond_missing",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0006.VALID_ACCOUNTS": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0006.VALID_ACCOUNTS",
+        "verdict": "incomplete",
+        "label": "deprioritize",
+        "reason_code": "evidence_gap",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0008.ADMIN_PROTOCOL_LATERAL": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0008.ADMIN_PROTOCOL_LATERAL",
+        "verdict": "incomplete",
+        "label": "deprioritize",
+        "reason_code": "environment_unknown",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0008.CLOUD_PIVOT": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0008.CLOUD_PIVOT",
+        "verdict": "incomplete",
+        "label": "deprioritize",
+        "reason_code": "evidence_gap",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0008.LATERAL": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0008.LATERAL",
+        "verdict": "incomplete",
+        "label": "deprioritize",
+        "reason_code": "environment_unknown",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0010.BULK_EXFIL": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0010.BULK_EXFIL",
+        "verdict": "incomplete",
+        "label": "deprioritize",
+        "reason_code": "environment_unknown",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0010.EXFIL": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0010.EXFIL",
+        "verdict": "incomplete",
+        "label": "keep",
+        "reason_code": "environment_unknown",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0010.EXFIL_WEB": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0010.EXFIL_WEB",
+        "verdict": "incomplete",
+        "label": "keep",
+        "reason_code": "environment_unknown",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0011.APP_LAYER_C2": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0011.APP_LAYER_C2",
+        "verdict": "incomplete",
+        "label": "keep",
+        "reason_code": "environment_unknown",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0011.C2": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0011.C2",
+        "verdict": "incomplete",
+        "label": "keep",
+        "reason_code": "environment_unknown",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0040.RECOVERY_INHIBIT": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0040.RECOVERY_INHIBIT",
+        "verdict": "incomplete",
+        "label": "deprioritize",
+        "reason_code": "evidence_gap",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      },
+      "||TA0043.SUPPLY_CHAIN": {
+        "host": "",
+        "principal": "",
+        "rule_id": "TA0043.SUPPLY_CHAIN",
+        "verdict": "incomplete",
+        "label": "deprioritize",
+        "reason_code": "evidence_gap",
+        "updated_at": "2026-02-08T16:03:13.409624Z",
+        "evidence_ids": []
+      }
+    },
+    "threads": [],
+    "tickets": []
+  },
+  "next_moves": [
+    "Privilege escalation target: identity svc-admin"
+  ],
+  "drift_signals": [],
+  "findings": [
+    "TA0001.PHISHING incomplete: missing 3 evidence types",
+    "TA0004.PRIVESCA incomplete: missing 2 evidence types",
+    "TA0006.CREDDUMP incomplete: missing 1 evidence types",
+    "TA0008.LATERAL incomplete: missing 2 evidence types",
+    "TA0003.PERSIST incomplete: missing 2 evidence types",
+    "TA0011.C2 incomplete: missing 2 evidence types",
+    "TA0010.EXFIL incomplete: missing 2 evidence types",
+    "TA0006.IDENTITY_ANOMALY incomplete: missing 2 evidence types",
+    "TA0004.MFA_BYPASS incomplete: missing 2 evidence types",
+    "TA0003.PERSIST_EXTENDED incomplete: missing 2 evidence types",
+    "TA0006.VALID_ACCOUNTS incomplete: missing 2 evidence types",
+    "TA0006.BRUTE_FORCE incomplete: missing 2 evidence types",
+    "TA0004.ACCOUNT_MANIP incomplete: missing 2 evidence types",
+    "TA0005.AUTH_PROCESS_MOD incomplete: missing 2 evidence types",
+    "TA0011.APP_LAYER_C2 incomplete: missing 2 evidence types",
+    "TA0005.IMPAIR_DEFENSES incomplete: missing 1 evidence types",
+    "TA0010.EXFIL_WEB incomplete: missing 2 evidence types",
+    "TA0001.PHISH_LINK incomplete: missing 2 evidence types",
+    "TA0003.MAILBOX_PERSIST incomplete: missing 2 evidence types",
+    "TA0040.RECOVERY_INHIBIT incomplete: missing 1 evidence types",
+    "TA0006.INSIDER_EXFIL incomplete: missing 2 evidence types",
+    "TA0043.SUPPLY_CHAIN incomplete: missing 2 evidence types",
+    "TA0008.CLOUD_PIVOT incomplete: missing 2 evidence types",
+    "TA0004.SAAS_ADMIN incomplete: missing 2 evidence types",
+    "TA0005.LOG_TAMPER incomplete: missing 1 evidence types",
+    "TA0010.BULK_EXFIL incomplete: missing 2 evidence types",
+    "TA0008.ADMIN_PROTOCOL_LATERAL incomplete: missing 2 evidence types"
+  ]
+}

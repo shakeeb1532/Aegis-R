@@ -1,0 +1,40 @@
+{
+  "vendor": "Aegis-R",
+  "type": "reasoning_report",
+  "summary": "Causal feasibility, progression state, and evidence gaps evaluated.",
+  "findings": [
+    "TA0001.PHISHING incomplete: missing 3 evidence types",
+    "TA0004.PRIVESCA incomplete: missing 2 evidence types",
+    "TA0006.CREDDUMP incomplete: missing 1 evidence types",
+    "TA0008.LATERAL incomplete: missing 2 evidence types",
+    "TA0003.PERSIST incomplete: missing 2 evidence types",
+    "TA0011.C2 incomplete: missing 2 evidence types",
+    "TA0010.EXFIL incomplete: missing 2 evidence types",
+    "TA0006.IDENTITY_ANOMALY incomplete: missing 2 evidence types",
+    "TA0004.MFA_BYPASS incomplete: missing 2 evidence types",
+    "TA0003.PERSIST_EXTENDED incomplete: missing 2 evidence types",
+    "TA0006.VALID_ACCOUNTS incomplete: missing 2 evidence types",
+    "TA0006.BRUTE_FORCE incomplete: missing 2 evidence types",
+    "TA0004.ACCOUNT_MANIP incomplete: missing 2 evidence types",
+    "TA0005.AUTH_PROCESS_MOD incomplete: missing 2 evidence types",
+    "TA0011.APP_LAYER_C2 incomplete: missing 2 evidence types",
+    "TA0005.IMPAIR_DEFENSES incomplete: missing 1 evidence types",
+    "TA0010.EXFIL_WEB incomplete: missing 2 evidence types",
+    "TA0001.PHISH_LINK incomplete: missing 2 evidence types",
+    "TA0003.MAILBOX_PERSIST incomplete: missing 2 evidence types",
+    "TA0040.RECOVERY_INHIBIT incomplete: missing 1 evidence types",
+    "TA0006.INSIDER_EXFIL incomplete: missing 2 evidence types",
+    "TA0043.SUPPLY_CHAIN incomplete: missing 2 evidence types",
+    "TA0008.CLOUD_PIVOT incomplete: missing 2 evidence types",
+    "TA0004.SAAS_ADMIN incomplete: missing 2 evidence types",
+    "TA0005.LOG_TAMPER incomplete: missing 1 evidence types",
+    "TA0010.BULK_EXFIL incomplete: missing 2 evidence types",
+    "TA0008.ADMIN_PROTOCOL_LATERAL incomplete: missing 2 evidence types"
+  ],
+  "next_moves": [
+    "Privilege escalation target: identity svc-admin"
+  ],
+  "tags": {
+    "generated_at": "2026-02-08T16:03:13Z"
+  }
+}

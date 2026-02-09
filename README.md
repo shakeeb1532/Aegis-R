@@ -34,6 +34,21 @@ Aegis-R is a **human-governed security reasoning infrastructure** that evaluates
 - `docs/ci_checklist.md` — CI checklist and local verification steps
 - `docs/test_results.md` — latest test runs and regression output
 - `docs/release_checklist.md` — release steps and tagging guidance
+- `PRIVATE_FEATURES.md` — protected components tracker
+- `docs/pilot_demo_pack.md` — pilot-grade demo pack guide
+
+---
+
+## Test Results (Latest)
+
+Command:
+```bash
+go test ./...
+```
+
+Summary:
+- All packages passed.
+- Detailed output: `docs/test_results.md`
 - `docs/inventory_schema.md` — file-based inventory ingestion schema
 - `docs/architecture.md` — system architecture diagram
 
@@ -110,6 +125,25 @@ make demo
 Or run with Docker Compose:
 ```bash
 docker compose up --build
+```
+
+---
+
+## Build Variants
+
+Public build:
+```bash
+make build-public
+```
+
+Private build (if private code is available):
+```bash
+make build-private
+```
+
+Build both:
+```bash
+make build
 ```
 
 ---

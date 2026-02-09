@@ -31,7 +31,7 @@ func mapCloudTrail(raw []byte) ([]model.Event, error) {
 	out := make([]model.Event, 0, len(in))
 	for _, e := range in {
 		user := extractUserIdentity(e.UserIdentity)
-		etype := mapCloudTrailEventType(e.EventSource, e.EventName)
+		etype := mapCloudTrailEventType(e.EventSource, e.EventName, e.ResponseElems, e.ErrorMessage, e.ErrorCode)
 		details := map[string]interface{}{
 			"event_source":  e.EventSource,
 			"aws_region":    e.AWSRegion,
@@ -70,10 +70,14 @@ func extractUserIdentity(m map[string]interface{}) string {
 	return ""
 }
 
-func mapCloudTrailEventType(source string, name string) string {
+func mapCloudTrailEventType(source string, name string, response map[string]interface{}, errorMessage string, errorCode string) string {
 	nameLower := strings.ToLower(name)
 	if strings.Contains(source, "iam.amazonaws.com") || strings.Contains(source, "sts.amazonaws.com") {
 		switch {
+		case strings.HasPrefix(nameLower, "list") && isAccessDenied(errorCode, errorMessage):
+			return "unusual_access_scope"
+		case containsAny(nameLower, "createaccesskey", "updateaccesskey", "deleteaccesskey", "resetuserpassword", "updateloginprofile"):
+			return "account_manipulation"
 		case containsAny(nameLower, "updateassumerolepolicy", "assumerolepolicy", "updatetrustpolicy"):
 			return "trust_boundary_change"
 		case containsAny(nameLower, "assumerole"):
@@ -82,7 +86,7 @@ func mapCloudTrailEventType(source string, name string) string {
 			return "new_admin_account"
 		case containsAny(nameLower, "addusertogroup", "addroletoinstanceprofile", "attachgrouppolicy"):
 			return "admin_group_change"
-		case containsAny(nameLower, "attachrolepolicy", "attachuserpolicy", "putrolepolicy", "putuserpolicy"):
+		case containsAny(nameLower, "attachrolepolicy", "attachuserpolicy", "putrolepolicy", "putuserpolicy", "createpolicyversion", "setdefaultpolicyversion"):
 			return "policy_override"
 		default:
 			return "iam_change"
@@ -93,5 +97,52 @@ func mapCloudTrailEventType(source string, name string) string {
 			return "new_firewall_rule"
 		}
 	}
+	if strings.Contains(source, "cloudtrail.amazonaws.com") {
+		if containsAny(nameLower, "stoplogging", "deletetrail", "updatetrail", "puteventselectors") {
+			return "disable_logging"
+		}
+	}
+	if strings.Contains(source, "signin.amazonaws.com") {
+		if nameLower == "consolelogin" {
+			if consoleLoginFailed(response, errorMessage) {
+				return "password_spray"
+			}
+			return "valid_account_login"
+		}
+	}
+	if strings.Contains(source, "s3.amazonaws.com") {
+		switch {
+		case nameLower == "getobject":
+			return "bulk_download"
+		case containsAny(nameLower, "listobjects", "listobjectsv2"):
+			return "bulk_download"
+		case nameLower == "putbucketacl":
+			return "cloud_firewall_change"
+		case containsAny(nameLower, "putbucketpolicy", "deletebucketpolicy"):
+			return "policy_override"
+		}
+	}
 	return name
+}
+
+func consoleLoginFailed(response map[string]interface{}, errorMessage string) bool {
+	if errorMessage != "" {
+		return true
+	}
+	if response == nil {
+		return false
+	}
+	if v, ok := response["ConsoleLogin"]; ok {
+		if s, ok := v.(string); ok {
+			return strings.EqualFold(s, "Failure")
+		}
+	}
+	return false
+}
+
+func isAccessDenied(errorCode string, errorMessage string) bool {
+	if errorCode != "" && strings.Contains(strings.ToLower(errorCode), "accessdenied") {
+		return true
+	}
+	return strings.Contains(strings.ToLower(errorMessage), "accessdenied")
 }

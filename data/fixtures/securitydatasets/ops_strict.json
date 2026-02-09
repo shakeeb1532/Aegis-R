@@ -1,0 +1,5 @@
+{
+  "log_level": "info",
+  "metrics_on": true,
+  "strict_mode": true
+}

@@ -1,0 +1,2768 @@
+[
+  [
+    {
+      "id": "806e0fbd-756b-412a-933b-01839be21e95",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/use_of_cleartext_protocols.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "ecc511fd-5737-42ea-8454-bfb29b814d97",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/xmrig.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "b3017b70-ccf9-4e46-ae9d-c58bd4cdee26",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/suspicious_dns_traffic.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "cc4e3b32-be95-466c-99d6-fbf927f99bda",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/spring4shell_cve_2022_22965.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "5c14ec3d-f419-4473-868c-d1ce712cd395",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/ransomware_cloud.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "28d55f47-506b-4aac-ba8c-e5bd0723c46a",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/remcos.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "dd93a49e-24c7-4303-bdb0-8d756e5c1f47",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/suspicious_aws_login_activities.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "793493f9-86d1-43e1-aac2-3f8d4089856a",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/ransomware_ryuk.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "3ad45440-e1c4-452e-9a0f-5eb31562aa1a",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/ransomware.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "fef736f3-f7d7-4533-b527-4cd991d8e703",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/openssl_cve_2022_3602.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "deb5666b-864e-4cc8-b593-6a6e97d3528d",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/suspicious_command_line_executions.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "61936240-0d8b-49b3-b53b-8a0a9007b1c0",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/ransomware_lockbit.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "62c9be7d-5aef-499e-9ea3-bfa66ee55578",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/linux_rootkit.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "f13015e7-279b-4540-b4a8-dc8d70af0a9f",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/jboss_vulnerability.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "8e4b6932-a264-487f-919f-3c2bc1723ee7",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/domain_trust_discovery.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "c9c427af-7c86-4686-bfd4-6e2e32f2b487",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/deprecated/monitor_for_unauthorized_software.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "ea59da30-985b-4d43-ae3e-2b0091483060",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/data_protection.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "650038b6-9569-4214-9e55-d6b4776663a4",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/sneaky_active_directory_persistence_tricks.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "84213280-dad9-44a5-b799-5ee5e68d1e5e",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/ransomware_darkside.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "6e763242-32bc-4d64-9696-447d5f83562c",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/ransomware_blackmatter.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "8031fe3a-dc74-4123-ba3d-eff9380e7f1f",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/windows_service_abuse.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "1904cf2d-dbdb-4466-b4d5-4325bab80a5c",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/windows_persistence_techniques.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "64661776-16d0-491f-8093-d5f0f3baeb1c",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/windows_defense_evasion_tactics.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "74c24da4-b561-415b-ba4e-4dc80b765ce8",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/suspicious_zoom_child_processes.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "c0ce07a3-1cbe-4bf1-ad57-5a25a1174c54",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/suspicious_okta_activity.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "c4a14edc-9045-451d-be5f-7389bc444bb7",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/suspicious_emails.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "cc0ecf07-55ef-4ae8-983d-baeb552f4249",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/suspicious_cloud_authentication_activities.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "ab7f2629-e365-4af5-8fdb-6eb004ab346b",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/office_365_detections.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "e74e1053-6cf1-4d74-ad3f-a16e75152070",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/signed_binary_proxy_execution_installutil.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "3dc7ab9d-64ca-48fc-b6c1-e81baa34e7b1",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/meterpreter.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "de62adab-f9cc-4c4b-9c8d-6364d8ff5648",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/dhs_report_ta18_074a.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "14dea5d8-c0ce-4489-ba97-5e55e1550a92",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/atlassian_confluence_server_and_data_center_cve_2022_26134.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "8797ea9d-c68c-4097-aee1-2a4dfdaac74b",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/windows_dns_sigred_cve_2020_1350.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "f1b48255-5a98-4e65-b3b7-1ec7a33ee3ea",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/swiftslicer.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "9308e53c-4dbb-466f-80fe-e6efac382890",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/aws_defense_evasion.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "e659f7b0-1def-4b0a-9d4c-114e80068636",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/deprecated/lateral_movement.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "4342e1b9-0c35-4283-bedb-58ee59c52854",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/brand_monitoring.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "5df9a1de-ac36-49e4-aa0b-b9daba201938",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/deprecated/common_phishing_frameworks.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "9e441b65-304e-43a9-8b40-68d3c43dfae9",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/compromised_user_account.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "133f2dae-0e48-45a8-82c5-6af1a9988087",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/caddywiper.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "8b2bcd5d-d4fd-4beb-9d53-a8b0bb9f452d",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/data_exfiltration.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "ea87a938-3d3b-441d-a650-64f931fb2397",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/aws_security_hub_alerts.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "39423b70-a6c1-4c4a-a780-96d34e85c72c",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/asyncrat.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "494155aa-e047-43a8-80c1-3d316b3b44d8",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/suspicious_compiled_html_activity.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "03f7728b-6411-41c5-9cd0-9e5408731594",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/deprecated/host_redirection.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "f7d9560f-ccb8-49e3-95d5-18c86d4a370a",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/darkcrystal_rat.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "acb3fed1-83a1-41e4-a14f-a75322c3bd6e",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/cobalt_strike.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "ad1ebf3f-aa52-4c1b-a4e7-2965aa3448f9",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/asset_tracking.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "7fe7ca5e-cebe-433e-ac66-f46a8e4104f0",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/bits_jobs.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "7d015eef-318c-4ed7-9a9d-444fbde645ef",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/aws_network_acl_activity.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "a531e69c-b82c-41e3-8d9b-c009453d16bb",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/printnightmare_cve_2021_34527.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "02e701b4-c10d-430a-887a-a7f856ed5173",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/nobelium_group.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "ee40df40-ee2c-425e-a670-ba853ff49372",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/microsoft_support_diagnostic_tool_vulnerability_cve_2022_30190.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "7878a805-15bb-41ec-82e1-0a32ecbca454",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/deprecated/spectre_and_meltdown_vulnerabilities.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "e4af7398-4954-4e65-9913-af8a994cfc31",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/deprecated/kubernetes_sensitive_role_activity.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "3b2adeef-ab60-45ba-9609-55ef026adcf5",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/cisa_aa22_320a.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "d5f1ef2e-2a43-4cdb-bcbe-b11f0fee6edf",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/brute_ratel_c4.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "8f3e98ef-571c-445e-be10-bd408f29bce1",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/aws_user_monitoring.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "81dce9e5-f508-4f1e-aa01-d3a30e55a07e",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/awfulshred.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "f2ff6d67-9ef9-4f62-890e-aa6e54a4f2ae",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/windows_drivers.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "39cd19d4-0768-45ae-9328-eff6ef533c0d",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/text4shell_cve_2022_42889.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "29edb7c3-d158-4f9f-98e9-e4e70f0e3fc0",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/suspicious_cloud_instance_activities.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "d2691e3f-fdac-49f8-b49f-6ef07515d623",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/splunk_vulnerabilities.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "81e36d5c-74d9-4e5c-8de1-b984ee5b3fe1",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/ransomware_samsam.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "335df869-efcd-45fa-a1a8-373b64ebd5b2",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/proxyshell.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "e38eb6eb-c819-4be3-b184-b5b3969413fe",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/okta_mfa_exhaustion.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "2d7ea6d0-4de3-46d9-bd43-0cdce827c94c",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/malicious_powershell.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "d6a25b51-6b8a-4400-a898-f6ad62194d0b",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/information_sabotage.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "739fcf92-db45-4072-89b1-de2c61430768",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/windows_certificate_services.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "f675da25-6a74-4323-a738-1ea818e5ba6a",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/suspicious_gcp_storage_activities.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "00a57574-0dfb-4664-8685-d1f76283a192",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/suspicious_cloud_provisioning_activities.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "1c004497-2c27-4fc3-a1e5-3a8dff541ddb",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/possible_backdoor_activity_associated_with_mudcarp_espionage_campaigns.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "2032187e-37da-416d-bde3-01a82f1e0599",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/dns_hijacking.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "0e1df44f-75fb-466f-a60e-9534f05e38e0",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/netsh_abuse.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "193d1a0e-9e9c-424b-9103-e3a086a2e601",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/log4shell_cve_2021_44228.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "d954ae4a-4caf-476e-b148-9914600397de",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/ingress_tool_transfer.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "19908624-d6f4-492a-a709-06a1489d83ae",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/domain_controller_impersonation_&_samaccountname_spoofing.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "9ccdd481-2342-43d6-8bf6-f3ba9c07cffa",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/deprecated/suspicious_aws_ec2_activities.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "69649cfd-92bd-48a2-b27a-c604cb7175f5",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/deprecated/aws_cryptomining.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "797d25b5-bb05-4db0-81e1-8dcf0e38e1f6",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/cyclops_blink.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "b0cd91e3-91ba-4f5c-b9ff-74ce5ae3797d",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/suspicious_mshta_activity.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "682d4719-664b-4a84-9616-400b319a9796",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/windows_log_manipulation.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "44fc3b04-edd9-4abd-bbbe-dce383e247fa",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/vmware_server_side_injection_and_privilege_escalation.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "27c44e58-f81b-4ca9-900c-eb834f188609",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/suspicious_windows_registry_activities.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "b4965240-6a23-484c-b2e8-4f1449b22788",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/sql_injection.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "2cd21d3d-09e7-4858-8f81-a8283dea5015",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/silver_sparrow.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "224a11d1-01ad-4c4a-ad09-a3c4bd609dce",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/windows_privilege_escalation.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "a4b4e777-d882-4dca-929d-3ccc413111e5",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/trusted_developer_utilities_proxy_execution.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "88f5c7af-9438-4dc1-945e-822a46b2febf",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/trickbot.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "bc70694d-90b6-4e18-b675-ab6a2bab1de5",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/linux_privilege_escalation.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "3cab690b-44d7-45a9-af38-b58e47687227",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/kubernetes_scanning_activity.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "d8560e71-ec36-429c-b7f6-c516dce08520",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/fortinet_fortinac_cve_2022_39952.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "d3e977fe-2358-4cad-a3ec-a5d7ecbf8fdd",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/dns_amplification_attacks.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "a1cf020c-0d15-4bfc-9dbd-6828ef0b58e1",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/data_destruction.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "bbe1b6df-65d0-454a-97b4-64d4e0c118e2",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/coldroot_macos_rat.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "f927a970-0d63-48f1-91ea-4f7300d38853",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/cisa_aa22_257a.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "4c441de4-d5dc-470d-ad5f-3cded8e7a849",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/aws_identity_and_access_management_account_takeover.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "e6bee185-c5d8-479d-8477-f37871f1d886",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "reporting/summary_test_results.json",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "c9777f40-6236-4dc9-baac-ea5c6133b200",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/windows_system_binary_proxy_execution_msiexec.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "2b7231c2-892d-464e-8880-1e4f81ae7eb2",
+      "time": "2023-04-11T01:18:47Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/console",
+      "type": "bulk_download",
+      "details": {
+        "aws_region": "us-west-2",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "security-content.s3.us-west-2.amazonaws.com",
+          "bucketName": "security-content",
+          "key": "stories/windows_discovery_techniques.yml",
+          "x-amz-request-payer": "requester"
+        },
+        "response": null,
+        "source_ip": "12.26.0.38",
+        "user_agent": "[aws-cli/2.11.2 Python/3.11.2 Darwin/22.3.0 exe/x86_64 prompt/off command/s3.cp]"
+      }
+    },
+    {
+      "id": "4598eb5f-0a09-4f74-aa5d-866832ffc287",
+      "time": "2022-09-30T20:42:39Z",
+      "host": "140429611111",
+      "user": "arn:aws:iam::140429611111:root",
+      "type": "password_spray",
+      "details": {
+        "aws_region": "us-east-1",
+        "error_code": "",
+        "error_message": "Failed authentication",
+        "event_source": "signin.amazonaws.com",
+        "request": null,
+        "response": {
+          "ConsoleLogin": "Failure"
+        },
+        "source_ip": "143.254.89.27",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "id": "4598eb5f-0a09-4f74-aa5d-866832ffc287",
+      "time": "2022-09-30T20:42:39Z",
+      "host": "140429611111",
+      "user": "arn:aws:iam::140429611111:root",
+      "type": "password_spray",
+      "details": {
+        "aws_region": "us-east-1",
+        "error_code": "",
+        "error_message": "Failed authentication",
+        "event_source": "signin.amazonaws.com",
+        "request": null,
+        "response": {
+          "ConsoleLogin": "Failure"
+        },
+        "source_ip": "143.254.89.27",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "id": "de878c42-04d3-4c7c-a461-d9463f7b1e33",
+      "time": "2022-10-03T23:11:07Z",
+      "host": "140429656527",
+      "user": "arn:aws:iam::140429656527:root",
+      "type": "password_spray",
+      "details": {
+        "aws_region": "us-east-1",
+        "error_code": "",
+        "error_message": "Failed authentication",
+        "event_source": "signin.amazonaws.com",
+        "request": null,
+        "response": {
+          "ConsoleLogin": "Failure"
+        },
+        "source_ip": "142.254.89.27",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "id": "c7aa2e0e-4992-46bd-a83c-cf30c8f96ec4",
+      "time": "2022-10-03T23:11:09Z",
+      "host": "140429656527",
+      "user": "arn:aws:iam::140429656527:root",
+      "type": "password_spray",
+      "details": {
+        "aws_region": "us-east-1",
+        "error_code": "",
+        "error_message": "Failed authentication",
+        "event_source": "signin.amazonaws.com",
+        "request": null,
+        "response": {
+          "ConsoleLogin": "Failure"
+        },
+        "source_ip": "142.254.89.27",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "id": "de878c42-04d3-4c7c-a461-d9463f7b1e33",
+      "time": "2022-10-03T23:11:11Z",
+      "host": "140429656527",
+      "user": "arn:aws:iam::140429656527:root",
+      "type": "password_spray",
+      "details": {
+        "aws_region": "us-east-1",
+        "error_code": "",
+        "error_message": "Failed authentication",
+        "event_source": "signin.amazonaws.com",
+        "request": null,
+        "response": {
+          "ConsoleLogin": "Failure"
+        },
+        "source_ip": "142.254.89.27",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "id": "c7aa2e0e-4992-46bd-a83c-cf30c8f96ec4",
+      "time": "2022-10-03T23:11:13Z",
+      "host": "140429656527",
+      "user": "arn:aws:iam::140429656527:root",
+      "type": "password_spray",
+      "details": {
+        "aws_region": "us-east-1",
+        "error_code": "",
+        "error_message": "Failed authentication",
+        "event_source": "signin.amazonaws.com",
+        "request": null,
+        "response": {
+          "ConsoleLogin": "Failure"
+        },
+        "source_ip": "142.254.89.27",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "id": "de878c42-04d3-4c7c-a461-d9463f7b1e33",
+      "time": "2022-10-03T23:11:15Z",
+      "host": "140429656527",
+      "user": "arn:aws:iam::140429656527:root",
+      "type": "password_spray",
+      "details": {
+        "aws_region": "us-east-1",
+        "error_code": "",
+        "error_message": "Failed authentication",
+        "event_source": "signin.amazonaws.com",
+        "request": null,
+        "response": {
+          "ConsoleLogin": "Failure"
+        },
+        "source_ip": "142.254.89.27",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "id": "c7aa2e0e-4992-46bd-a83c-cf30c8f96ec4",
+      "time": "2022-10-03T23:12:12Z",
+      "host": "140429656527",
+      "user": "arn:aws:iam::140429656527:root",
+      "type": "password_spray",
+      "details": {
+        "aws_region": "us-east-1",
+        "error_code": "",
+        "error_message": "Failed authentication",
+        "event_source": "signin.amazonaws.com",
+        "request": null,
+        "response": {
+          "ConsoleLogin": "Failure"
+        },
+        "source_ip": "142.254.89.27",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "id": "de878c42-04d3-4c7c-a461-d9463f7b1e33",
+      "time": "2022-10-03T23:12:15Z",
+      "host": "140429656527",
+      "user": "arn:aws:iam::140429656527:root",
+      "type": "password_spray",
+      "details": {
+        "aws_region": "us-east-1",
+        "error_code": "",
+        "error_message": "Failed authentication",
+        "event_source": "signin.amazonaws.com",
+        "request": null,
+        "response": {
+          "ConsoleLogin": "Failure"
+        },
+        "source_ip": "142.254.89.27",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "id": "c7aa2e0e-4992-46bd-a83c-cf30c8f96ec4",
+      "time": "2022-10-03T23:12:32Z",
+      "host": "140429656527",
+      "user": "arn:aws:iam::140429656527:root",
+      "type": "password_spray",
+      "details": {
+        "aws_region": "us-east-1",
+        "error_code": "",
+        "error_message": "Failed authentication",
+        "event_source": "signin.amazonaws.com",
+        "request": null,
+        "response": {
+          "ConsoleLogin": "Failure"
+        },
+        "source_ip": "142.254.89.27",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "id": "de878c42-04d3-4c7c-a461-d9463f7b1e33",
+      "time": "2022-10-03T23:13:07Z",
+      "host": "140429656527",
+      "user": "arn:aws:iam::140429656527:root",
+      "type": "password_spray",
+      "details": {
+        "aws_region": "us-east-1",
+        "error_code": "",
+        "error_message": "Failed authentication",
+        "event_source": "signin.amazonaws.com",
+        "request": null,
+        "response": {
+          "ConsoleLogin": "Failure"
+        },
+        "source_ip": "142.254.89.27",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "id": "c7aa2e0e-4992-46bd-a83c-cf30c8f96ec4",
+      "time": "2022-10-03T23:13:11Z",
+      "host": "140429656527",
+      "user": "arn:aws:iam::140429656527:root",
+      "type": "password_spray",
+      "details": {
+        "aws_region": "us-east-1",
+        "error_code": "",
+        "error_message": "Failed authentication",
+        "event_source": "signin.amazonaws.com",
+        "request": null,
+        "response": {
+          "ConsoleLogin": "Failure"
+        },
+        "source_ip": "142.254.89.27",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "id": "de878c42-04d3-4c7c-a461-d9463f7b1e33",
+      "time": "2022-10-03T23:13:20Z",
+      "host": "140429656527",
+      "user": "arn:aws:iam::140429656527:root",
+      "type": "password_spray",
+      "details": {
+        "aws_region": "us-east-1",
+        "error_code": "",
+        "error_message": "Failed authentication",
+        "event_source": "signin.amazonaws.com",
+        "request": null,
+        "response": {
+          "ConsoleLogin": "Failure"
+        },
+        "source_ip": "142.254.89.27",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "id": "c7aa2e0e-4992-46bd-a83c-cf30c8f96ec4",
+      "time": "2022-10-03T23:13:32Z",
+      "host": "140429656527",
+      "user": "arn:aws:iam::140429656527:root",
+      "type": "password_spray",
+      "details": {
+        "aws_region": "us-east-1",
+        "error_code": "",
+        "error_message": "Failed authentication",
+        "event_source": "signin.amazonaws.com",
+        "request": null,
+        "response": {
+          "ConsoleLogin": "Failure"
+        },
+        "source_ip": "142.254.89.27",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "id": "630d3da9-9cdc-44a4-a617-33e2f8f21a32",
+      "time": "2022-10-04T20:12:11Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:root",
+      "type": "valid_account_login",
+      "details": {
+        "aws_region": "us-east-1",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "signin.amazonaws.com",
+        "request": null,
+        "response": {
+          "ConsoleLogin": "Success"
+        },
+        "source_ip": "142.254.89.27",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "id": "630d3da9-9cdc-44a4-a617-33e2f8f21a32",
+      "time": "2022-10-04T20:12:11Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:root",
+      "type": "valid_account_login",
+      "details": {
+        "aws_region": "us-east-1",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "signin.amazonaws.com",
+        "request": null,
+        "response": {
+          "ConsoleLogin": "Success"
+        },
+        "source_ip": "142.254.89.27",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "id": "9feee3c9-711f-4f7d-af4c-992907a2a521",
+      "time": "2021-01-12T14:03:17Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/patrick_cli",
+      "type": "cloud_firewall_change",
+      "details": {
+        "aws_region": "eu-central-1",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "patricktestbucket19.s3.eu-central-1.amazonaws.com",
+          "accessControlList": {
+            "x-amz-grant-write-acp": "uri=http://acs.amazonaws.com/groups/global/AuthenticatedUsers"
+          },
+          "acl": "",
+          "bucketName": "patricktestbucket19"
+        },
+        "response": null,
+        "source_ip": "95.90.199.65",
+        "user_agent": "[aws-cli/2.0.45 Python/3.7.4 Darwin/20.2.0 exe/x86_64 command/s3api.put-bucket-acl]"
+      }
+    },
+    {
+      "id": "a571f08a-6e82-4dec-baf8-b0456746bdf1",
+      "time": "2021-01-12T14:03:05Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/patrick_cli",
+      "type": "cloud_firewall_change",
+      "details": {
+        "aws_region": "eu-central-1",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "patricktestbucket19.s3.eu-central-1.amazonaws.com",
+          "accessControlList": {
+            "x-amz-grant-write": "uri=http://acs.amazonaws.com/groups/global/AuthenticatedUsers"
+          },
+          "acl": "",
+          "bucketName": "patricktestbucket19"
+        },
+        "response": null,
+        "source_ip": "95.90.199.65",
+        "user_agent": "[aws-cli/2.0.45 Python/3.7.4 Darwin/20.2.0 exe/x86_64 command/s3api.put-bucket-acl]"
+      }
+    },
+    {
+      "id": "eb7d0e73-c699-43a0-9270-249e3f14345f",
+      "time": "2021-01-12T14:02:52Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/patrick_cli",
+      "type": "cloud_firewall_change",
+      "details": {
+        "aws_region": "eu-central-1",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "patricktestbucket19.s3.eu-central-1.amazonaws.com",
+          "accessControlList": {
+            "x-amz-grant-read-acp": "uri=http://acs.amazonaws.com/groups/global/AuthenticatedUsers"
+          },
+          "acl": "",
+          "bucketName": "patricktestbucket19"
+        },
+        "response": null,
+        "source_ip": "95.90.199.65",
+        "user_agent": "[aws-cli/2.0.45 Python/3.7.4 Darwin/20.2.0 exe/x86_64 command/s3api.put-bucket-acl]"
+      }
+    },
+    {
+      "id": "f3acc9c7-cc86-4413-b764-848d64d1f5fd",
+      "time": "2021-01-12T14:02:39Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/patrick_cli",
+      "type": "cloud_firewall_change",
+      "details": {
+        "aws_region": "eu-central-1",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "patricktestbucket19.s3.eu-central-1.amazonaws.com",
+          "accessControlList": {
+            "x-amz-grant-read": "uri=http://acs.amazonaws.com/groups/global/AuthenticatedUsers"
+          },
+          "acl": "",
+          "bucketName": "patricktestbucket19"
+        },
+        "response": null,
+        "source_ip": "95.90.199.65",
+        "user_agent": "[aws-cli/2.0.45 Python/3.7.4 Darwin/20.2.0 exe/x86_64 command/s3api.put-bucket-acl]"
+      }
+    },
+    {
+      "id": "55843208-5410-43bc-b100-1a99d401e58f",
+      "time": "2021-01-12T14:02:16Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/patrick_cli",
+      "type": "cloud_firewall_change",
+      "details": {
+        "aws_region": "eu-central-1",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "patricktestbucket19.s3.eu-central-1.amazonaws.com",
+          "accessControlList": {
+            "x-amz-grant-full-control": "uri=http://acs.amazonaws.com/groups/global/AuthenticatedUsers"
+          },
+          "acl": "",
+          "bucketName": "patricktestbucket19"
+        },
+        "response": null,
+        "source_ip": "95.90.199.65",
+        "user_agent": "[aws-cli/2.0.45 Python/3.7.4 Darwin/20.2.0 exe/x86_64 command/s3api.put-bucket-acl]"
+      }
+    },
+    {
+      "id": "c905859d-47b7-4992-b0fb-dccd7e6004d9",
+      "time": "2021-01-12T12:55:53Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/patrick_cli",
+      "type": "cloud_firewall_change",
+      "details": {
+        "aws_region": "eu-central-1",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "patricktestbucket18.s3.eu-central-1.amazonaws.com",
+          "accessControlList": {
+            "x-amz-grant-full-control": "uri=http://acs.amazonaws.com/groups/global/AuthenticatedUsers"
+          },
+          "acl": "",
+          "bucketName": "patricktestbucket18"
+        },
+        "response": null,
+        "source_ip": "95.90.199.65",
+        "user_agent": "[aws-cli/2.0.45 Python/3.7.4 Darwin/20.2.0 exe/x86_64 command/s3api.put-bucket-acl]"
+      }
+    },
+    {
+      "id": "5e2bf999-6c99-4fdb-b263-569772bbc335",
+      "time": "2021-01-12T12:54:55Z",
+      "host": "111111111111",
+      "user": "arn:aws:iam::111111111111:user/patrick_cli",
+      "type": "cloud_firewall_change",
+      "details": {
+        "aws_region": "eu-central-1",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "Host": "patricktestbucket18.s3.eu-central-1.amazonaws.com",
+          "accessControlList": {
+            "x-amz-grant-full-control": "uri=http://acs.amazonaws.com/groups/global/AllUsers"
+          },
+          "acl": "",
+          "bucketName": "patricktestbucket18"
+        },
+        "response": null,
+        "source_ip": "95.90.199.65",
+        "user_agent": "[aws-cli/2.0.45 Python/3.7.4 Darwin/20.2.0 exe/x86_64 command/s3api.put-bucket-acl]"
+      }
+    },
+    {
+      "id": "97e6c60a-8c1d-489b-b53c-251ded1b4983",
+      "time": "2021-01-12T12:29:59Z",
+      "host": "111111111111",
+      "user": "arn:aws:sts::111111111111:assumed-role/okta_adm_role/pbareiss@splunk.local",
+      "type": "cloud_firewall_change",
+      "details": {
+        "aws_region": "eu-central-1",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "AccessControlPolicy": {
+            "AccessControlList": {
+              "Grant": {
+                "Grantee": {
+                  "ID": "b6fed2b36141247803254afecf272e30b80a3ea8713425a9650d994d39c2632d",
+                  "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                  "xsi:type": "CanonicalUser"
+                },
+                "Permission": "FULL_CONTROL"
+              }
+            },
+            "Owner": {
+              "ID": "b6fed2b36141247803254afecf272e30b80a3ea8713425a9650d994d39c2632d"
+            },
+            "xmlns": "http://s3.amazonaws.com/doc/2006-03-01/"
+          },
+          "Host": "s3.eu-central-1.amazonaws.com",
+          "acl": "",
+          "bucketName": "patricktestbucket17"
+        },
+        "response": null,
+        "source_ip": "95.90.199.65",
+        "user_agent": "[S3Console/0.4, aws-internal/3 aws-sdk-java/1.11.915 Linux/4.9.230-0.1.ac.223.84.332.metal1.x86_64 OpenJDK_64-Bit_Server_VM/25.275-b01 java/1.8.0_275 vendor/Oracle_Corporation]"
+      }
+    },
+    {
+      "id": "60baeb6d-1ddb-433d-8290-a14c02967c8f",
+      "time": "2021-01-12T12:29:14Z",
+      "host": "111111111111",
+      "user": "arn:aws:sts::111111111111:assumed-role/okta_adm_role/pbareiss@splunk.local",
+      "type": "cloud_firewall_change",
+      "details": {
+        "aws_region": "eu-central-1",
+        "error_code": "",
+        "error_message": "",
+        "event_source": "s3.amazonaws.com",
+        "request": {
+          "AccessControlPolicy": {
+            "AccessControlList": {
+              "Grant": [
+                {
+                  "Grantee": {
+                    "ID": "b6fed2b36141247803254afecf272e30b80a3ea8713425a9650d994d39c2632d",
+                    "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                    "xsi:type": "CanonicalUser"
+                  },
+                  "Permission": "FULL_CONTROL"
+                },
+                {
+                  "Grantee": {
+                    "URI": "http://acs.amazonaws.com/groups/global/AllUsers",
+                    "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                    "xsi:type": "Group"
+                  },
+                  "Permission": "READ"
+                },
+                {
+                  "Grantee": {
+                    "URI": "http://acs.amazonaws.com/groups/global/AllUsers",
+                    "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                    "xsi:type": "Group"
+                  },
+                  "Permission": "READ_ACP"
+                }
+              ]
+            },
+            "Owner": {
+              "ID": "b6fed2b36141247803254afecf272e30b80a3ea8713425a9650d994d39c2632d"
+            },
+            "xmlns": "http://s3.amazonaws.com/doc/2006-03-01/"
+          },
+          "Host": "s3.eu-central-1.amazonaws.com",
+          "acl": "",
+          "bucketName": "patricktestbucket17"
+        },
+        "response": null,
+        "source_ip": "95.90.199.65",
+        "user_agent": "[S3Console/0.4, aws-internal/3 aws-sdk-java/1.11.915 Linux/4.9.230-0.1.ac.223.84.332.metal1.x86_64 OpenJDK_64-Bit_Server_VM/25.275-b01 java/1.8.0_275 vendor/Oracle_Corporation]"
+      }
+    }
+  ]
+]
