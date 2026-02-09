@@ -32,9 +32,72 @@ Aegis-R is a **human-governed security reasoning infrastructure** that evaluates
 - `docs/mitre_coverage.md` — rule catalog MITRE mapping notes
 - `docs/confidence_bands.md` — confidence band interpretation
 - `docs/ci_checklist.md` — CI checklist and local verification steps
+- `docs/test_results.md` — latest test runs and regression output
 - `docs/release_checklist.md` — release steps and tagging guidance
+- `PRIVATE_FEATURES.md` — protected components tracker
+- `docs/pilot_demo_pack.md` — pilot-grade demo pack guide
 - `docs/inventory_schema.md` — file-based inventory ingestion schema
 - `docs/architecture.md` — system architecture diagram
+
+---
+
+## Test Results (Latest)
+
+Command:
+```bash
+go test ./...
+```
+
+Summary:
+- All packages passed.
+- Detailed output: `docs/test_results.md`
+
+Regression (latest run):
+- Accuracy, class metrics, and calibration: `docs/regression_report.md`
+
+---
+
+## Test Coverage Map
+
+```mermaid
+flowchart LR
+  A["Unit Tests"] --> B["Reasoning + Core"]
+  A --> C["Governance + Audit"]
+  A --> D["Progression + State"]
+  A --> E["Integration + Ingest"]
+  F["Regression Eval"] --> G["Scenario Accuracy"]
+  F --> H["Calibration Bins"]
+```
+
+---
+
+## Performance Snapshot (Benchmarks)
+
+```mermaid
+flowchart LR
+  A["BenchmarkReason\n1k / 10k / 100k events"] --> B["Latency (p50/p95)"]
+  A --> C["Throughput (events/sec)"]
+  A --> D["Allocations (B/op)"]
+```
+
+---
+
+## Demo Data Coverage (Rules Triggered)
+
+```mermaid
+flowchart TD
+  A["CloudTrail Demo\nSplunk Attack Data"] --> B["TA0005.IMPAIR_DEFENSES"]
+  A --> C["TA0005.LOG_TAMPER"]
+  A --> D["TA0006.BRUTE_FORCE"]
+  A --> E["TA0006.VALID_ACCOUNTS"]
+  A --> F["TA0010.BULK_EXFIL"]
+  A --> G["TA0006.INSIDER_EXFIL"]
+
+  H["Windows Demo\nSecurity Datasets"] --> I["TA0002.LOLBIN_CHAIN"]
+  H --> J["TA0005.IMPAIR_DEFENSES"]
+  H --> K["TA0005.LOG_TAMPER"]
+  H --> L["TA0006.CREDDUMP"]
+```
 
 ---
 
@@ -489,6 +552,35 @@ docker run -p 8080:8080 aegisr
 
 ---
 
+## Pilot Demo Results (Public Data)
+
+CloudTrail demo (Splunk Attack Data):
+- Events ingested: 5,883
+- Evidence-backed rules: `TA0005.IMPAIR_DEFENSES`, `TA0005.LOG_TAMPER`, `TA0006.BRUTE_FORCE`, `TA0006.VALID_ACCOUNTS`, `TA0010.BULK_EXFIL`, `TA0006.INSIDER_EXFIL`
+- Outputs: `data/fixtures/splunk_attack_data/assessment_clean.json`, `data/fixtures/splunk_attack_data/audit.log`, `data/fixtures/splunk_attack_data/siem.json`
+
+Windows demo (Security Datasets):
+- Events ingested: 9
+- Evidence-backed rules: `TA0002.LOLBIN_CHAIN`, `TA0005.IMPAIR_DEFENSES`, `TA0005.LOG_TAMPER`, `TA0006.CREDDUMP`
+- Outputs: `data/fixtures/securitydatasets/assessment_clean.json`, `data/fixtures/securitydatasets/audit.log`, `data/fixtures/securitydatasets/siem.json`
+
+See `docs/pilot_demo_pack.md` for the full demo walkthrough.
+
+---
+
+## Reasoning Flow
+
+```mermaid
+flowchart TD
+  A["Normalized Events"] --> B["Rule Preconditions"]
+  B --> C["Evidence Coverage"]
+  C --> D["Reachability Gates"]
+  D --> E["Confidence + Labels"]
+  E --> F["Tickets + Audit Artifact"]
+```
+
+---
+
 ## Roadmap (Suggested)
 - Production auth (OIDC / SSO integration)
 - Vendor-specific adapter expansion (more fields, more products)
@@ -498,4 +590,4 @@ docker run -p 8080:8080 aegisr
 ---
 
 ## License
-TBD
+Apache-2.0
