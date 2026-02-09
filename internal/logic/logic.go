@@ -440,6 +440,10 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 				precondOK = false
 			}
 		}
+		contradiction := hasContradiction(rule.ID, index)
+		if contradiction {
+			precondOK = false
+		}
 		feasible := precondOK && len(missing) == 0
 		confidence := 0.4
 		if feasible {
@@ -460,12 +464,17 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		}
 		reason := rule.Explain
 		missingNames := []string{}
-		if len(missing) > 0 {
+		if contradiction {
+			missing = []model.EvidenceRequirement{}
+			reason += " Contradictory evidence observed."
+		} else if len(missing) > 0 {
 			missingNames = requirementNames(missing)
 			reason += " Missing evidence: " + strings.Join(missingNames, ", ")
 		}
 		gapNarrative := ""
-		if len(missing) > 0 {
+		if contradiction {
+			gapNarrative = "Contradictory evidence observed that makes this attack impossible."
+		} else if len(missing) > 0 {
 			gapNarrative = "This attack would require " + strings.Join(missingNames, ", ") + " but no such evidence was observed."
 		} else if !precondOK {
 			gapNarrative = "Preconditions are not satisfied in the current environment state."
@@ -482,7 +491,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 			SupportingEventIDs: supportingIDs,
 			Explanation:        reason,
 			GapNarrative:       gapNarrative,
-			ReasonCode:         reasonCode(precondOK, missing, len(events)),
+			ReasonCode:         reasonCodeWithContradiction(precondOK, missing, len(events), contradiction),
 		})
 	}
 	return model.ReasoningReport{
@@ -506,6 +515,34 @@ func reasonCode(precondOK bool, missing []model.EvidenceRequirement, eventCount 
 	default:
 		return ""
 	}
+}
+
+func reasonCodeWithContradiction(precondOK bool, missing []model.EvidenceRequirement, eventCount int, contradiction bool) string {
+	if contradiction {
+		return "contradiction"
+	}
+	return reasonCode(precondOK, missing, eventCount)
+}
+
+func hasContradiction(ruleID string, index map[string][]model.Event) bool {
+	contradictions := map[string][]string{
+		"TA0006.VALID_ACCOUNTS": {"access_denied"},
+		"TA0006.BRUTE_FORCE":    {"mfa_success"},
+		"TA0010.BULK_EXFIL":     {"access_denied"},
+		"TA0010.EXFIL":          {"access_denied"},
+		"TA0008.LATERAL":        {"network_logon_failure"},
+		"TA0004.PRIVESCA":       {"privilege_escalation_blocked"},
+	}
+	types, ok := contradictions[ruleID]
+	if !ok {
+		return false
+	}
+	for _, t := range types {
+		if len(index[t]) > 0 {
+			return true
+		}
+	}
+	return false
 }
 
 func ApplyConstraints(rep *model.ReasoningReport, constraints []governance.ReasoningConstraint) {

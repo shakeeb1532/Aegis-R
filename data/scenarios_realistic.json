@@ -2892,6 +2892,66 @@
           "outcome": "feasible"
         }
       ]
+    },
+    {
+      "id": "contradiction-valid-accounts",
+      "description": "Access denied contradicts valid account abuse",
+      "events": [
+        {
+          "id": "c1",
+          "time": "2026-02-06T16:01:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "access_denied",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.VALID_ACCOUNTS",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "contradiction-lateral",
+      "description": "Network logon failure contradicts lateral movement",
+      "events": [
+        {
+          "id": "c2",
+          "time": "2026-02-06T16:02:00Z",
+          "host": "host-2",
+          "user": "bob",
+          "type": "network_logon_failure",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.LATERAL",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "contradiction-privesc",
+      "description": "Privilege escalation blocked",
+      "events": [
+        {
+          "id": "c3",
+          "time": "2026-02-06T16:03:00Z",
+          "host": "host-3",
+          "user": "svc-admin",
+          "type": "privilege_escalation_blocked",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.PRIVESCA",
+          "outcome": "impossible"
+        }
+      ]
     }
   ]
 }
