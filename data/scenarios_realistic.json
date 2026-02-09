@@ -125,6 +125,64 @@
       "expectations": [
         {"rule_id": "TA0006.IDENTITY_ANOMALY", "decision_label": "escalate", "reason_code": "environment_unknown"}
       ]
+    },
+    {
+      "id": "realistic-11",
+      "description": "Cloud logging disabled without firewall change",
+      "events": [
+        {"id": "s11-1", "time": "2026-02-06T14:00:00Z", "host": "cloud-1", "user": "svc-admin", "type": "disable_logging", "details": {"service": "cloudtrail"}}
+      ],
+      "labels": [
+        {"rule_id": "TA0005.IMPAIR_DEFENSES", "outcome": "incomplete"},
+        {"rule_id": "TA0005.LOG_TAMPER", "outcome": "incomplete"}
+      ]
+    },
+    {
+      "id": "realistic-12",
+      "description": "Valid account login from new device",
+      "events": [
+        {"id": "s12-1", "time": "2026-02-06T14:10:00Z", "host": "", "user": "alice", "type": "valid_account_login", "details": {}},
+        {"id": "s12-2", "time": "2026-02-06T14:11:00Z", "host": "", "user": "alice", "type": "new_device_login", "details": {}}
+      ],
+      "labels": [
+        {"rule_id": "TA0006.VALID_ACCOUNTS", "outcome": "feasible"}
+      ]
+    },
+    {
+      "id": "realistic-13",
+      "description": "Persistence with scheduled task and run key after initial access",
+      "events": [
+        {"id": "s13-1", "time": "2026-02-06T14:20:00Z", "host": "host-1", "user": "bob", "type": "email_attachment_open", "details": {}},
+        {"id": "s13-2", "time": "2026-02-06T14:20:10Z", "host": "host-1", "user": "bob", "type": "macro_execution", "details": {}},
+        {"id": "s13-3", "time": "2026-02-06T14:21:00Z", "host": "host-1", "user": "bob", "type": "registry_run_key", "details": {}},
+        {"id": "s13-4", "time": "2026-02-06T14:21:30Z", "host": "host-1", "user": "bob", "type": "scheduled_task", "details": {}}
+      ],
+      "labels": [
+        {"rule_id": "TA0003.PERSIST", "outcome": "feasible"}
+      ]
+    },
+    {
+      "id": "realistic-14",
+      "description": "Lateral movement with credential access and remote service creation",
+      "events": [
+        {"id": "s14-1", "time": "2026-02-06T14:30:00Z", "host": "host-2", "user": "alice", "type": "beacon_outbound", "details": {}},
+        {"id": "s14-2", "time": "2026-02-06T14:30:20Z", "host": "host-2", "user": "alice", "type": "lsass_access", "details": {}},
+        {"id": "s14-3", "time": "2026-02-06T14:31:00Z", "host": "host-2", "user": "alice", "type": "remote_service_creation", "details": {}},
+        {"id": "s14-4", "time": "2026-02-06T14:31:20Z", "host": "host-2", "user": "alice", "type": "network_logon", "details": {}}
+      ],
+      "labels": [
+        {"rule_id": "TA0008.LATERAL", "outcome": "feasible"}
+      ]
+    },
+    {
+      "id": "realistic-15",
+      "description": "Privilege escalation with token manipulation only",
+      "events": [
+        {"id": "s15-1", "time": "2026-02-06T14:40:00Z", "host": "host-3", "user": "svc-admin", "type": "token_manipulation", "details": {}}
+      ],
+      "labels": [
+        {"rule_id": "TA0004.PRIVESCA", "outcome": "incomplete"}
+      ]
     }
   ]
 }
