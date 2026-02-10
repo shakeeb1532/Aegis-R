@@ -47,10 +47,13 @@ type RuleResult struct {
 }
 
 type ReasoningReport struct {
-	GeneratedAt     time.Time    `json:"generated_at"`
-	Summary         string       `json:"summary"`
-	Results         []RuleResult `json:"results"`
-	Narrative       []string     `json:"narrative"`
-	ConfidenceModel string       `json:"confidence_model"`
-	ConfidenceNote  string       `json:"confidence_note"`
+	GeneratedAt       time.Time    `json:"generated_at"`
+	Summary           string       `json:"summary"`
+	Results           []RuleResult `json:"results"`
+	Narrative         []string     `json:"narrative"`
+	ConfidenceModel   string       `json:"confidence_model"`
+	ConfidenceNote    string       `json:"confidence_note"`
+	Explanation       string       `json:"explanation,omitempty"`
+	SuggestedSteps    []string     `json:"suggested_steps,omitempty"`
+	ExplanationSource string       `json:"explanation_source,omitempty"`
 }

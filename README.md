@@ -2,14 +2,14 @@
 
 License: Apache-2.0
 
-Aegis-R is a **human-governed security reasoning infrastructure** that evaluates causal feasibility, maintains attack progression state, and produces audit-ready, tamper-evident explanations. It is designed to **reduce false positives** by eliminating impossible attack paths while preserving human authority and compliance.
+Aegis-R is a human-governed security reasoning system that evaluates causal feasibility, maintains attack progression state, and produces audit-ready, tamper-evident explanations. It focuses on reducing false positives by eliminating impossible attack paths while preserving human authority and compliance.
 
 ## What It Does
-- Determines whether a security event is **logically possible** in your environment.
-- Proves why an alert is **real, impossible, or incomplete** (not just “high/low risk”).
-- Maintains **live attack-progression state**, not isolated alerts.
-- Explains every decision with a **clear reasoning chain** and evidence gaps.
-- Produces **audit-ready artifacts** with hash chaining and signatures.
+- Determines whether a security event is logically possible in your environment.
+- Explains why an alert is real, impossible, or incomplete (not just “high/low risk”).
+- Maintains live attack-progression state, not isolated alerts.
+- Explains every decision with a reasoning chain and evidence gaps.
+- Produces audit-ready artifacts with hash chaining and signatures.
 - Integrates alongside existing SIEM / EDR / XDR systems (no auto-remediation).
 
 ## What It Explicitly Does NOT Do
@@ -24,6 +24,7 @@ Aegis-R is a **human-governed security reasoning infrastructure** that evaluates
 - **Audit**: Tamper-evident decision logs and signed artifacts.
 - **Governance**: Human approvals and constraints that bind reasoning outcomes.
 - **Zero-Trust Initialization**: A strict install-time scan that creates a baseline and prevents poisoning.
+- **Explanation Layer (Optional)**: Generates a narrative summary and investigation steps from structured reasoning output. This never changes verdicts.
 
 ## Docs
 - `docs/sample_outputs.md` — example MITRE coverage and reasoning outputs
@@ -53,12 +54,13 @@ Summary:
 - All packages passed.
 - Detailed output: `docs/test_results.md`
 
-Regression (latest run):
-- Accuracy: 0.887 (Total labels: 106)
-- Class metrics (Precision/Recall): feasible 1.000/0.984, incomplete 0.850/0.680, impossible 0.625/0.833
+Regression (latest run on synthetic scenarios):
+- Accuracy: 0.953 (Total labels: 127)
+- Class metrics (Precision/Recall): feasible 0.970/1.000, incomplete 1.000/0.884, impossible 0.826/0.950
 - Full report + calibration: `docs/regression_report.md`
 
 Public dataset consistency:
+- Accuracy: 0.941 (Total labels: 17)
 - Report: `docs/public_dataset_report.md`
 
 Pilot dataset impact:
@@ -156,6 +158,11 @@ go run ./cmd/aegisr generate -out events.json -count 80
 go run ./cmd/aegisr reason -in events.json -rules data/rules.json -format cli
 ```
 
+Add an explanation layer (optional, does not change verdicts):
+```bash
+go run ./cmd/aegisr reason -in events.json -rules data/rules.json -format cli --explain
+```
+
 ### 5) Run Full Assessment (JSON)
 ```bash
 go run ./cmd/aegisr assess \
@@ -167,6 +174,18 @@ go run ./cmd/aegisr assess \
   -config data/ops.json \
   -baseline data/zero_trust_baseline.json \
   -format json
+```
+
+Add an explanation layer (optional, does not change verdicts):
+```bash
+go run ./cmd/aegisr assess \
+  -in events.json \
+  -env data/env.json \
+  -state state.json \
+  -audit audit.log \
+  -baseline data/zero_trust_baseline.json \
+  -format json \
+  --explain
 ```
 
 ---

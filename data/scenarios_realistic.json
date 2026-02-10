@@ -30,7 +30,7 @@
     },
     {
       "id": "realistic-2",
-      "description": "LOLBin chain missing execution evidence",
+      "description": "LOLBin chain missing execution evidence with initial access present",
       "events": [
         {
           "id": "s2-1",
@@ -41,6 +41,22 @@
           "details": {
             "command_line": "powershell.exe -enc"
           }
+        },
+        {
+          "id": "s2-2",
+          "time": "2026-02-06T10:59:00Z",
+          "host": "web-01",
+          "user": "bob",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "s2-3",
+          "time": "2026-02-06T10:59:10Z",
+          "host": "web-01",
+          "user": "bob",
+          "type": "macro_execution",
+          "details": {}
         }
       ],
       "labels": [
@@ -316,21 +332,21 @@
     },
     {
       "id": "realistic-10",
-      "description": "Identity anomaly without context",
+      "description": "Identity anomaly with user context",
       "events": [
         {
           "id": "s10-1",
           "time": "2026-02-06T13:30:00Z",
-          "host": "",
-          "user": "",
+          "host": "idp-1",
+          "user": "alice",
           "type": "impossible_travel",
           "details": {}
         },
         {
           "id": "s10-2",
           "time": "2026-02-06T13:30:10Z",
-          "host": "",
-          "user": "",
+          "host": "idp-1",
+          "user": "alice",
           "type": "new_device_login",
           "details": {}
         }
@@ -344,8 +360,8 @@
       "expectations": [
         {
           "rule_id": "TA0006.IDENTITY_ANOMALY",
-          "decision_label": "keep",
-          "reason_code": "context_missing"
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
         }
       ]
     },
@@ -513,7 +529,7 @@
     },
     {
       "id": "realistic-16",
-      "description": "C2 evidence without initial access (ambiguous)",
+      "description": "C2 evidence without full C2 indicators but initial access present",
       "events": [
         {
           "id": "s16-1",
@@ -524,11 +540,19 @@
           "details": {}
         },
         {
-          "id": "s16-2",
-          "time": "2026-02-06T14:50:20Z",
+          "id": "s16-3",
+          "time": "2026-02-06T14:49:00Z",
           "host": "host-2",
           "user": "alice",
-          "type": "dns_tunneling",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "s16-4",
+          "time": "2026-02-06T14:49:10Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "macro_execution",
           "details": {}
         }
       ],
@@ -541,22 +565,30 @@
     },
     {
       "id": "realistic-17",
-      "description": "Exfil transfer without C2 or credential access (ambiguous)",
+      "description": "Exfil staging with preconditions but missing outbound transfer",
       "events": [
         {
           "id": "s17-1",
           "time": "2026-02-06T15:00:00Z",
           "host": "db-01",
           "user": "carl",
-          "type": "large_outbound_transfer",
+          "type": "data_staging",
           "details": {}
         },
         {
-          "id": "s17-2",
-          "time": "2026-02-06T15:00:10Z",
+          "id": "s17-3",
+          "time": "2026-02-06T14:59:30Z",
           "host": "db-01",
           "user": "carl",
-          "type": "data_staging",
+          "type": "beacon_outbound",
+          "details": {}
+        },
+        {
+          "id": "s17-4",
+          "time": "2026-02-06T14:59:40Z",
+          "host": "db-01",
+          "user": "carl",
+          "type": "lsass_access",
           "details": {}
         }
       ],
@@ -569,7 +601,7 @@
     },
     {
       "id": "realistic-18",
-      "description": "Credential dumping evidence without privilege escalation (ambiguous)",
+      "description": "Credential dumping signal with privilege escalation but partial evidence",
       "events": [
         {
           "id": "s18-1",
@@ -580,14 +612,12 @@
           "details": {}
         },
         {
-          "id": "s18-2",
-          "time": "2026-02-06T15:10:10Z",
+          "id": "s18-3",
+          "time": "2026-02-06T15:09:40Z",
           "host": "win-04",
           "user": "dana",
-          "type": "process_creation",
-          "details": {
-            "tool": "procdump"
-          }
+          "type": "token_manipulation",
+          "details": {}
         }
       ],
       "labels": [
@@ -599,7 +629,7 @@
     },
     {
       "id": "realistic-19",
-      "description": "Admin protocol lateral without credential access (ambiguous)",
+      "description": "Admin protocol activity with credential access but partial evidence",
       "events": [
         {
           "id": "s19-1",
@@ -610,12 +640,14 @@
           "details": {}
         },
         {
-          "id": "s19-2",
-          "time": "2026-02-06T15:20:10Z",
+          "id": "s19-3",
+          "time": "2026-02-06T15:19:40Z",
           "host": "host-3",
           "user": "alice",
-          "type": "network_logon",
-          "details": {}
+          "type": "process_creation",
+          "details": {
+            "tool": "mimikatz"
+          }
         }
       ],
       "labels": [
@@ -627,22 +659,22 @@
     },
     {
       "id": "realistic-20",
-      "description": "Mailbox rule change without valid account login (ambiguous)",
+      "description": "Mailbox rule change with valid account login but partial evidence",
       "events": [
         {
           "id": "s20-1",
           "time": "2026-02-06T15:30:00Z",
-          "host": "",
+          "host": "mail-1",
           "user": "alice",
           "type": "mailbox_rule_create",
           "details": {}
         },
         {
-          "id": "s20-2",
-          "time": "2026-02-06T15:30:10Z",
-          "host": "",
+          "id": "s20-3",
+          "time": "2026-02-06T15:29:40Z",
+          "host": "mail-1",
           "user": "alice",
-          "type": "forwarding_rule_set",
+          "type": "valid_account_login",
           "details": {}
         }
       ],
@@ -691,7 +723,7 @@
     },
     {
       "id": "edge-impossible-TA0011.C2",
-      "description": "Edge impossible for TA0011.C2",
+      "description": "Edge partial evidence for TA0011.C2",
       "events": [
         {
           "id": "e22-req",
@@ -705,7 +737,7 @@
       "labels": [
         {
           "rule_id": "TA0011.C2",
-          "outcome": "impossible"
+          "outcome": "incomplete"
         }
       ]
     },
@@ -747,7 +779,7 @@
     },
     {
       "id": "edge-impossible-TA0010.EXFIL",
-      "description": "Edge impossible for TA0010.EXFIL",
+      "description": "Edge partial evidence for TA0010.EXFIL",
       "events": [
         {
           "id": "e24-req",
@@ -761,7 +793,7 @@
       "labels": [
         {
           "rule_id": "TA0010.EXFIL",
-          "outcome": "impossible"
+          "outcome": "incomplete"
         }
       ]
     },
@@ -795,7 +827,7 @@
     },
     {
       "id": "edge-impossible-TA0008.LATERAL",
-      "description": "Edge impossible for TA0008.LATERAL",
+      "description": "Edge partial evidence for TA0008.LATERAL",
       "events": [
         {
           "id": "e26-req",
@@ -809,7 +841,7 @@
       "labels": [
         {
           "rule_id": "TA0008.LATERAL",
-          "outcome": "impossible"
+          "outcome": "incomplete"
         }
       ]
     },
@@ -851,7 +883,7 @@
     },
     {
       "id": "edge-impossible-TA0003.PERSIST",
-      "description": "Edge impossible for TA0003.PERSIST",
+      "description": "Edge partial evidence for TA0003.PERSIST",
       "events": [
         {
           "id": "e28-req",
@@ -865,7 +897,7 @@
       "labels": [
         {
           "rule_id": "TA0003.PERSIST",
-          "outcome": "impossible"
+          "outcome": "incomplete"
         }
       ]
     },
@@ -1027,7 +1059,7 @@
     },
     {
       "id": "realistic-impossible-TA0006.IDENTITY_ANOMALY",
-      "description": "Impossible chain for TA0006.IDENTITY_ANOMALY",
+      "description": "Partial evidence for TA0006.IDENTITY_ANOMALY",
       "events": [
         {
           "id": "r34-impossible_travel",
@@ -1041,7 +1073,7 @@
       "labels": [
         {
           "rule_id": "TA0006.IDENTITY_ANOMALY",
-          "outcome": "impossible"
+          "outcome": "incomplete"
         }
       ]
     },
@@ -1095,7 +1127,7 @@
     },
     {
       "id": "realistic-impossible-TA0004.PRIVESCA",
-      "description": "Impossible chain for TA0004.PRIVESCA",
+      "description": "Partial evidence for TA0004.PRIVESCA",
       "events": [
         {
           "id": "r37-token_manipulation",
@@ -1109,7 +1141,7 @@
       "labels": [
         {
           "rule_id": "TA0004.PRIVESCA",
-          "outcome": "impossible"
+          "outcome": "incomplete"
         }
       ]
     },
@@ -1187,6 +1219,24 @@
           "host": "host-1",
           "user": "bob",
           "type": "process_creation",
+          "details": {}
+        },
+        {
+          "id": "r36-process_creation",
+          "time": "2026-02-06T10:38:10Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "process_creation",
+          "details": {
+            "tool": "procdump"
+          }
+        },
+        {
+          "id": "r36-lsass_access",
+          "time": "2026-02-06T10:38:20Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "lsass_access",
           "details": {}
         }
       ],
@@ -1271,6 +1321,14 @@
           "host": "host-1",
           "user": "bob",
           "type": "remote_service_creation",
+          "details": {}
+        },
+        {
+          "id": "r45-network_logon",
+          "time": "2026-02-06T10:47:10Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "network_logon",
           "details": {}
         }
       ],
@@ -1372,6 +1430,14 @@
           "user": "bob",
           "type": "registry_run_key",
           "details": {}
+        },
+        {
+          "id": "r48-scheduled_task",
+          "time": "2026-02-06T10:50:10Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "scheduled_task",
+          "details": {}
         }
       ],
       "labels": [
@@ -1472,6 +1538,14 @@
           "user": "bob",
           "type": "disable_logging",
           "details": {}
+        },
+        {
+          "id": "r50-policy_bypass",
+          "time": "2026-02-06T10:52:10Z",
+          "host": "host-1",
+          "user": "bob",
+          "type": "policy_bypass",
+          "details": {}
         }
       ],
       "labels": [
@@ -1531,7 +1605,7 @@
     },
     {
       "id": "realistic-impossible-TA0006.VALID_ACCOUNTS",
-      "description": "Impossible chain for TA0006.VALID_ACCOUNTS",
+      "description": "Partial evidence for TA0006.VALID_ACCOUNTS",
       "events": [
         {
           "id": "r52-valid_account_login",
@@ -1545,7 +1619,7 @@
       "labels": [
         {
           "rule_id": "TA0006.VALID_ACCOUNTS",
-          "outcome": "impossible"
+          "outcome": "incomplete"
         }
       ]
     },
@@ -2955,12 +3029,12 @@
     },
     {
       "id": "context-missing-host-exfil",
-      "description": "Exfil evidence without host context",
+      "description": "Exfil evidence with host context but missing preconditions",
       "events": [
         {
           "id": "cx1",
           "time": "2026-02-06T17:01:00Z",
-          "host": "",
+          "host": "db-02",
           "user": "carl",
           "type": "data_staging",
           "details": {}
@@ -2968,7 +3042,7 @@
         {
           "id": "cx2",
           "time": "2026-02-06T17:02:00Z",
-          "host": "",
+          "host": "db-02",
           "user": "carl",
           "type": "large_outbound_transfer",
           "details": {}
@@ -2983,13 +3057,13 @@
     },
     {
       "id": "context-missing-identity-valid-accounts",
-      "description": "Valid account signals without user context",
+      "description": "Valid account signals with identity context",
       "events": [
         {
           "id": "cx3",
           "time": "2026-02-06T17:03:00Z",
           "host": "host-1",
-          "user": "",
+          "user": "carl",
           "type": "valid_account_login",
           "details": {}
         },
@@ -2997,7 +3071,7 @@
           "id": "cx4",
           "time": "2026-02-06T17:04:00Z",
           "host": "host-1",
-          "user": "",
+          "user": "carl",
           "type": "new_device_login",
           "details": {}
         }
@@ -3005,7 +3079,603 @@
       "labels": [
         {
           "rule_id": "TA0006.VALID_ACCOUNTS",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "hard-contradiction-bruteforce",
+      "description": "Brute force signals but MFA success contradicts attack",
+      "events": [
+        {
+          "id": "hc1",
+          "time": "2026-02-06T18:00:00Z",
+          "host": "idp-1",
+          "user": "eve",
+          "type": "password_spray",
+          "details": {}
+        },
+        {
+          "id": "hc2",
+          "time": "2026-02-06T18:00:10Z",
+          "host": "idp-1",
+          "user": "eve",
+          "type": "mfa_success",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.BRUTE_FORCE",
           "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "hard-contradiction-exfil",
+      "description": "Exfil evidence but access denied contradicts",
+      "events": [
+        {
+          "id": "hc3",
+          "time": "2026-02-06T18:10:00Z",
+          "host": "db-02",
+          "user": "carl",
+          "type": "data_staging",
+          "details": {}
+        },
+        {
+          "id": "hc4",
+          "time": "2026-02-06T18:10:10Z",
+          "host": "db-02",
+          "user": "carl",
+          "type": "large_outbound_transfer",
+          "details": {}
+        },
+        {
+          "id": "hc5",
+          "time": "2026-02-06T18:10:20Z",
+          "host": "db-02",
+          "user": "carl",
+          "type": "access_denied",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "hard-contradiction-privesc",
+      "description": "Privilege escalation evidence with explicit block",
+      "events": [
+        {
+          "id": "hc6",
+          "time": "2026-02-06T18:20:00Z",
+          "host": "host-4",
+          "user": "bob",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "hc7",
+          "time": "2026-02-06T18:20:10Z",
+          "host": "host-4",
+          "user": "bob",
+          "type": "privilege_escalation_blocked",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.PRIVESCA",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "hard-contradiction-lateral",
+      "description": "Lateral movement evidence but network logon failure",
+      "events": [
+        {
+          "id": "hc8",
+          "time": "2026-02-06T18:30:00Z",
+          "host": "host-5",
+          "user": "alice",
+          "type": "remote_service_creation",
+          "details": {}
+        },
+        {
+          "id": "hc9",
+          "time": "2026-02-06T18:30:10Z",
+          "host": "host-5",
+          "user": "alice",
+          "type": "network_logon_failure",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.LATERAL",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "hard-ambig-c2",
+      "description": "Outbound beacon only; missing DNS tunnel and initial access",
+      "events": [
+        {
+          "id": "ha1",
+          "time": "2026-02-06T18:40:00Z",
+          "host": "host-6",
+          "user": "dana",
+          "type": "beacon_outbound",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.C2",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "hard-ambig-exfil",
+      "description": "Large transfer without staging or preconditions",
+      "events": [
+        {
+          "id": "ha2",
+          "time": "2026-02-06T18:41:00Z",
+          "host": "db-03",
+          "user": "carl",
+          "type": "large_outbound_transfer",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "hard-ambig-lolbin",
+      "description": "LOLBin execution without process creation context",
+      "events": [
+        {
+          "id": "ha3",
+          "time": "2026-02-06T18:42:00Z",
+          "host": "web-02",
+          "user": "bob",
+          "type": "lolbin_execution",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.LOLBIN_CHAIN",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "hard-ambig-identity",
+      "description": "New device login without impossible travel or compromise context",
+      "events": [
+        {
+          "id": "ha4",
+          "time": "2026-02-06T18:43:00Z",
+          "host": "idp-2",
+          "user": "alice",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "hard-ambig-persist",
+      "description": "Registry run key without initial access",
+      "events": [
+        {
+          "id": "ha5",
+          "time": "2026-02-06T18:44:00Z",
+          "host": "win-05",
+          "user": "dana",
+          "type": "registry_run_key",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.PERSIST",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "hard-contradiction-valid-accounts",
+      "description": "Valid account login with access denied contradicts",
+      "events": [
+        {
+          "id": "hc10",
+          "time": "2026-02-06T18:50:00Z",
+          "host": "host-7",
+          "user": "carl",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "hc11",
+          "time": "2026-02-06T18:50:05Z",
+          "host": "host-7",
+          "user": "carl",
+          "type": "access_denied",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.VALID_ACCOUNTS",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "hard-ambig-cloud-pivot",
+      "description": "Role assume without trust policy change",
+      "events": [
+        {
+          "id": "ha6",
+          "time": "2026-02-06T18:55:00Z",
+          "host": "cloud-2",
+          "user": "svc",
+          "type": "role_assume",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.CLOUD_PIVOT",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "hard-contradiction-c2-egress-blocked",
+      "description": "C2 indicators with explicit egress block (engine lacks this contradiction)",
+      "events": [
+        {
+          "id": "hc12",
+          "time": "2026-02-06T19:00:00Z",
+          "host": "host-8",
+          "user": "eva",
+          "type": "beacon_outbound",
+          "details": {}
+        },
+        {
+          "id": "hc13",
+          "time": "2026-02-06T19:00:05Z",
+          "host": "host-8",
+          "user": "eva",
+          "type": "dns_tunneling",
+          "details": {}
+        },
+        {
+          "id": "hc14",
+          "time": "2026-02-06T19:00:10Z",
+          "host": "host-8",
+          "user": "eva",
+          "type": "egress_blocked",
+          "details": {
+            "policy": "default-deny"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.C2",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "hard-contradiction-exfil-dlp",
+      "description": "Exfil signals with DLP block (engine lacks this contradiction)",
+      "events": [
+        {
+          "id": "hc15",
+          "time": "2026-02-06T19:05:00Z",
+          "host": "db-04",
+          "user": "carl",
+          "type": "data_staging",
+          "details": {}
+        },
+        {
+          "id": "hc16",
+          "time": "2026-02-06T19:05:10Z",
+          "host": "db-04",
+          "user": "carl",
+          "type": "large_outbound_transfer",
+          "details": {}
+        },
+        {
+          "id": "hc17",
+          "time": "2026-02-06T19:05:20Z",
+          "host": "db-04",
+          "user": "carl",
+          "type": "dlp_blocked",
+          "details": {
+            "product": "DLP"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "hard-contradiction-log-tamper-lockdown",
+      "description": "Log tamper signals but tamper protection lock enabled",
+      "events": [
+        {
+          "id": "hc18",
+          "time": "2026-02-06T19:10:00Z",
+          "host": "cloud-3",
+          "user": "svc-admin",
+          "type": "disable_logging",
+          "details": {
+            "service": "cloudtrail"
+          }
+        },
+        {
+          "id": "hc19",
+          "time": "2026-02-06T19:10:05Z",
+          "host": "cloud-3",
+          "user": "svc-admin",
+          "type": "policy_bypass",
+          "details": {}
+        },
+        {
+          "id": "hc20",
+          "time": "2026-02-06T19:10:10Z",
+          "host": "cloud-3",
+          "user": "svc-admin",
+          "type": "tamper_protection_lock",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.LOG_TAMPER",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "hard-contradiction-privesc-mfa-enforced",
+      "description": "Privilege escalation attempt with enforced MFA block",
+      "events": [
+        {
+          "id": "hc21",
+          "time": "2026-02-06T19:15:00Z",
+          "host": "host-9",
+          "user": "bob",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "hc22",
+          "time": "2026-02-06T19:15:10Z",
+          "host": "host-9",
+          "user": "bob",
+          "type": "admin_group_change",
+          "details": {}
+        },
+        {
+          "id": "hc23",
+          "time": "2026-02-06T19:15:20Z",
+          "host": "host-9",
+          "user": "bob",
+          "type": "mfa_enforced_block",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.PRIVESCA",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "hard-contradiction-lateral-nla",
+      "description": "Lateral movement evidence with NLA enforced deny",
+      "events": [
+        {
+          "id": "hc24",
+          "time": "2026-02-06T19:20:00Z",
+          "host": "host-10",
+          "user": "alice",
+          "type": "remote_service_creation",
+          "details": {}
+        },
+        {
+          "id": "hc25",
+          "time": "2026-02-06T19:20:10Z",
+          "host": "host-10",
+          "user": "alice",
+          "type": "network_logon",
+          "details": {}
+        },
+        {
+          "id": "hc26",
+          "time": "2026-02-06T19:20:20Z",
+          "host": "host-10",
+          "user": "alice",
+          "type": "nla_denied",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.LATERAL",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "hard-ambig-identity-feasible",
+      "description": "Identity anomaly with partial context; expected incomplete by analyst",
+      "events": [
+        {
+          "id": "ha7",
+          "time": "2026-02-06T19:25:00Z",
+          "host": "idp-3",
+          "user": "maria",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "ha8",
+          "time": "2026-02-06T19:25:05Z",
+          "host": "idp-3",
+          "user": "maria",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "hard-ambig-creddump-precond",
+      "description": "Credential dumping evidence without privilege escalation context; analyst expects incomplete",
+      "events": [
+        {
+          "id": "ha9",
+          "time": "2026-02-06T19:30:00Z",
+          "host": "win-06",
+          "user": "dana",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "ha10",
+          "time": "2026-02-06T19:30:05Z",
+          "host": "win-06",
+          "user": "dana",
+          "type": "process_creation",
+          "details": {
+            "tool": "procdump"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.CREDDUMP",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "hard-ambig-exfil-precond",
+      "description": "Exfil evidence without preconditions; analyst expects incomplete",
+      "events": [
+        {
+          "id": "ha11",
+          "time": "2026-02-06T19:35:00Z",
+          "host": "db-05",
+          "user": "carl",
+          "type": "data_staging",
+          "details": {}
+        },
+        {
+          "id": "ha12",
+          "time": "2026-02-06T19:35:05Z",
+          "host": "db-05",
+          "user": "carl",
+          "type": "large_outbound_transfer",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "hard-ambig-lateral-precond",
+      "description": "Lateral evidence without credential access; analyst expects incomplete",
+      "events": [
+        {
+          "id": "ha13",
+          "time": "2026-02-06T19:40:00Z",
+          "host": "host-11",
+          "user": "alice",
+          "type": "remote_service_creation",
+          "details": {}
+        },
+        {
+          "id": "ha14",
+          "time": "2026-02-06T19:40:05Z",
+          "host": "host-11",
+          "user": "alice",
+          "type": "network_logon",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.LATERAL",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "hard-ambig-persist-precond",
+      "description": "Persistence evidence without initial access; analyst expects incomplete",
+      "events": [
+        {
+          "id": "ha15",
+          "time": "2026-02-06T19:45:00Z",
+          "host": "win-07",
+          "user": "bob",
+          "type": "registry_run_key",
+          "details": {}
+        },
+        {
+          "id": "ha16",
+          "time": "2026-02-06T19:45:05Z",
+          "host": "win-07",
+          "user": "bob",
+          "type": "scheduled_task",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.PERSIST",
+          "outcome": "incomplete"
         }
       ]
     }

@@ -10,7 +10,9 @@
           "host": "111111111111",
           "user": "arn:aws:iam::111111111111:user/console",
           "type": "password_spray",
-          "details": {"source": "cloudtrail"}
+          "details": {
+            "source": "cloudtrail"
+          }
         },
         {
           "id": "ct-2",
@@ -18,12 +20,20 @@
           "host": "111111111111",
           "user": "arn:aws:iam::111111111111:user/console",
           "type": "valid_account_login",
-          "details": {"source": "cloudtrail"}
+          "details": {
+            "source": "cloudtrail"
+          }
         }
       ],
       "labels": [
-        {"rule_id": "TA0006.BRUTE_FORCE", "outcome": "incomplete"},
-        {"rule_id": "TA0006.VALID_ACCOUNTS", "outcome": "incomplete"}
+        {
+          "rule_id": "TA0006.BRUTE_FORCE",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0006.VALID_ACCOUNTS",
+          "outcome": "incomplete"
+        }
       ]
     },
     {
@@ -36,7 +46,9 @@
           "host": "111111111111",
           "user": "arn:aws:iam::111111111111:user/console",
           "type": "bulk_download",
-          "details": {"source": "cloudtrail"}
+          "details": {
+            "source": "cloudtrail"
+          }
         },
         {
           "id": "ct-4",
@@ -44,7 +56,9 @@
           "host": "111111111111",
           "user": "arn:aws:iam::111111111111:user/console",
           "type": "unusual_access_scope",
-          "details": {"source": "cloudtrail"}
+          "details": {
+            "source": "cloudtrail"
+          }
         },
         {
           "id": "ct-5",
@@ -52,12 +66,20 @@
           "host": "111111111111",
           "user": "arn:aws:iam::111111111111:user/console",
           "type": "valid_account_login",
-          "details": {"source": "cloudtrail"}
+          "details": {
+            "source": "cloudtrail"
+          }
         }
       ],
       "labels": [
-        {"rule_id": "TA0010.BULK_EXFIL", "outcome": "incomplete"},
-        {"rule_id": "TA0006.INSIDER_EXFIL", "outcome": "feasible"}
+        {
+          "rule_id": "TA0010.BULK_EXFIL",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0006.INSIDER_EXFIL",
+          "outcome": "feasible"
+        }
       ]
     },
     {
@@ -70,7 +92,9 @@
           "host": "WORKSTATION5",
           "user": "wardog",
           "type": "process_creation",
-          "details": {"image": "C:\\Windows\\System32\\mshta.exe"}
+          "details": {
+            "image": "C:\\Windows\\System32\\mshta.exe"
+          }
         },
         {
           "id": "win-2",
@@ -78,7 +102,9 @@
           "host": "WORKSTATION5",
           "user": "wardog",
           "type": "lolbin_execution",
-          "details": {"image": "C:\\Windows\\System32\\mshta.exe"}
+          "details": {
+            "image": "C:\\Windows\\System32\\mshta.exe"
+          }
         },
         {
           "id": "win-3",
@@ -86,13 +112,334 @@
           "host": "WORKSTATION5",
           "user": "wardog",
           "type": "disable_logging",
-          "details": {"channel": "Security"}
+          "details": {
+            "channel": "Security"
+          }
         }
       ],
       "labels": [
-        {"rule_id": "TA0002.LOLBIN_CHAIN", "outcome": "impossible"},
-        {"rule_id": "TA0005.IMPAIR_DEFENSES", "outcome": "incomplete"},
-        {"rule_id": "TA0005.LOG_TAMPER", "outcome": "incomplete"}
+        {
+          "rule_id": "TA0002.LOLBIN_CHAIN",
+          "outcome": "impossible"
+        },
+        {
+          "rule_id": "TA0005.IMPAIR_DEFENSES",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0005.LOG_TAMPER",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "public-okta-identity-anomaly",
+      "description": "Okta-style identity anomaly (impossible travel + new device)",
+      "events": [
+        {
+          "id": "p1",
+          "time": "2026-02-06T09:00:00Z",
+          "host": "idp-okta",
+          "user": "alice",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "p2",
+          "time": "2026-02-06T09:00:05Z",
+          "host": "idp-okta",
+          "user": "alice",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "public-cloudtrail-log-tamper",
+      "description": "CloudTrail logging disabled + policy bypass",
+      "events": [
+        {
+          "id": "p3",
+          "time": "2026-02-06T09:10:00Z",
+          "host": "aws-1",
+          "user": "svc-admin",
+          "type": "disable_logging",
+          "details": {
+            "service": "cloudtrail"
+          }
+        },
+        {
+          "id": "p4",
+          "time": "2026-02-06T09:10:05Z",
+          "host": "aws-1",
+          "user": "svc-admin",
+          "type": "policy_bypass",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.LOG_TAMPER",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "public-ecs-lolbin",
+      "description": "ECS process creation with LOLBin execution",
+      "events": [
+        {
+          "id": "p5",
+          "time": "2026-02-06T09:20:00Z",
+          "host": "win-01",
+          "user": "bob",
+          "type": "process_creation",
+          "details": {
+            "command_line": "mshta"
+          }
+        },
+        {
+          "id": "p6",
+          "time": "2026-02-06T09:20:05Z",
+          "host": "win-01",
+          "user": "bob",
+          "type": "lolbin_execution",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.LOLBIN_CHAIN",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "public-aws-exfil",
+      "description": "Data staging + outbound transfer with C2 + credential access",
+      "events": [
+        {
+          "id": "p7",
+          "time": "2026-02-06T09:30:00Z",
+          "host": "db-01",
+          "user": "carl",
+          "type": "data_staging",
+          "details": {}
+        },
+        {
+          "id": "p8",
+          "time": "2026-02-06T09:30:05Z",
+          "host": "db-01",
+          "user": "carl",
+          "type": "large_outbound_transfer",
+          "details": {}
+        },
+        {
+          "id": "p9",
+          "time": "2026-02-06T09:29:40Z",
+          "host": "db-01",
+          "user": "carl",
+          "type": "beacon_outbound",
+          "details": {}
+        },
+        {
+          "id": "p10",
+          "time": "2026-02-06T09:29:30Z",
+          "host": "db-01",
+          "user": "carl",
+          "type": "lsass_access",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "public-sentinel-lateral",
+      "description": "Remote service creation + network logon with credential access evidence",
+      "events": [
+        {
+          "id": "p11",
+          "time": "2026-02-06T09:40:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "remote_service_creation",
+          "details": {}
+        },
+        {
+          "id": "p12",
+          "time": "2026-02-06T09:40:05Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "network_logon",
+          "details": {}
+        },
+        {
+          "id": "p13",
+          "time": "2026-02-06T09:39:40Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "process_creation",
+          "details": {
+            "tool": "mimikatz"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.LATERAL",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "public-okta-mfa-bypass",
+      "description": "MFA disabled + token refresh anomaly with identity compromise",
+      "events": [
+        {
+          "id": "p14",
+          "time": "2026-02-06T09:50:00Z",
+          "host": "idp-okta",
+          "user": "alice",
+          "type": "mfa_disabled",
+          "details": {}
+        },
+        {
+          "id": "p15",
+          "time": "2026-02-06T09:50:05Z",
+          "host": "idp-okta",
+          "user": "alice",
+          "type": "token_refresh_anomaly",
+          "details": {}
+        },
+        {
+          "id": "p16",
+          "time": "2026-02-06T09:49:40Z",
+          "host": "idp-okta",
+          "user": "alice",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.MFA_BYPASS",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "public-aws-c2-incomplete",
+      "description": "Beacon only without initial access",
+      "events": [
+        {
+          "id": "p17",
+          "time": "2026-02-06T10:00:00Z",
+          "host": "host-3",
+          "user": "dana",
+          "type": "beacon_outbound",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.C2",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "public-exfil-contradiction",
+      "description": "Exfil signals with access denied",
+      "events": [
+        {
+          "id": "p18",
+          "time": "2026-02-06T10:10:00Z",
+          "host": "db-02",
+          "user": "carl",
+          "type": "data_staging",
+          "details": {}
+        },
+        {
+          "id": "p19",
+          "time": "2026-02-06T10:10:05Z",
+          "host": "db-02",
+          "user": "carl",
+          "type": "large_outbound_transfer",
+          "details": {}
+        },
+        {
+          "id": "p20",
+          "time": "2026-02-06T10:10:10Z",
+          "host": "db-02",
+          "user": "carl",
+          "type": "access_denied",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "public-valid-accounts-ambig",
+      "description": "Valid account login without device anomaly",
+      "events": [
+        {
+          "id": "p21",
+          "time": "2026-02-06T10:20:00Z",
+          "host": "host-4",
+          "user": "bob",
+          "type": "valid_account_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.VALID_ACCOUNTS",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "public-impair-defenses",
+      "description": "Disable logging + cloud firewall change",
+      "events": [
+        {
+          "id": "p22",
+          "time": "2026-02-06T10:30:00Z",
+          "host": "cloud-1",
+          "user": "svc-admin",
+          "type": "disable_logging",
+          "details": {}
+        },
+        {
+          "id": "p23",
+          "time": "2026-02-06T10:30:05Z",
+          "host": "cloud-1",
+          "user": "svc-admin",
+          "type": "cloud_firewall_change",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.IMPAIR_DEFENSES",
+          "outcome": "feasible"
+        }
       ]
     }
   ]

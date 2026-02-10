@@ -20,6 +20,7 @@ import (
 	"aegisr/internal/approval"
 	"aegisr/internal/audit"
 	"aegisr/internal/core"
+	"aegisr/internal/explain"
 	"aegisr/internal/env"
 	"aegisr/internal/eval"
 	"aegisr/internal/governance"
@@ -146,8 +147,8 @@ func usage() {
 	fmt.Println("  aegis audit <verb> [flags]")
 	fmt.Println("  aegis system <verb> [flags]")
 	fmt.Println("  generate -out events.json -count 60 -seed 42")
-	fmt.Println("  reason -in events.json [-approval approval.json] [-require-okta] [-rules rules.json] [-format cli|json]")
-	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log [-rules rules.json] [-approval approval.json] [-policy policy.json] [-constraints data/constraints.json] [-config ops.json] [-format cli|json] [-baseline data/zero_trust_baseline.json]")
+	fmt.Println("  reason -in events.json [-approval approval.json] [-require-okta] [-rules rules.json] [-format cli|json] [--explain] [--explain-endpoint URL]")
+	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log [-rules rules.json] [-approval approval.json] [-policy policy.json] [-constraints data/constraints.json] [-config ops.json] [-format cli|json] [-baseline data/zero_trust_baseline.json] [--explain] [--explain-endpoint URL]")
 	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log -siem siem.json (optional)")
 	fmt.Println("  keys -out keypair.json")
 	fmt.Println("  approve -key keypair.json -id change-1 -ttl 10m -okta true -signer alice -role approver -out approval.json")
@@ -585,6 +586,9 @@ func handleReasonV2(args []string) {
 		fs := flag.NewFlagSet("reason event", flag.ExitOnError)
 		in := fs.String("in", "", "events file")
 		adminApproval := fs.String("admin-approval", "", "admin approval for gated rule packs")
+		explainOn := fs.Bool("explain", false, "add explanation layer")
+		explainEndpoint := fs.String("explain-endpoint", "", "llm explanation endpoint (optional)")
+		explainTimeout := fs.Duration("explain-timeout", 8*time.Second, "llm explanation timeout")
 		rest := args[1:]
 		pos := ""
 		if len(rest) > 0 && !strings.HasPrefix(rest[0], "-") {
@@ -616,6 +620,11 @@ func handleReasonV2(args []string) {
 		if len(placeholders) > 0 {
 			rep.Results = append(rep.Results, placeholders...)
 		}
+		if *explainOn {
+			if err := applyExplanation(&rep, *explainEndpoint, *explainTimeout); err != nil {
+				fmt.Fprintf(os.Stderr, "explanation unavailable: %s\n", err.Error())
+			}
+		}
 		if gFlags.JSON {
 			outJSON(rep)
 			return
@@ -629,11 +638,30 @@ func handleReasonV2(args []string) {
 				outln("- " + r.GapNarrative)
 			}
 		}
+		if rep.Explanation != "" {
+			outln("")
+			label := "Explanation"
+			if rep.ExplanationSource != "" {
+				label = "Explanation (" + rep.ExplanationSource + ")"
+			}
+			outln(label + ":")
+			outln(rep.Explanation)
+			if len(rep.SuggestedSteps) > 0 {
+				outln("")
+				outln("Suggested steps:")
+				for _, step := range rep.SuggestedSteps {
+					outln("- " + step)
+				}
+			}
+		}
 	case "host":
 		fs := flag.NewFlagSet("reason host", flag.ExitOnError)
 		in := fs.String("in", "", "events file")
 		host := fs.String("host", "", "host id")
 		adminApproval := fs.String("admin-approval", "", "admin approval for gated rule packs")
+		explainOn := fs.Bool("explain", false, "add explanation layer")
+		explainEndpoint := fs.String("explain-endpoint", "", "llm explanation endpoint (optional)")
+		explainTimeout := fs.Duration("explain-timeout", 8*time.Second, "llm explanation timeout")
 		rest := args[1:]
 		pos := ""
 		if len(rest) > 0 && !strings.HasPrefix(rest[0], "-") {
@@ -671,6 +699,11 @@ func handleReasonV2(args []string) {
 		if len(placeholders) > 0 {
 			rep.Results = append(rep.Results, placeholders...)
 		}
+		if *explainOn {
+			if err := applyExplanation(&rep, *explainEndpoint, *explainTimeout); err != nil {
+				fmt.Fprintf(os.Stderr, "explanation unavailable: %s\n", err.Error())
+			}
+		}
 		if gFlags.JSON {
 			outJSON(rep)
 			return
@@ -682,6 +715,22 @@ func handleReasonV2(args []string) {
 		for _, r := range rep.Results {
 			if len(r.MissingEvidence) > 0 {
 				outln("- " + r.GapNarrative)
+			}
+		}
+		if rep.Explanation != "" {
+			outln("")
+			label := "Explanation"
+			if rep.ExplanationSource != "" {
+				label = "Explanation (" + rep.ExplanationSource + ")"
+			}
+			outln(label + ":")
+			outln(rep.Explanation)
+			if len(rep.SuggestedSteps) > 0 {
+				outln("")
+				outln("Suggested steps:")
+				for _, step := range rep.SuggestedSteps {
+					outln("- " + step)
+				}
 			}
 		}
 	case "thread":
@@ -1275,6 +1324,9 @@ func handleAssess(args []string) {
 	format := fs.String("format", "json", "output format: cli or json")
 	configPath := fs.String("config", "", "ops config json (optional)")
 	baselinePath := fs.String("baseline", "data/zero_trust_baseline.json", "zero-trust baseline")
+	explainOn := fs.Bool("explain", false, "add explanation layer")
+	explainEndpoint := fs.String("explain-endpoint", "", "llm explanation endpoint (optional)")
+	explainTimeout := fs.Duration("explain-timeout", 8*time.Second, "llm explanation timeout")
 	if err := fs.Parse(args); err != nil {
 		fatal(err)
 	}
@@ -1321,6 +1373,11 @@ func handleAssess(args []string) {
 	out := core.AssessWithMetrics(events, rules, environment, st, metrics, includeEvidence)
 	if len(placeholders) > 0 {
 		out.Reasoning.Results = append(out.Reasoning.Results, placeholders...)
+	}
+	if *explainOn {
+		if err := applyExplanation(&out.Reasoning, *explainEndpoint, *explainTimeout); err != nil {
+			fmt.Fprintf(os.Stderr, "explanation unavailable: %s\n", err.Error())
+		}
 	}
 	if *constraintsPath != "" {
 		cons, err := governance.LoadConstraints(*constraintsPath)
@@ -2248,6 +2305,20 @@ func verifyAdminOverride(path string) error {
 	if a.SignerRole != "admin" {
 		return errors.New("admin override requires admin signer role")
 	}
+	return nil
+}
+
+func applyExplanation(rep *model.ReasoningReport, endpoint string, timeout time.Duration) error {
+	resp, err := explain.Generate(*rep, explain.Options{
+		Endpoint: endpoint,
+		Timeout:  timeout,
+	})
+	if err != nil {
+		return err
+	}
+	rep.Explanation = resp.Explanation
+	rep.SuggestedSteps = resp.Steps
+	rep.ExplanationSource = resp.Source
 	return nil
 }
 

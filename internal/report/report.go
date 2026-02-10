@@ -72,5 +72,21 @@ func RenderCLI(rep model.ReasoningReport) string {
 			fmt.Fprintf(buf, "- %s\n", n)
 		}
 	}
+	if rep.Explanation != "" {
+		fmt.Fprintln(buf, "")
+		label := "Explanation"
+		if rep.ExplanationSource != "" {
+			label = fmt.Sprintf("Explanation (%s)", rep.ExplanationSource)
+		}
+		fmt.Fprintf(buf, "%s:\n", label)
+		fmt.Fprintf(buf, "%s\n", rep.Explanation)
+		if len(rep.SuggestedSteps) > 0 {
+			fmt.Fprintln(buf, "")
+			fmt.Fprintln(buf, "Suggested steps:")
+			for _, step := range rep.SuggestedSteps {
+				fmt.Fprintf(buf, "- %s\n", step)
+			}
+		}
+	}
 	return buf.String()
 }
