@@ -65,6 +65,14 @@ Public dataset consistency:
 - Accuracy: 0.941 (Total labels: 17)
 - Report: `docs/public_dataset_report.md`
 
+Performance snapshot (Apple M1):
+- Assess 1k: 1.67 ms/op, 1.50 MB/op, 4,696 allocs/op
+- Assess 10k: 13.1 ms/op, 12.4 MB/op, 37,233 allocs/op
+- Assess 100k: 141.8 ms/op, 189 MB/op, 361,568 allocs/op
+- Reason 1k: 0.124 ms/op, 0.55 MB/op, 623 allocs/op
+- Reason 10k: 2.08 ms/op, 6.0 MB/op, 688 allocs/op
+- Reason 100k: 15.3 ms/op, 74 MB/op, 814 allocs/op
+
 Pilot dataset impact:
 - Pending pilot data (see `docs/metrics_report.md`)
 
