@@ -2,3 +2,9 @@ Aegis-R
 Copyright 2026 Shakeeb
 
 This product includes software developed at Aegis-R.
+
+Third-Party Notices:
+
+- LZ4 (BSD 2-Clause License)
+  Copyright (c) Yann Collet. All rights reserved.
+  Source: https://github.com/lz4/lz4

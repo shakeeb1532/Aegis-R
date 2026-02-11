@@ -1,15 +1,16 @@
 import { SectionHeader } from "../components/SectionHeader";
 import { VerdictPill } from "../components/VerdictPill";
-import { queueItems } from "../data/sample";
+import { useQueue } from "../hooks/useApiData";
 
 export function Queue() {
+  const data = useQueue();
   return (
     <div className="space-y-6">
       <section className="card">
         <SectionHeader title="Reasoning Queue" subtitle="Analyst review workbench" />
         <div className="mt-6 grid gap-4">
-          {queueItems.map((item) => (
-            <div key={item.id} className="rounded-2xl border border-border bg-panel-elev p-5">
+          {data.map((item) => (
+            <div key={item.id} className="rounded-2xl border border-border bg-panelElev p-5">
               <div className="flex items-start justify-between gap-6">
                 <div>
                   <p className="text-xs uppercase tracking-[0.2em] text-muted">{item.id}</p>

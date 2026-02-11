@@ -63,6 +63,11 @@
 
 ### Added
 - Standalone SaaS UI skeleton (`ui/`) with multi-page console and setup wizard.
+- File-backed UI API server (`serve-api`) and UI API contract docs.
+- LLM explanation guardrails with mandatory acknowledgement and audit metadata.
+- Optional LZ4-compressed state snapshots when using `.lz4` state paths.
+- Optional LZ4-compressed audit logs with export to JSONL.
+- LZ4 compression for SIEM exports and report outputs (`-out`).
 
 ### Fixed
 - Gated rule packs now surface as `admin_hold` placeholders.

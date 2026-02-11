@@ -2,15 +2,16 @@ import { KpiCard } from "../components/KpiCard";
 import { SectionHeader } from "../components/SectionHeader";
 import { VerdictPill } from "../components/VerdictPill";
 import { ConfidenceMeter } from "../components/ConfidenceMeter";
-import { driftSignals, evidenceGaps, overviewKpis, reasoningSamples } from "../data/sample";
+import { useOverview } from "../hooks/useApiData";
 
 export function Overview() {
-  const headline = reasoningSamples[1];
+  const data = useOverview();
+  const headline = data.headline;
 
   return (
     <div className="space-y-8">
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {overviewKpis.map((kpi) => (
+        {data.kpis.map((kpi) => (
           <KpiCard key={kpi.label} label={kpi.label} value={kpi.value} sub={kpi.sub} />
         ))}
       </section>
@@ -38,7 +39,7 @@ export function Overview() {
         <div className="card space-y-4">
           <SectionHeader title="Drift Signals" subtitle="New access paths detected" />
           <ul className="space-y-3 text-sm text-muted">
-            {driftSignals.map((item) => (
+            {data.drift_signals.map((item) => (
               <li key={item} className="flex items-start gap-3">
                 <span className="mt-1 h-2 w-2 rounded-full bg-amber"></span>
                 {item}
@@ -52,7 +53,7 @@ export function Overview() {
         <div className="card space-y-4">
           <SectionHeader title="Top Evidence Gaps" subtitle="Blocks for CONFIRMED verdicts" />
           <ul className="space-y-3 text-sm text-muted">
-            {evidenceGaps.map((gap) => (
+            {data.evidence_gaps.map((gap) => (
               <li key={gap} className="flex items-start gap-3">
                 <span className="mt-1 h-2 w-2 rounded-full bg-amber"></span>
                 {gap}
@@ -63,14 +64,11 @@ export function Overview() {
         <div className="card space-y-4">
           <SectionHeader title="Suggested Actions" subtitle="Human sign-off required" />
           <div className="space-y-3 text-sm text-muted">
-            <div className="rounded-xl border border-border bg-panel-elev p-4">
-              <p className="text-sm text-text">Approve elevated risk hold for svc-backup</p>
-              <p className="mt-2 text-xs text-muted">Evidence: role change + OAuth consent. Confidence 0.82.</p>
-            </div>
-            <div className="rounded-xl border border-border bg-panel-elev p-4">
-              <p className="text-sm text-text">Request device posture for new geo sign-in</p>
-              <p className="mt-2 text-xs text-muted">Evidence gaps: no MFA challenge, no device attestation.</p>
-            </div>
+            {data.suggested_actions.map((action) => (
+              <div key={action} className="rounded-xl border border-border bg-panelElev p-4">
+                <p className="text-sm text-text">{action}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

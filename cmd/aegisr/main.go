@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"bytes"
 	"crypto/rand"
 	"encoding/base64"
@@ -20,6 +19,7 @@ import (
 	"aegisr/internal/approval"
 	"aegisr/internal/assist"
 	"aegisr/internal/audit"
+	"aegisr/internal/compress"
 	"aegisr/internal/core"
 	"aegisr/internal/env"
 	"aegisr/internal/eval"
@@ -56,6 +56,8 @@ type GlobalFlags struct {
 }
 
 var gFlags GlobalFlags
+
+const explainAckPhrase = "I_ACKNOWLEDGE_LLM_RISK"
 
 func main() {
 	if len(os.Args) < 2 {
@@ -119,6 +121,8 @@ func main() {
 		handleInventoryRefresh(args[1:])
 	case "inventory-schedule":
 		handleInventorySchedule(args[1:])
+	case "serve-api":
+		handleServeAPI(args[1:])
 	case "init-scan":
 		handleInitScan(args[1:])
 	case "scan":
@@ -135,6 +139,18 @@ func main() {
 	}
 }
 
+func requireExplainAck(explainOn bool, ack string) {
+	if !explainOn {
+		return
+	}
+	if strings.TrimSpace(ack) == "" {
+		fatal(fmt.Errorf("explain requires --explain-ack %s", explainAckPhrase))
+	}
+	if strings.TrimSpace(ack) != explainAckPhrase {
+		fatal(fmt.Errorf("invalid --explain-ack (use %s)", explainAckPhrase))
+	}
+}
+
 func usage() {
 	fmt.Println("Aegis-R CLI")
 	fmt.Println("Commands:")
@@ -145,8 +161,8 @@ func usage() {
 	fmt.Println("  aegis audit <verb> [flags]")
 	fmt.Println("  aegis system <verb> [flags]")
 	fmt.Println("  generate -out events.json -count 60 -seed 42")
-	fmt.Println("  reason -in events.json [-approval approval.json] [-require-okta] [-rules rules.json] [-format cli|json] [--explain] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n]")
-	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log [-rules rules.json] [-approval approval.json] [-policy policy.json] [-constraints data/constraints.json] [-config ops.json] [-format cli|json] [-baseline data/zero_trust_baseline.json] [--explain] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n]")
+	fmt.Println("  reason -in events.json [-approval approval.json] [-require-okta] [-rules rules.json] [-format cli|json] [--explain --explain-ack I_ACKNOWLEDGE_LLM_RISK] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n]")
+	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log [-rules rules.json] [-approval approval.json] [-policy policy.json] [-constraints data/constraints.json] [-config ops.json] [-format cli|json] [-out report.json|report.json.lz4] [-baseline data/zero_trust_baseline.json] [--explain --explain-ack I_ACKNOWLEDGE_LLM_RISK] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n]")
 	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log -siem siem.json (optional)")
 	fmt.Println("  keys -out keypair.json")
 	fmt.Println("  approve -key keypair.json -id change-1 -ttl 10m -okta true -signer alice -role approver -out approval.json")
@@ -162,6 +178,7 @@ func usage() {
 	fmt.Println("  inventory-adapter -provider aws|okta|azure|gcp -config data/inventory/config.json -out data/env.json")
 	fmt.Println("  inventory-refresh -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json")
 	fmt.Println("  inventory-schedule -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json -interval 6h -jitter 30m")
+	fmt.Println("  serve-api -addr :8081 -report data/report.json -audit data/audit.log -approvals data/approvals.log")
 	fmt.Println("  system nist -rules data/rules.json [-out nist.json]")
 	fmt.Println("  system killchain -rules data/rules.json [-out killchain.json]")
 	fmt.Println("  init-scan -baseline data/zero_trust_baseline.json")
@@ -602,6 +619,7 @@ func handleReasonV2(args []string) {
 		in := fs.String("in", "", "events file")
 		adminApproval := fs.String("admin-approval", "", "admin approval for gated rule packs")
 		explainOn := fs.Bool("explain", false, "add explanation layer")
+		explainAck := fs.String("explain-ack", "", "acknowledge llm output risk")
 		explainEndpoint := fs.String("explain-endpoint", "", "llm explanation endpoint (optional)")
 		explainTimeout := fs.Duration("explain-timeout", 8*time.Second, "llm explanation timeout")
 		mlAssist := fs.Bool("ml-assist", false, "recommend missing telemetry from history")
@@ -628,6 +646,7 @@ func handleReasonV2(args []string) {
 		if *in == "" {
 			fatal(errors.New("reason event requires input file"))
 		}
+		requireExplainAck(*explainOn, *explainAck)
 		events, err := loadEvents(*in)
 		if err != nil {
 			fatal(err)
@@ -711,6 +730,7 @@ func handleReasonV2(args []string) {
 		host := fs.String("host", "", "host id")
 		adminApproval := fs.String("admin-approval", "", "admin approval for gated rule packs")
 		explainOn := fs.Bool("explain", false, "add explanation layer")
+		explainAck := fs.String("explain-ack", "", "acknowledge llm output risk")
 		explainEndpoint := fs.String("explain-endpoint", "", "llm explanation endpoint (optional)")
 		explainTimeout := fs.Duration("explain-timeout", 8*time.Second, "llm explanation timeout")
 		mlAssist := fs.Bool("ml-assist", false, "recommend missing telemetry from history")
@@ -737,6 +757,7 @@ func handleReasonV2(args []string) {
 		if *in == "" {
 			fatal(errors.New("reason host requires -in"))
 		}
+		requireExplainAck(*explainOn, *explainAck)
 		events, err := loadEvents(*in)
 		if err != nil {
 			fatal(err)
@@ -1113,7 +1134,7 @@ func handleAudit(args []string) {
 		if *decision == "" {
 			fatal(errors.New("audit explain requires --decision"))
 		}
-		artifact, err := findArtifact(*auditPath, *decision)
+		artifact, err := audit.FindArtifact(*auditPath, *decision)
 		if err != nil {
 			fatal(err)
 		}
@@ -1131,53 +1152,27 @@ func handleAudit(args []string) {
 		if *format != "json" {
 			fatal(errors.New("only json export supported"))
 		}
-		data, err := os.ReadFile(*auditPath)
-		if err != nil {
-			fatal(err)
-		}
 		if *out == "" {
 			if !gFlags.Quiet {
-				_, _ = os.Stdout.Write(data)
+				if err := audit.ExportLog(*auditPath, os.Stdout); err != nil {
+					fatal(err)
+				}
 			}
 			return
 		}
-		if err := os.WriteFile(*out, data, 0600); err != nil {
+		//nolint:gosec // path is user supplied
+		f, err := os.OpenFile(*out, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0600)
+		if err != nil {
+			fatal(err)
+		}
+		defer func() { _ = f.Close() }()
+		if err := audit.ExportLog(*auditPath, f); err != nil {
 			fatal(err)
 		}
 		outln("Audit export written: " + *out)
 	default:
 		fatal(errors.New("unknown audit subcommand"))
 	}
-}
-
-func findArtifact(path string, id string) (audit.Artifact, error) {
-	if !ops.IsSafePath(path) {
-		return audit.Artifact{}, os.ErrInvalid
-	}
-	// #nosec G304 - path validated via IsSafePath
-	f, err := os.Open(path)
-	if err != nil {
-		return audit.Artifact{}, err
-	}
-	defer func() { _ = f.Close() }()
-	scanner := bufio.NewScanner(f)
-	for scanner.Scan() {
-		line := strings.TrimSpace(scanner.Text())
-		if line == "" {
-			continue
-		}
-		var a audit.Artifact
-		if err := json.Unmarshal([]byte(line), &a); err != nil {
-			continue
-		}
-		if a.ID == id {
-			return a, nil
-		}
-	}
-	if err := scanner.Err(); err != nil {
-		return audit.Artifact{}, err
-	}
-	return audit.Artifact{}, errors.New("decision not found")
 }
 
 func handleSystem(args []string) {
@@ -1481,9 +1476,11 @@ func handleAssess(args []string) {
 	constraintsPath := fs.String("constraints", "", "reasoning constraints json (optional)")
 	rulesPath := fs.String("rules", "", "rules json (optional)")
 	format := fs.String("format", "json", "output format: cli or json")
+	outPath := fs.String("out", "", "output file (optional)")
 	configPath := fs.String("config", "", "ops config json (optional)")
 	baselinePath := fs.String("baseline", "data/zero_trust_baseline.json", "zero-trust baseline")
 	explainOn := fs.Bool("explain", false, "add explanation layer")
+	explainAck := fs.String("explain-ack", "", "acknowledge llm output risk")
 	explainEndpoint := fs.String("explain-endpoint", "", "llm explanation endpoint (optional)")
 	explainTimeout := fs.Duration("explain-timeout", 8*time.Second, "llm explanation timeout")
 	mlAssist := fs.Bool("ml-assist", false, "recommend missing telemetry from history")
@@ -1499,6 +1496,7 @@ func handleAssess(args []string) {
 	if *in == "" || *envPath == "" {
 		fatal(errors.New("-in and -env are required"))
 	}
+	requireExplainAck(*explainOn, *explainAck)
 
 	if _, err := zerotrust.LoadBaseline(*baselinePath); err != nil {
 		fatal(errors.New("zero-trust baseline missing or invalid; run init-scan before assess"))
@@ -1610,6 +1608,13 @@ func handleAssess(args []string) {
 			artifact.Metadata["ml_categories"] = *mlCategories
 		}
 	}
+	if *explainOn {
+		artifact.Metadata["llm_explain"] = "true"
+		artifact.Metadata["llm_ack"] = "accepted"
+		if *explainEndpoint != "" {
+			artifact.Metadata["llm_endpoint"] = *explainEndpoint
+		}
+	}
 	if decision.RequireDual {
 		artifact.Metadata["policy_dual_required"] = "true"
 		artifact.Metadata["policy_reasons"] = strings.Join(decision.Reasons, ",")
@@ -1652,6 +1657,19 @@ func handleAssess(args []string) {
 		data, err := json.MarshalIndent(out, "", "  ")
 		if err != nil {
 			fatal(err)
+		}
+		if *outPath != "" {
+			if strings.HasSuffix(*outPath, ".lz4") {
+				data, err = compress.Compress(data)
+				if err != nil {
+					fatal(err)
+				}
+			}
+			if err := os.WriteFile(*outPath, data, 0600); err != nil {
+				fatal(err)
+			}
+			fmt.Println("Report written: " + *outPath)
+			return
 		}
 		fmt.Println(string(data))
 	default:

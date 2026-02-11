@@ -238,6 +238,12 @@ func decisionLabel(r *model.RuleResult, host string, principal string) (string, 
 		return "keep", "precond_missing"
 	}
 	if len(r.MissingEvidence) > 0 {
+		if hasMissingPreconds(r.MissingEvidence) {
+			if host == "" && principal == "" {
+				return "keep", "environment_unknown"
+			}
+			return "keep", "evidence_gap"
+		}
 		if host == "" && principal == "" {
 			return "deprioritize", "environment_unknown"
 		}
@@ -247,6 +253,15 @@ func decisionLabel(r *model.RuleResult, host string, principal string) (string, 
 		return "keep", "precond_missing"
 	}
 	return "suppress", "insufficient_telemetry"
+}
+
+func hasMissingPreconds(reqs []model.EvidenceRequirement) bool {
+	for _, req := range reqs {
+		if strings.HasPrefix(req.Type, "precond:") || req.Type == "environment_context" {
+			return true
+		}
+	}
+	return false
 }
 
 func deriveContext(r *model.RuleResult, events []model.Event, reqs map[string][]string, index map[string][]model.Event) (string, string, time.Time, float64, string) {

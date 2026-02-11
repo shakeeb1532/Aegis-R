@@ -3,8 +3,10 @@ package state
 import (
 	"encoding/json"
 	"os"
+	"strings"
 	"time"
 
+	"aegisr/internal/compress"
 	"aegisr/internal/ops"
 )
 
@@ -125,6 +127,12 @@ func Load(path string) (AttackState, error) {
 	if err != nil {
 		return New(), err
 	}
+	if strings.HasSuffix(path, ".lz4") {
+		data, err = compress.Decompress(data)
+		if err != nil {
+			return New(), err
+		}
+	}
 	var s AttackState
 	if err := json.Unmarshal(data, &s); err != nil {
 		return New(), err
@@ -166,6 +174,12 @@ func Save(path string, s AttackState) error {
 	data, err := json.MarshalIndent(s, "", "  ")
 	if err != nil {
 		return err
+	}
+	if strings.HasSuffix(path, ".lz4") {
+		data, err = compress.Compress(data)
+		if err != nil {
+			return err
+		}
 	}
 	return os.WriteFile(path, data, 0600)
 }

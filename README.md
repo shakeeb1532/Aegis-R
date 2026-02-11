@@ -45,6 +45,7 @@ Aegis-R is a human-governed security reasoning system that evaluates causal feas
 - `docs/architecture.md` — system architecture diagram
 - `docs/incident_history.md` — ML-assist history schema and examples
 - `docs/known_edge_cases.md` — documented mismatches kept for conservative behavior
+- `docs/ui_api_contract.md` — UI API contract (demo)
 
 ---
 
@@ -99,6 +100,21 @@ npm run build
 ```
 
 The UI is designed to connect to a dedicated API service in production (SaaS mode). For now it uses static sample data to support demos and UX iteration.
+
+### Local UI API (Demo)
+```bash
+go run ./cmd/aegisr serve-api \
+  -addr :8081 \
+  -report data/report.json \
+  -audit data/audit.log \
+  -approvals data/approvals.log
+```
+
+Set the UI to use the API:
+```bash
+cd ui
+VITE_API_BASE=http://localhost:8081 npm run dev
+```
 
 ---
 
@@ -192,7 +208,8 @@ go run ./cmd/aegisr reason -in events.json -rules data/rules.json -format cli
 
 Add an explanation layer (optional, does not change verdicts):
 ```bash
-go run ./cmd/aegisr reason -in events.json -rules data/rules.json -format cli --explain
+go run ./cmd/aegisr reason -in events.json -rules data/rules.json -format cli \
+  --explain --explain-ack I_ACKNOWLEDGE_LLM_RISK
 ```
 
 Add ML assist (optional, advisory):
@@ -213,6 +230,29 @@ go run ./cmd/aegisr assess \
   -config data/ops.json \
   -baseline data/zero_trust_baseline.json \
   -format json
+
+Write a compressed report:
+```bash
+go run ./cmd/aegisr assess \
+  -in events.json \
+  -env data/env.json \
+  -state state.json \
+  -audit audit.log \
+  -baseline data/zero_trust_baseline.json \
+  -format json \
+  -out report.json.lz4
+```
+```
+
+### Optional: Compressed State Snapshots
+If the state path ends with `.lz4`, Aegis-R will compress/decompress snapshots using LZ4 (requires a C compiler/CGO).
+```bash
+go run ./cmd/aegisr assess \
+  -in events.json \
+  -env data/env.json \
+  -state state.json.lz4 \
+  -audit audit.log \
+  -format json
 ```
 
 Add an explanation layer (optional, does not change verdicts):
@@ -224,7 +264,7 @@ go run ./cmd/aegisr assess \
   -audit audit.log \
   -baseline data/zero_trust_baseline.json \
   -format json \
-  --explain
+  --explain --explain-ack I_ACKNOWLEDGE_LLM_RISK
 ```
 
 Add ML assist (optional, advisory):
@@ -297,6 +337,40 @@ go run ./cmd/aegisr init-scan \
 ### Audit
 - `audit-verify` — verify hash chain
 - `audit-sign` — sign audit artifacts
+
+Audit logs are JSONL by default. To enable compression, use a `.lz4` audit path and export when needed:
+```bash
+go run ./cmd/aegisr assess \
+  -in events.json \
+  -env data/env.json \
+  -state state.json \
+  -audit audit.log.lz4 \
+  -format json
+
+go run ./cmd/aegisr audit export -audit audit.log.lz4 -out audit.log
+```
+
+SIEM export supports `.lz4`:
+```bash
+go run ./cmd/aegisr assess \
+  -in events.json \
+  -env data/env.json \
+  -state state.json \
+  -audit audit.log \
+  -siem siem.json.lz4 \
+  -format json
+```
+
+Report output supports `.lz4` via `-out`:
+```bash
+go run ./cmd/aegisr assess \
+  -in events.json \
+  -env data/env.json \
+  -state state.json \
+  -audit audit.log \
+  -format json \
+  -out report.json.lz4
+```
 
 ### Evaluation
 - `generate-scenarios` — build synthetic labeled scenarios

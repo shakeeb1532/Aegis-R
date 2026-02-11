@@ -44,7 +44,7 @@ a {
 }
 
 .card-elev {
-  @apply rounded-2xl border border-border bg-panel-elev p-6 shadow-soft;
+  @apply rounded-2xl border border-border bg-panelElev p-6 shadow-soft;
 }
 
 .badge {

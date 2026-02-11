@@ -489,20 +489,32 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 			}
 		}
 		precondOK := true
+		missingPreconds := []string{}
 		for _, p := range rule.Preconds {
 			if !facts[p] {
-				precondOK = false
+				missingPreconds = append(missingPreconds, p)
 			}
 		}
 		contradiction := hasContradiction(rule.ID, index)
 		contextReq := requiresContext(rule.ID)
 		missingContext := false
 		if contextReq != "" && !hasContext(index, contextReq) {
-			precondOK = false
 			missingContext = true
 		}
 		if contradiction {
 			precondOK = false
+		}
+		for _, p := range missingPreconds {
+			missing = append(missing, model.EvidenceRequirement{
+				Type:        "precond:" + p,
+				Description: "Precondition not observed: " + p,
+			})
+		}
+		if missingContext {
+			missing = append(missing, model.EvidenceRequirement{
+				Type:        "environment_context",
+				Description: "Required context not present for rule evaluation",
+			})
 		}
 		feasible := precondOK && len(missing) == 0
 		confidence := 0.4
@@ -528,9 +540,6 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 			missing = []model.EvidenceRequirement{}
 			reason += " Contradictory evidence observed."
 		} else if missingContext {
-			missing = []model.EvidenceRequirement{
-				{Type: "context_missing", Description: "Required context not present for rule evaluation"},
-			}
 			reason += " Required context missing."
 		} else if len(missing) > 0 {
 			missingNames = requirementNames(missing)
@@ -540,7 +549,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		if contradiction {
 			gapNarrative = "Contradictory evidence observed that makes this attack impossible."
 		} else if missingContext {
-			gapNarrative = "Required context is missing to evaluate this rule; treat as impossible until context is provided."
+			gapNarrative = "Required context is missing to evaluate this rule; treat as incomplete until context is provided."
 		} else if len(missing) > 0 {
 			gapNarrative = "This attack would require " + strings.Join(missingNames, ", ") + " but no such evidence was observed."
 		} else if !precondOK {
@@ -576,7 +585,7 @@ func reasonCode(precondOK bool, missing []model.EvidenceRequirement, eventCount 
 	case !precondOK:
 		return "precond_missing"
 	case len(missing) > 0 && eventCount == 0:
-		return "insufficient_telemetry"
+		return "environment_unknown"
 	case len(missing) > 0:
 		return "evidence_gap"
 	default:
@@ -589,7 +598,7 @@ func reasonCodeWithContradiction(precondOK bool, missing []model.EvidenceRequire
 		return "contradiction"
 	}
 	if missingContext {
-		return "context_missing"
+		return "environment_unknown"
 	}
 	return reasonCode(precondOK, missing, eventCount)
 }

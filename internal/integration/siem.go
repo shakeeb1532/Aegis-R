@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 
+	"aegisr/internal/compress"
 	"aegisr/internal/core"
 )
 
@@ -34,6 +36,12 @@ func ExportSIEM(path string, out core.Output) error {
 	data, err := json.MarshalIndent(payload, "", "  ")
 	if err != nil {
 		return err
+	}
+	if strings.HasSuffix(path, ".lz4") {
+		data, err = compress.Compress(data)
+		if err != nil {
+			return err
+		}
 	}
 	if err := os.WriteFile(path, data, 0600); err != nil {
 		return err

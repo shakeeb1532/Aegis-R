@@ -1,14 +1,15 @@
 import { SectionHeader } from "../components/SectionHeader";
-import { auditItems } from "../data/sample";
+import { useAudit } from "../hooks/useApiData";
 
 export function Audit() {
+  const data = useAudit();
   return (
     <div className="space-y-6">
       <section className="card">
         <SectionHeader title="Audit & Evidence" subtitle="Replayable reasoning chain" />
         <div className="mt-6 space-y-4">
-          {auditItems.map((item) => (
-            <div key={item.id} className="rounded-2xl border border-border bg-panel-elev p-5">
+          {data.map((item) => (
+            <div key={item.id} className="rounded-2xl border border-border bg-panelElev p-5">
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-xs uppercase tracking-[0.2em] text-muted">{item.id}</p>

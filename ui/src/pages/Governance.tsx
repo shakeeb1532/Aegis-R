@@ -1,14 +1,15 @@
 import { SectionHeader } from "../components/SectionHeader";
-import { approvals } from "../data/sample";
+import { useGovernance } from "../hooks/useApiData";
 
 export function Governance() {
+  const data = useGovernance();
   return (
     <div className="space-y-6">
       <section className="card">
         <SectionHeader title="Governance" subtitle="Signed approvals and trust changes" />
         <div className="mt-6 grid gap-4">
-          {approvals.map((approval) => (
-            <div key={approval.id} className="rounded-2xl border border-border bg-panel-elev p-5">
+          {data.map((approval) => (
+            <div key={approval.id} className="rounded-2xl border border-border bg-panelElev p-5">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs uppercase tracking-[0.2em] text-muted">{approval.id}</p>

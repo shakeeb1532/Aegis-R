@@ -318,7 +318,7 @@
       "labels": [
         {
           "rule_id": "TA0002.LOLBIN_CHAIN",
-          "outcome": "impossible"
+          "outcome": "incomplete"
         }
       ],
       "expectations": [
@@ -326,7 +326,7 @@
           "rule_id": "TA0002.LOLBIN_CHAIN",
           "decision_label": "keep",
           "ticket_status": "open",
-          "reason_code": "precond_missing"
+          "reason_code": "evidence_gap"
         }
       ]
     },

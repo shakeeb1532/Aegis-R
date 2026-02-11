@@ -1,12 +1,24 @@
 import { SectionHeader } from "../components/SectionHeader";
 import { VerdictPill } from "../components/VerdictPill";
 import { ConfidenceMeter } from "../components/ConfidenceMeter";
-import { reasoningSamples } from "../data/sample";
+import { useReasoning } from "../hooks/useApiData";
 
 export function Reasoning() {
+  const data = useReasoning();
+  if (!data || data.length === 0) {
+    return (
+      <div className="card">
+        <SectionHeader title="Reasoning" subtitle="No reasoning results available" />
+        <p className="mt-4 text-sm text-muted">
+          The API did not return any reasoning records. Verify that `serve-api` is running and that
+          `data/report.json` has results.
+        </p>
+      </div>
+    );
+  }
   return (
     <div className="space-y-6">
-      {reasoningSamples.map((item) => (
+      {data.map((item) => (
         <section key={item.id} className="card-elev space-y-6">
           <div className="flex items-start justify-between gap-6">
             <div>

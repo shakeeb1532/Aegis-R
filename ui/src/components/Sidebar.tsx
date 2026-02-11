@@ -27,8 +27,8 @@ export function Sidebar() {
               [
                 "rounded-xl px-4 py-3 transition",
                 isActive
-                  ? "bg-panel-elev text-teal shadow-glow"
-                  : "text-muted hover:bg-panel-elev hover:text-text"
+                  ? "bg-panelElev text-teal shadow-glow"
+                  : "text-muted hover:bg-panelElev hover:text-text"
               ].join(" ")
             }
           >
