@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-02-11
+### Added
+- Optional explanation layer (local + LLM endpoint) with suggested steps (CLI/JSON).
+- Hybrid ML assist (advisory): telemetry recommendations, feasible ranking, similar incidents, playbook suggestions.
+- Incident history schema and example (`docs/incident_history.md`, `data/incident_history.json`).
+
+### Changed
+- Expanded synthetic suite with harder contradictory and ambiguous cases.
+- Expanded public scenario set for evaluation.
+- README updated with ML-assist usage and performance snapshots.
+
+### Fixed
+- gosec findings addressed with safe-path validation and explicit annotations.
+
 ## 2026-02-07
 ### Added
 - Ticketing workflow (tickets per thread) with UI list/detail and export.
