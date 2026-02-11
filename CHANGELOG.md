@@ -61,6 +61,9 @@
 - Sentinel CSL normalization now maps authentication success/failure to normalized event types.
 - Removed the UI server, templates, and Helm UI resources to reset the interface; `ui` CLI command removed.
 
+### Added
+- Standalone SaaS UI skeleton (`ui/`) with multi-page console and setup wizard.
+
 ### Fixed
 - Gated rule packs now surface as `admin_hold` placeholders.
 - UI rendering and ticket export stability improvements.

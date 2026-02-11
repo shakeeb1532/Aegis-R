@@ -81,6 +81,27 @@ Pilot dataset impact:
 
 ---
 
+## SaaS UI (React + TypeScript + Tailwind)
+
+The SaaS UI is a separate frontend app located in `ui/`. It ships as a multi-page analyst console with a guided setup wizard and uses mock data by default.
+
+### Local UI Dev
+```bash
+cd ui
+npm install
+npm run dev
+```
+
+### Build
+```bash
+cd ui
+npm run build
+```
+
+The UI is designed to connect to a dedicated API service in production (SaaS mode). For now it uses static sample data to support demos and UX iteration.
+
+---
+
 ## Test Coverage Map
 
 ```mermaid

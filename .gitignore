@@ -24,3 +24,7 @@
 /data/zero_trust_baseline.json
 
 .cache/
+.DS_Store
+node_modules
+ui/node_modules
+ui/dist

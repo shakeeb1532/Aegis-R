@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --base: #0b1117;
+  --panel: #121a22;
+  --panel-elev: #18222c;
+  --border: #233140;
+  --text: #eef2f6;
+  --muted: #98a6b8;
+  --teal: #2dd4bf;
+  --amber: #f59e0b;
+  --red: #f87171;
+  --purple: #8b5cf6;
+}
+
+body {
+  font-family: "IBM Plex Sans", sans-serif;
+  background: radial-gradient(circle at 20% 20%, #16212d 0%, #0b1117 45%) fixed;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #233140;
+  border-radius: 999px;
+}
+
+.section-title {
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.card {
+  @apply rounded-2xl border border-border bg-panel p-6 shadow-soft;
+}
+
+.card-elev {
+  @apply rounded-2xl border border-border bg-panel-elev p-6 shadow-soft;
+}
+
+.badge {
+  @apply inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs uppercase tracking-wide;
+}
+
+.kpi {
+  @apply flex flex-col gap-2;
+}
+
+.kpi-value {
+  @apply text-3xl font-semibold;
+}
+
+.glow {
+  box-shadow: 0 0 0 1px rgba(45, 212, 191, 0.2), 0 16px 30px rgba(15, 118, 110, 0.25);
+}
