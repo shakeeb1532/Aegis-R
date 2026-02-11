@@ -68,6 +68,7 @@ func Synthetic(seed int64, count int) []model.Event {
 		seed = time.Now().UnixNano()
 	}
 	//nolint:gosec // deterministic synthetic data generation
+	// #nosec G404
 	rng := rand.New(rand.NewSource(seed))
 	base := time.Now().UTC().Add(-2 * time.Hour)
 	events := make([]model.Event, 0, count)

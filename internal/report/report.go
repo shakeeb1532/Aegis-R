@@ -51,6 +51,13 @@ func RenderCLI(rep model.ReasoningReport) string {
 				fmt.Fprintf(buf, "  Cache: HIT\n")
 			}
 		}
+		if r.LikelihoodScore > 0 {
+			source := r.LikelihoodSource
+			if source == "" {
+				source = "assist"
+			}
+			fmt.Fprintf(buf, "  Likelihood: %.2f (%s)\n", r.LikelihoodScore, source)
+		}
 		fmt.Fprintf(buf, "  %s\n", r.Explanation)
 		if r.GapNarrative != "" {
 			fmt.Fprintf(buf, "  Gap: %s\n", r.GapNarrative)
@@ -86,6 +93,31 @@ func RenderCLI(rep model.ReasoningReport) string {
 			for _, step := range rep.SuggestedSteps {
 				fmt.Fprintf(buf, "- %s\n", step)
 			}
+		}
+	}
+	if len(rep.RecommendedTelemetry) > 0 {
+		fmt.Fprintln(buf, "")
+		label := "Recommended telemetry"
+		if rep.TelemetrySource != "" {
+			label = fmt.Sprintf("Recommended telemetry (%s)", rep.TelemetrySource)
+		}
+		fmt.Fprintf(buf, "%s:\n", label)
+		for _, item := range rep.RecommendedTelemetry {
+			fmt.Fprintf(buf, "- %s\n", item)
+		}
+	}
+	if len(rep.SimilarIncidents) > 0 {
+		fmt.Fprintln(buf, "")
+		fmt.Fprintln(buf, "Similar incidents (advisory):")
+		for _, inc := range rep.SimilarIncidents {
+			fmt.Fprintf(buf, "- %s (score %.2f): %s\n", inc.ID, inc.Score, inc.Summary)
+		}
+	}
+	if len(rep.SuggestedPlaybooks) > 0 {
+		fmt.Fprintln(buf, "")
+		fmt.Fprintln(buf, "Suggested playbooks (advisory):")
+		for _, pb := range rep.SuggestedPlaybooks {
+			fmt.Fprintf(buf, "- %s\n", pb)
 		}
 	}
 	return buf.String()

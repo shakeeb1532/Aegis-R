@@ -9,23 +9,24 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"math/big"
 	"net/http"
 	"os"
-	"math/big"
 	"path/filepath"
 	"sort"
 	"strings"
 	"time"
 
 	"aegisr/internal/approval"
+	"aegisr/internal/assist"
 	"aegisr/internal/audit"
 	"aegisr/internal/core"
-	"aegisr/internal/explain"
 	"aegisr/internal/env"
 	"aegisr/internal/eval"
+	"aegisr/internal/explain"
 	"aegisr/internal/governance"
-	"aegisr/internal/inventory"
 	"aegisr/internal/integration"
+	"aegisr/internal/inventory"
 	"aegisr/internal/logic"
 	"aegisr/internal/model"
 	"aegisr/internal/ops"
@@ -147,8 +148,8 @@ func usage() {
 	fmt.Println("  aegis audit <verb> [flags]")
 	fmt.Println("  aegis system <verb> [flags]")
 	fmt.Println("  generate -out events.json -count 60 -seed 42")
-	fmt.Println("  reason -in events.json [-approval approval.json] [-require-okta] [-rules rules.json] [-format cli|json] [--explain] [--explain-endpoint URL]")
-	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log [-rules rules.json] [-approval approval.json] [-policy policy.json] [-constraints data/constraints.json] [-config ops.json] [-format cli|json] [-baseline data/zero_trust_baseline.json] [--explain] [--explain-endpoint URL]")
+	fmt.Println("  reason -in events.json [-approval approval.json] [-require-okta] [-rules rules.json] [-format cli|json] [--explain] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n]")
+	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log [-rules rules.json] [-approval approval.json] [-policy policy.json] [-constraints data/constraints.json] [-config ops.json] [-format cli|json] [-baseline data/zero_trust_baseline.json] [--explain] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n]")
 	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log -siem siem.json (optional)")
 	fmt.Println("  keys -out keypair.json")
 	fmt.Println("  approve -key keypair.json -id change-1 -ttl 10m -okta true -signer alice -role approver -out approval.json")
@@ -256,6 +257,10 @@ func verdictFromResults(results []model.RuleResult) string {
 
 func loadEvents(path string) ([]model.Event, error) {
 	var events []model.Event
+	if !ops.IsSafePath(path) {
+		return nil, os.ErrInvalid
+	}
+	// #nosec G304 - path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -268,6 +273,10 @@ func loadEvents(path string) ([]model.Event, error) {
 
 func loadReportFile(path string) (model.ReasoningReport, error) {
 	var rep model.ReasoningReport
+	if !ops.IsSafePath(path) {
+		return rep, os.ErrInvalid
+	}
+	// #nosec G304 - path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return rep, err
@@ -419,6 +428,10 @@ func handleIngest(args []string) {
 		if *in == "" {
 			fatal(errors.New("ingest file requires input path"))
 		}
+		if !ops.IsSafePath(*in) {
+			fatal(os.ErrInvalid)
+		}
+		// #nosec G304 - path validated via IsSafePath
 		raw, err := os.ReadFile(*in)
 		if err != nil {
 			fatal(err)
@@ -442,6 +455,10 @@ func handleIngest(args []string) {
 		if path == "" {
 			fatal(errors.New("unknown sample"))
 		}
+		if !ops.IsSafePath(path) {
+			fatal(os.ErrInvalid)
+		}
+		// #nosec G304 - path validated via IsSafePath
 		raw, err := os.ReadFile(path)
 		if err != nil {
 			fatal(err)
@@ -589,6 +606,12 @@ func handleReasonV2(args []string) {
 		explainOn := fs.Bool("explain", false, "add explanation layer")
 		explainEndpoint := fs.String("explain-endpoint", "", "llm explanation endpoint (optional)")
 		explainTimeout := fs.Duration("explain-timeout", 8*time.Second, "llm explanation timeout")
+		mlAssist := fs.Bool("ml-assist", false, "recommend missing telemetry from history")
+		mlHistory := fs.String("ml-history", "", "history json for telemetry recommendations")
+		mlLimit := fs.Int("ml-limit", 5, "telemetry recommendation limit")
+		mlCategories := fs.String("ml-categories", "identity,cloud", "ml ranking categories")
+		mlSimilarLimit := fs.Int("ml-similar-limit", 3, "similar incident limit")
+		mlPlaybookLimit := fs.Int("ml-playbook-limit", 3, "playbook suggestion limit")
 		rest := args[1:]
 		pos := ""
 		if len(rest) > 0 && !strings.HasPrefix(rest[0], "-") {
@@ -625,6 +648,11 @@ func handleReasonV2(args []string) {
 				fmt.Fprintf(os.Stderr, "explanation unavailable: %s\n", err.Error())
 			}
 		}
+		if *mlAssist {
+			if err := applyMLAssist(&rep, *mlHistory, *mlLimit, *mlCategories, *mlSimilarLimit, *mlPlaybookLimit); err != nil {
+				fmt.Fprintf(os.Stderr, "ml assist unavailable: %s\n", err.Error())
+			}
+		}
 		if gFlags.JSON {
 			outJSON(rep)
 			return
@@ -654,6 +682,31 @@ func handleReasonV2(args []string) {
 				}
 			}
 		}
+		if len(rep.RecommendedTelemetry) > 0 {
+			outln("")
+			label := "Recommended telemetry"
+			if rep.TelemetrySource != "" {
+				label = "Recommended telemetry (" + rep.TelemetrySource + ")"
+			}
+			outln(label + ":")
+			for _, item := range rep.RecommendedTelemetry {
+				outln("- " + item)
+			}
+		}
+		if len(rep.SimilarIncidents) > 0 {
+			outln("")
+			outln("Similar incidents (advisory):")
+			for _, inc := range rep.SimilarIncidents {
+				outln(fmt.Sprintf("- %s (score %.2f): %s", inc.ID, inc.Score, inc.Summary))
+			}
+		}
+		if len(rep.SuggestedPlaybooks) > 0 {
+			outln("")
+			outln("Suggested playbooks (advisory):")
+			for _, pb := range rep.SuggestedPlaybooks {
+				outln("- " + pb)
+			}
+		}
 	case "host":
 		fs := flag.NewFlagSet("reason host", flag.ExitOnError)
 		in := fs.String("in", "", "events file")
@@ -662,6 +715,12 @@ func handleReasonV2(args []string) {
 		explainOn := fs.Bool("explain", false, "add explanation layer")
 		explainEndpoint := fs.String("explain-endpoint", "", "llm explanation endpoint (optional)")
 		explainTimeout := fs.Duration("explain-timeout", 8*time.Second, "llm explanation timeout")
+		mlAssist := fs.Bool("ml-assist", false, "recommend missing telemetry from history")
+		mlHistory := fs.String("ml-history", "", "history json for telemetry recommendations")
+		mlLimit := fs.Int("ml-limit", 5, "telemetry recommendation limit")
+		mlCategories := fs.String("ml-categories", "identity,cloud", "ml ranking categories")
+		mlSimilarLimit := fs.Int("ml-similar-limit", 3, "similar incident limit")
+		mlPlaybookLimit := fs.Int("ml-playbook-limit", 3, "playbook suggestion limit")
 		rest := args[1:]
 		pos := ""
 		if len(rest) > 0 && !strings.HasPrefix(rest[0], "-") {
@@ -704,6 +763,11 @@ func handleReasonV2(args []string) {
 				fmt.Fprintf(os.Stderr, "explanation unavailable: %s\n", err.Error())
 			}
 		}
+		if *mlAssist {
+			if err := applyMLAssist(&rep, *mlHistory, *mlLimit, *mlCategories, *mlSimilarLimit, *mlPlaybookLimit); err != nil {
+				fmt.Fprintf(os.Stderr, "ml assist unavailable: %s\n", err.Error())
+			}
+		}
 		if gFlags.JSON {
 			outJSON(rep)
 			return
@@ -731,6 +795,31 @@ func handleReasonV2(args []string) {
 				for _, step := range rep.SuggestedSteps {
 					outln("- " + step)
 				}
+			}
+		}
+		if len(rep.RecommendedTelemetry) > 0 {
+			outln("")
+			label := "Recommended telemetry"
+			if rep.TelemetrySource != "" {
+				label = "Recommended telemetry (" + rep.TelemetrySource + ")"
+			}
+			outln(label + ":")
+			for _, item := range rep.RecommendedTelemetry {
+				outln("- " + item)
+			}
+		}
+		if len(rep.SimilarIncidents) > 0 {
+			outln("")
+			outln("Similar incidents (advisory):")
+			for _, inc := range rep.SimilarIncidents {
+				outln(fmt.Sprintf("- %s (score %.2f): %s", inc.ID, inc.Score, inc.Summary))
+			}
+		}
+		if len(rep.SuggestedPlaybooks) > 0 {
+			outln("")
+			outln("Suggested playbooks (advisory):")
+			for _, pb := range rep.SuggestedPlaybooks {
+				outln("- " + pb)
 			}
 		}
 	case "thread":
@@ -973,6 +1062,10 @@ func handleGovern(args []string) {
 }
 
 func readApprovalRecords(path string) ([]approvalRecord, error) {
+	if !ops.IsSafePath(path) {
+		return nil, os.ErrInvalid
+	}
+	// #nosec G304 - path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -1060,6 +1153,10 @@ func handleAudit(args []string) {
 }
 
 func findArtifact(path string, id string) (audit.Artifact, error) {
+	if !ops.IsSafePath(path) {
+		return audit.Artifact{}, os.ErrInvalid
+	}
+	// #nosec G304 - path validated via IsSafePath
 	f, err := os.Open(path)
 	if err != nil {
 		return audit.Artifact{}, err
@@ -1327,6 +1424,12 @@ func handleAssess(args []string) {
 	explainOn := fs.Bool("explain", false, "add explanation layer")
 	explainEndpoint := fs.String("explain-endpoint", "", "llm explanation endpoint (optional)")
 	explainTimeout := fs.Duration("explain-timeout", 8*time.Second, "llm explanation timeout")
+	mlAssist := fs.Bool("ml-assist", false, "recommend missing telemetry from history")
+	mlHistory := fs.String("ml-history", "", "history json for telemetry recommendations")
+	mlLimit := fs.Int("ml-limit", 5, "telemetry recommendation limit")
+	mlCategories := fs.String("ml-categories", "identity,cloud", "ml ranking categories")
+	mlSimilarLimit := fs.Int("ml-similar-limit", 3, "similar incident limit")
+	mlPlaybookLimit := fs.Int("ml-playbook-limit", 3, "playbook suggestion limit")
 	if err := fs.Parse(args); err != nil {
 		fatal(err)
 	}
@@ -1377,6 +1480,11 @@ func handleAssess(args []string) {
 	if *explainOn {
 		if err := applyExplanation(&out.Reasoning, *explainEndpoint, *explainTimeout); err != nil {
 			fmt.Fprintf(os.Stderr, "explanation unavailable: %s\n", err.Error())
+		}
+	}
+	if *mlAssist {
+		if err := applyMLAssist(&out.Reasoning, *mlHistory, *mlLimit, *mlCategories, *mlSimilarLimit, *mlPlaybookLimit); err != nil {
+			fmt.Fprintf(os.Stderr, "ml assist unavailable: %s\n", err.Error())
 		}
 	}
 	if *constraintsPath != "" {
@@ -1430,6 +1538,15 @@ func handleAssess(args []string) {
 			"rules_source": *rulesPath,
 			"env_source":   *envPath,
 		},
+	}
+	if out.Reasoning.MLAssistEnabled {
+		artifact.Metadata["ml_assist"] = "true"
+		if *mlHistory != "" {
+			artifact.Metadata["ml_history"] = *mlHistory
+		}
+		if *mlCategories != "" {
+			artifact.Metadata["ml_categories"] = *mlCategories
+		}
 	}
 	if decision.RequireDual {
 		artifact.Metadata["policy_dual_required"] = "true"
@@ -2136,6 +2253,7 @@ func readJSON(path string, out interface{}) {
 		fatal(os.ErrInvalid)
 	}
 	//nolint:gosec // path validated via IsSafePath
+	// #nosec G304
 	data, err := os.ReadFile(path)
 	if err != nil {
 		fatal(err)
@@ -2200,6 +2318,7 @@ func verifyApprovalFileWithReq(path string, requireOkta bool) error {
 		return os.ErrInvalid
 	}
 	//nolint:gosec // path validated via IsSafePath
+	// #nosec G304
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return err
@@ -2222,6 +2341,7 @@ func verifyApprovalFileWithReqAndMin(path string, requireOkta bool, min int) err
 		return os.ErrInvalid
 	}
 	//nolint:gosec // path validated via IsSafePath
+	// #nosec G304
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return err
@@ -2246,6 +2366,7 @@ func verifyApprovalFileWithPolicy(path string, policy governance.Policy) error {
 		return os.ErrInvalid
 	}
 	//nolint:gosec // path validated via IsSafePath
+	// #nosec G304
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return err
@@ -2278,6 +2399,7 @@ func verifyAdminOverride(path string) error {
 		return os.ErrInvalid
 	}
 	//nolint:gosec // path validated via IsSafePath
+	// #nosec G304
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return err
@@ -2319,6 +2441,34 @@ func applyExplanation(rep *model.ReasoningReport, endpoint string, timeout time.
 	rep.Explanation = resp.Explanation
 	rep.SuggestedSteps = resp.Steps
 	rep.ExplanationSource = resp.Source
+	return nil
+}
+
+func applyMLAssist(rep *model.ReasoningReport, historyPath string, limit int, categories string, similarLimit int, playbookLimit int) error {
+	history, err := assist.LoadHistory(historyPath)
+	if err != nil {
+		return err
+	}
+	rec, err := assist.RecommendTelemetry(*rep, history, limit)
+	if err != nil {
+		return err
+	}
+	rep.RecommendedTelemetry = rec
+	if historyPath != "" {
+		rep.TelemetrySource = "history"
+	} else {
+		rep.TelemetrySource = "current"
+	}
+	cats := strings.Split(categories, ",")
+	assist.RankFeasible(rep, history, assist.RankConfig{Categories: cats})
+	similar, playbooks := assist.SuggestSimilar(rep, history, assist.SimilarConfig{
+		Limit:         similarLimit,
+		PlaybookLimit: playbookLimit,
+	})
+	rep.SimilarIncidents = similar
+	rep.SuggestedPlaybooks = playbooks
+	rep.MLAssistEnabled = true
+	rep.MLAssistNotes = []string{"advisory_only", "deterministic_verdicts_unchanged"}
 	return nil
 }
 

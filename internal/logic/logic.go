@@ -356,6 +356,7 @@ func LoadRules(path string) ([]Rule, error) {
 		return nil, os.ErrInvalid
 	}
 	//nolint:gosec // path validated via IsSafePath
+	// #nosec G304
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -563,22 +564,22 @@ func hasContradiction(ruleID string, index map[string][]model.Event) bool {
 
 func requiresContext(ruleID string) string {
 	hostRules := map[string]bool{
-		"TA0010.EXFIL": true,
-		"TA0010.BULK_EXFIL": true,
-		"TA0011.C2": true,
-		"TA0011.APP_LAYER_C2": true,
-		"TA0008.LATERAL": true,
+		"TA0010.EXFIL":                  true,
+		"TA0010.BULK_EXFIL":             true,
+		"TA0011.C2":                     true,
+		"TA0011.APP_LAYER_C2":           true,
+		"TA0008.LATERAL":                true,
 		"TA0008.ADMIN_PROTOCOL_LATERAL": true,
-		"TA0003.PERSIST": true,
-		"TA0003.PERSIST_EXTENDED": true,
-		"TA0040.IMPACT_ENCRYPT": true,
+		"TA0003.PERSIST":                true,
+		"TA0003.PERSIST_EXTENDED":       true,
+		"TA0040.IMPACT_ENCRYPT":         true,
 	}
 	identityRules := map[string]bool{
-		"TA0006.VALID_ACCOUNTS": true,
+		"TA0006.VALID_ACCOUNTS":   true,
 		"TA0006.IDENTITY_ANOMALY": true,
-		"TA0004.MFA_BYPASS": true,
-		"TA0004.ACCOUNT_MANIP": true,
-		"TA0003.MAILBOX_PERSIST": true,
+		"TA0004.MFA_BYPASS":       true,
+		"TA0004.ACCOUNT_MANIP":    true,
+		"TA0003.MAILBOX_PERSIST":  true,
 	}
 	if hostRules[ruleID] {
 		return "host"

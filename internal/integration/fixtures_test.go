@@ -13,6 +13,7 @@ func readFixture(t *testing.T, parts ...string) []byte {
 	root := testutil.RepoRoot(t)
 	path := filepath.Join(append([]string{root}, parts...)...)
 	//nolint:gosec // path built from repo root
+	// #nosec G304
 	data, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatalf("read: %v", err)

@@ -16,6 +16,7 @@ func LoadConfig(path string) (AdapterConfig, error) {
 		return cfg, os.ErrInvalid
 	}
 	//nolint:gosec // path validated
+	// #nosec G304
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return cfg, err

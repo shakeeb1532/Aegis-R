@@ -18,6 +18,7 @@ func loadProfiles(path string) ([]governance.AnalystProfile, error) {
 		return nil, os.ErrInvalid
 	}
 	//nolint:gosec // path validated via IsSafePath
+	// #nosec G304
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -37,6 +38,7 @@ func loadDisagreements(path string) ([]governance.Disagreement, error) {
 		return nil, os.ErrInvalid
 	}
 	//nolint:gosec // path validated via IsSafePath
+	// #nosec G304
 	f, err := os.Open(path)
 	if err != nil {
 		return nil, err

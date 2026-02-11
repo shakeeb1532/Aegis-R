@@ -84,6 +84,7 @@ func LoadBaseline(path string) (Baseline, error) {
 		return Baseline{}, os.ErrInvalid
 	}
 	//nolint:gosec // path validated via IsSafePath
+	// #nosec G304
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return Baseline{}, err
@@ -127,6 +128,7 @@ func Compare(root string, baseline Baseline, exclusions []string) (Result, error
 
 func hashFile(path string) (string, error) {
 	//nolint:gosec // path derived from filesystem walk under trusted root
+	// #nosec G304
 	f, err := os.Open(path)
 	if err != nil {
 		return "", err

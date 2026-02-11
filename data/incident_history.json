@@ -1,0 +1,41 @@
+{
+  "incidents": [
+    {
+      "id": "inc-001",
+      "rule_ids": [
+        "TA0006.IDENTITY_ANOMALY",
+        "TA0004.MFA_BYPASS"
+      ],
+      "outcome": "confirmed",
+      "missing_evidence": [
+        "valid_account_login"
+      ],
+      "summary": "Identity anomaly followed by MFA disable",
+      "playbook": "idp-account-takeover"
+    },
+    {
+      "id": "inc-002",
+      "rule_ids": [
+        "TA0010.EXFIL"
+      ],
+      "outcome": "confirmed",
+      "missing_evidence": [
+        "exfil_web_service"
+      ],
+      "summary": "Exfiltration via bulk transfer",
+      "playbook": "data-exfiltration"
+    },
+    {
+      "id": "inc-003",
+      "rule_ids": [
+        "TA0008.ADMIN_PROTOCOL_LATERAL"
+      ],
+      "outcome": "false_positive",
+      "missing_evidence": [
+        "remote_service_creation"
+      ],
+      "summary": "Admin protocol alert with benign maintenance",
+      "playbook": "lateral-movement"
+    }
+  ]
+}

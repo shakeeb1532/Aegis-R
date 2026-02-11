@@ -43,6 +43,7 @@ func LoadLastHash(path string) (string, error) {
 		return "", os.ErrInvalid
 	}
 	//nolint:gosec // path validated via IsSafePath
+	// #nosec G304
 	f, err := os.Open(path)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
@@ -87,6 +88,7 @@ func AppendLog(path string, a Artifact) error {
 	}
 	data = append(data, '\n')
 	//nolint:gosec // path validated via IsSafePath
+	// #nosec G304
 	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0600)
 	if err != nil {
 		return err
@@ -109,6 +111,7 @@ func AppendSigned(path string, s SignedArtifact) error {
 	}
 	data = append(data, '\n')
 	//nolint:gosec // path validated via IsSafePath
+	// #nosec G304
 	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0600)
 	if err != nil {
 		return err
@@ -126,6 +129,7 @@ func VerifyChain(path string) error {
 		return os.ErrInvalid
 	}
 	//nolint:gosec // path validated via IsSafePath
+	// #nosec G304
 	f, err := os.Open(path)
 	if err != nil {
 		return err

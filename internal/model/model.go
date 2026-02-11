@@ -44,16 +44,32 @@ type RuleResult struct {
 	ThreadID           string                `json:"thread_id"`
 	ThreadConfidence   float64               `json:"thread_confidence"`
 	ThreadReason       string                `json:"thread_reason"`
+	LikelihoodScore    float64               `json:"likelihood_score,omitempty"`
+	LikelihoodSource   string                `json:"likelihood_source,omitempty"`
 }
 
 type ReasoningReport struct {
-	GeneratedAt       time.Time    `json:"generated_at"`
-	Summary           string       `json:"summary"`
-	Results           []RuleResult `json:"results"`
-	Narrative         []string     `json:"narrative"`
-	ConfidenceModel   string       `json:"confidence_model"`
-	ConfidenceNote    string       `json:"confidence_note"`
-	Explanation       string       `json:"explanation,omitempty"`
-	SuggestedSteps    []string     `json:"suggested_steps,omitempty"`
-	ExplanationSource string       `json:"explanation_source,omitempty"`
+	GeneratedAt          time.Time         `json:"generated_at"`
+	Summary              string            `json:"summary"`
+	Results              []RuleResult      `json:"results"`
+	Narrative            []string          `json:"narrative"`
+	ConfidenceModel      string            `json:"confidence_model"`
+	ConfidenceNote       string            `json:"confidence_note"`
+	Explanation          string            `json:"explanation,omitempty"`
+	SuggestedSteps       []string          `json:"suggested_steps,omitempty"`
+	ExplanationSource    string            `json:"explanation_source,omitempty"`
+	RecommendedTelemetry []string          `json:"recommended_telemetry,omitempty"`
+	TelemetrySource      string            `json:"telemetry_source,omitempty"`
+	SimilarIncidents     []SimilarIncident `json:"similar_incidents,omitempty"`
+	SuggestedPlaybooks   []string          `json:"suggested_playbooks,omitempty"`
+	MLAssistEnabled      bool              `json:"ml_assist_enabled,omitempty"`
+	MLAssistNotes        []string          `json:"ml_assist_notes,omitempty"`
+}
+
+type SimilarIncident struct {
+	ID       string   `json:"id"`
+	Summary  string   `json:"summary"`
+	RuleIDs  []string `json:"rule_ids"`
+	Score    float64  `json:"score"`
+	Playbook string   `json:"playbook"`
 }

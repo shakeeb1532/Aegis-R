@@ -61,6 +61,7 @@ func loadFile(path string) (Inventory, error) {
 	if !ops.IsSafePath(path) {
 		return inv, os.ErrInvalid
 	}
+	// #nosec G304 - path validated via IsSafePath
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return inv, err

@@ -25,6 +25,7 @@ Aegis-R is a human-governed security reasoning system that evaluates causal feas
 - **Governance**: Human approvals and constraints that bind reasoning outcomes.
 - **Zero-Trust Initialization**: A strict install-time scan that creates a baseline and prevents poisoning.
 - **Explanation Layer (Optional)**: Generates a narrative summary and investigation steps from structured reasoning output. This never changes verdicts.
+- **ML Assist (Optional, Advisory)**: Suggests missing telemetry, ranks feasible findings (identity + cloud only), and surfaces similar incidents/playbooks. This never changes verdicts.
 
 ## Docs
 - `docs/sample_outputs.md` — example MITRE coverage and reasoning outputs
@@ -40,6 +41,7 @@ Aegis-R is a human-governed security reasoning system that evaluates causal feas
 - `docs/metrics_report.md` — synthetic vs public vs pilot metrics summary
 - `docs/inventory_schema.md` — file-based inventory ingestion schema
 - `docs/architecture.md` — system architecture diagram
+- `docs/incident_history.md` — ML-assist history schema and examples
 
 ---
 
@@ -163,6 +165,13 @@ Add an explanation layer (optional, does not change verdicts):
 go run ./cmd/aegisr reason -in events.json -rules data/rules.json -format cli --explain
 ```
 
+Add ML assist (optional, advisory):
+```bash
+go run ./cmd/aegisr reason -in events.json -rules data/rules.json -format cli \
+  --ml-assist \
+  --ml-history data/incident_history.json
+```
+
 ### 5) Run Full Assessment (JSON)
 ```bash
 go run ./cmd/aegisr assess \
@@ -186,6 +195,19 @@ go run ./cmd/aegisr assess \
   -baseline data/zero_trust_baseline.json \
   -format json \
   --explain
+```
+
+Add ML assist (optional, advisory):
+```bash
+go run ./cmd/aegisr assess \
+  -in events.json \
+  -env data/env.json \
+  -state state.json \
+  -audit audit.log \
+  -baseline data/zero_trust_baseline.json \
+  -format json \
+  --ml-assist \
+  --ml-history data/incident_history.json
 ```
 
 ---

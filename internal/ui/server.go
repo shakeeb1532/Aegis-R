@@ -62,6 +62,7 @@ func NewServer(auditPath string, approvalsPath string, signedAuditPath string, r
 			return nil, os.ErrInvalid
 		}
 		//nolint:gosec // path validated via IsSafePath
+		// #nosec G304
 		data, err := os.ReadFile(keypairPath)
 		if err != nil {
 			return nil, err
@@ -389,6 +390,7 @@ func buildGraphSVG(current []string, reachable []string) template.HTML {
 		b.WriteString(fmt.Sprintf(`<text x="%.1f" y="%.1f" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="%s">%s</text>`, x, y, color, html.EscapeString(shortenLabel(n, 10))))
 	}
 	b.WriteString(`</svg>`)
+	// #nosec G203 - HTML is constructed from controlled data
 	return template.HTML(b.String())
 }
 
@@ -599,6 +601,7 @@ func (s *Server) serveFile(w http.ResponseWriter, path string, name string) {
 		return
 	}
 	//nolint:gosec // path validated via IsSafePath
+	// #nosec G304
 	data, err := os.ReadFile(path)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
@@ -658,6 +661,7 @@ func loadArtifacts(path string) ([]audit.Artifact, error) {
 		return nil, os.ErrInvalid
 	}
 	//nolint:gosec // path validated via IsSafePath
+	// #nosec G304
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
