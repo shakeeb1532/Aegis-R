@@ -5,11 +5,17 @@
 - Optional explanation layer (local + LLM endpoint) with suggested steps (CLI/JSON).
 - Hybrid ML assist (advisory): telemetry recommendations, feasible ranking, similar incidents, playbook suggestions.
 - Incident history schema and example (`docs/incident_history.md`, `data/incident_history.json`).
+- Identity/OAuth attack rules (device code phishing, OAuth consent phishing, device join, stolen creds).
+- Stolen credentials anomaly rule.
+- Expanded public and realistic scenario sets.
+- Known edge cases documentation (`docs/known_edge_cases.md`).
+- Pilot plan PDF (`docs/Aegis-R_Pilot_Plan.pdf`).
 
 ### Changed
 - Expanded synthetic suite with harder contradictory and ambiguous cases.
 - Expanded public scenario set for evaluation.
 - README updated with ML-assist usage and performance snapshots.
+- MITRE coverage doc updated with platform alignment notes.
 
 ### Fixed
 - gosec findings addressed with safe-path validation and explicit annotations.

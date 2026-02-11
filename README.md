@@ -42,6 +42,7 @@ Aegis-R is a human-governed security reasoning system that evaluates causal feas
 - `docs/inventory_schema.md` — file-based inventory ingestion schema
 - `docs/architecture.md` — system architecture diagram
 - `docs/incident_history.md` — ML-assist history schema and examples
+- `docs/known_edge_cases.md` — documented mismatches kept for conservative behavior
 
 ---
 

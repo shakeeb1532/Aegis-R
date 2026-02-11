@@ -441,6 +441,352 @@
           "outcome": "feasible"
         }
       ]
+    },
+    {
+      "id": "public-device-code",
+      "description": "Device code phishing (public scenario)",
+      "events": [
+        {
+          "id": "pdc1",
+          "time": "2026-02-06T12:00:00Z",
+          "host": "idp-1",
+          "user": "alice",
+          "type": "device_code_flow_start",
+          "details": {}
+        },
+        {
+          "id": "pdc2",
+          "time": "2026-02-06T12:00:10Z",
+          "host": "idp-1",
+          "user": "alice",
+          "type": "device_code_flow_success",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.DEVICE_CODE_PHISH",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "public-oauth-consent",
+      "description": "OAuth consent phishing (public scenario)",
+      "events": [
+        {
+          "id": "poc1",
+          "time": "2026-02-06T12:10:00Z",
+          "host": "idp-1",
+          "user": "bob",
+          "type": "oauth_consent",
+          "details": {}
+        },
+        {
+          "id": "poc2",
+          "time": "2026-02-06T12:10:10Z",
+          "host": "idp-1",
+          "user": "bob",
+          "type": "new_app_grant",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.OAUTH_CONSENT_PHISH",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "public-stolen-creds",
+      "description": "Stolen credentials initial access (public scenario)",
+      "events": [
+        {
+          "id": "psc1",
+          "time": "2026-02-06T12:20:00Z",
+          "host": "idp-1",
+          "user": "carol",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "psc2",
+          "time": "2026-02-06T12:20:10Z",
+          "host": "idp-1",
+          "user": "carol",
+          "type": "token_reuse",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.STOLEN_CREDS",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "public-stolen-creds-anomaly",
+      "description": "Stolen credentials with anomalous device (public scenario)",
+      "events": [
+        {
+          "id": "psa1",
+          "time": "2026-02-06T12:30:00Z",
+          "host": "idp-1",
+          "user": "erin",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "psa2",
+          "time": "2026-02-06T12:30:05Z",
+          "host": "idp-1",
+          "user": "erin",
+          "type": "token_reuse",
+          "details": {}
+        },
+        {
+          "id": "psa3",
+          "time": "2026-02-06T12:30:10Z",
+          "host": "idp-1",
+          "user": "erin",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.STOLEN_CREDS_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "public-device-join",
+      "description": "Device join phishing (public scenario)",
+      "events": [
+        {
+          "id": "pdj1",
+          "time": "2026-02-06T12:40:00Z",
+          "host": "idp-1",
+          "user": "carol",
+          "type": "device_join_request",
+          "details": {}
+        },
+        {
+          "id": "pdj2",
+          "time": "2026-02-06T12:40:10Z",
+          "host": "idp-1",
+          "user": "carol",
+          "type": "device_join_complete",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.DEVICE_JOIN_PHISH",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "public-device-code-incomplete",
+      "description": "Device code flow started only (public scenario)",
+      "events": [
+        {
+          "id": "pdc3",
+          "time": "2026-02-06T12:45:00Z",
+          "host": "idp-1",
+          "user": "alice",
+          "type": "device_code_flow_start",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.DEVICE_CODE_PHISH",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "public-oauth-consent-incomplete",
+      "description": "OAuth consent without app grant (public scenario)",
+      "events": [
+        {
+          "id": "poc3",
+          "time": "2026-02-06T12:50:00Z",
+          "host": "idp-1",
+          "user": "bob",
+          "type": "oauth_consent",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.OAUTH_CONSENT_PHISH",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "public-stolen-creds-incomplete",
+      "description": "Valid account login without token reuse (public scenario)",
+      "events": [
+        {
+          "id": "psc3",
+          "time": "2026-02-06T12:55:00Z",
+          "host": "idp-1",
+          "user": "carol",
+          "type": "valid_account_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.STOLEN_CREDS",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "public-mfa-bypass",
+      "description": "MFA disabled with token anomaly (public scenario)",
+      "events": [
+        {
+          "id": "pm1",
+          "time": "2026-02-06T13:00:00Z",
+          "host": "idp-1",
+          "user": "alice",
+          "type": "mfa_disabled",
+          "details": {}
+        },
+        {
+          "id": "pm2",
+          "time": "2026-02-06T13:00:05Z",
+          "host": "idp-1",
+          "user": "alice",
+          "type": "token_refresh_anomaly",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.MFA_BYPASS",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "public-persist-incomplete",
+      "description": "Registry run key without scheduled task (public scenario)",
+      "events": [
+        {
+          "id": "pp1",
+          "time": "2026-02-06T13:05:00Z",
+          "host": "win-01",
+          "user": "bob",
+          "type": "registry_run_key",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.PERSIST",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "public-lateral-incomplete",
+      "description": "Remote service creation without network logon (public scenario)",
+      "events": [
+        {
+          "id": "pl1",
+          "time": "2026-02-06T13:10:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "remote_service_creation",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.LATERAL",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "public-creddump-incomplete",
+      "description": "Process creation without LSASS access (public scenario)",
+      "events": [
+        {
+          "id": "pc1",
+          "time": "2026-02-06T13:15:00Z",
+          "host": "win-02",
+          "user": "dana",
+          "type": "process_creation",
+          "details": {
+            "tool": "procdump"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.CREDDUMP",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "public-exfil-incomplete",
+      "description": "Data staging without outbound transfer (public scenario)",
+      "events": [
+        {
+          "id": "pe1",
+          "time": "2026-02-06T13:20:00Z",
+          "host": "db-01",
+          "user": "carl",
+          "type": "data_staging",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "public-log-tamper-feasible",
+      "description": "Disable logging + policy bypass (public scenario)",
+      "events": [
+        {
+          "id": "plt1",
+          "time": "2026-02-06T13:25:00Z",
+          "host": "cloud-1",
+          "user": "svc-admin",
+          "type": "disable_logging",
+          "details": {}
+        },
+        {
+          "id": "plt2",
+          "time": "2026-02-06T13:25:10Z",
+          "host": "cloud-1",
+          "user": "svc-admin",
+          "type": "policy_bypass",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.LOG_TAMPER",
+          "outcome": "feasible"
+        }
+      ]
     }
   ]
 }

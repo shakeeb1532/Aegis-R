@@ -345,6 +345,57 @@ func DefaultRules() []Rule {
 			Preconds: []string{"credential_access"},
 			Explain:  "Lateral movement over admin protocols with valid credentials.",
 		},
+		{
+			ID:   "TA0001.DEVICE_CODE_PHISH",
+			Name: "Device Code Phishing",
+			Requirements: []model.EvidenceRequirement{
+				{Type: "device_code_flow_start", Description: "Device code flow initiated"},
+				{Type: "device_code_flow_success", Description: "Device code flow completed"},
+			},
+			Preconds: []string{},
+			Explain:  "Abuse of device code authentication flow indicates likely credential theft.",
+		},
+		{
+			ID:   "TA0001.OAUTH_CONSENT_PHISH",
+			Name: "OAuth Consent Phishing",
+			Requirements: []model.EvidenceRequirement{
+				{Type: "oauth_consent", Description: "OAuth consent granted"},
+				{Type: "new_app_grant", Description: "New app grant with elevated scopes"},
+			},
+			Preconds: []string{},
+			Explain:  "Malicious app consent grants attacker access tokens and persistent access.",
+		},
+		{
+			ID:   "TA0001.DEVICE_JOIN_PHISH",
+			Name: "Device Join Phishing",
+			Requirements: []model.EvidenceRequirement{
+				{Type: "device_join_request", Description: "Device join request initiated"},
+				{Type: "device_join_complete", Description: "Device successfully joined/registered"},
+			},
+			Preconds: []string{},
+			Explain:  "Phishing to register attacker-controlled device to tenant.",
+		},
+		{
+			ID:   "TA0001.STOLEN_CREDS",
+			Name: "Stolen Credentials Initial Access",
+			Requirements: []model.EvidenceRequirement{
+				{Type: "valid_account_login", Description: "Login using valid credentials"},
+				{Type: "token_reuse", Description: "Token reuse or session replay"},
+			},
+			Preconds: []string{},
+			Explain:  "Stolen credentials used for initial access, often detected by token reuse.",
+		},
+		{
+			ID:   "TA0001.STOLEN_CREDS_ANOMALY",
+			Name: "Stolen Credentials with Anomalous Access",
+			Requirements: []model.EvidenceRequirement{
+				{Type: "valid_account_login", Description: "Login using valid credentials"},
+				{Type: "token_reuse", Description: "Token reuse or session replay"},
+				{Type: "new_device_login", Description: "New device or unknown client"},
+			},
+			Preconds: []string{},
+			Explain:  "Stolen credentials with anomalous device access indicate initial compromise.",
+		},
 	}
 }
 
@@ -409,7 +460,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 	facts["privilege_escalation"] = len(index["token_manipulation"]) > 0 || len(index["admin_group_change"]) > 0
 	facts["credential_access"] = len(index["lsass_access"]) > 0 || len(index["process_creation"]) > 0
 	facts["c2_established"] = len(index["beacon_outbound"]) > 0 || len(index["dns_tunneling"]) > 0
-	facts["identity_compromise"] = len(index["impossible_travel"]) > 0 || len(index["new_device_login"]) > 0 || len(index["mfa_disabled"]) > 0 || len(index["token_refresh_anomaly"]) > 0 || len(index["oauth_consent"]) > 0
+	facts["identity_compromise"] = len(index["impossible_travel"]) > 0 || len(index["new_device_login"]) > 0 || len(index["mfa_disabled"]) > 0 || len(index["token_refresh_anomaly"]) > 0 || len(index["oauth_consent"]) > 0 || len(index["new_app_grant"]) > 0 || len(index["device_code_flow_success"]) > 0 || len(index["device_join_complete"]) > 0
 	facts["valid_account_login"] = len(index["valid_account_login"]) > 0
 
 	results := make([]model.RuleResult, 0, len(rules))

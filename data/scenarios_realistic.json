@@ -3678,6 +3678,262 @@
           "outcome": "incomplete"
         }
       ]
+    },
+    {
+      "id": "realistic-device-code-feasible",
+      "description": "Device code phishing with successful completion",
+      "events": [
+        {
+          "id": "dc1",
+          "time": "2026-02-06T20:00:00Z",
+          "host": "idp-1",
+          "user": "alice",
+          "type": "device_code_flow_start",
+          "details": {}
+        },
+        {
+          "id": "dc2",
+          "time": "2026-02-06T20:00:20Z",
+          "host": "idp-1",
+          "user": "alice",
+          "type": "device_code_flow_success",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.DEVICE_CODE_PHISH",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-device-code-incomplete",
+      "description": "Device code phishing started but not completed",
+      "events": [
+        {
+          "id": "dc3",
+          "time": "2026-02-06T20:05:00Z",
+          "host": "idp-1",
+          "user": "alice",
+          "type": "device_code_flow_start",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.DEVICE_CODE_PHISH",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "realistic-oauth-consent-feasible",
+      "description": "OAuth consent phishing with new app grant",
+      "events": [
+        {
+          "id": "oc1",
+          "time": "2026-02-06T20:10:00Z",
+          "host": "idp-1",
+          "user": "bob",
+          "type": "oauth_consent",
+          "details": {}
+        },
+        {
+          "id": "oc2",
+          "time": "2026-02-06T20:10:10Z",
+          "host": "idp-1",
+          "user": "bob",
+          "type": "new_app_grant",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.OAUTH_CONSENT_PHISH",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-oauth-consent-incomplete",
+      "description": "OAuth consent without app grant",
+      "events": [
+        {
+          "id": "oc3",
+          "time": "2026-02-06T20:15:00Z",
+          "host": "idp-1",
+          "user": "bob",
+          "type": "oauth_consent",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.OAUTH_CONSENT_PHISH",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "realistic-device-join-feasible",
+      "description": "Device join phishing with successful registration",
+      "events": [
+        {
+          "id": "dj1",
+          "time": "2026-02-06T20:20:00Z",
+          "host": "idp-1",
+          "user": "carol",
+          "type": "device_join_request",
+          "details": {}
+        },
+        {
+          "id": "dj2",
+          "time": "2026-02-06T20:20:20Z",
+          "host": "idp-1",
+          "user": "carol",
+          "type": "device_join_complete",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.DEVICE_JOIN_PHISH",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-device-join-incomplete",
+      "description": "Device join requested but not completed",
+      "events": [
+        {
+          "id": "dj3",
+          "time": "2026-02-06T20:25:00Z",
+          "host": "idp-1",
+          "user": "carol",
+          "type": "device_join_request",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.DEVICE_JOIN_PHISH",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "realistic-stolen-creds-feasible",
+      "description": "Valid account login with token reuse",
+      "events": [
+        {
+          "id": "sc1",
+          "time": "2026-02-06T20:30:00Z",
+          "host": "idp-1",
+          "user": "dana",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "sc2",
+          "time": "2026-02-06T20:30:10Z",
+          "host": "idp-1",
+          "user": "dana",
+          "type": "token_reuse",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.STOLEN_CREDS",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-stolen-creds-incomplete",
+      "description": "Valid account login without token reuse",
+      "events": [
+        {
+          "id": "sc3",
+          "time": "2026-02-06T20:35:00Z",
+          "host": "idp-1",
+          "user": "dana",
+          "type": "valid_account_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.STOLEN_CREDS",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "realistic-stolen-creds-anomaly-feasible",
+      "description": "Stolen credentials with new device and token reuse",
+      "events": [
+        {
+          "id": "sca1",
+          "time": "2026-02-06T21:00:00Z",
+          "host": "idp-1",
+          "user": "erin",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "sca2",
+          "time": "2026-02-06T21:00:05Z",
+          "host": "idp-1",
+          "user": "erin",
+          "type": "token_reuse",
+          "details": {}
+        },
+        {
+          "id": "sca3",
+          "time": "2026-02-06T21:00:10Z",
+          "host": "idp-1",
+          "user": "erin",
+          "type": "new_device_login",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.STOLEN_CREDS_ANOMALY",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "realistic-stolen-creds-anomaly-incomplete",
+      "description": "Token reuse without new device",
+      "events": [
+        {
+          "id": "sca4",
+          "time": "2026-02-06T21:05:00Z",
+          "host": "idp-1",
+          "user": "erin",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "sca5",
+          "time": "2026-02-06T21:05:05Z",
+          "host": "idp-1",
+          "user": "erin",
+          "type": "token_reuse",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.STOLEN_CREDS_ANOMALY",
+          "outcome": "incomplete"
+        }
+      ]
     }
   ]
 }
