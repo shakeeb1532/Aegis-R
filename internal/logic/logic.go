@@ -20,6 +20,8 @@ type Rule struct {
 	Mitre        MitreMeta                   `json:"mitre"`
 	Provenance   Provenance                  `json:"provenance"`
 	Constraints  RuleConstraints             `json:"constraints"`
+	NistCSF      []string                    `json:"nist_csf,omitempty"`
+	KillChain    []string                    `json:"kill_chain,omitempty"`
 }
 
 type MitreMeta struct {

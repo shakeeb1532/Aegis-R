@@ -10,12 +10,12 @@ mkdir -p data
 
 go run ./cmd/aegisr init-scan -baseline data/zero_trust_baseline.json
 
-# Keypair for UI approval signatures
+# Keypair for approval signatures
 if [ ! -f data/keypair.json ]; then
   go run ./cmd/aegisr keys -out data/keypair.json
 fi
 
-# Ensure UI support files exist
+# Ensure support files exist
 : > data/approvals.log
 : > data/disagreements.log
 : > data/audit.log
@@ -128,15 +128,6 @@ INGEST_PID=$!
 trap 'kill $INGEST_PID' EXIT
 sleep 1
 
-# Start UI
-go run ./cmd/aegisr ui \
-  -addr :9090 \
-  -audit data/audit.log \
-  -signed-audit data/signed_audit.log \
-  -approvals data/approvals.log \
-  -report data/report.json \
-  -profiles data/analyst_profiles.json \
-  -disagreements data/disagreements.log \
-  -key data/keypair.json \
-  -basic-user admin \
-  -basic-pass pass
+echo "Failure demo complete."
+echo "Report: data/report.json"
+echo "Audit log: data/audit.log"

@@ -33,7 +33,6 @@ import (
 	"aegisr/internal/report"
 	"aegisr/internal/sim"
 	"aegisr/internal/state"
-	"aegisr/internal/ui"
 	"aegisr/internal/validate"
 	"aegisr/internal/zerotrust"
 )
@@ -120,8 +119,6 @@ func main() {
 		handleInventoryRefresh(args[1:])
 	case "inventory-schedule":
 		handleInventorySchedule(args[1:])
-	case "ui":
-		handleUI(args[1:])
 	case "init-scan":
 		handleInitScan(args[1:])
 	case "scan":
@@ -165,7 +162,8 @@ func usage() {
 	fmt.Println("  inventory-adapter -provider aws|okta|azure|gcp -config data/inventory/config.json -out data/env.json")
 	fmt.Println("  inventory-refresh -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json")
 	fmt.Println("  inventory-schedule -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json -interval 6h -jitter 30m")
-	fmt.Println("  ui -addr :9090 -audit audit.log -signed-audit signed_audit.log -approvals approvals.log -report report.json -profiles data/analyst_profiles.json -disagreements data/disagreements.log -key keypair.json -basic-user user -basic-pass pass")
+	fmt.Println("  system nist -rules data/rules.json [-out nist.json]")
+	fmt.Println("  system killchain -rules data/rules.json [-out killchain.json]")
 	fmt.Println("  init-scan -baseline data/zero_trust_baseline.json")
 	fmt.Println("  scan -baseline data/zero_trust_baseline.json [-override-approval admin_approval.json]")
 	fmt.Println("  profile-add -file data/analyst_profiles.json -id a1 -name \"Analyst\" -specialty \"cloud\"")
@@ -1184,7 +1182,7 @@ func findArtifact(path string, id string) (audit.Artifact, error) {
 
 func handleSystem(args []string) {
 	if len(args) == 0 {
-		fatal(errors.New("system requires a subcommand: status|config|health|coverage|confidence"))
+		fatal(errors.New("system requires a subcommand: status|config|health|coverage|nist|killchain|confidence"))
 	}
 	switch args[0] {
 	case "status":
@@ -1268,6 +1266,70 @@ func handleSystem(args []string) {
 				}
 				outln(fmt.Sprintf("  - %s: %d rules", label, tech.RuleCount))
 			}
+		}
+	case "nist":
+		fs := flag.NewFlagSet("system nist", flag.ExitOnError)
+		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		out := fs.String("out", "", "output file (optional)")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		rules, err := logic.LoadRules(*rulesPath)
+		if err != nil {
+			fatal(err)
+		}
+		report := logic.BuildNistCoverage(rules)
+		if *out != "" {
+			writeJSON(*out, report)
+			return
+		}
+		if gFlags.JSON {
+			outJSON(report)
+			return
+		}
+		outln("NIST CSF coverage")
+		outln(fmt.Sprintf("Rules total: %d", report.TotalRules))
+		outln(fmt.Sprintf("Rules missing NIST: %d", len(report.RulesMissingMeta)))
+		if len(report.RulesMissingMeta) > 0 {
+			outln("Missing metadata:")
+			for _, id := range report.RulesMissingMeta {
+				outln("- " + id)
+			}
+		}
+		for _, c := range report.Categories {
+			outln(fmt.Sprintf("- %s: %d rules", c.Name, c.RuleCount))
+		}
+	case "killchain":
+		fs := flag.NewFlagSet("system killchain", flag.ExitOnError)
+		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		out := fs.String("out", "", "output file (optional)")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		rules, err := logic.LoadRules(*rulesPath)
+		if err != nil {
+			fatal(err)
+		}
+		report := logic.BuildKillChainCoverage(rules)
+		if *out != "" {
+			writeJSON(*out, report)
+			return
+		}
+		if gFlags.JSON {
+			outJSON(report)
+			return
+		}
+		outln("Kill Chain coverage")
+		outln(fmt.Sprintf("Rules total: %d", report.TotalRules))
+		outln(fmt.Sprintf("Rules missing Kill Chain: %d", len(report.RulesMissingMeta)))
+		if len(report.RulesMissingMeta) > 0 {
+			outln("Missing metadata:")
+			for _, id := range report.RulesMissingMeta {
+				outln("- " + id)
+			}
+		}
+		for _, c := range report.Phases {
+			outln(fmt.Sprintf("- %s: %d rules", c.Name, c.RuleCount))
 		}
 	case "confidence":
 		fs := flag.NewFlagSet("system confidence", flag.ExitOnError)
@@ -2082,40 +2144,6 @@ func randomJitter(max time.Duration) time.Duration {
 		return 0
 	}
 	return time.Duration(n.Int64())
-}
-
-func handleUI(args []string) {
-	fs := flag.NewFlagSet("ui", flag.ExitOnError)
-	addr := fs.String("addr", ":9090", "listen address")
-	auditPath := fs.String("audit", "", "audit log")
-	approvalsPath := fs.String("approvals", "", "approvals log")
-	signedAuditPath := fs.String("signed-audit", "", "signed audit log")
-	reportPath := fs.String("report", "", "reasoning report json")
-	profilesPath := fs.String("profiles", "", "analyst profiles json")
-	disagreementsPath := fs.String("disagreements", "", "disagreements log")
-	keyPath := fs.String("key", "", "keypair json")
-	basicUser := fs.String("basic-user", "", "basic auth user")
-	basicPass := fs.String("basic-pass", "", "basic auth pass")
-	if err := fs.Parse(args); err != nil {
-		fatal(err)
-	}
-
-	server, err := ui.NewServer(*auditPath, *approvalsPath, *signedAuditPath, *reportPath, *profilesPath, *disagreementsPath, *keyPath, *basicUser, *basicPass)
-	if err != nil {
-		fatal(err)
-	}
-	fmt.Printf("UI listening on %s\n", *addr)
-	srv := &http.Server{
-		Addr:              *addr,
-		Handler:           server.Routes(),
-		ReadHeaderTimeout: 5 * time.Second,
-		ReadTimeout:       10 * time.Second,
-		WriteTimeout:      10 * time.Second,
-		IdleTimeout:       60 * time.Second,
-	}
-	if err := srv.ListenAndServe(); err != nil {
-		fatal(err)
-	}
 }
 
 func handleInitScan(args []string) {

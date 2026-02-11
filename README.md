@@ -32,6 +32,8 @@ Aegis-R is a human-governed security reasoning system that evaluates causal feas
 - `docs/regression_report.md` — evaluate output with accuracy + mismatches
 - `docs/vendor_mappings.md` — field-level normalization per vendor
 - `docs/mitre_coverage.md` — rule catalog MITRE mapping notes
+- `docs/nist_coverage.md` — NIST CSF mapping notes
+- `docs/kill_chain_coverage.md` — Cyber Kill Chain mapping notes
 - `docs/confidence_bands.md` — confidence band interpretation
 - `docs/ci_checklist.md` — CI checklist and local verification steps
 - `docs/test_results.md` — latest test runs and regression output
@@ -139,8 +141,6 @@ graph TD
   I --> E
   J["Governance (Approvals, Constraints)"] --> D
   J --> G
-  F --> K["UI (Reasoning, Queue, Governance, Audit)"]
-  G --> K
   F --> L["Exports (SIEM/XDR / Compliance)"]
   G --> L
 ```
@@ -223,7 +223,7 @@ go run ./cmd/aegisr assess \
 
 ## One Command Local Demo
 
-Run a full local demo (UI up + sample ingest + report generated):
+Run a full local demo (sample ingest + report generated):
 ```bash
 make demo
 ```
@@ -296,7 +296,6 @@ go run ./cmd/aegisr init-scan \
 - `inventory-drift` — compare inventory build to baseline env.json
 - `inventory-refresh` — refresh env + drift report (file or live adapters)
 - `inventory-schedule` — refresh env on a randomized cadence
-- `ui` — lightweight analyst UI
 
 ### Zero-Trust
 - `init-scan` — strict install-time baseline creation
@@ -422,7 +421,7 @@ Aegis-R adapters normalize events into a stable envelope:
 - `confidence` (scoring)
 - `tags` (zone, criticality)
 
-Confidence is **heuristic and rule-based**, not calibrated ML. Outputs and UI explicitly label the confidence model.
+Confidence is **heuristic and rule-based**, not calibrated ML. Outputs explicitly label the confidence model.
 
 Decision labels: `suppress` / `deprioritize` / `keep` / `escalate` are layered on top of feasibility verdicts.
 Local decision cache scope: host + principal + rule with a 24h TTL.
@@ -451,36 +450,6 @@ Minimal trigger set covers most real intrusions:
 - Suspicious host execution and credential access
 - Lateral movement and inbound admin protocols
 - Exfil and impact indicators
-
----
-
-## Analyst UI (Lightweight)
-
-Start UI:
-```bash
-go run ./cmd/aegisr ui \
-  -addr :9090 \
-  -audit audit.log \
-  -signed-audit signed_audit.log \
-  -approvals approvals.log \
-  -report report.json \
-  -profiles analyst_profiles.json \
-  -disagreements disagreements.log \
-  -key keypair.json \
-  -basic-user admin \
-  -basic-pass pass
-```
-
-Features:
-- Audit timeline
-- Approval history with rationale and evidence gaps
-- Role-gated approvals (analyst, approver, admin)
-- Signed artifact verification (valid/invalid)
-- Per-rule evidence drilldown
-- Search/filter for audit + approvals
-- Export buttons for audit + signed artifacts
-- Tickets list + detail view
-- Ticket export (JSON) for compliance
 
 ---
 
@@ -556,11 +525,6 @@ kubectl create namespace aegis-r
 helm install aegis-r ./charts/aegis-r --namespace aegis-r
 ```
 
-### Configure UI Basic Auth
-```bash
-kubectl -n aegis-r create secret generic aegisr-ui-basic --from-literal=password='change-me'
-```
-
 ### Configure Signing Keys
 ```bash
 kubectl -n aegis-r create secret generic aegisr-signing-keys --from-file=keypair.json
@@ -572,7 +536,6 @@ helm upgrade --install aegis-r ./charts/aegis-r \
   --namespace aegis-r \
   --set ingress.host=aegisr.example.com \
   --set ingress.tls.secretName=aegisr-tls \
-  --set ui.basicPassSecretCreate=false \
   --set signingKeySecret.create=false \
   --set signingKeySecret.name=aegisr-signing-keys
 ```
@@ -603,7 +566,6 @@ docker run -p 8080:8080 aegisr
 - `internal/audit/` — audit chain + signing
 - `internal/governance/` — policy + roles
 - `internal/integration/` — adapters + ingest
-- `internal/ui/` — analyst UI
 - `internal/eval/` — evaluation harness
 - `data/` — sample rules/env/scenarios/fixtures
 - `docs/` — vendor mapping documentation

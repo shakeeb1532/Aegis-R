@@ -59,6 +59,7 @@
 - Rule catalog expansion with new techniques (log tampering, bulk exfil, admin protocol lateral).
 - Vendor field normalization depth increased across adapters.
 - Sentinel CSL normalization now maps authentication success/failure to normalized event types.
+- Removed the UI server, templates, and Helm UI resources to reset the interface; `ui` CLI command removed.
 
 ### Fixed
 - Gated rule packs now surface as `admin_hold` placeholders.

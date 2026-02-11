@@ -43,7 +43,13 @@
         "windows",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Delivery"
+    ]
   },
   {
     "id": "TA0004.PRIVESCA",
@@ -85,7 +91,13 @@
         "windows",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
   },
   {
     "id": "TA0006.CREDDUMP",
@@ -130,7 +142,13 @@
         "windows",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
   },
   {
     "id": "TA0008.LATERAL",
@@ -174,7 +192,13 @@
         "windows",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
   },
   {
     "id": "TA0003.PERSIST",
@@ -218,7 +242,13 @@
         "windows",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Installation"
+    ]
   },
   {
     "id": "TA0011.C2",
@@ -262,7 +292,13 @@
         "windows",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "C2"
+    ]
   },
   {
     "id": "TA0010.EXFIL",
@@ -307,7 +343,14 @@
         "windows",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect",
+      "Respond"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
   },
   {
     "id": "TA0006.IDENTITY_ANOMALY",
@@ -350,7 +393,13 @@
         "identity",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
   },
   {
     "id": "TA0004.MFA_BYPASS",
@@ -395,7 +444,13 @@
         "identity",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
   },
   {
     "id": "TA0002.LOLBIN_CHAIN",
@@ -439,7 +494,13 @@
         "endpoint",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
   },
   {
     "id": "TA0003.PERSIST_EXTENDED",
@@ -483,7 +544,13 @@
         "endpoint",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Installation"
+    ]
   },
   {
     "id": "TA0006.VALID_ACCOUNTS",
@@ -526,7 +593,13 @@
         "identity",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
   },
   {
     "id": "TA0006.BRUTE_FORCE",
@@ -569,7 +642,13 @@
         "identity",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
   },
   {
     "id": "TA0004.ACCOUNT_MANIP",
@@ -613,7 +692,13 @@
         "identity",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
   },
   {
     "id": "TA0005.AUTH_PROCESS_MOD",
@@ -657,7 +742,14 @@
         "identity",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Protect",
+      "Detect"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
   },
   {
     "id": "TA0011.APP_LAYER_C2",
@@ -701,7 +793,13 @@
         "network",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "C2"
+    ]
   },
   {
     "id": "TA0005.IMPAIR_DEFENSES",
@@ -743,7 +841,14 @@
         "cloud",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Protect",
+      "Detect"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
   },
   {
     "id": "TA0010.EXFIL_WEB",
@@ -787,7 +892,14 @@
         "cloud",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect",
+      "Respond"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
   },
   {
     "id": "TA0001.PHISH_LINK",
@@ -829,7 +941,13 @@
         "identity",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Delivery"
+    ]
   },
   {
     "id": "TA0003.MAILBOX_PERSIST",
@@ -874,7 +992,13 @@
         "identity",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Installation"
+    ]
   },
   {
     "id": "TA0040.IMPACT_ENCRYPT",
@@ -918,7 +1042,15 @@
         "endpoint",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect",
+      "Respond",
+      "Recover"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
   },
   {
     "id": "TA0040.RECOVERY_INHIBIT",
@@ -956,7 +1088,15 @@
         "endpoint",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect",
+      "Respond",
+      "Recover"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
   },
   {
     "id": "TA0006.INSIDER_EXFIL",
@@ -1001,7 +1141,13 @@
         "identity",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
   },
   {
     "id": "TA0043.SUPPLY_CHAIN",
@@ -1043,7 +1189,13 @@
         "ci",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
   },
   {
     "id": "TA0008.CLOUD_PIVOT",
@@ -1086,7 +1238,13 @@
         "cloud",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
   },
   {
     "id": "TA0004.SAAS_ADMIN",
@@ -1130,7 +1288,13 @@
         "saas",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
   },
   {
     "id": "TA0005.EVASION_C2",
@@ -1178,7 +1342,14 @@
         "network",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Protect",
+      "Detect"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
   },
   {
     "id": "TA0005.LOG_TAMPER",
@@ -1222,7 +1393,14 @@
         "endpoint",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Protect",
+      "Detect"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
   },
   {
     "id": "TA0010.BULK_EXFIL",
@@ -1266,7 +1444,14 @@
         "cloud",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect",
+      "Respond"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
   },
   {
     "id": "TA0008.ADMIN_PROTOCOL_LATERAL",
@@ -1310,7 +1495,13 @@
         "network",
         "corp"
       ]
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
   },
   {
     "id": "TA0001.DEVICE_CODE_PHISH",
@@ -1345,7 +1536,13 @@
     "constraints": {
       "min_confidence": 0.0,
       "applies_to": []
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Delivery"
+    ]
   },
   {
     "id": "TA0001.OAUTH_CONSENT_PHISH",
@@ -1381,7 +1578,13 @@
     "constraints": {
       "min_confidence": 0.0,
       "applies_to": []
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Delivery"
+    ]
   },
   {
     "id": "TA0001.DEVICE_JOIN_PHISH",
@@ -1416,7 +1619,13 @@
     "constraints": {
       "min_confidence": 0.0,
       "applies_to": []
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Delivery"
+    ]
   },
   {
     "id": "TA0001.STOLEN_CREDS",
@@ -1449,7 +1658,13 @@
     "constraints": {
       "min_confidence": 0.0,
       "applies_to": []
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Delivery"
+    ]
   },
   {
     "id": "TA0001.STOLEN_CREDS_ANOMALY",
@@ -1486,6 +1701,12 @@
     "constraints": {
       "min_confidence": 0.0,
       "applies_to": []
-    }
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Delivery"
+    ]
   }
 ]

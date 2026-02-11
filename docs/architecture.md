@@ -14,8 +14,6 @@ graph TD
   I --> E
   J["Governance (Approvals, Constraints)"] --> D
   J --> G
-  F --> K["UI (Reasoning, Queue, Governance, Audit)"]
-  G --> K
   F --> L["Exports (SIEM/XDR / Compliance)"]
   G --> L
 ```

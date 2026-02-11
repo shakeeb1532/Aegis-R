@@ -49,22 +49,6 @@ config:
   metricsOn: true
   strictMode: false
 
-ui:
-  enabled: true
-  port: 9090
-  serviceType: ClusterIP
-  basicUser: admin
-  basicPassSecret: aegisr-ui-basic
-  basicPassSecretCreate: true
-  basicPass: change-me
-  keyPath: /secrets/keypair.json
-  reportPath: /data/report.json
-  approvalsPath: /data/approvals.log
-  auditPath: /data/audit.log
-  signedAuditPath: /data/signed_audit.log
-  profilesPath: /data/analyst_profiles.json
-  disagreementsPath: /data/disagreements.log
-
 signingKeySecret:
   create: false
   name: aegisr-signing-keys

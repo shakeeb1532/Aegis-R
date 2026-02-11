@@ -39,14 +39,6 @@ trap 'kill $INGEST_PID' EXIT
 sleep 1
 curl -s -X POST "http://localhost:8080/ingest?schema=ecs" -d @data/fixtures/ecs/sample.json >/dev/null || true
 
-go run ./cmd/aegisr ui \
-  -addr :9090 \
-  -audit "$audit" \
-  -signed-audit data/signed_audit.log \
-  -approvals "$approvals" \
-  -report "$report" \
-  -profiles "$profiles" \
-  -disagreements "$disagreements" \
-  -key "$keypair" \
-  -basic-user admin \
-  -basic-pass pass
+echo "Demo complete."
+echo "Report: $report"
+echo "Audit log: $audit"
