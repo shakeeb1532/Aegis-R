@@ -3,211 +3,732 @@
     "id": "TA0002.ENCODED_PS",
     "name": "Encoded PowerShell Execution",
     "requirements": [
-      {"type": "process_creation", "description": "Process creation observed"},
-      {"type": "encoded_powershell", "description": "Encoded PowerShell command line"},
-      {"type": "suspicious_commandline", "description": "Suspicious PowerShell flags or bypass"}
+      {
+        "type": "process_creation",
+        "description": "Process creation observed"
+      },
+      {
+        "type": "encoded_powershell",
+        "description": "Encoded PowerShell command line"
+      },
+      {
+        "type": "suspicious_commandline",
+        "description": "Suspicious PowerShell flags or bypass"
+      }
     ],
-    "preconds": ["initial_access"],
+    "preconds": [
+      "initial_access"
+    ],
     "explain": "Encoded PowerShell execution following initial access indicates hands-on-keyboard activity.",
     "mitre": {
       "tactic": "TA0002",
       "technique": "T1059.001",
       "subtechnique": "T1059.001",
-      "links": ["https://attack.mitre.org/techniques/T1059/001/"]
+      "links": [
+        "https://attack.mitre.org/techniques/T1059/001/"
+      ]
     },
     "provenance": {
       "author": "Aman",
       "version": "1.1",
-      "sources": ["expansion-pack-1"],
-      "reviewed_by": ["soc-lead"],
+      "sources": [
+        "expansion-pack-1"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
       "approved_at": "2026-02-12"
     },
-    "constraints": {"min_confidence": 0.6, "applies_to": ["endpoint", "windows", "corp"]},
-    "nist_csf": ["Detect"],
-    "kill_chain": ["Execution"]
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Execution"
+    ]
   },
   {
     "id": "TA0002.RUNDLL32_PROXY",
     "name": "Rundll32 Proxy Execution",
     "requirements": [
-      {"type": "process_creation", "description": "Process creation observed"},
-      {"type": "rundll32_execution", "description": "rundll32 executed"},
-      {"type": "network_connection", "description": "Network connection from rundll32"}
+      {
+        "type": "process_creation",
+        "description": "Process creation observed"
+      },
+      {
+        "type": "rundll32_execution",
+        "description": "rundll32 executed"
+      },
+      {
+        "type": "network_connection",
+        "description": "Network connection from rundll32"
+      }
     ],
-    "preconds": ["initial_access"],
+    "preconds": [
+      "initial_access"
+    ],
     "explain": "Rundll32 proxy execution with network activity after initial access suggests payload proxying.",
     "mitre": {
       "tactic": "TA0002",
       "technique": "T1218.011",
       "subtechnique": "T1218.011",
-      "links": ["https://attack.mitre.org/techniques/T1218/011/"]
+      "links": [
+        "https://attack.mitre.org/techniques/T1218/011/"
+      ]
     },
     "provenance": {
       "author": "Aman",
       "version": "1.1",
-      "sources": ["expansion-pack-1"],
-      "reviewed_by": ["soc-lead"],
+      "sources": [
+        "expansion-pack-1"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
       "approved_at": "2026-02-12"
     },
-    "constraints": {"min_confidence": 0.6, "applies_to": ["endpoint", "windows", "corp"]},
-    "nist_csf": ["Detect"],
-    "kill_chain": ["Execution"]
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Execution"
+    ]
   },
   {
     "id": "TA0002.MSHTA_PROXY",
     "name": "Mshta Script Proxy Execution",
     "requirements": [
-      {"type": "process_creation", "description": "Process creation observed"},
-      {"type": "mshta_execution", "description": "mshta executed"},
-      {"type": "remote_script", "description": "Remote script content invoked"}
+      {
+        "type": "process_creation",
+        "description": "Process creation observed"
+      },
+      {
+        "type": "mshta_execution",
+        "description": "mshta executed"
+      },
+      {
+        "type": "remote_script",
+        "description": "Remote script content invoked"
+      }
     ],
-    "preconds": ["initial_access"],
+    "preconds": [
+      "initial_access"
+    ],
     "explain": "Mshta executing remote scripts after initial access indicates script proxying.",
     "mitre": {
       "tactic": "TA0002",
       "technique": "T1218.005",
       "subtechnique": "T1218.005",
-      "links": ["https://attack.mitre.org/techniques/T1218/005/"]
+      "links": [
+        "https://attack.mitre.org/techniques/T1218/005/"
+      ]
     },
     "provenance": {
       "author": "Aman",
       "version": "1.1",
-      "sources": ["expansion-pack-1"],
-      "reviewed_by": ["soc-lead"],
+      "sources": [
+        "expansion-pack-1"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
       "approved_at": "2026-02-12"
     },
-    "constraints": {"min_confidence": 0.6, "applies_to": ["endpoint", "windows", "corp"]},
-    "nist_csf": ["Detect"],
-    "kill_chain": ["Execution"]
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Execution"
+    ]
   },
   {
     "id": "TA0003.WMI_PERSIST",
     "name": "WMI Event Subscription Persistence",
     "requirements": [
-      {"type": "wmi_event_subscription", "description": "WMI event subscription created"},
-      {"type": "script_execution", "description": "Script execution tied to WMI"}
+      {
+        "type": "wmi_event_subscription",
+        "description": "WMI event subscription created"
+      },
+      {
+        "type": "script_execution",
+        "description": "Script execution tied to WMI"
+      }
     ],
-    "preconds": ["initial_access"],
+    "preconds": [
+      "initial_access"
+    ],
     "explain": "WMI event subscriptions create stealthy persistence following initial access.",
     "mitre": {
       "tactic": "TA0003",
       "technique": "T1546.003",
       "subtechnique": "T1546.003",
-      "links": ["https://attack.mitre.org/techniques/T1546/003/"]
+      "links": [
+        "https://attack.mitre.org/techniques/T1546/003/"
+      ]
     },
     "provenance": {
       "author": "Aman",
       "version": "1.1",
-      "sources": ["expansion-pack-1"],
-      "reviewed_by": ["soc-lead"],
+      "sources": [
+        "expansion-pack-1"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
       "approved_at": "2026-02-12"
     },
-    "constraints": {"min_confidence": 0.6, "applies_to": ["endpoint", "windows", "corp"]},
-    "nist_csf": ["Detect"],
-    "kill_chain": ["Persistence"]
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Persistence"
+    ]
   },
   {
     "id": "TA0005.DEFENDER_DISABLED",
     "name": "Disable Microsoft Defender",
     "requirements": [
-      {"type": "defender_disabled", "description": "Defender disabled or tamper protection bypassed"},
-      {"type": "tamper_protection_bypass", "description": "Tamper protection bypass evidence"}
+      {
+        "type": "defender_disabled",
+        "description": "Defender disabled or tamper protection bypassed"
+      },
+      {
+        "type": "tamper_protection_bypass",
+        "description": "Tamper protection bypass evidence"
+      }
     ],
-    "preconds": ["privilege_escalation"],
+    "preconds": [
+      "privilege_escalation"
+    ],
     "explain": "Disabling security controls after privilege escalation indicates defense evasion.",
     "mitre": {
       "tactic": "TA0005",
       "technique": "T1562.001",
       "subtechnique": "T1562.001",
-      "links": ["https://attack.mitre.org/techniques/T1562/001/"]
+      "links": [
+        "https://attack.mitre.org/techniques/T1562/001/"
+      ]
     },
     "provenance": {
       "author": "Aman",
       "version": "1.1",
-      "sources": ["expansion-pack-1"],
-      "reviewed_by": ["soc-lead"],
+      "sources": [
+        "expansion-pack-1"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
       "approved_at": "2026-02-12"
     },
-    "constraints": {"min_confidence": 0.6, "applies_to": ["endpoint", "windows", "corp"]},
-    "nist_csf": ["Protect", "Detect"],
-    "kill_chain": ["Defense Evasion"]
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Protect",
+      "Detect"
+    ],
+    "kill_chain": [
+      "Defense Evasion"
+    ]
   },
   {
     "id": "TA0005.SEC_TOOL_UNINSTALL",
     "name": "Security Tool Uninstall",
     "requirements": [
-      {"type": "security_tool_uninstall", "description": "Security tool uninstalled"},
-      {"type": "service_stop", "description": "Security service stopped"}
+      {
+        "type": "security_tool_uninstall",
+        "description": "Security tool uninstalled"
+      },
+      {
+        "type": "service_stop",
+        "description": "Security service stopped"
+      }
     ],
-    "preconds": ["privilege_escalation"],
+    "preconds": [
+      "privilege_escalation"
+    ],
     "explain": "Uninstalling or stopping security tools indicates active defense evasion.",
     "mitre": {
       "tactic": "TA0005",
       "technique": "T1562.001",
       "subtechnique": "T1562.001",
-      "links": ["https://attack.mitre.org/techniques/T1562/001/"]
+      "links": [
+        "https://attack.mitre.org/techniques/T1562/001/"
+      ]
     },
     "provenance": {
       "author": "Aman",
       "version": "1.1",
-      "sources": ["expansion-pack-1"],
-      "reviewed_by": ["soc-lead"],
+      "sources": [
+        "expansion-pack-1"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
       "approved_at": "2026-02-12"
     },
-    "constraints": {"min_confidence": 0.6, "applies_to": ["endpoint", "windows", "corp"]},
-    "nist_csf": ["Protect", "Detect"],
-    "kill_chain": ["Defense Evasion"]
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Protect",
+      "Detect"
+    ],
+    "kill_chain": [
+      "Defense Evasion"
+    ]
   },
   {
     "id": "TA0005.LOGS_CLEARED",
     "name": "Clear Windows Event Logs",
     "requirements": [
-      {"type": "log_clear", "description": "Event logs cleared"},
-      {"type": "wevtutil_clear", "description": "wevtutil used to clear logs"}
+      {
+        "type": "log_clear",
+        "description": "Event logs cleared"
+      },
+      {
+        "type": "wevtutil_clear",
+        "description": "wevtutil used to clear logs"
+      }
     ],
-    "preconds": ["privilege_escalation"],
+    "preconds": [
+      "privilege_escalation"
+    ],
     "explain": "Clearing event logs after privilege escalation indicates defense evasion.",
     "mitre": {
       "tactic": "TA0005",
       "technique": "T1070.001",
       "subtechnique": "T1070.001",
-      "links": ["https://attack.mitre.org/techniques/T1070/001/"]
+      "links": [
+        "https://attack.mitre.org/techniques/T1070/001/"
+      ]
     },
     "provenance": {
       "author": "Aman",
       "version": "1.1",
-      "sources": ["expansion-pack-1"],
-      "reviewed_by": ["soc-lead"],
+      "sources": [
+        "expansion-pack-1"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
       "approved_at": "2026-02-12"
     },
-    "constraints": {"min_confidence": 0.6, "applies_to": ["endpoint", "windows", "corp"]},
-    "nist_csf": ["Detect"],
-    "kill_chain": ["Defense Evasion"]
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Defense Evasion"
+    ]
   },
   {
     "id": "TA0005.AUDIT_POLICY_TAMPER",
     "name": "Audit Policy Tampering",
     "requirements": [
-      {"type": "audit_policy_change", "description": "Audit policy modified"},
-      {"type": "sysmon_disabled", "description": "Sysmon or logging agent disabled"}
+      {
+        "type": "audit_policy_change",
+        "description": "Audit policy modified"
+      },
+      {
+        "type": "sysmon_disabled",
+        "description": "Sysmon or logging agent disabled"
+      }
     ],
-    "preconds": ["privilege_escalation"],
+    "preconds": [
+      "privilege_escalation"
+    ],
     "explain": "Audit policy changes and logging agent disablement indicate attempts to reduce visibility.",
     "mitre": {
       "tactic": "TA0005",
       "technique": "T1562.002",
       "subtechnique": "T1562.002",
-      "links": ["https://attack.mitre.org/techniques/T1562/002/"]
+      "links": [
+        "https://attack.mitre.org/techniques/T1562/002/"
+      ]
     },
     "provenance": {
       "author": "Aman",
       "version": "1.1",
-      "sources": ["expansion-pack-1"],
-      "reviewed_by": ["soc-lead"],
+      "sources": [
+        "expansion-pack-1"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
       "approved_at": "2026-02-12"
     },
-    "constraints": {"min_confidence": 0.6, "applies_to": ["endpoint", "windows", "corp"]},
-    "nist_csf": ["Detect"],
-    "kill_chain": ["Defense Evasion"]
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Defense Evasion"
+    ]
+  },
+  {
+    "id": "TA0004.IAM_ADMIN_ATTACH",
+    "name": "IAM Admin Policy Attached",
+    "requirements": [
+      {
+        "type": "iam_policy_attach",
+        "description": "Policy attached to identity"
+      },
+      {
+        "type": "admin_policy_attached",
+        "description": "Administrator policy attached"
+      }
+    ],
+    "preconds": [
+      "identity_compromise"
+    ],
+    "explain": "Attaching administrator policies to an identity indicates privilege escalation in cloud IAM.",
+    "mitre": {
+      "tactic": "TA0004",
+      "technique": "T1098",
+      "subtechnique": "T1098.003",
+      "links": [
+        "https://attack.mitre.org/techniques/T1098/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-2"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "cloud",
+        "identity",
+        "aws",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Privilege Escalation"
+    ]
+  },
+  {
+    "id": "TA0004.IAM_ROLE_TRUST_CHANGE",
+    "name": "IAM Role Trust Policy Modified",
+    "requirements": [
+      {
+        "type": "role_trust_modify",
+        "description": "Role trust policy modified"
+      },
+      {
+        "type": "new_trusted_principal",
+        "description": "New trusted principal added"
+      }
+    ],
+    "preconds": [
+      "identity_compromise"
+    ],
+    "explain": "Modifying role trust relationships can enable cross-account or external access.",
+    "mitre": {
+      "tactic": "TA0004",
+      "technique": "T1098",
+      "subtechnique": "T1098.003",
+      "links": [
+        "https://attack.mitre.org/techniques/T1098/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-2"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "cloud",
+        "identity",
+        "aws",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Privilege Escalation"
+    ]
+  },
+  {
+    "id": "TA0001.IAM_USER_CREATED",
+    "name": "IAM User Created",
+    "requirements": [
+      {
+        "type": "iam_user_created",
+        "description": "New IAM user created"
+      },
+      {
+        "type": "access_key_created",
+        "description": "Access key created for new user"
+      }
+    ],
+    "preconds": [
+      "identity_compromise"
+    ],
+    "explain": "Creating a new IAM user with access keys can establish persistent access.",
+    "mitre": {
+      "tactic": "TA0001",
+      "technique": "T1136",
+      "subtechnique": "T1136.003",
+      "links": [
+        "https://attack.mitre.org/techniques/T1136/003/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-2"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "cloud",
+        "identity",
+        "aws",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Initial Access"
+    ]
+  },
+  {
+    "id": "TA0006.ACCESS_KEY_ANOMALY",
+    "name": "Access Key Created and Used Anomalously",
+    "requirements": [
+      {
+        "type": "access_key_created",
+        "description": "New access key created"
+      },
+      {
+        "type": "access_key_used_new_ip",
+        "description": "Access key used from new IP/ASN"
+      }
+    ],
+    "preconds": [
+      "identity_compromise"
+    ],
+    "explain": "New access keys used from anomalous IPs indicate compromised cloud credentials.",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1078",
+      "subtechnique": "T1078.004",
+      "links": [
+        "https://attack.mitre.org/techniques/T1078/004/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-2"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "cloud",
+        "identity",
+        "aws",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Credential Access"
+    ]
+  },
+  {
+    "id": "TA0005.CLOUDTRAIL_DISABLED",
+    "name": "CloudTrail Disabled",
+    "requirements": [
+      {
+        "type": "cloudtrail_stop",
+        "description": "CloudTrail stopped"
+      },
+      {
+        "type": "cloudtrail_delete",
+        "description": "CloudTrail deleted"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Disabling CloudTrail reduces detection and indicates defense evasion.",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1562.008",
+      "subtechnique": "T1562.008",
+      "links": [
+        "https://attack.mitre.org/techniques/T1562/008/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-2"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "cloud",
+        "aws",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Defense Evasion"
+    ]
+  },
+  {
+    "id": "TA0005.GUARDDUTY_DISABLED",
+    "name": "GuardDuty Disabled",
+    "requirements": [
+      {
+        "type": "guardduty_disable",
+        "description": "GuardDuty disabled"
+      },
+      {
+        "type": "security_service_disable",
+        "description": "Cloud security service disabled"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Disabling GuardDuty or cloud security services indicates defense evasion.",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1562.001",
+      "subtechnique": "T1562.001",
+      "links": [
+        "https://attack.mitre.org/techniques/T1562/001/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-2"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "cloud",
+        "aws",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Defense Evasion"
+    ]
   }
 ]
