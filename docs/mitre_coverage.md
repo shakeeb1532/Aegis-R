@@ -15,6 +15,8 @@ The report shows:
 - total rules
 - rules with MITRE metadata
 - tactics covered and technique counts
+- environment gaps (missing tactics/techniques)
+- rules excluded by environment filter
 
 Use this report to track coverage expansion and to document coverage in audits.
 

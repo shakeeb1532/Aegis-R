@@ -369,6 +369,31 @@ func renderCoverageMarkdown(report logic.MitreCoverageReport) string {
 		}
 		fmt.Fprintln(buf, "")
 	}
+	if len(report.Gaps.TacticsMissing) > 0 || len(report.Gaps.TechniquesMissing) > 0 {
+		fmt.Fprintf(buf, "## Coverage Gaps (Environment)\n")
+		if len(report.Gaps.TacticsMissing) > 0 {
+			fmt.Fprintf(buf, "### Missing Tactics\n")
+			for _, tactic := range report.Gaps.TacticsMissing {
+				fmt.Fprintf(buf, "- %s\n", tactic)
+			}
+			fmt.Fprintln(buf, "")
+		}
+		if len(report.Gaps.TechniquesMissing) > 0 {
+			fmt.Fprintf(buf, "### Missing Techniques\n")
+			tactics := make([]string, 0, len(report.Gaps.TechniquesMissing))
+			for tactic := range report.Gaps.TechniquesMissing {
+				tactics = append(tactics, tactic)
+			}
+			sort.Strings(tactics)
+			for _, tactic := range tactics {
+				fmt.Fprintf(buf, "- %s:\n", tactic)
+				for _, tech := range report.Gaps.TechniquesMissing[tactic] {
+					fmt.Fprintf(buf, "  - %s\n", tech)
+				}
+			}
+			fmt.Fprintln(buf, "")
+		}
+	}
 	fmt.Fprintf(buf, "## Tactics\n")
 	for _, t := range report.Tactics {
 		fmt.Fprintf(buf, "- %s: %d rules, %d techniques\n", t.Tactic, t.RuleCount, len(t.Techniques))
@@ -1429,6 +1454,26 @@ func handleSystem(args []string) {
 		}
 		outln(fmt.Sprintf("Rules with MITRE: %d", report.RulesWithMitre))
 		outln(fmt.Sprintf("Rules missing MITRE: %d", len(report.RulesMissingMeta)))
+		if len(report.Gaps.TacticsMissing) > 0 {
+			outln("Missing tactics (environment):")
+			for _, tactic := range report.Gaps.TacticsMissing {
+				outln("- " + tactic)
+			}
+		}
+		if len(report.Gaps.TechniquesMissing) > 0 {
+			outln("Missing techniques (environment):")
+			tactics := make([]string, 0, len(report.Gaps.TechniquesMissing))
+			for tactic := range report.Gaps.TechniquesMissing {
+				tactics = append(tactics, tactic)
+			}
+			sort.Strings(tactics)
+			for _, tactic := range tactics {
+				outln("- " + tactic)
+				for _, tech := range report.Gaps.TechniquesMissing[tactic] {
+					outln("  - " + tech)
+				}
+			}
+		}
 		if len(report.ExcludedRules) > 0 {
 			outln("Excluded by environment filter:")
 			for _, id := range report.ExcludedRules {
