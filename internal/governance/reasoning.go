@@ -16,13 +16,15 @@ type AnalystProfile struct {
 }
 
 type ReasoningConstraint struct {
-	ID              string   `json:"id"`
-	RuleID          string   `json:"rule_id"`
-	RequireEvidence []string `json:"require_evidence"`
-	ForbidEvidence  []string `json:"forbid_evidence"`
-	Author          string   `json:"author"`
-	CreatedAt       string   `json:"created_at"`
-	Notes           string   `json:"notes"`
+	ID               string   `json:"id"`
+	RuleID           string   `json:"rule_id"`
+	RequireEvidence  []string `json:"require_evidence"`
+	ForbidEvidence   []string `json:"forbid_evidence"`
+	PolicyImpossible bool     `json:"policy_impossible,omitempty"`
+	PolicyReason     string   `json:"policy_reason,omitempty"`
+	Author           string   `json:"author"`
+	CreatedAt        string   `json:"created_at"`
+	Notes            string   `json:"notes"`
 }
 
 type Disagreement struct {

@@ -31,6 +31,9 @@ type RuleResult struct {
 	RuleID             string                `json:"rule_id"`
 	Name               string                `json:"name"`
 	Feasible           bool                  `json:"feasible"`
+	Conflicted         bool                  `json:"conflicted,omitempty"`
+	PolicyImpossible   bool                  `json:"policy_impossible,omitempty"`
+	PolicyReason       string                `json:"policy_reason,omitempty"`
 	PrecondOK          bool                  `json:"precond_ok"`
 	Confidence         float64               `json:"confidence"`
 	MissingEvidence    []EvidenceRequirement `json:"missing_evidence"`

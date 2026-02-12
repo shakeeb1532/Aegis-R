@@ -259,9 +259,17 @@ func outJSON(v interface{}) {
 func verdictFromResults(results []model.RuleResult) string {
 	hasMissing := false
 	hasFeasible := false
+	hasConflicted := false
+	hasPolicyImpossible := false
 	for _, r := range results {
 		if r.Feasible {
 			hasFeasible = true
+		}
+		if r.Conflicted {
+			hasConflicted = true
+		}
+		if r.PolicyImpossible {
+			hasPolicyImpossible = true
 		}
 		if len(r.MissingEvidence) > 0 {
 			hasMissing = true
@@ -272,6 +280,12 @@ func verdictFromResults(results []model.RuleResult) string {
 	}
 	if hasMissing {
 		return "INCOMPLETE"
+	}
+	if hasConflicted {
+		return "CONFLICTED"
+	}
+	if hasPolicyImpossible {
+		return "IMPOSSIBLE"
 	}
 	return "IMPOSSIBLE"
 }
@@ -1101,6 +1115,12 @@ func printConfidenceModel(rep model.ReasoningReport) {
 		outln("Confidence note: " + rep.ConfidenceNote)
 	}
 }
+
+// Policy constraint helper for marking impossible paths.
+// Example:
+// [
+//   {"id":"p1","rule_id":"TA0008.LATERAL","policy_impossible":true,"policy_reason":"HR systems cannot reach prod DB"}
+// ]
 
 func handleGovern(args []string) {
 	if len(args) == 0 {

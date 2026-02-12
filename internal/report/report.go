@@ -32,7 +32,11 @@ func RenderCLI(rep model.ReasoningReport) string {
 
 	for _, r := range rep.Results {
 		status := "NOT FEASIBLE"
-		if r.Feasible {
+		if r.PolicyImpossible {
+			status = "IMPOSSIBLE (POLICY)"
+		} else if r.Conflicted {
+			status = "CONFLICTED"
+		} else if r.Feasible {
 			status = "FEASIBLE"
 		}
 		fmt.Fprintf(buf, "- [%s] %s (%s, %.2f)\n", status, r.Name, r.RuleID, r.Confidence)

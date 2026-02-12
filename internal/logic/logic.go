@@ -584,7 +584,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		}
 		gapNarrative := ""
 		if contradiction {
-			gapNarrative = "Contradictory evidence observed that makes this attack impossible."
+			gapNarrative = "Conflicted: evidence contradicts a required condition for this attack path."
 		} else if missingContext {
 			gapNarrative = "Required context is missing to evaluate this rule; treat as incomplete until context is provided."
 		} else if len(missing) > 0 {
@@ -597,6 +597,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 			RuleID:             rule.ID,
 			Name:               name,
 			Feasible:           feasible,
+			Conflicted:         contradiction,
 			PrecondOK:          precondOK,
 			Confidence:         confidence,
 			MissingEvidence:    missing,
@@ -632,7 +633,7 @@ func reasonCode(precondOK bool, missing []model.EvidenceRequirement, eventCount 
 
 func reasonCodeWithContradiction(precondOK bool, missing []model.EvidenceRequirement, eventCount int, contradiction bool, missingContext bool) string {
 	if contradiction {
-		return "contradiction"
+		return "conflicted"
 	}
 	if missingContext {
 		return "environment_unknown"
@@ -642,12 +643,12 @@ func reasonCodeWithContradiction(precondOK bool, missing []model.EvidenceRequire
 
 func hasContradiction(ruleID string, index map[string][]model.Event) bool {
 	contradictions := map[string][]string{
-		"TA0006.VALID_ACCOUNTS": {"access_denied"},
+		"TA0006.VALID_ACCOUNTS": {"access_denied", "login_denied", "account_locked"},
 		"TA0006.BRUTE_FORCE":    {"mfa_success"},
-		"TA0010.BULK_EXFIL":     {"access_denied"},
-		"TA0010.EXFIL":          {"access_denied"},
-		"TA0008.LATERAL":        {"network_logon_failure"},
-		"TA0004.PRIVESCA":       {"privilege_escalation_blocked"},
+		"TA0010.BULK_EXFIL":     {"access_denied", "egress_blocked"},
+		"TA0010.EXFIL":          {"access_denied", "egress_blocked"},
+		"TA0008.LATERAL":        {"network_logon_failure", "admin_protocol_denied"},
+		"TA0004.PRIVESCA":       {"privilege_escalation_blocked", "admin_action_denied"},
 	}
 	types, ok := contradictions[ruleID]
 	if !ok {
@@ -718,6 +719,19 @@ func ApplyConstraints(rep *model.ReasoningReport, constraints []governance.Reaso
 		r := &rep.Results[i]
 		overridden := false
 		for _, c := range byRule[r.RuleID] {
+			if c.PolicyImpossible {
+				r.PolicyImpossible = true
+				r.PolicyReason = c.PolicyReason
+				r.Feasible = false
+				r.MissingEvidence = nil
+				r.ReasonCode = "policy_impossible"
+				if c.PolicyReason != "" {
+					r.Explanation += " Policy impossible: " + c.PolicyReason
+				} else {
+					r.Explanation += " Policy impossible by governance constraint."
+				}
+				overridden = true
+			}
 			for _, req := range c.RequireEvidence {
 				found := false
 				for _, ev := range r.SupportingEventIDs {
@@ -743,7 +757,9 @@ func ApplyConstraints(rep *model.ReasoningReport, constraints []governance.Reaso
 			}
 		}
 		if overridden {
-			r.ReasonCode = "policy_override"
+			if r.ReasonCode == "" {
+				r.ReasonCode = "policy_override"
+			}
 		}
 	}
 }

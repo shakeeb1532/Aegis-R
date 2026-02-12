@@ -225,6 +225,12 @@ func applyDecisionCacheAndThreads(rep *model.ReasoningReport, events []model.Eve
 }
 
 func decisionLabel(r *model.RuleResult, host string, principal string) (string, string) {
+	if r.PolicyImpossible {
+		return "suppress", "policy_impossible"
+	}
+	if r.Conflicted {
+		return "keep", "conflicted"
+	}
 	if r.Feasible {
 		if host == "" && principal == "" {
 			return "escalate", "environment_unknown"
@@ -327,13 +333,19 @@ func cacheKey(host string, principal string, ruleID string) string {
 }
 
 func verdictForRule(r *model.RuleResult) string {
+	if r.PolicyImpossible {
+		return "impossible"
+	}
+	if r.Conflicted {
+		return "conflicted"
+	}
 	if r.Feasible {
 		return "confirmed"
 	}
 	if len(r.MissingEvidence) > 0 {
 		return "incomplete"
 	}
-	return "impossible"
+	return "incomplete"
 }
 
 func upsertThread(st *state.AttackState, host string, principal string, when time.Time, ruleID string, confidence float64, reason string) string {
