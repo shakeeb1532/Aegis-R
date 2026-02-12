@@ -422,6 +422,18 @@ go run ./cmd/aman ingest secure-rotate -in data/ingest_keys.json
 ```
 `/ingest-health` reports HMAC/decrypt/schema failure rates for the secure pipeline.
 
+### Rule Expansion Packs
+You can keep the pilot rules stable and load optional expansion packs.
+```bash
+go run ./cmd/aman assess \
+  -in events.json \
+  -env data/env.json \
+  -state data/state.json \
+  -audit data/audit.log \
+  -rules data/rules.json \
+  -rules-extra data/rules_expansion.json
+```
+
 ### Zero-Trust
 - `init-scan` — strict install-time baseline creation
 - `scan` — compare current system to baseline

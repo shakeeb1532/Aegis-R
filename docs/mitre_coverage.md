@@ -8,6 +8,7 @@ go run ./cmd/aman system coverage -rules data/rules.json
 go run ./cmd/aman system coverage -rules data/rules.json --json
 go run ./cmd/aman system coverage -rules data/rules.json -env data/env.json
 go run ./cmd/aman system coverage -rules data/rules.json -env data/env.json -out docs/coverage_env.md
+go run ./cmd/aman system coverage -rules data/rules.json -rules-extra data/rules_expansion.json -env data/env.json
 ```
 
 ## Output

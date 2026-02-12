@@ -162,8 +162,8 @@ func usage() {
 	fmt.Println("  aman audit <verb> [flags]")
 	fmt.Println("  aman system <verb> [flags]")
 	fmt.Println("  generate -out events.json -count 60 -seed 42")
-	fmt.Println("  reason -in events.json [-approval approval.json] [-require-okta] [-rules rules.json] [-format cli|json] [--explain --explain-ack I_ACKNOWLEDGE_LLM_RISK] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n]")
-	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log [-rules rules.json] [-approval approval.json] [-policy policy.json] [-constraints data/constraints.json] [-config ops.json] [-format cli|json] [-out report.json|report.json.lz4] [-baseline data/zero_trust_baseline.json] [--explain --explain-ack I_ACKNOWLEDGE_LLM_RISK] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n]")
+	fmt.Println("  reason -in events.json [-approval approval.json] [-require-okta] [-rules rules.json] [-rules-extra rules_expansion.json] [-format cli|json] [--explain --explain-ack I_ACKNOWLEDGE_LLM_RISK] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n]")
+	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log [-rules rules.json] [-rules-extra rules_expansion.json] [-approval approval.json] [-policy policy.json] [-constraints data/constraints.json] [-config ops.json] [-format cli|json] [-out report.json|report.json.lz4] [-baseline data/zero_trust_baseline.json] [--explain --explain-ack I_ACKNOWLEDGE_LLM_RISK] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n]")
 	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log -siem siem.json (optional)")
 	fmt.Println("  keys -out keypair.json")
 	fmt.Println("  approve -key keypair.json -id change-1 -ttl 10m -okta true -signer alice -role approver -out approval.json")
@@ -171,7 +171,7 @@ func usage() {
 	fmt.Println("  verify -approval approval.json [-require-okta]")
 	fmt.Println("  audit-verify -audit audit.log")
 	fmt.Println("  audit-sign -audit audit.log -out signed_audit.log -signer soc-admin")
-	fmt.Println("  generate-scenarios -out scenarios.json [-rules rules.json]")
+	fmt.Println("  generate-scenarios -out scenarios.json [-rules rules.json] [-rules-extra rules_expansion.json]")
 	fmt.Println("  evaluate -scenarios scenarios.json [-rules rules.json] [-format cli|json|md] [-out report.md]")
 	fmt.Println("  ingest-http -addr :8080 [-secure-keyring data/ingest_keys.json] (schema: ecs|elastic_ecs|ocsf|cim|splunk_cim_auth|splunk_cim_net|mde)")
 	fmt.Println("  ingest secure-pack -in events.json -out events.aman --keyring data/ingest_keys.json [-compress auto|none|lz4] [-policy adaptive] [-risk medium]")
@@ -832,6 +832,8 @@ func handleReasonV2(args []string) {
 	case "event":
 		fs := flag.NewFlagSet("reason event", flag.ExitOnError)
 		in := fs.String("in", "", "events file")
+		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
 		adminApproval := fs.String("admin-approval", "", "admin approval for gated rule packs")
 		explainOn := fs.Bool("explain", false, "add explanation layer")
 		explainAck := fs.String("explain-ack", "", "acknowledge llm output risk")
@@ -866,7 +868,7 @@ func handleReasonV2(args []string) {
 		if err != nil {
 			fatal(err)
 		}
-		rules, err := logic.LoadRules("")
+		rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 		if err != nil {
 			fatal(err)
 		}
@@ -943,6 +945,8 @@ func handleReasonV2(args []string) {
 		fs := flag.NewFlagSet("reason host", flag.ExitOnError)
 		in := fs.String("in", "", "events file")
 		host := fs.String("host", "", "host id")
+		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
 		adminApproval := fs.String("admin-approval", "", "admin approval for gated rule packs")
 		explainOn := fs.Bool("explain", false, "add explanation layer")
 		explainAck := fs.String("explain-ack", "", "acknowledge llm output risk")
@@ -983,7 +987,7 @@ func handleReasonV2(args []string) {
 				filtered = append(filtered, e)
 			}
 		}
-		rules, err := logic.LoadRules("")
+		rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 		if err != nil {
 			fatal(err)
 		}
@@ -1418,12 +1422,13 @@ func handleSystem(args []string) {
 	case "coverage":
 		fs := flag.NewFlagSet("system coverage", flag.ExitOnError)
 		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
 		envPath := fs.String("env", "", "environment json (optional)")
 		out := fs.String("out", "", "output file (optional)")
 		if err := fs.Parse(args[1:]); err != nil {
 			fatal(err)
 		}
-		rules, err := logic.LoadRules(*rulesPath)
+		rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 		if err != nil {
 			fatal(err)
 		}
@@ -1500,11 +1505,12 @@ func handleSystem(args []string) {
 	case "nist":
 		fs := flag.NewFlagSet("system nist", flag.ExitOnError)
 		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
 		out := fs.String("out", "", "output file (optional)")
 		if err := fs.Parse(args[1:]); err != nil {
 			fatal(err)
 		}
-		rules, err := logic.LoadRules(*rulesPath)
+		rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 		if err != nil {
 			fatal(err)
 		}
@@ -1532,11 +1538,12 @@ func handleSystem(args []string) {
 	case "killchain":
 		fs := flag.NewFlagSet("system killchain", flag.ExitOnError)
 		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
 		out := fs.String("out", "", "output file (optional)")
 		if err := fs.Parse(args[1:]); err != nil {
 			fatal(err)
 		}
-		rules, err := logic.LoadRules(*rulesPath)
+		rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 		if err != nil {
 			fatal(err)
 		}
@@ -1653,6 +1660,7 @@ func handleReason(args []string) {
 	adminApproval := fs.String("admin-approval", "", "admin approval for gated rule packs")
 	requireOkta := fs.Bool("require-okta", true, "require okta verified approvals")
 	rulesPath := fs.String("rules", "", "rules json (optional)")
+	rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
 	format := fs.String("format", "cli", "output format: cli or json")
 	if err := fs.Parse(args); err != nil {
 		fatal(err)
@@ -1665,7 +1673,7 @@ func handleReason(args []string) {
 	var events []model.Event
 	readJSON(*in, &events)
 
-	rules, err := logic.LoadRules(*rulesPath)
+	rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 	if err != nil {
 		fatal(err)
 	}
@@ -1710,6 +1718,7 @@ func handleAssess(args []string) {
 	policyPath := fs.String("policy", "", "governance policy json (optional)")
 	constraintsPath := fs.String("constraints", "", "reasoning constraints json (optional)")
 	rulesPath := fs.String("rules", "", "rules json (optional)")
+	rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
 	format := fs.String("format", "json", "output format: cli or json")
 	outPath := fs.String("out", "", "output file (optional)")
 	configPath := fs.String("config", "", "ops config json (optional)")
@@ -1740,7 +1749,7 @@ func handleAssess(args []string) {
 	var events []model.Event
 	readJSON(*in, &events)
 
-	rules, err := logic.LoadRules(*rulesPath)
+	rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 	if err != nil {
 		fatal(err)
 	}
@@ -2069,11 +2078,12 @@ func handleGenerateScenarios(args []string) {
 	fs := flag.NewFlagSet("generate-scenarios", flag.ExitOnError)
 	out := fs.String("out", "scenarios.json", "output scenarios file")
 	rulesPath := fs.String("rules", "", "rules json (optional)")
+	rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
 	if err := fs.Parse(args); err != nil {
 		fatal(err)
 	}
 
-	rules, err := logic.LoadRules(*rulesPath)
+	rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 	if err != nil {
 		fatal(err)
 	}
@@ -2088,6 +2098,7 @@ func handleEvaluate(args []string) {
 	fs := flag.NewFlagSet("evaluate", flag.ExitOnError)
 	scenariosPath := fs.String("scenarios", "", "scenarios json")
 	rulesPath := fs.String("rules", "", "rules json (optional)")
+	rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
 	format := fs.String("format", "json", "output format: cli, json, or md")
 	outPath := fs.String("out", "", "output file (optional)")
 	if err := fs.Parse(args); err != nil {
@@ -2098,7 +2109,7 @@ func handleEvaluate(args []string) {
 		fatal(errors.New("-scenarios is required"))
 	}
 
-	rules, err := logic.LoadRules(*rulesPath)
+	rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 	if err != nil {
 		fatal(err)
 	}

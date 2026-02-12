@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-02-12
+### Added
+- Expansion rule pack support (`data/rules_expansion.json`) for optional coverage growth.
+- CLI support for `-rules-extra` across assess/reason/evaluate/coverage commands.
+- MITRE environment gap reporting in coverage output.
+
 ## 2026-02-11
 ### Added
 - Optional explanation layer (local + LLM endpoint) with suggested steps (CLI/JSON).

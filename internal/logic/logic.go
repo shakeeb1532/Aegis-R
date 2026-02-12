@@ -427,6 +427,43 @@ func LoadRules(path string) ([]Rule, error) {
 	return rules, nil
 }
 
+func LoadRulesCombined(basePath string, extraPath string) ([]Rule, error) {
+	base, err := LoadRules(basePath)
+	if err != nil {
+		return nil, err
+	}
+	if extraPath == "" {
+		return base, nil
+	}
+	extra, err := LoadRules(extraPath)
+	if err != nil {
+		return nil, err
+	}
+	seen := map[string]bool{}
+	merged := make([]Rule, 0, len(base)+len(extra))
+	for _, r := range base {
+		if r.ID == "" {
+			return nil, os.ErrInvalid
+		}
+		seen[r.ID] = true
+		merged = append(merged, r)
+	}
+	for _, r := range extra {
+		if r.ID == "" {
+			return nil, os.ErrInvalid
+		}
+		if seen[r.ID] {
+			return nil, os.ErrInvalid
+		}
+		seen[r.ID] = true
+		merged = append(merged, r)
+	}
+	if err := ValidateRules(merged); err != nil {
+		return nil, err
+	}
+	return merged, nil
+}
+
 func ValidateRules(rules []Rule) error {
 	seen := map[string]bool{}
 	for _, r := range rules {
