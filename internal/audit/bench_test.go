@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"aegisr/internal/compress"
+	"aman/internal/compress"
 )
 
 func sampleArtifact() Artifact {

@@ -6,12 +6,12 @@ import (
 	"strings"
 	"time"
 
-	"aegisr/internal/env"
-	"aegisr/internal/logic"
-	"aegisr/internal/model"
-	"aegisr/internal/ops"
-	"aegisr/internal/progression"
-	"aegisr/internal/state"
+	"aman/internal/env"
+	"aman/internal/logic"
+	"aman/internal/model"
+	"aman/internal/ops"
+	"aman/internal/progression"
+	"aman/internal/state"
 )
 
 type Output struct {

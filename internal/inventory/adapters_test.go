@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"aegisr/internal/testutil"
+	"aman/internal/testutil"
 )
 
 func TestAdapterConfigLoad(t *testing.T) {

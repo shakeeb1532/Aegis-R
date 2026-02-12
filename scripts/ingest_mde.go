@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"aegisr/internal/integration"
-	"aegisr/internal/ops"
+	"aman/internal/integration"
+	"aman/internal/ops"
 )
 
 func main() {

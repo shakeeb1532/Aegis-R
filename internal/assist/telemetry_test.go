@@ -3,7 +3,7 @@ package assist
 import (
 	"testing"
 
-	"aegisr/internal/model"
+	"aman/internal/model"
 )
 
 func TestRecommendTelemetry(t *testing.T) {

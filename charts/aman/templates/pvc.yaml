@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "aegisr.fullname" . }}-pvc
+  name: {{ include "aman.fullname" . }}-pvc
   namespace: {{ .Values.namespace }}
 spec:
   accessModes:

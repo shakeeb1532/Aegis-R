@@ -3,7 +3,7 @@ package logic
 import (
 	"testing"
 
-	"aegisr/internal/model"
+	"aman/internal/model"
 )
 
 func TestValidateRules(t *testing.T) {

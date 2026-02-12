@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "aegisr.fullname" . }}
+  name: {{ include "aman.fullname" . }}
   namespace: {{ .Values.namespace }}
   annotations:
 {{ toYaml .Values.ingress.annotations | indent 4 }}
@@ -22,7 +22,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ include "aegisr.fullname" . }}
+                name: {{ include "aman.fullname" . }}
                 port:
                   number: {{ .Values.ui.port }}
   {{- if .Values.ingress.tls.enabled }}

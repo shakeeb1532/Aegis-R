@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"aegisr/internal/testutil"
+	"aman/internal/testutil"
 )
 
 func readFixture(t *testing.T, parts ...string) []byte {

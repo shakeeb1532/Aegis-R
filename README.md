@@ -1,8 +1,8 @@
-# Aegis-R
+# Aman
 
 License: Apache-2.0
 
-Aegis-R is a human-governed security reasoning system that evaluates causal feasibility, maintains attack progression state, and produces audit-ready, tamper-evident explanations. It focuses on reducing false positives by eliminating impossible attack paths while preserving human authority and compliance.
+Aman is a human-governed security reasoning system that evaluates causal feasibility, maintains attack progression state, and produces audit-ready, tamper-evident explanations. It focuses on reducing false positives by eliminating impossible attack paths while preserving human authority and compliance.
 
 ## What It Does
 - Determines whether a security event is logically possible in your environment.
@@ -104,7 +104,7 @@ The UI is designed to connect to a dedicated API service in production (SaaS mod
 
 ### Local UI API (Demo)
 ```bash
-go run ./cmd/aegisr serve-api \
+go run ./cmd/aman serve-api \
   -addr :8081 \
   -report data/report.json \
   -audit data/audit.log \
@@ -192,37 +192,37 @@ brew install go
 
 ### 2) Initialize Zero-Trust Baseline (Required)
 ```bash
-go run ./cmd/aegisr init-scan \
+go run ./cmd/aman init-scan \
   -baseline data/zero_trust_baseline.json \
   -out init_scan_report.json
 ```
 
 ### 3) Generate Synthetic Events
 ```bash
-go run ./cmd/aegisr generate -out events.json -count 80
+go run ./cmd/aman generate -out events.json -count 80
 ```
 
 ### 4) Run Reasoning (CLI)
 ```bash
-go run ./cmd/aegisr reason -in events.json -rules data/rules.json -format cli
+go run ./cmd/aman reason -in events.json -rules data/rules.json -format cli
 ```
 
 Add an explanation layer (optional, does not change verdicts):
 ```bash
-go run ./cmd/aegisr reason -in events.json -rules data/rules.json -format cli \
+go run ./cmd/aman reason -in events.json -rules data/rules.json -format cli \
   --explain --explain-ack I_ACKNOWLEDGE_LLM_RISK
 ```
 
 Add ML assist (optional, advisory):
 ```bash
-go run ./cmd/aegisr reason -in events.json -rules data/rules.json -format cli \
+go run ./cmd/aman reason -in events.json -rules data/rules.json -format cli \
   --ml-assist \
   --ml-history data/incident_history.json
 ```
 
 ### 5) Run Full Assessment (JSON)
 ```bash
-go run ./cmd/aegisr assess \
+go run ./cmd/aman assess \
   -in events.json \
   -env data/env.json \
   -state state.json \
@@ -234,7 +234,7 @@ go run ./cmd/aegisr assess \
 
 Write a compressed report:
 ```bash
-go run ./cmd/aegisr assess \
+go run ./cmd/aman assess \
   -in events.json \
   -env data/env.json \
   -state state.json \
@@ -246,9 +246,9 @@ go run ./cmd/aegisr assess \
 ```
 
 ### Optional: Compressed State Snapshots
-If the state path ends with `.lz4`, Aegis-R will compress/decompress snapshots using LZ4 (requires a C compiler/CGO).
+If the state path ends with `.lz4`, Aman will compress/decompress snapshots using LZ4 (requires a C compiler/CGO).
 ```bash
-go run ./cmd/aegisr assess \
+go run ./cmd/aman assess \
   -in events.json \
   -env data/env.json \
   -state state.json.lz4 \
@@ -258,7 +258,7 @@ go run ./cmd/aegisr assess \
 
 Add an explanation layer (optional, does not change verdicts):
 ```bash
-go run ./cmd/aegisr assess \
+go run ./cmd/aman assess \
   -in events.json \
   -env data/env.json \
   -state state.json \
@@ -270,7 +270,7 @@ go run ./cmd/aegisr assess \
 
 Add ML assist (optional, advisory):
 ```bash
-go run ./cmd/aegisr assess \
+go run ./cmd/aman assess \
   -in events.json \
   -env data/env.json \
   -state state.json \
@@ -299,11 +299,11 @@ docker compose up --build
 
 ## Zero-Trust Initialization (Poison Resistance)
 
-Aegis-R requires a **strict initialization scan** on first install. The baseline is immutable unless an **admin** explicitly overrides.
+Aman requires a **strict initialization scan** on first install. The baseline is immutable unless an **admin** explicitly overrides.
 
 ### Run Init Scan
 ```bash
-go run ./cmd/aegisr init-scan \
+go run ./cmd/aman init-scan \
   -baseline data/zero_trust_baseline.json \
   -out init_scan_report.json
 ```
@@ -314,7 +314,7 @@ go run ./cmd/aegisr init-scan \
 
 ### Override Policy
 - Overrides require a **signed admin approval**.
-- Aegis-R will display **explicit warnings** and a liability waiver if a baseline issue is overridden.
+- Aman will display **explicit warnings** and a liability waiver if a baseline issue is overridden.
 
 ---
 
@@ -341,19 +341,19 @@ go run ./cmd/aegisr init-scan \
 
 Audit logs are JSONL by default. To enable compression, use a `.lz4` audit path and export when needed:
 ```bash
-go run ./cmd/aegisr assess \
+go run ./cmd/aman assess \
   -in events.json \
   -env data/env.json \
   -state state.json \
   -audit audit.log.lz4 \
   -format json
 
-go run ./cmd/aegisr audit export -audit audit.log.lz4 -out audit.log
+go run ./cmd/aman audit export -audit audit.log.lz4 -out audit.log
 ```
 
 SIEM export supports `.lz4`:
 ```bash
-go run ./cmd/aegisr assess \
+go run ./cmd/aman assess \
   -in events.json \
   -env data/env.json \
   -state state.json \
@@ -364,7 +364,7 @@ go run ./cmd/aegisr assess \
 
 Report output supports `.lz4` via `-out`:
 ```bash
-go run ./cmd/aegisr assess \
+go run ./cmd/aman assess \
   -in events.json \
   -env data/env.json \
   -state state.json \
@@ -396,29 +396,29 @@ go run ./cmd/aegisr assess \
 Secure ingest (phase 1, DCF-inspired):
 ```bash
 # Quickstart (keyring + secure HTTP ingest)
-go run ./cmd/aegisr ingest secure-init -out data/ingest_keys.json
-go run ./cmd/aegisr ingest http -addr :8080 -secure-keyring data/ingest_keys.json
+go run ./cmd/aman ingest secure-init -out data/ingest_keys.json
+go run ./cmd/aman ingest http -addr :8080 -secure-keyring data/ingest_keys.json
 
 # Pack events into a secure envelope
-go run ./cmd/aegisr ingest secure-pack \
+go run ./cmd/aman ingest secure-pack \
   -in events.json \
-  -out events.aegis \
+  -out events.aman \
   -keyring data/ingest_keys.json \
   -compress auto \
   -policy adaptive \
   -risk medium
 
 # Send securely
-curl -X POST "http://localhost:8080/ingest-secure?schema=native" --data-binary @events.aegis
+curl -X POST "http://localhost:8080/ingest-secure?schema=native" --data-binary @events.aman
 
 # Unpack and verify (offline)
-go run ./cmd/aegisr ingest secure-unpack \
-  -in events.aegis \
+go run ./cmd/aman ingest secure-unpack \
+  -in events.aman \
   -out events.json \
   -keyring data/ingest_keys.json
 
 # Rotate keys (keeps previous for transition)
-go run ./cmd/aegisr ingest secure-rotate -in data/ingest_keys.json
+go run ./cmd/aman ingest secure-rotate -in data/ingest_keys.json
 ```
 `/ingest-health` reports HMAC/decrypt/schema failure rates for the secure pipeline.
 
@@ -432,12 +432,12 @@ go run ./cmd/aegisr ingest secure-rotate -in data/ingest_keys.json
 
 ### Generate Keys
 ```bash
-go run ./cmd/aegisr keys -out keypair.json
+go run ./cmd/aman keys -out keypair.json
 ```
 
 ### Approve (Single)
 ```bash
-go run ./cmd/aegisr approve \
+go run ./cmd/aman approve \
   -key keypair.json \
   -id change-1 \
   -ttl 10m \
@@ -449,7 +449,7 @@ go run ./cmd/aegisr approve \
 
 ### Approve (Dual)
 ```bash
-go run ./cmd/aegisr approve2 \
+go run ./cmd/aman approve2 \
   -key1 keypair.json \
   -key2 keypair.json \
   -id change-1 \
@@ -489,7 +489,7 @@ curl -X POST "http://localhost:8080/ingest?schema=ecs" -d @data/fixtures/ecs/sam
 Build the environment model directly from file-based inventory exports:
 
 ```bash
-go run ./cmd/aegisr ingest-inventory -in data/inventory -out data/env.json
+go run ./cmd/aman ingest-inventory -in data/inventory -out data/env.json
 ```
 
 See `docs/inventory_schema.md` for the JSON schema per provider.
@@ -498,7 +498,7 @@ Topology depth now includes routes, peerings, and internet egress paths (AWS/Azu
 Live adapters (API-ready, requires credentials):
 
 ```bash
-go run ./cmd/aegisr inventory-adapter -provider aws -config data/inventory/config.json -out data/env.json
+go run ./cmd/aman inventory-adapter -provider aws -config data/inventory/config.json -out data/env.json
 ```
 
 AWS, Okta, Azure, and GCP adapters support live ingestion using standard credentials (AWS chain, Okta token, Azure client credentials, GCP ADC or service account). Use `inventory-refresh` for one-shot refresh + drift, or `inventory-schedule` for continuous refreshes.
@@ -506,7 +506,7 @@ AWS, Okta, Azure, and GCP adapters support live ingestion using standard credent
 Randomized scheduling to avoid fixed cadence targeting:
 
 ```bash
-go run ./cmd/aegisr inventory-schedule \\
+go run ./cmd/aman inventory-schedule \\
   -provider all \\
   -config data/inventory/config.json \\
   -base data/env.json \\
@@ -519,7 +519,7 @@ go run ./cmd/aegisr inventory-schedule \\
 One-shot refresh + drift report:
 
 ```bash
-go run ./cmd/aegisr inventory-refresh \\
+go run ./cmd/aman inventory-refresh \\
   -provider all \\
   -config data/inventory/config.json \\
   -base data/env.json \\
@@ -536,7 +536,7 @@ Fixture coverage lives under `data/fixtures/` and is exercised by mapping tests.
 
 ## Normalized Envelope (Internal Model)
 
-Aegis-R adapters normalize events into a stable envelope:
+Aman adapters normalize events into a stable envelope:
 - `timestamp`
 - `source` (EDR/IdP/CloudTrail/etc.)
 - `principal` (identity)
@@ -564,7 +564,7 @@ Baseline validation report:
 
 ## Attack Progression Model
 
-Aegis-R maintains a live **attack progression graph** with:
+Aman maintains a live **attack progression graph** with:
 - Graph-based current attacker position overlay
 - Confidence decay over time
 - Time-windowed progression (default last 24h)
@@ -582,17 +582,17 @@ Minimal trigger set covers most real intrusions:
 
 Generate scenarios:
 ```bash
-go run ./cmd/aegisr generate-scenarios -out data/scenarios.json -rules data/rules.json
+go run ./cmd/aman generate-scenarios -out data/scenarios.json -rules data/rules.json
 ```
 
 Evaluate:
 ```bash
-go run ./cmd/aegisr evaluate -scenarios data/scenarios.json -rules data/rules.json -format cli
+go run ./cmd/aman evaluate -scenarios data/scenarios.json -rules data/rules.json -format cli
 ```
 
 Realistic scenarios:
 ```bash
-go run ./cmd/aegisr evaluate -scenarios data/scenarios_realistic.json -rules data/rules.json -format cli
+go run ./cmd/aman evaluate -scenarios data/scenarios_realistic.json -rules data/rules.json -format cli
 ```
 
 ---
@@ -617,7 +617,7 @@ go test ./internal/core -bench BenchmarkAssess -benchmem
 - `audit-sign` produces **signed audit logs**
 
 ```bash
-go run ./cmd/aegisr audit-sign -audit audit.log -out signed_audit.log -signer soc-admin
+go run ./cmd/aman audit-sign -audit audit.log -out signed_audit.log -signer soc-admin
 ```
 
 ---
@@ -646,23 +646,23 @@ go run ./cmd/aegisr audit-sign -audit audit.log -out signed_audit.log -signer so
 
 ### Install
 ```bash
-kubectl create namespace aegis-r
-helm install aegis-r ./charts/aegis-r --namespace aegis-r
+kubectl create namespace aman
+helm install aman ./charts/aman --namespace aman
 ```
 
 ### Configure Signing Keys
 ```bash
-kubectl -n aegis-r create secret generic aegisr-signing-keys --from-file=keypair.json
+kubectl -n aman create secret generic aman-signing-keys --from-file=keypair.json
 ```
 
 ### Example Values Overrides
 ```bash
-helm upgrade --install aegis-r ./charts/aegis-r \
-  --namespace aegis-r \
-  --set ingress.host=aegisr.example.com \
-  --set ingress.tls.secretName=aegisr-tls \
+helm upgrade --install aman ./charts/aman \
+  --namespace aman \
+  --set ingress.host=aman.example.com \
+  --set ingress.tls.secretName=aman-tls \
   --set signingKeySecret.create=false \
-  --set signingKeySecret.name=aegisr-signing-keys
+  --set signingKeySecret.name=aman-signing-keys
 ```
 
 ---
@@ -670,21 +670,21 @@ helm upgrade --install aegis-r ./charts/aegis-r \
 ## Docker
 
 ```bash
-docker build -t aegisr .
-docker run -p 8080:8080 aegisr
+docker build -t aman .
+docker run -p 8080:8080 aman
 ```
 
 ---
 
 ## Release Artifacts
 
-- Container images: `ghcr.io/shakeeb1532/aegis-r:<tag>` and `latest`
+- Container images: `ghcr.io/shakeeb1532/aman:<tag>` and `latest`
 - Versioned binaries via GoReleaser (tagged releases)
 
 ---
 
 ## Repository Structure
-- `cmd/aegisr/` — CLI entrypoint
+- `cmd/aman/` — CLI entrypoint
 - `internal/logic/` — reasoning engine
 - `internal/core/` — stateful assessment
 - `internal/progression/` — attack progression model

@@ -3,7 +3,7 @@ package inventory
 import (
 	"sort"
 
-	"aegisr/internal/env"
+	"aman/internal/env"
 )
 
 type DriftReport struct {

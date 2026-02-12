@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 
-	"aegisr/internal/env"
-	"aegisr/internal/governance"
-	"aegisr/internal/logic"
+	"aman/internal/env"
+	"aman/internal/governance"
+	"aman/internal/logic"
 )
 
 type ValidationError struct {

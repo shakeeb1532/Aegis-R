@@ -6,13 +6,13 @@ import (
 	"path/filepath"
 	"testing"
 
-	"aegisr/internal/core"
-	"aegisr/internal/env"
-	"aegisr/internal/integration"
-	"aegisr/internal/logic"
-	"aegisr/internal/model"
-	"aegisr/internal/state"
-	"aegisr/internal/testutil"
+	"aman/internal/core"
+	"aman/internal/env"
+	"aman/internal/integration"
+	"aman/internal/logic"
+	"aman/internal/model"
+	"aman/internal/state"
+	"aman/internal/testutil"
 )
 
 func TestFixtureThreading(t *testing.T) {

@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"aegisr/internal/compress"
-	"aegisr/internal/core"
+	"aman/internal/compress"
+	"aman/internal/core"
 )
 
 type SIEMPayload struct {
@@ -24,7 +24,7 @@ func ExportSIEM(path string, out core.Output) error {
 		return nil
 	}
 	payload := SIEMPayload{
-		Vendor:   "Aegis-R",
+		Vendor:   "Aman",
 		Type:     "reasoning_report",
 		Summary:  out.Summary,
 		Findings: out.Findings,

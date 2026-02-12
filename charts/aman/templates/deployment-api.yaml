@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "aegisr.fullname" . }}-api
+  name: {{ include "aman.fullname" . }}-api
   namespace: {{ .Values.namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ include "aegisr.name" . }}
+      app: {{ include "aman.name" . }}
       component: api
   template:
     metadata:
       labels:
-        app: {{ include "aegisr.name" . }}
+        app: {{ include "aman.name" . }}
         component: api
     spec:
       {{- if .Values.serviceAccount.create }}
-      serviceAccountName: {{ if .Values.serviceAccount.name }}{{ .Values.serviceAccount.name }}{{ else }}{{ include "aegisr.fullname" . }}{{ end }}
+      serviceAccountName: {{ if .Values.serviceAccount.name }}{{ .Values.serviceAccount.name }}{{ else }}{{ include "aman.fullname" . }}{{ end }}
       {{- else if .Values.serviceAccount.name }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
       {{- end }}
@@ -29,7 +29,7 @@ spec:
         seccompProfile:
           type: {{ .Values.security.seccompProfile }}
       containers:
-        - name: aegisr-api
+        - name: aman-api
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args: {{ toJson .Values.api.args }}
@@ -49,7 +49,7 @@ spec:
         - name: data
           {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ include "aegisr.fullname" . }}-pvc
+            claimName: {{ include "aman.fullname" . }}-pvc
           {{- else }}
           emptyDir: {}
           {{- end }}

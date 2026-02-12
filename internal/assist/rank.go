@@ -4,7 +4,7 @@ import (
 	"sort"
 	"strings"
 
-	"aegisr/internal/model"
+	"aman/internal/model"
 )
 
 type RankConfig struct {

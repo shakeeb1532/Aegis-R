@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"os"
 
-	"aegisr/internal/ops"
+	"aman/internal/ops"
 )
 
 type Host struct {

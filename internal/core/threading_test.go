@@ -6,11 +6,11 @@ import (
 	"path/filepath"
 	"testing"
 
-	"aegisr/internal/env"
-	"aegisr/internal/logic"
-	"aegisr/internal/model"
-	"aegisr/internal/state"
-	"aegisr/internal/testutil"
+	"aman/internal/env"
+	"aman/internal/logic"
+	"aman/internal/model"
+	"aman/internal/state"
+	"aman/internal/testutil"
 )
 
 func TestSyntheticThreadingSuite(t *testing.T) {

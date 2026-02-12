@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"aegisr/internal/env"
-	"aegisr/internal/state"
+	"aman/internal/env"
+	"aman/internal/state"
 )
 
 func TestOverlayGraph(t *testing.T) {

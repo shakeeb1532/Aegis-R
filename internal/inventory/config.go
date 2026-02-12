@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"os"
 
-	"aegisr/internal/ops"
+	"aman/internal/ops"
 )
 
 func LoadConfig(path string) (AdapterConfig, error) {

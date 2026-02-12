@@ -4,9 +4,9 @@ import (
 	"testing"
 	"time"
 
-	"aegisr/internal/env"
-	"aegisr/internal/model"
-	"aegisr/internal/state"
+	"aman/internal/env"
+	"aman/internal/model"
+	"aman/internal/state"
 )
 
 func TestProgressionUpdate(t *testing.T) {

@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"aegisr/internal/state"
+	"aman/internal/state"
 )
 
 func TestApplyDecayWindow(t *testing.T) {

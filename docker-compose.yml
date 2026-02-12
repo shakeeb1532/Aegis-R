@@ -17,15 +17,15 @@ services:
       - |
         set -e
         if [ ! -f /data/zero_trust_baseline.json ]; then
-          /usr/local/bin/aegisr init-scan -baseline /data/zero_trust_baseline.json -out /data/init_scan_report.json
+          /usr/local/bin/aman init-scan -baseline /data/zero_trust_baseline.json -out /data/init_scan_report.json
         fi
         : > /data/approvals.log
         : > /data/disagreements.log
         : > /data/audit.log
         echo \"[]\" > /data/analyst_profiles.json
-        /usr/local/bin/aegisr keys -out /data/keypair.json
-        /usr/local/bin/aegisr generate -out /data/events.json -count 80
-        /usr/local/bin/aegisr assess \
+        /usr/local/bin/aman keys -out /data/keypair.json
+        /usr/local/bin/aman generate -out /data/events.json -count 80
+        /usr/local/bin/aman assess \
           -in /data/events.json \
           -env /data/env.json \
           -rules /data/rules.json \

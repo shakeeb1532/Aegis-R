@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"aegisr/internal/ops"
+	"aman/internal/ops"
 )
 
 type AnalystProfile struct {

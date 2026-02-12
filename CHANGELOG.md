@@ -9,7 +9,7 @@
 - Stolen credentials anomaly rule.
 - Expanded public and realistic scenario sets.
 - Known edge cases documentation (`docs/known_edge_cases.md`).
-- Pilot plan PDF (`docs/Aegis-R_Pilot_Plan.pdf`).
+- Pilot plan PDF (`docs/Aman_Pilot_Plan.pdf`).
 
 ### Changed
 - Expanded synthetic suite with harder contradictory and ambiguous cases.

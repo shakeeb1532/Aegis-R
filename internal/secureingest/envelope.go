@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"aegisr/internal/compress"
+	"aman/internal/compress"
 )
 
 const (

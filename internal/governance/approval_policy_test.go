@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"aegisr/internal/approval"
+	"aman/internal/approval"
 )
 
 func TestPolicyRoleEnforcement(t *testing.T) {

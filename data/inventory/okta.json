@@ -10,6 +10,6 @@
     {"id": "role-approver", "name": "Approver", "users": ["okta-user-2"]}
   ],
   "apps": [
-    {"id": "app-1", "name": "Aegis-R", "users": ["okta-user-1", "okta-user-2"], "tags": ["critical"]}
+    {"id": "app-1", "name": "Aman", "users": ["okta-user-1", "okta-user-2"], "tags": ["critical"]}
   ]
 }

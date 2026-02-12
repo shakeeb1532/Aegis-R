@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"aegisr/internal/core"
+	"aman/internal/core"
 )
 
 func TestExportSIEM(t *testing.T) {

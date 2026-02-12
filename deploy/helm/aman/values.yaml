@@ -1,23 +1,22 @@
-namespace: aegis-r
+namespace: aman
 
 image:
-  repository: aegisr
+  repository: aman
   tag: latest
   pullPolicy: IfNotPresent
 
-api:
+service:
+  type: ClusterIP
   port: 8080
-  serviceType: ClusterIP
-  args: ["ingest-http", "-addr", ":8080"]
 
 ingress:
   enabled: true
   className: nginx
-  host: aegisr.local
+  host: aman.local
   annotations: {}
   tls:
     enabled: true
-    secretName: aegisr-tls
+    secretName: aman-tls
 
 alb:
   enabled: false
@@ -49,11 +48,19 @@ config:
   metricsOn: true
   strictMode: false
 
-signingKeySecret:
-  create: false
-  name: aegisr-signing-keys
-  keyName: keypair.json
-  keypairJson: ""
+ui:
+  enabled: true
+  port: 9090
+  basicUser: admin
+  basicPassSecret: aman-ui-basic
+  basicPassSecretCreate: true
+  basicPass: change-me
+  reportPath: /data/report.json
+  approvalsPath: /data/approvals.log
+  auditPath: /data/audit.log
+  signedAuditPath: /data/signed_audit.log
+  profilesPath: /data/analyst_profiles.json
+  disagreementsPath: /data/disagreements.log
 
 networkPolicy:
   enabled: true

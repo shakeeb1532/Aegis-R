@@ -8,11 +8,11 @@ mkdir -p data
 
 # Always (re)generate baseline
 
-go run ./cmd/aegisr init-scan -baseline data/zero_trust_baseline.json
+go run ./cmd/aman init-scan -baseline data/zero_trust_baseline.json
 
 # Keypair for approval signatures
 if [ ! -f data/keypair.json ]; then
-  go run ./cmd/aegisr keys -out data/keypair.json
+  go run ./cmd/aman keys -out data/keypair.json
 fi
 
 # Ensure support files exist
@@ -113,7 +113,7 @@ JSON
 
 # Run assess to generate report and audit
 
-go run ./cmd/aegisr assess \
+go run ./cmd/aman assess \
   -in data/failures_events.json \
   -env data/env.json \
   -rules data/rules.json \
@@ -123,7 +123,7 @@ go run ./cmd/aegisr assess \
   -format json > data/report.json
 
 # Start ingest API (optional)
-go run ./cmd/aegisr ingest-http -addr :8080 &
+go run ./cmd/aman ingest-http -addr :8080 &
 INGEST_PID=$!
 trap 'kill $INGEST_PID' EXIT
 sleep 1

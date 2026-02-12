@@ -18,13 +18,13 @@ mkdir -p data
 echo "[]" > "$profiles"
 
 if [ ! -f "$baseline" ]; then
-  go run ./cmd/aegisr init-scan -baseline "$baseline" -out data/init_scan_report.json
+  go run ./cmd/aman init-scan -baseline "$baseline" -out data/init_scan_report.json
 fi
 
-go run ./cmd/aegisr keys -out "$keypair"
-go run ./cmd/aegisr generate -out "$events" -count 80
+go run ./cmd/aman keys -out "$keypair"
+go run ./cmd/aman generate -out "$events" -count 80
 
-go run ./cmd/aegisr assess \
+go run ./cmd/aman assess \
   -in "$events" \
   -env data/env.json \
   -rules data/rules.json \
@@ -33,7 +33,7 @@ go run ./cmd/aegisr assess \
   -baseline "$baseline" \
   -format json > "$report"
 
-go run ./cmd/aegisr ingest-http -addr :8080 &
+go run ./cmd/aman ingest-http -addr :8080 &
 INGEST_PID=$!
 trap 'kill $INGEST_PID' EXIT
 sleep 1

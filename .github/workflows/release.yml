@@ -37,5 +37,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/shakeeb1532/aegis-r:${{ github.ref_name }}
-            ghcr.io/shakeeb1532/aegis-r:latest
+            ghcr.io/shakeeb1532/aman:${{ github.ref_name }}
+            ghcr.io/shakeeb1532/aman:latest

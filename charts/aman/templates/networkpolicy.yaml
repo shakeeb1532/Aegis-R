@@ -2,12 +2,12 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ include "aegisr.fullname" . }}
+  name: {{ include "aman.fullname" . }}
   namespace: {{ .Values.namespace }}
 spec:
   podSelector:
     matchLabels:
-      app: {{ include "aegisr.name" . }}
+      app: {{ include "aman.name" . }}
   policyTypes:
     - Ingress
     - Egress

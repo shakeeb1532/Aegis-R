@@ -38,13 +38,13 @@ JSON with a top‑level `incidents` array.
 ## CLI Usage
 
 ```bash
-go run ./cmd/aegisr reason event -in data/demo_events.json \
+go run ./cmd/aman reason event -in data/demo_events.json \
   --ml-assist \
   --ml-history data/incident_history.json
 ```
 
 ```bash
-go run ./cmd/aegisr assess \
+go run ./cmd/aman assess \
   -in data/demo_events.json \
   -env data/env.json \
   -state data/state.json \

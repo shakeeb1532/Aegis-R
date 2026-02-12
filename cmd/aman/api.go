@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	"aegisr/internal/uiapi"
+	"aman/internal/uiapi"
 )
 
 func handleServeAPI(args []string) {

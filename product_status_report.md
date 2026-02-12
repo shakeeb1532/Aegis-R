@@ -1,9 +1,9 @@
-# Aegis-R Product Status Report (MVP)
+# Aman Product Status Report (MVP)
 
 Date: 2026-02-05
 
 ## Summary
-Aegis-R is a security reasoning infrastructure that evaluates causal feasibility, maintains attack progression state, and produces audit-ready explanations. The MVP now supports human-governed approvals, tamper-evident artifacts, and SIEM-sidecar export without automated remediation.
+Aman is a security reasoning infrastructure that evaluates causal feasibility, maintains attack progression state, and produces audit-ready explanations. The MVP now supports human-governed approvals, tamper-evident artifacts, and SIEM-sidecar export without automated remediation.
 
 ## Core Capabilities Implemented
 - Logical feasibility reasoning with explicit evidence gaps and narrative proof.

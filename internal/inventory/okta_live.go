@@ -75,8 +75,8 @@ func (OktaAdapter) Load(cfg AdapterConfig) (Inventory, error) {
 }
 
 type oktaClient struct {
-	base *url.URL
-	http *http.Client
+	base  *url.URL
+	http  *http.Client
 	token string
 }
 
@@ -110,7 +110,7 @@ func newOktaClient(orgURL string, token string) (*oktaClient, error) {
 	return &oktaClient{
 		base:  base,
 		token: token,
-		http: &http.Client{Timeout: 20 * time.Second},
+		http:  &http.Client{Timeout: 20 * time.Second},
 	}, nil
 }
 

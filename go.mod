@@ -1,4 +1,4 @@
-module aegisr
+module aman
 
 go 1.24.0
 

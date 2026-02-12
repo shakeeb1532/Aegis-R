@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"aegisr/internal/governance"
-	"aegisr/internal/model"
-	"aegisr/internal/ops"
+	"aman/internal/governance"
+	"aman/internal/model"
+	"aman/internal/ops"
 )
 
 type Rule struct {

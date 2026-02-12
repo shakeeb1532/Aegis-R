@@ -1,6 +1,6 @@
 # Inventory Ingestion Schema (File-Based)
 
-Aegis-R can build `env.json` from provider inventory exports. Place files under `data/inventory/`:
+Aman can build `env.json` from provider inventory exports. Place files under `data/inventory/`:
 
 - `aws.json`
 - `okta.json`
@@ -10,25 +10,25 @@ Aegis-R can build `env.json` from provider inventory exports. Place files under 
 Then run:
 
 ```bash
-go run ./cmd/aegisr ingest-inventory -in data/inventory -out data/env.json
+go run ./cmd/aman ingest-inventory -in data/inventory -out data/env.json
 ```
 
 To detect drift versus an existing `env.json`:
 
 ```bash
-go run ./cmd/aegisr inventory-drift -base data/env.json -in data/inventory -out drift.json
+go run ./cmd/aman inventory-drift -base data/env.json -in data/inventory -out drift.json
 ```
 
 To refresh from live adapters and write a drift request if changes are detected:
 
 ```bash
-go run ./cmd/aegisr inventory-refresh -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json -require-approval
+go run ./cmd/aman inventory-refresh -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json -require-approval
 ```
 
 To schedule randomized refreshes (avoid fixed cadence):
 
 ```bash
-go run ./cmd/aegisr inventory-schedule -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json -interval 6h -jitter 30m
+go run ./cmd/aman inventory-schedule -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json -interval 6h -jitter 30m
 ```
 
 ## AWS (`aws.json`)
@@ -53,7 +53,7 @@ go run ./cmd/aegisr inventory-schedule -provider all -config data/inventory/conf
   "users": [{"id": "okta-user-1", "email": "analyst@example.com", "role": "analyst", "priv_level": "standard", "groups": ["SOC"], "status": "ACTIVE"}],
   "groups": [{"id": "grp-soc", "name": "SOC", "tags": ["team:soc"], "users": ["okta-user-1"]}],
   "roles": [{"id": "role-approver", "name": "Approver", "users": ["okta-user-1"]}],
-  "apps": [{"id": "app-1", "name": "Aegis-R", "users": ["okta-user-1"], "tags": ["critical"]}]
+  "apps": [{"id": "app-1", "name": "Aman", "users": ["okta-user-1"], "tags": ["critical"]}]
 }
 ```
 

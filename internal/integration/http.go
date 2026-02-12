@@ -5,7 +5,7 @@ import (
 	"io"
 	"net/http"
 
-	"aegisr/internal/model"
+	"aman/internal/model"
 )
 
 type IngestResponse struct {

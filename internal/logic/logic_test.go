@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"aegisr/internal/model"
+	"aman/internal/model"
 )
 
 func TestReasonFeasibleChain(t *testing.T) {

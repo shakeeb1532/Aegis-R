@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"aegisr/internal/logic"
-	"aegisr/internal/testutil"
+	"aman/internal/logic"
+	"aman/internal/testutil"
 )
 
 func TestRealisticScenarios(t *testing.T) {

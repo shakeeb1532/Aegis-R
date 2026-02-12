@@ -3,8 +3,8 @@
 Generate a simple confidence band report from a reasoning report.
 
 ```bash
-go run ./cmd/aegisr system confidence -report report.json
-go run ./cmd/aegisr system confidence -report report.json -out docs/confidence_report.md
+go run ./cmd/aman system confidence -report report.json
+go run ./cmd/aman system confidence -report report.json -out docs/confidence_report.md
 ```
 
 Bands:

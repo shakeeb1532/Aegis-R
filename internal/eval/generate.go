@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	"aegisr/internal/logic"
-	"aegisr/internal/model"
+	"aman/internal/logic"
+	"aman/internal/model"
 )
 
 func GenerateScenarios(rules []logic.Rule) ScenariosFile {

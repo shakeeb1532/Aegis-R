@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"aegisr/internal/ops"
+	"aman/internal/ops"
 )
 
 type Baseline struct {

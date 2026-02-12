@@ -16,26 +16,26 @@ import (
 	"strings"
 	"time"
 
-	"aegisr/internal/approval"
-	"aegisr/internal/assist"
-	"aegisr/internal/audit"
-	"aegisr/internal/compress"
-	"aegisr/internal/core"
-	"aegisr/internal/env"
-	"aegisr/internal/eval"
-	"aegisr/internal/explain"
-	"aegisr/internal/governance"
-	"aegisr/internal/integration"
-	"aegisr/internal/inventory"
-	"aegisr/internal/logic"
-	"aegisr/internal/model"
-	"aegisr/internal/ops"
-	"aegisr/internal/report"
-	"aegisr/internal/secureingest"
-	"aegisr/internal/sim"
-	"aegisr/internal/state"
-	"aegisr/internal/validate"
-	"aegisr/internal/zerotrust"
+	"aman/internal/approval"
+	"aman/internal/assist"
+	"aman/internal/audit"
+	"aman/internal/compress"
+	"aman/internal/core"
+	"aman/internal/env"
+	"aman/internal/eval"
+	"aman/internal/explain"
+	"aman/internal/governance"
+	"aman/internal/integration"
+	"aman/internal/inventory"
+	"aman/internal/logic"
+	"aman/internal/model"
+	"aman/internal/ops"
+	"aman/internal/report"
+	"aman/internal/secureingest"
+	"aman/internal/sim"
+	"aman/internal/state"
+	"aman/internal/validate"
+	"aman/internal/zerotrust"
 )
 
 type KeypairFile struct {
@@ -153,14 +153,14 @@ func requireExplainAck(explainOn bool, ack string) {
 }
 
 func usage() {
-	fmt.Println("Aegis-R CLI")
+	fmt.Println("Aman CLI")
 	fmt.Println("Commands:")
-	fmt.Println("  aegis ingest <verb> [flags]")
-	fmt.Println("  aegis graph <verb> [flags]")
-	fmt.Println("  aegis reason <verb> [flags]")
-	fmt.Println("  aegis govern <verb> [flags]")
-	fmt.Println("  aegis audit <verb> [flags]")
-	fmt.Println("  aegis system <verb> [flags]")
+	fmt.Println("  aman ingest <verb> [flags]")
+	fmt.Println("  aman graph <verb> [flags]")
+	fmt.Println("  aman reason <verb> [flags]")
+	fmt.Println("  aman govern <verb> [flags]")
+	fmt.Println("  aman audit <verb> [flags]")
+	fmt.Println("  aman system <verb> [flags]")
 	fmt.Println("  generate -out events.json -count 60 -seed 42")
 	fmt.Println("  reason -in events.json [-approval approval.json] [-require-okta] [-rules rules.json] [-format cli|json] [--explain --explain-ack I_ACKNOWLEDGE_LLM_RISK] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n]")
 	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log [-rules rules.json] [-approval approval.json] [-policy policy.json] [-constraints data/constraints.json] [-config ops.json] [-format cli|json] [-out report.json|report.json.lz4] [-baseline data/zero_trust_baseline.json] [--explain --explain-ack I_ACKNOWLEDGE_LLM_RISK] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n]")
@@ -174,8 +174,8 @@ func usage() {
 	fmt.Println("  generate-scenarios -out scenarios.json [-rules rules.json]")
 	fmt.Println("  evaluate -scenarios scenarios.json [-rules rules.json] [-format cli|json|md] [-out report.md]")
 	fmt.Println("  ingest-http -addr :8080 [-secure-keyring data/ingest_keys.json] (schema: ecs|elastic_ecs|ocsf|cim|splunk_cim_auth|splunk_cim_net|mde)")
-	fmt.Println("  ingest secure-pack -in events.json -out events.aegis --keyring data/ingest_keys.json [-compress auto|none|lz4] [-policy adaptive] [-risk medium]")
-	fmt.Println("  ingest secure-unpack -in events.aegis -out events.json --keyring data/ingest_keys.json")
+	fmt.Println("  ingest secure-pack -in events.json -out events.aman --keyring data/ingest_keys.json [-compress auto|none|lz4] [-policy adaptive] [-risk medium]")
+	fmt.Println("  ingest secure-unpack -in events.aman -out events.json --keyring data/ingest_keys.json")
 	fmt.Println("  ingest secure-keygen -out keys.json")
 	fmt.Println("  ingest secure-init -out data/ingest_keys.json")
 	fmt.Println("  ingest secure-rotate -in data/ingest_keys.json [-out data/ingest_keys.json]")
@@ -647,8 +647,8 @@ func handleIngest(args []string) {
 			fatal(err)
 		}
 		outln("Keyring written: " + *out)
-		outln("Start server: aegis ingest http --addr :8080 --secure-keyring " + *out)
-		outln("Pack events:  aegis ingest secure-pack -in events.json -out events.aegis -keyring " + *out)
+		outln("Start server: aman ingest http --addr :8080 --secure-keyring " + *out)
+		outln("Pack events:  aman ingest secure-pack -in events.json -out events.aman -keyring " + *out)
 		outln("Send:        curl -X POST \"http://localhost:8080/ingest-secure?schema=native\" --data-binary @events.aegis")
 	case "secure-rotate":
 		fs := flag.NewFlagSet("ingest secure-rotate", flag.ExitOnError)

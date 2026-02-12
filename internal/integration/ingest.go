@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	"aegisr/internal/model"
+	"aman/internal/model"
 )
 
 type Schema string

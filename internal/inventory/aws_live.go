@@ -19,8 +19,8 @@ import (
 type assumeRolePolicy struct {
 	Statement []struct {
 		Principal struct {
-			AWS     any    `json:"AWS"`
-			Service any    `json:"Service"`
+			AWS       any    `json:"AWS"`
+			Service   any    `json:"Service"`
 			Federated string `json:"Federated"`
 		} `json:"Principal"`
 	} `json:"Statement"`
@@ -207,14 +207,14 @@ func loadAWSRouting(ctx context.Context, client *ec2.Client, inv *Inventory) err
 			return err
 		}
 		for _, p := range page.VpcPeeringConnections {
-				inv.AWS.Peerings = append(inv.AWS.Peerings, AWSPeering{
-					ID:      aws.ToString(p.VpcPeeringConnectionId),
-					FromVPC: aws.ToString(p.RequesterVpcInfo.VpcId),
-					ToVPC:   aws.ToString(p.AccepterVpcInfo.VpcId),
-					Status:  string(p.Status.Code),
-				})
-			}
+			inv.AWS.Peerings = append(inv.AWS.Peerings, AWSPeering{
+				ID:      aws.ToString(p.VpcPeeringConnectionId),
+				FromVPC: aws.ToString(p.RequesterVpcInfo.VpcId),
+				ToVPC:   aws.ToString(p.AccepterVpcInfo.VpcId),
+				Status:  string(p.Status.Code),
+			})
 		}
+	}
 
 	igwPager := ec2.NewDescribeInternetGatewaysPaginator(client, &ec2.DescribeInternetGatewaysInput{})
 	for igwPager.HasMorePages() {

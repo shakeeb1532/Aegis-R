@@ -14,7 +14,7 @@ export function Sidebar() {
   return (
     <aside className="h-screen w-64 border-r border-border bg-panel px-6 py-8">
       <div className="mb-10">
-        <p className="text-xs uppercase tracking-[0.3em] text-muted">Aegis-R</p>
+        <p className="text-xs uppercase tracking-[0.3em] text-muted">Aman</p>
         <h1 className="section-title text-2xl font-semibold">Analyst Console</h1>
       </div>
       <nav className="flex flex-col gap-2 text-sm">

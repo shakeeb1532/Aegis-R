@@ -1,6 +1,6 @@
-# Aegis-R UI
+# Aman UI
 
-Standalone SaaS console for Aegis-R.
+Standalone SaaS console for Aman.
 
 ## Local Dev
 ```bash
@@ -11,7 +11,7 @@ npm run dev
 ## API (Demo)
 Run the file-backed API server:
 ```bash
-go run ./cmd/aegisr serve-api \
+go run ./cmd/aman serve-api \
   -addr :8081 \
   -report data/report.json \
   -audit data/audit.log \

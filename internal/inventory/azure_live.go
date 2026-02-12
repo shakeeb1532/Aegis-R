@@ -124,8 +124,8 @@ func (c *azureClient) listUsers() ([]azureUser, error) {
 	return items, c.paginateGraph(path, func(body []byte) error {
 		var resp struct {
 			Value []struct {
-				ID  string `json:"id"`
-				UPN string `json:"userPrincipalName"`
+				ID   string `json:"id"`
+				UPN  string `json:"userPrincipalName"`
 				Mail string `json:"mail"`
 			} `json:"value"`
 		}
@@ -362,14 +362,14 @@ func (c *azureClient) listNSGs() ([]AzureNSG, error) {
 					Rules []struct {
 						Name  string `json:"name"`
 						Props struct {
-							Access                 string   `json:"access"`
-							Protocol               string   `json:"protocol"`
-							SourceAddressPrefix    string   `json:"sourceAddressPrefix"`
-							SourceAddressPrefixes  []string `json:"sourceAddressPrefixes"`
+							Access                     string   `json:"access"`
+							Protocol                   string   `json:"protocol"`
+							SourceAddressPrefix        string   `json:"sourceAddressPrefix"`
+							SourceAddressPrefixes      []string `json:"sourceAddressPrefixes"`
 							DestinationAddressPrefix   string   `json:"destinationAddressPrefix"`
 							DestinationAddressPrefixes []string `json:"destinationAddressPrefixes"`
-							DestinationPortRange   string   `json:"destinationPortRange"`
-							DestinationPortRanges  []string `json:"destinationPortRanges"`
+							DestinationPortRange       string   `json:"destinationPortRange"`
+							DestinationPortRanges      []string `json:"destinationPortRanges"`
 						} `json:"properties"`
 					} `json:"securityRules"`
 				} `json:"properties"`

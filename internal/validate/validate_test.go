@@ -3,10 +3,10 @@ package validate
 import (
 	"testing"
 
-	"aegisr/internal/env"
-	"aegisr/internal/governance"
-	"aegisr/internal/logic"
-	"aegisr/internal/model"
+	"aman/internal/env"
+	"aman/internal/governance"
+	"aman/internal/logic"
+	"aman/internal/model"
 )
 
 func TestEnvironmentValidation(t *testing.T) {

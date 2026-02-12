@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"aegisr/internal/model"
+	"aman/internal/model"
 )
 
 type Options struct {
@@ -25,9 +25,9 @@ type Response struct {
 }
 
 type request struct {
-	Reasoning   model.ReasoningReport `json:"reasoning"`
-	Style       string               `json:"style"`
-	StepsLimit  int                  `json:"steps_limit"`
+	Reasoning  model.ReasoningReport `json:"reasoning"`
+	Style      string                `json:"style"`
+	StepsLimit int                   `json:"steps_limit"`
 }
 
 func Generate(rep model.ReasoningReport, opts Options) (Response, error) {

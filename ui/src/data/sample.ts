@@ -90,7 +90,7 @@ export const auditItems: AuditItem[] = [
     id: "artifact-1770360655",
     timestamp: "2026-02-11 09:42 UTC",
     summary: "Causal feasibility, progression state, and evidence gaps evaluated.",
-    signer: "aegisr"
+    signer: "aman"
   },
   {
     id: "artifact-1770360149",

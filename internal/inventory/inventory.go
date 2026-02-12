@@ -4,7 +4,7 @@ import (
 	"sort"
 	"strings"
 
-	"aegisr/internal/env"
+	"aman/internal/env"
 )
 
 type Inventory struct {
@@ -15,15 +15,15 @@ type Inventory struct {
 }
 
 type AWSInventory struct {
-	Accounts       []AWSAccount       `json:"accounts"`
-	Users          []AWSUser          `json:"users"`
-	Roles          []AWSRole          `json:"roles"`
-	Instances      []AWSInstance      `json:"instances"`
-	SecurityGroups []AWSSecurityGroup `json:"security_groups"`
-	VPCs           []AWSVPC           `json:"vpcs"`
-	Subnets        []AWSSubnet        `json:"subnets"`
-	RouteTables    []AWSRouteTable    `json:"route_tables"`
-	Peerings       []AWSPeering       `json:"peerings"`
+	Accounts         []AWSAccount         `json:"accounts"`
+	Users            []AWSUser            `json:"users"`
+	Roles            []AWSRole            `json:"roles"`
+	Instances        []AWSInstance        `json:"instances"`
+	SecurityGroups   []AWSSecurityGroup   `json:"security_groups"`
+	VPCs             []AWSVPC             `json:"vpcs"`
+	Subnets          []AWSSubnet          `json:"subnets"`
+	RouteTables      []AWSRouteTable      `json:"route_tables"`
+	Peerings         []AWSPeering         `json:"peerings"`
 	InternetGateways []AWSInternetGateway `json:"internet_gateways"`
 }
 
@@ -85,7 +85,7 @@ type AWSRoute struct {
 }
 
 type AWSPeering struct {
-	ID     string `json:"id"`
+	ID      string `json:"id"`
 	FromVPC string `json:"from_vpc"`
 	ToVPC   string `json:"to_vpc"`
 	Status  string `json:"status"`
@@ -97,12 +97,12 @@ type AWSInternetGateway struct {
 }
 
 type AWSSecurityGroup struct {
-	ID      string        `json:"id"`
-	Name    string        `json:"name"`
-	VPC     string        `json:"vpc"`
-	Ingress []AWSRule     `json:"ingress"`
-	Egress  []AWSRule     `json:"egress"`
-	Tags    []string      `json:"tags"`
+	ID      string    `json:"id"`
+	Name    string    `json:"name"`
+	VPC     string    `json:"vpc"`
+	Ingress []AWSRule `json:"ingress"`
+	Egress  []AWSRule `json:"egress"`
+	Tags    []string  `json:"tags"`
 }
 
 type AWSRule struct {
@@ -194,10 +194,10 @@ type AzureSubnet struct {
 }
 
 type AzureNSG struct {
-	ID      string       `json:"id"`
-	Name    string       `json:"name"`
-	Network string       `json:"network"`
-	Rules   []AzureRule  `json:"rules"`
+	ID      string      `json:"id"`
+	Name    string      `json:"name"`
+	Network string      `json:"network"`
+	Rules   []AzureRule `json:"rules"`
 }
 
 type AzureRouteTable struct {
@@ -213,10 +213,10 @@ type AzureRoute struct {
 }
 
 type AzurePeering struct {
-	ID        string `json:"id"`
-	FromVNet  string `json:"from_vnet"`
-	ToVNet    string `json:"to_vnet"`
-	Mode      string `json:"mode"`
+	ID       string `json:"id"`
+	FromVNet string `json:"from_vnet"`
+	ToVNet   string `json:"to_vnet"`
+	Mode     string `json:"mode"`
 }
 
 type AzureRule struct {
@@ -229,15 +229,15 @@ type AzureRule struct {
 }
 
 type GCPInventory struct {
-	Projects       []GCPProject      `json:"projects"`
-	Users          []GCPUser         `json:"users"`
-	ServiceAccounts []GCPServiceAcct `json:"service_accounts"`
-	IAMBindings    []GCPIAMBinding   `json:"iam_bindings"`
-	Networks       []GCPNetwork      `json:"networks"`
-	Subnets        []GCPSubnet       `json:"subnets"`
-	FirewallRules  []GCPFirewallRule `json:"firewall_rules"`
-	Routes         []GCPRoute        `json:"routes"`
-	Peerings       []GCPPeering      `json:"peerings"`
+	Projects        []GCPProject      `json:"projects"`
+	Users           []GCPUser         `json:"users"`
+	ServiceAccounts []GCPServiceAcct  `json:"service_accounts"`
+	IAMBindings     []GCPIAMBinding   `json:"iam_bindings"`
+	Networks        []GCPNetwork      `json:"networks"`
+	Subnets         []GCPSubnet       `json:"subnets"`
+	FirewallRules   []GCPFirewallRule `json:"firewall_rules"`
+	Routes          []GCPRoute        `json:"routes"`
+	Peerings        []GCPPeering      `json:"peerings"`
 }
 
 type GCPProject struct {
@@ -280,15 +280,15 @@ type GCPSubnet struct {
 }
 
 type GCPFirewallRule struct {
-	ID          string   `json:"id"`
-	Network     string   `json:"network"`
-	Direction   string   `json:"direction"`
-	Source      string   `json:"source"`
-	Destination string   `json:"destination"`
-	Protocol    string   `json:"protocol"`
-	Port        string   `json:"port"`
-	Action      string   `json:"action"`
-	Notes       string   `json:"notes"`
+	ID          string `json:"id"`
+	Network     string `json:"network"`
+	Direction   string `json:"direction"`
+	Source      string `json:"source"`
+	Destination string `json:"destination"`
+	Protocol    string `json:"protocol"`
+	Port        string `json:"port"`
+	Action      string `json:"action"`
+	Notes       string `json:"notes"`
 }
 
 type GCPRoute struct {
@@ -300,10 +300,10 @@ type GCPRoute struct {
 }
 
 type GCPPeering struct {
-	ID       string `json:"id"`
-	Network  string `json:"network"`
-	Peer     string `json:"peer"`
-	State    string `json:"state"`
+	ID      string `json:"id"`
+	Network string `json:"network"`
+	Peer    string `json:"peer"`
+	State   string `json:"state"`
 }
 
 func BuildEnvironment(inv Inventory) env.Environment {

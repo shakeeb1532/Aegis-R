@@ -1,9 +1,9 @@
-project_name: aegis-r
+project_name: aman
 
 builds:
-  - id: aegisr
-    main: ./cmd/aegisr
-    binary: aegisr
+  - id: aman
+    main: ./cmd/aman
+    binary: aman
     goos:
       - linux
       - darwin
@@ -25,4 +25,4 @@ checksum:
 release:
   github:
     owner: shakeeb1532
-    name: Aegis-R
+    name: Aman

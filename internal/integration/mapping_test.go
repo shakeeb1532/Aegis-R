@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"aegisr/internal/model"
-	"aegisr/internal/testutil"
+	"aman/internal/model"
+	"aman/internal/testutil"
 )
 
 func assertHasType(t *testing.T, events []EventLike, typ string) {

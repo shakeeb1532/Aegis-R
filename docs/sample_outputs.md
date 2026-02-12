@@ -49,7 +49,7 @@ Tactics:
 ```
 Gated rules disabled: TA0005.EVASION_C2, TA0040.IMPACT_ENCRYPT
 Admin approval required at install time to enable these packs.
-Aegis-R Reasoning Report (2026-02-07T12:04:16Z)
+Aman Reasoning Report (2026-02-07T12:04:16Z)
 Feasibility reasoning over evidence and preconditions.
 
 Confidence model: heuristic
@@ -214,7 +214,7 @@ Notes:
 - Output truncated for brevity. The full CLI output can be generated with:
   - Gated rules disabled: TA0005.EVASION_C2, TA0040.IMPACT_ENCRYPT
 Admin approval required at install time to enable these packs.
-Aegis-R Reasoning Report (2026-02-07T12:04:16Z)
+Aman Reasoning Report (2026-02-07T12:04:16Z)
 Feasibility reasoning over evidence and preconditions.
 
 Confidence model: heuristic

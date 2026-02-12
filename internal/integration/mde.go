@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strings"
 
-	"aegisr/internal/model"
+	"aman/internal/model"
 )
 
 type MDEDeviceEvent struct {

@@ -3,8 +3,8 @@ package eval
 import (
 	"encoding/json"
 
-	"aegisr/internal/logic"
-	"aegisr/internal/model"
+	"aman/internal/logic"
+	"aman/internal/model"
 )
 
 func Score(scenarios ScenariosFile, rules []logic.Rule) Report {

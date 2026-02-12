@@ -7,7 +7,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"aegisr/internal/secureingest"
+	"aman/internal/secureingest"
 )
 
 const maxSecureIngestBytes = 32 << 20

@@ -1,12 +1,12 @@
 # Cyber Kill Chain Coverage
 
-Aegis-R maps rules to Kill Chain phases for reporting and audit context.
+Aman maps rules to Kill Chain phases for reporting and audit context.
 
 ## CLI
 ```bash
-go run ./cmd/aegisr system killchain -rules data/rules.json
-go run ./cmd/aegisr system killchain -rules data/rules.json --json
-go run ./cmd/aegisr system killchain -rules data/rules.json -out docs/kill_chain_coverage.json
+go run ./cmd/aman system killchain -rules data/rules.json
+go run ./cmd/aman system killchain -rules data/rules.json --json
+go run ./cmd/aman system killchain -rules data/rules.json -out docs/kill_chain_coverage.json
 ```
 
 ## Notes

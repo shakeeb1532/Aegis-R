@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"aegisr/internal/model"
+	"aman/internal/model"
 )
 
 func BenchmarkReason1k(b *testing.B)   { benchmarkReason(b, 1000) }

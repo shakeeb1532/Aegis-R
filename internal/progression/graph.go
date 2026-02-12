@@ -1,8 +1,8 @@
 package progression
 
 import (
-	"aegisr/internal/env"
-	"aegisr/internal/state"
+	"aman/internal/env"
+	"aman/internal/state"
 )
 
 func OverlayGraph(environment env.Environment, st *state.AttackState) {

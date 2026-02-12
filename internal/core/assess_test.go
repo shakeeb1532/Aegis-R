@@ -4,10 +4,10 @@ import (
 	"testing"
 	"time"
 
-	"aegisr/internal/env"
-	"aegisr/internal/logic"
-	"aegisr/internal/model"
-	"aegisr/internal/state"
+	"aman/internal/env"
+	"aman/internal/logic"
+	"aman/internal/model"
+	"aman/internal/state"
 )
 
 func TestAssessProducesNextMoves(t *testing.T) {

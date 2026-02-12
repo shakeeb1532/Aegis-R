@@ -1,6 +1,6 @@
 # Vendor Field Normalization Map
 
-This document summarizes how Aegis-R normalizes vendor-specific fields into internal event types.
+This document summarizes how Aman normalizes vendor-specific fields into internal event types.
 
 ## Elastic ECS (`elastic_ecs`)
 - `event.category=process` + `event.type=start` -> `process_creation`

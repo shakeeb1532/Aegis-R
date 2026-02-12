@@ -4,9 +4,9 @@ import (
 	"strings"
 	"time"
 
-	"aegisr/internal/env"
-	"aegisr/internal/model"
-	"aegisr/internal/state"
+	"aman/internal/env"
+	"aman/internal/model"
+	"aman/internal/state"
 )
 
 func Normalize(events []model.Event, environment env.Environment) []model.Envelope {

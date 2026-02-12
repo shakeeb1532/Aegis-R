@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"strings"
 
-	"aegisr/internal/model"
+	"aman/internal/model"
 )
 
 type sentinelCSL struct {

@@ -7,8 +7,8 @@ import (
 	"sort"
 	"strings"
 
-	"aegisr/internal/model"
-	"aegisr/internal/ops"
+	"aman/internal/model"
+	"aman/internal/ops"
 )
 
 type HistoryEntry struct {

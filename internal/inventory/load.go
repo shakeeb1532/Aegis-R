@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"aegisr/internal/ops"
+	"aman/internal/ops"
 )
 
 func Load(path string) (Inventory, error) {

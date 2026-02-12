@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"aegisr/internal/compress"
-	"aegisr/internal/ops"
+	"aman/internal/compress"
+	"aman/internal/ops"
 )
 
 type AttackState struct {

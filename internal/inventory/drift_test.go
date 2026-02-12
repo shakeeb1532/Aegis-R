@@ -3,18 +3,18 @@ package inventory
 import (
 	"testing"
 
-	"aegisr/internal/env"
+	"aman/internal/env"
 )
 
 func TestDiffEnv(t *testing.T) {
 	before := env.Environment{
-		Hosts: []env.Host{{ID: "h1"}},
-		Identities: []env.Identity{{ID: "u1"}},
+		Hosts:           []env.Host{{ID: "h1"}},
+		Identities:      []env.Identity{{ID: "u1"}},
 		TrustBoundaries: []env.TrustBoundary{{ID: "t1"}},
 	}
 	after := env.Environment{
-		Hosts: []env.Host{{ID: "h2"}},
-		Identities: []env.Identity{{ID: "u1"}, {ID: "u2"}},
+		Hosts:           []env.Host{{ID: "h2"}},
+		Identities:      []env.Identity{{ID: "u1"}, {ID: "u2"}},
 		TrustBoundaries: []env.TrustBoundary{{ID: "t1"}, {ID: "t2"}},
 	}
 	rep := DiffEnv(before, after)

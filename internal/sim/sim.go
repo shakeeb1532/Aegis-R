@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"time"
 
-	"aegisr/internal/model"
+	"aman/internal/model"
 )
 
 var eventTypes = []string{

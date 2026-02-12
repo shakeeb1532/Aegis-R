@@ -7,13 +7,13 @@ import (
 	"strings"
 	"time"
 
-	"aegisr/internal/model"
+	"aman/internal/model"
 )
 
 func RenderCLI(rep model.ReasoningReport) string {
 	buf := &bytes.Buffer{}
 	now := time.Now().UTC().Format(time.RFC3339)
-	fmt.Fprintf(buf, "Aegis-R Reasoning Report (%s)\n", now)
+	fmt.Fprintf(buf, "Aman Reasoning Report (%s)\n", now)
 	fmt.Fprintf(buf, "%s\n\n", rep.Summary)
 	if rep.ConfidenceModel != "" {
 		fmt.Fprintf(buf, "Confidence model: %s\n", rep.ConfidenceModel)

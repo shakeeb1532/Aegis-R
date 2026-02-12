@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"aegisr/internal/model"
+	"aman/internal/model"
 )
 
 type crowdStrikeEvent struct {

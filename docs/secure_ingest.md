@@ -1,6 +1,6 @@
 # Secure Ingest (Phase 1)
 
-Aegis-R supports a DCF-inspired secure ingest envelope to protect event batches in transit and at rest.
+Aman supports a DCF-inspired secure ingest envelope to protect event batches in transit and at rest.
 
 ## Envelope
 - Compression: `auto | none | lz4`
@@ -10,22 +10,22 @@ Aegis-R supports a DCF-inspired secure ingest envelope to protect event batches 
 
 ## Quickstart (Keyring + HTTP)
 ```bash
-go run ./cmd/aegisr ingest secure-init -out data/ingest_keys.json
-go run ./cmd/aegisr ingest http -addr :8080 -secure-keyring data/ingest_keys.json
-go run ./cmd/aegisr ingest secure-pack -in events.json -out events.aegis -keyring data/ingest_keys.json
-curl -X POST "http://localhost:8080/ingest-secure?schema=native" --data-binary @events.aegis
+go run ./cmd/aman ingest secure-init -out data/ingest_keys.json
+go run ./cmd/aman ingest http -addr :8080 -secure-keyring data/ingest_keys.json
+go run ./cmd/aman ingest secure-pack -in events.json -out events.aman -keyring data/ingest_keys.json
+curl -X POST "http://localhost:8080/ingest-secure?schema=native" --data-binary @events.aman
 ```
 
 ## Key Generation
 ```bash
-go run ./cmd/aegisr ingest secure-keygen -out data/ingest_keys.json
+go run ./cmd/aman ingest secure-keygen -out data/ingest_keys.json
 ```
 
 ## Pack
 ```bash
-go run ./cmd/aegisr ingest secure-pack \
+go run ./cmd/aman ingest secure-pack \
   -in events.json \
-  -out events.aegis \
+  -out events.aman \
   -keyring data/ingest_keys.json \
   -compress auto \
   -policy adaptive \
@@ -34,15 +34,15 @@ go run ./cmd/aegisr ingest secure-pack \
 
 ## Unpack + Verify
 ```bash
-go run ./cmd/aegisr ingest secure-unpack \
-  -in events.aegis \
+go run ./cmd/aman ingest secure-unpack \
+  -in events.aman \
   -out events.json \
   -keyring data/ingest_keys.json
 ```
 
 ## Key Rotation
 ```bash
-go run ./cmd/aegisr ingest secure-rotate -in data/ingest_keys.json
+go run ./cmd/aman ingest secure-rotate -in data/ingest_keys.json
 ```
 
 ## Health Checks
