@@ -649,7 +649,7 @@ func handleIngest(args []string) {
 		outln("Keyring written: " + *out)
 		outln("Start server: aman ingest http --addr :8080 --secure-keyring " + *out)
 		outln("Pack events:  aman ingest secure-pack -in events.json -out events.aman -keyring " + *out)
-		outln("Send:        curl -X POST \"http://localhost:8080/ingest-secure?schema=native\" --data-binary @events.aegis")
+		outln("Send:        curl -X POST \"http://localhost:8080/ingest-secure?schema=native\" --data-binary @events.aman")
 	case "secure-rotate":
 		fs := flag.NewFlagSet("ingest secure-rotate", flag.ExitOnError)
 		in := fs.String("in", "", "existing keyring path")
