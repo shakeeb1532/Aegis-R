@@ -1035,5 +1035,307 @@
     "kill_chain": [
       "Lateral Movement"
     ]
+  },
+  {
+    "id": "TA0010.S3_BULK_ACCESS",
+    "name": "S3 Bulk Object Access",
+    "requirements": [
+      {
+        "type": "s3_list_objects",
+        "description": "Large S3 list operations"
+      },
+      {
+        "type": "s3_get_object",
+        "description": "Bulk S3 object downloads"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Bulk access to object storage can indicate data staging or exfiltration.",
+    "mitre": {
+      "tactic": "TA0010",
+      "technique": "T1530",
+      "subtechnique": "T1530",
+      "links": [
+        "https://attack.mitre.org/techniques/T1530/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-4"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "cloud",
+        "aws",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exfiltration"
+    ]
+  },
+  {
+    "id": "TA0010.DB_EXPORT",
+    "name": "Database Export",
+    "requirements": [
+      {
+        "type": "db_export",
+        "description": "Database export job triggered"
+      },
+      {
+        "type": "large_outbound_transfer",
+        "description": "Large outbound data transfer"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Database exports combined with large transfers indicate data exfiltration.",
+    "mitre": {
+      "tactic": "TA0010",
+      "technique": "T1030",
+      "subtechnique": "T1030",
+      "links": [
+        "https://attack.mitre.org/techniques/T1030/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-4"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "cloud",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exfiltration"
+    ]
+  },
+  {
+    "id": "TA0010.ARCHIVE_STAGING",
+    "name": "Archive + Staging Pattern",
+    "requirements": [
+      {
+        "type": "archive_creation",
+        "description": "Archive files created"
+      },
+      {
+        "type": "data_staging",
+        "description": "Data staged prior to transfer"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Archive creation combined with staging indicates pre-exfiltration activity.",
+    "mitre": {
+      "tactic": "TA0010",
+      "technique": "T1560",
+      "subtechnique": "T1560",
+      "links": [
+        "https://attack.mitre.org/techniques/T1560/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-4"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exfiltration"
+    ]
+  },
+  {
+    "id": "TA0010.EXFIL_TOOLING",
+    "name": "Exfiltration Tooling Detected",
+    "requirements": [
+      {
+        "type": "exfil_tool_detected",
+        "description": "rclone/mega/other tooling"
+      },
+      {
+        "type": "large_outbound_transfer",
+        "description": "Large outbound transfer"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Known exfiltration tooling with large transfers indicates active data theft.",
+    "mitre": {
+      "tactic": "TA0010",
+      "technique": "T1048",
+      "subtechnique": "T1048",
+      "links": [
+        "https://attack.mitre.org/techniques/T1048/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-4"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exfiltration"
+    ]
+  },
+  {
+    "id": "TA0010.BULK_IDENTITY_EXPORT",
+    "name": "Bulk Identity Data Export",
+    "requirements": [
+      {
+        "type": "directory_export",
+        "description": "Directory or identity export"
+      },
+      {
+        "type": "large_outbound_transfer",
+        "description": "Large outbound transfer"
+      }
+    ],
+    "preconds": [
+      "identity_compromise"
+    ],
+    "explain": "Bulk identity exports indicate data access abuse and exfiltration risk.",
+    "mitre": {
+      "tactic": "TA0010",
+      "technique": "T1530",
+      "subtechnique": "T1530",
+      "links": [
+        "https://attack.mitre.org/techniques/T1530/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-4"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "identity",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exfiltration"
+    ]
+  },
+  {
+    "id": "TA0010.SNAPSHOT_EXFIL",
+    "name": "Snapshot/Backup Exfiltration",
+    "requirements": [
+      {
+        "type": "snapshot_created",
+        "description": "Snapshot or backup created"
+      },
+      {
+        "type": "snapshot_shared_external",
+        "description": "Snapshot shared to external account"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Snapshot sharing to external accounts indicates potential data exfiltration.",
+    "mitre": {
+      "tactic": "TA0010",
+      "technique": "T1530",
+      "subtechnique": "T1530",
+      "links": [
+        "https://attack.mitre.org/techniques/T1530/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-4"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "cloud",
+        "aws",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exfiltration"
+    ]
   }
 ]
