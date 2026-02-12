@@ -46,6 +46,7 @@ Aegis-R is a human-governed security reasoning system that evaluates causal feas
 - `docs/incident_history.md` — ML-assist history schema and examples
 - `docs/known_edge_cases.md` — documented mismatches kept for conservative behavior
 - `docs/ui_api_contract.md` — UI API contract (demo)
+- `docs/secure_ingest.md` — secure ingest envelope (phase 1)
 
 ---
 
@@ -391,6 +392,29 @@ go run ./cmd/aegisr assess \
 - `inventory-drift` — compare inventory build to baseline env.json
 - `inventory-refresh` — refresh env + drift report (file or live adapters)
 - `inventory-schedule` — refresh env on a randomized cadence
+
+Secure ingest (phase 1, DCF-inspired):
+```bash
+# Generate keys
+go run ./cmd/aegisr ingest secure-keygen -out data/ingest_keys.json
+
+# Pack events into a secure envelope
+go run ./cmd/aegisr ingest secure-pack \
+  -in events.json \
+  -out events.aegis \
+  -enc-key <b64> \
+  -hmac-key <b64> \
+  -compress auto \
+  -policy adaptive \
+  -risk medium
+
+# Unpack and verify
+go run ./cmd/aegisr ingest secure-unpack \
+  -in events.aegis \
+  -out events.json \
+  -enc-key <b64> \
+  -hmac-key <b64>
+```
 
 ### Zero-Trust
 - `init-scan` — strict install-time baseline creation

@@ -68,6 +68,7 @@
 - Optional LZ4-compressed state snapshots when using `.lz4` state paths.
 - Optional LZ4-compressed audit logs with export to JSONL.
 - LZ4 compression for SIEM exports and report outputs (`-out`).
+- Secure ingest envelope (phase 1) with AES-GCM + HMAC + optional LZ4 compression.
 
 ### Fixed
 - Gated rule packs now surface as `admin_hold` placeholders.

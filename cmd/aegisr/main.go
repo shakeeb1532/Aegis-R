@@ -31,6 +31,7 @@ import (
 	"aegisr/internal/model"
 	"aegisr/internal/ops"
 	"aegisr/internal/report"
+	"aegisr/internal/secureingest"
 	"aegisr/internal/sim"
 	"aegisr/internal/state"
 	"aegisr/internal/validate"
@@ -173,6 +174,9 @@ func usage() {
 	fmt.Println("  generate-scenarios -out scenarios.json [-rules rules.json]")
 	fmt.Println("  evaluate -scenarios scenarios.json [-rules rules.json] [-format cli|json|md] [-out report.md]")
 	fmt.Println("  ingest-http -addr :8080 (schema: ecs|elastic_ecs|ocsf|cim|splunk_cim_auth|splunk_cim_net|mde)")
+	fmt.Println("  ingest secure-pack -in events.json -out events.aegis -enc-key <b64> -hmac-key <b64> [-compress auto|none|lz4] [-policy adaptive] [-risk medium]")
+	fmt.Println("  ingest secure-unpack -in events.aegis -out events.json -enc-key <b64> -hmac-key <b64>")
+	fmt.Println("  ingest secure-keygen -out keys.json")
 	fmt.Println("  ingest-inventory -in data/inventory -out data/env.json")
 	fmt.Println("  inventory-drift -base data/env.json -in data/inventory -out drift.json")
 	fmt.Println("  inventory-adapter -provider aws|okta|azure|gcp -config data/inventory/config.json -out data/env.json")
@@ -426,7 +430,7 @@ func renderConfidenceMarkdown(high int, med int, low int) string {
 
 func handleIngest(args []string) {
 	if len(args) == 0 {
-		fatal(errors.New("ingest requires a subcommand: file|http|sample"))
+		fatal(errors.New("ingest requires a subcommand: file|http|sample|secure-pack|secure-unpack|secure-keygen"))
 	}
 	switch args[0] {
 	case "file":
@@ -486,6 +490,112 @@ func handleIngest(args []string) {
 		outln(fmt.Sprintf("Normalized schemas: %s", schema))
 		outln("Events ignored: 0")
 		outln("State updated: YES")
+	case "secure-pack":
+		fs := flag.NewFlagSet("ingest secure-pack", flag.ExitOnError)
+		in := fs.String("in", "", "input events json")
+		out := fs.String("out", "", "output envelope")
+		encKey := fs.String("enc-key", "", "base64 AES-256 key")
+		hmacKey := fs.String("hmac-key", "", "base64 HMAC key")
+		compressMode := fs.String("compress", "auto", "compression: auto|none|lz4")
+		policy := fs.String("policy", "adaptive", "policy name")
+		risk := fs.String("risk", "medium", "risk: low|medium|high")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		if *in == "" || *out == "" {
+			fatal(errors.New("secure-pack requires -in and -out"))
+		}
+		if *encKey == "" || *hmacKey == "" {
+			fatal(errors.New("secure-pack requires --enc-key and --hmac-key"))
+		}
+		payload, err := os.ReadFile(*in)
+		if err != nil {
+			fatal(err)
+		}
+		encBytes, err := base64.StdEncoding.DecodeString(*encKey)
+		if err != nil {
+			fatal(err)
+		}
+		hmacBytes, err := base64.StdEncoding.DecodeString(*hmacKey)
+		if err != nil {
+			fatal(err)
+		}
+		env, err := secureingest.Pack(payload, secureingest.Options{
+			EncKey:   encBytes,
+			HMACKey:  hmacBytes,
+			Policy:   *policy,
+			Risk:     *risk,
+			Compress: *compressMode,
+		})
+		if err != nil {
+			fatal(err)
+		}
+		if err := os.WriteFile(*out, env, 0600); err != nil {
+			fatal(err)
+		}
+		outln("Secure envelope written: " + *out)
+	case "secure-unpack":
+		fs := flag.NewFlagSet("ingest secure-unpack", flag.ExitOnError)
+		in := fs.String("in", "", "input envelope")
+		out := fs.String("out", "", "output json")
+		encKey := fs.String("enc-key", "", "base64 AES-256 key")
+		hmacKey := fs.String("hmac-key", "", "base64 HMAC key")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		if *in == "" || *out == "" {
+			fatal(errors.New("secure-unpack requires -in and -out"))
+		}
+		if *encKey == "" || *hmacKey == "" {
+			fatal(errors.New("secure-unpack requires --enc-key and --hmac-key"))
+		}
+		data, err := os.ReadFile(*in)
+		if err != nil {
+			fatal(err)
+		}
+		encBytes, err := base64.StdEncoding.DecodeString(*encKey)
+		if err != nil {
+			fatal(err)
+		}
+		hmacBytes, err := base64.StdEncoding.DecodeString(*hmacKey)
+		if err != nil {
+			fatal(err)
+		}
+		payload, _, err := secureingest.Unpack(data, secureingest.Options{EncKey: encBytes, HMACKey: hmacBytes})
+		if err != nil {
+			fatal(err)
+		}
+		if err := os.WriteFile(*out, payload, 0600); err != nil {
+			fatal(err)
+		}
+		outln("Secure payload written: " + *out)
+	case "secure-keygen":
+		fs := flag.NewFlagSet("ingest secure-keygen", flag.ExitOnError)
+		out := fs.String("out", "", "output json")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		enc, err := secureingest.GenerateKey(32)
+		if err != nil {
+			fatal(err)
+		}
+		hmacKey, err := secureingest.GenerateKey(32)
+		if err != nil {
+			fatal(err)
+		}
+		payload := map[string]string{"enc_key": enc, "hmac_key": hmacKey}
+		data, err := json.MarshalIndent(payload, "", "  ")
+		if err != nil {
+			fatal(err)
+		}
+		if *out == "" {
+			fmt.Println(string(data))
+			return
+		}
+		if err := os.WriteFile(*out, data, 0600); err != nil {
+			fatal(err)
+		}
+		outln("Keys written: " + *out)
 	default:
 		fatal(errors.New("unknown ingest subcommand"))
 	}
