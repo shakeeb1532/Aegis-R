@@ -730,5 +730,310 @@
     "kill_chain": [
       "Defense Evasion"
     ]
+  },
+  {
+    "id": "TA0008.RDP_LATERAL",
+    "name": "RDP Lateral Movement",
+    "requirements": [
+      {
+        "type": "rdp_login",
+        "description": "RDP login observed"
+      },
+      {
+        "type": "new_remote_admin",
+        "description": "New remote admin session"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "RDP lateral movement requires valid credentials and remote admin access.",
+    "mitre": {
+      "tactic": "TA0008",
+      "technique": "T1021.001",
+      "subtechnique": "T1021.001",
+      "links": [
+        "https://attack.mitre.org/techniques/T1021/001/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-3"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Lateral Movement"
+    ]
+  },
+  {
+    "id": "TA0008.SMB_LATERAL",
+    "name": "SMB Lateral Movement",
+    "requirements": [
+      {
+        "type": "smb_auth",
+        "description": "SMB authentication observed"
+      },
+      {
+        "type": "remote_service_creation",
+        "description": "Remote service created"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "SMB lateral movement with remote service creation indicates remote execution.",
+    "mitre": {
+      "tactic": "TA0008",
+      "technique": "T1021.002",
+      "subtechnique": "T1021.002",
+      "links": [
+        "https://attack.mitre.org/techniques/T1021/002/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-3"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Lateral Movement"
+    ]
+  },
+  {
+    "id": "TA0008.WINRM_LATERAL",
+    "name": "WinRM Lateral Movement",
+    "requirements": [
+      {
+        "type": "winrm_connection",
+        "description": "WinRM connection observed"
+      },
+      {
+        "type": "remote_command",
+        "description": "Remote command executed"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "WinRM remote execution indicates lateral movement using valid credentials.",
+    "mitre": {
+      "tactic": "TA0008",
+      "technique": "T1021.006",
+      "subtechnique": "T1021.006",
+      "links": [
+        "https://attack.mitre.org/techniques/T1021/006/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-3"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Lateral Movement"
+    ]
+  },
+  {
+    "id": "TA0008.SSH_LATERAL",
+    "name": "SSH Lateral Movement",
+    "requirements": [
+      {
+        "type": "ssh_login",
+        "description": "SSH login observed"
+      },
+      {
+        "type": "new_ssh_key",
+        "description": "New SSH key added or used"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "SSH lateral movement with new keys indicates compromised credentials.",
+    "mitre": {
+      "tactic": "TA0008",
+      "technique": "T1021.004",
+      "subtechnique": "T1021.004",
+      "links": [
+        "https://attack.mitre.org/techniques/T1021/004/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-3"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "linux",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Lateral Movement"
+    ]
+  },
+  {
+    "id": "TA0008.PSEXEC_LATERAL",
+    "name": "PsExec Lateral Movement",
+    "requirements": [
+      {
+        "type": "psexec_service",
+        "description": "PsExec service created"
+      },
+      {
+        "type": "remote_service_creation",
+        "description": "Remote service created"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "PsExec execution indicates lateral movement with remote service creation.",
+    "mitre": {
+      "tactic": "TA0008",
+      "technique": "T1021.002",
+      "subtechnique": "T1021.002",
+      "links": [
+        "https://attack.mitre.org/techniques/T1021/002/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-3"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Lateral Movement"
+    ]
+  },
+  {
+    "id": "TA0008.EAST_WEST_ANOMALY",
+    "name": "East-West Traffic Anomaly",
+    "requirements": [
+      {
+        "type": "east_west_connection",
+        "description": "New east-west connection"
+      },
+      {
+        "type": "admin_protocol_used",
+        "description": "Admin protocol used (RDP/SMB/WinRM/SSH)"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Unusual east-west admin protocol use suggests lateral movement.",
+    "mitre": {
+      "tactic": "TA0008",
+      "technique": "T1021",
+      "subtechnique": "T1021",
+      "links": [
+        "https://attack.mitre.org/techniques/T1021/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "expansion-pack-3"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-12"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "network",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Lateral Movement"
+    ]
   }
 ]
