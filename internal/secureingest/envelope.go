@@ -27,6 +27,14 @@ const CipherAESGCM = "AES-256-GCM"
 
 const Version = "v1"
 
+var (
+	ErrHMACVerify   = errors.New("hmac verification failed")
+	ErrDecrypt      = errors.New("decrypt failed")
+	ErrPayloadHash  = errors.New("payload hash mismatch")
+	ErrKeyLength    = errors.New("enc key must be 32 bytes")
+	ErrHMACKeyShort = errors.New("hmac key too short")
+)
+
 type Envelope struct {
 	Version     string `json:"version"`
 	CreatedAt   string `json:"created_at"`
@@ -52,10 +60,10 @@ type Options struct {
 
 func Pack(payload []byte, opts Options) ([]byte, error) {
 	if len(opts.EncKey) != 32 {
-		return nil, errors.New("enc key must be 32 bytes")
+		return nil, ErrKeyLength
 	}
 	if len(opts.HMACKey) < 16 {
-		return nil, errors.New("hmac key too short")
+		return nil, ErrHMACKeyShort
 	}
 	if opts.Policy == "" {
 		opts.Policy = "adaptive"
@@ -118,14 +126,14 @@ func Unpack(data []byte, opts Options) ([]byte, Envelope, error) {
 		return nil, env, fmt.Errorf("unsupported version: %s", env.Version)
 	}
 	if len(opts.EncKey) != 32 {
-		return nil, env, errors.New("enc key must be 32 bytes")
+		return nil, env, ErrKeyLength
 	}
 	if len(opts.HMACKey) < 16 {
-		return nil, env, errors.New("hmac key too short")
+		return nil, env, ErrHMACKeyShort
 	}
 	expected := computeHMAC(env, opts.HMACKey)
 	if !hmac.Equal([]byte(env.HMAC), []byte(expected)) {
-		return nil, env, errors.New("hmac verification failed")
+		return nil, env, ErrHMACVerify
 	}
 
 	nonce, err := base64.StdEncoding.DecodeString(env.Nonce)
@@ -147,20 +155,35 @@ func Unpack(data []byte, opts Options) ([]byte, Envelope, error) {
 	aad := aadString(env.Version, env.Compression, env.Cipher, env.Policy, env.Risk, env.PayloadHash)
 	compressed, err := gcm.Open(nil, nonce, ciphertext, []byte(aad))
 	if err != nil {
-		return nil, env, err
+		return nil, env, ErrDecrypt
 	}
 	out := compressed
 	if env.Compression == CompressionLZ4 {
 		out, err = compress.Decompress(compressed)
 		if err != nil {
-			return nil, env, err
+			return nil, env, ErrDecrypt
 		}
 	}
 	hash := sha256.Sum256(out)
 	if !strings.EqualFold(hex.EncodeToString(hash[:]), env.PayloadHash) {
-		return nil, env, errors.New("payload hash mismatch")
+		return nil, env, ErrPayloadHash
 	}
 	return out, env, nil
+}
+
+func UnpackWithKeyring(data []byte, opts []Options) ([]byte, Envelope, error) {
+	var lastErr error
+	for _, o := range opts {
+		payload, env, err := Unpack(data, o)
+		if err == nil {
+			return payload, env, nil
+		}
+		lastErr = err
+	}
+	if lastErr == nil {
+		lastErr = ErrDecrypt
+	}
+	return nil, Envelope{}, lastErr
 }
 
 func chooseCompression(payload []byte, mode string) string {

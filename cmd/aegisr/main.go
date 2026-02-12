@@ -173,10 +173,12 @@ func usage() {
 	fmt.Println("  audit-sign -audit audit.log -out signed_audit.log -signer soc-admin")
 	fmt.Println("  generate-scenarios -out scenarios.json [-rules rules.json]")
 	fmt.Println("  evaluate -scenarios scenarios.json [-rules rules.json] [-format cli|json|md] [-out report.md]")
-	fmt.Println("  ingest-http -addr :8080 (schema: ecs|elastic_ecs|ocsf|cim|splunk_cim_auth|splunk_cim_net|mde)")
-	fmt.Println("  ingest secure-pack -in events.json -out events.aegis -enc-key <b64> -hmac-key <b64> [-compress auto|none|lz4] [-policy adaptive] [-risk medium]")
-	fmt.Println("  ingest secure-unpack -in events.aegis -out events.json -enc-key <b64> -hmac-key <b64>")
+	fmt.Println("  ingest-http -addr :8080 [-secure-keyring data/ingest_keys.json] (schema: ecs|elastic_ecs|ocsf|cim|splunk_cim_auth|splunk_cim_net|mde)")
+	fmt.Println("  ingest secure-pack -in events.json -out events.aegis --keyring data/ingest_keys.json [-compress auto|none|lz4] [-policy adaptive] [-risk medium]")
+	fmt.Println("  ingest secure-unpack -in events.aegis -out events.json --keyring data/ingest_keys.json")
 	fmt.Println("  ingest secure-keygen -out keys.json")
+	fmt.Println("  ingest secure-init -out data/ingest_keys.json")
+	fmt.Println("  ingest secure-rotate -in data/ingest_keys.json [-out data/ingest_keys.json]")
 	fmt.Println("  ingest-inventory -in data/inventory -out data/env.json")
 	fmt.Println("  inventory-drift -base data/env.json -in data/inventory -out drift.json")
 	fmt.Println("  inventory-adapter -provider aws|okta|azure|gcp -config data/inventory/config.json -out data/env.json")
@@ -430,7 +432,7 @@ func renderConfidenceMarkdown(high int, med int, low int) string {
 
 func handleIngest(args []string) {
 	if len(args) == 0 {
-		fatal(errors.New("ingest requires a subcommand: file|http|sample|secure-pack|secure-unpack|secure-keygen"))
+		fatal(errors.New("ingest requires a subcommand: file|http|sample|secure-pack|secure-unpack|secure-keygen|secure-init|secure-rotate"))
 	}
 	switch args[0] {
 	case "file":
@@ -496,6 +498,7 @@ func handleIngest(args []string) {
 		out := fs.String("out", "", "output envelope")
 		encKey := fs.String("enc-key", "", "base64 AES-256 key")
 		hmacKey := fs.String("hmac-key", "", "base64 HMAC key")
+		keyringPath := fs.String("keyring", "", "keyring json (preferred)")
 		compressMode := fs.String("compress", "auto", "compression: auto|none|lz4")
 		policy := fs.String("policy", "adaptive", "policy name")
 		risk := fs.String("risk", "medium", "risk: low|medium|high")
@@ -505,20 +508,37 @@ func handleIngest(args []string) {
 		if *in == "" || *out == "" {
 			fatal(errors.New("secure-pack requires -in and -out"))
 		}
-		if *encKey == "" || *hmacKey == "" {
-			fatal(errors.New("secure-pack requires --enc-key and --hmac-key"))
-		}
 		payload, err := os.ReadFile(*in)
 		if err != nil {
 			fatal(err)
 		}
-		encBytes, err := base64.StdEncoding.DecodeString(*encKey)
-		if err != nil {
-			fatal(err)
-		}
-		hmacBytes, err := base64.StdEncoding.DecodeString(*hmacKey)
-		if err != nil {
-			fatal(err)
+		var encBytes []byte
+		var hmacBytes []byte
+		if *keyringPath != "" {
+			ring, err := secureingest.LoadKeyring(*keyringPath)
+			if err != nil {
+				fatal(err)
+			}
+			encBytes, err = base64.StdEncoding.DecodeString(ring.EncKey)
+			if err != nil {
+				fatal(err)
+			}
+			hmacBytes, err = base64.StdEncoding.DecodeString(ring.HMACKey)
+			if err != nil {
+				fatal(err)
+			}
+		} else {
+			if *encKey == "" || *hmacKey == "" {
+				fatal(errors.New("secure-pack requires --enc-key/--hmac-key or --keyring"))
+			}
+			encBytes, err = base64.StdEncoding.DecodeString(*encKey)
+			if err != nil {
+				fatal(err)
+			}
+			hmacBytes, err = base64.StdEncoding.DecodeString(*hmacKey)
+			if err != nil {
+				fatal(err)
+			}
 		}
 		env, err := secureingest.Pack(payload, secureingest.Options{
 			EncKey:   encBytes,
@@ -540,30 +560,47 @@ func handleIngest(args []string) {
 		out := fs.String("out", "", "output json")
 		encKey := fs.String("enc-key", "", "base64 AES-256 key")
 		hmacKey := fs.String("hmac-key", "", "base64 HMAC key")
+		keyringPath := fs.String("keyring", "", "keyring json (preferred)")
 		if err := fs.Parse(args[1:]); err != nil {
 			fatal(err)
 		}
 		if *in == "" || *out == "" {
 			fatal(errors.New("secure-unpack requires -in and -out"))
 		}
-		if *encKey == "" || *hmacKey == "" {
-			fatal(errors.New("secure-unpack requires --enc-key and --hmac-key"))
-		}
 		data, err := os.ReadFile(*in)
 		if err != nil {
 			fatal(err)
 		}
-		encBytes, err := base64.StdEncoding.DecodeString(*encKey)
-		if err != nil {
-			fatal(err)
-		}
-		hmacBytes, err := base64.StdEncoding.DecodeString(*hmacKey)
-		if err != nil {
-			fatal(err)
-		}
-		payload, _, err := secureingest.Unpack(data, secureingest.Options{EncKey: encBytes, HMACKey: hmacBytes})
-		if err != nil {
-			fatal(err)
+		var payload []byte
+		if *keyringPath != "" {
+			ring, err := secureingest.LoadKeyring(*keyringPath)
+			if err != nil {
+				fatal(err)
+			}
+			opts, err := secureingest.KeyringOptions(ring)
+			if err != nil {
+				fatal(err)
+			}
+			payload, _, err = secureingest.UnpackWithKeyring(data, opts)
+			if err != nil {
+				fatal(err)
+			}
+		} else {
+			if *encKey == "" || *hmacKey == "" {
+				fatal(errors.New("secure-unpack requires --enc-key/--hmac-key or --keyring"))
+			}
+			encBytes, err := base64.StdEncoding.DecodeString(*encKey)
+			if err != nil {
+				fatal(err)
+			}
+			hmacBytes, err := base64.StdEncoding.DecodeString(*hmacKey)
+			if err != nil {
+				fatal(err)
+			}
+			payload, _, err = secureingest.Unpack(data, secureingest.Options{EncKey: encBytes, HMACKey: hmacBytes})
+			if err != nil {
+				fatal(err)
+			}
 		}
 		if err := os.WriteFile(*out, payload, 0600); err != nil {
 			fatal(err)
@@ -596,6 +633,49 @@ func handleIngest(args []string) {
 			fatal(err)
 		}
 		outln("Keys written: " + *out)
+	case "secure-init":
+		fs := flag.NewFlagSet("ingest secure-init", flag.ExitOnError)
+		out := fs.String("out", "data/ingest_keys.json", "output keyring path")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		ring, err := secureingest.NewKeyring()
+		if err != nil {
+			fatal(err)
+		}
+		if err := secureingest.SaveKeyring(*out, ring); err != nil {
+			fatal(err)
+		}
+		outln("Keyring written: " + *out)
+		outln("Start server: aegis ingest http --addr :8080 --secure-keyring " + *out)
+		outln("Pack events:  aegis ingest secure-pack -in events.json -out events.aegis -keyring " + *out)
+		outln("Send:        curl -X POST \"http://localhost:8080/ingest-secure?schema=native\" --data-binary @events.aegis")
+	case "secure-rotate":
+		fs := flag.NewFlagSet("ingest secure-rotate", flag.ExitOnError)
+		in := fs.String("in", "", "existing keyring path")
+		out := fs.String("out", "", "output keyring path (default overwrite)")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		if *in == "" {
+			fatal(errors.New("secure-rotate requires -in"))
+		}
+		ring, err := secureingest.LoadKeyring(*in)
+		if err != nil {
+			fatal(err)
+		}
+		next, err := secureingest.RotateKeyring(ring)
+		if err != nil {
+			fatal(err)
+		}
+		target := *out
+		if target == "" {
+			target = *in
+		}
+		if err := secureingest.SaveKeyring(target, next); err != nil {
+			fatal(err)
+		}
+		outln("Keyring rotated: " + target)
 	default:
 		fatal(errors.New("unknown ingest subcommand"))
 	}
@@ -2021,12 +2101,26 @@ func handleEvaluate(args []string) {
 func handleIngestHTTP(args []string) {
 	fs := flag.NewFlagSet("ingest-http", flag.ExitOnError)
 	addr := fs.String("addr", ":8080", "listen address")
+	secureKeyring := fs.String("secure-keyring", "", "keyring json for secure ingest")
 	if err := fs.Parse(args); err != nil {
 		fatal(err)
 	}
 
 	http.HandleFunc("/ingest", integration.IngestHandler)
 	http.HandleFunc("/healthz", integration.HealthHandler)
+	if *secureKeyring != "" {
+		ring, err := secureingest.LoadKeyring(*secureKeyring)
+		if err != nil {
+			fatal(err)
+		}
+		opts, err := secureingest.KeyringOptions(ring)
+		if err != nil {
+			fatal(err)
+		}
+		stats := integration.NewSecureIngestStats()
+		http.HandleFunc("/ingest-secure", integration.SecureIngestHandler(stats, opts))
+		http.HandleFunc("/ingest-health", integration.SecureIngestHealthHandler(stats))
+	}
 	fmt.Printf("Ingest HTTP listening on %s\n", *addr)
 	srv := &http.Server{
 		Addr:              *addr,

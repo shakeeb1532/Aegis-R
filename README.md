@@ -387,7 +387,7 @@ go run ./cmd/aegisr assess \
 - `system confidence -out docs/confidence_report.md` — save confidence bands as Markdown
 
 ### Integration
-- `ingest-http` — HTTP ingest endpoint
+- `ingest-http` — HTTP ingest endpoint (supports secure envelope)
 - `ingest-inventory` — build `env.json` from inventory exports
 - `inventory-drift` — compare inventory build to baseline env.json
 - `inventory-refresh` — refresh env + drift report (file or live adapters)
@@ -395,26 +395,32 @@ go run ./cmd/aegisr assess \
 
 Secure ingest (phase 1, DCF-inspired):
 ```bash
-# Generate keys
-go run ./cmd/aegisr ingest secure-keygen -out data/ingest_keys.json
+# Quickstart (keyring + secure HTTP ingest)
+go run ./cmd/aegisr ingest secure-init -out data/ingest_keys.json
+go run ./cmd/aegisr ingest http -addr :8080 -secure-keyring data/ingest_keys.json
 
 # Pack events into a secure envelope
 go run ./cmd/aegisr ingest secure-pack \
   -in events.json \
   -out events.aegis \
-  -enc-key <b64> \
-  -hmac-key <b64> \
+  -keyring data/ingest_keys.json \
   -compress auto \
   -policy adaptive \
   -risk medium
 
-# Unpack and verify
+# Send securely
+curl -X POST "http://localhost:8080/ingest-secure?schema=native" --data-binary @events.aegis
+
+# Unpack and verify (offline)
 go run ./cmd/aegisr ingest secure-unpack \
   -in events.aegis \
   -out events.json \
-  -enc-key <b64> \
-  -hmac-key <b64>
+  -keyring data/ingest_keys.json
+
+# Rotate keys (keeps previous for transition)
+go run ./cmd/aegisr ingest secure-rotate -in data/ingest_keys.json
 ```
+`/ingest-health` reports HMAC/decrypt/schema failure rates for the secure pipeline.
 
 ### Zero-Trust
 - `init-scan` — strict install-time baseline creation

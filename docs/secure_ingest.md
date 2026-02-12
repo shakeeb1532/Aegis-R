@@ -8,6 +8,14 @@ Aegis-R supports a DCF-inspired secure ingest envelope to protect event batches 
 - Integrity: HMAC-SHA256
 - Self-describing metadata (version, policy, risk, payload hash)
 
+## Quickstart (Keyring + HTTP)
+```bash
+go run ./cmd/aegisr ingest secure-init -out data/ingest_keys.json
+go run ./cmd/aegisr ingest http -addr :8080 -secure-keyring data/ingest_keys.json
+go run ./cmd/aegisr ingest secure-pack -in events.json -out events.aegis -keyring data/ingest_keys.json
+curl -X POST "http://localhost:8080/ingest-secure?schema=native" --data-binary @events.aegis
+```
+
 ## Key Generation
 ```bash
 go run ./cmd/aegisr ingest secure-keygen -out data/ingest_keys.json
@@ -18,8 +26,7 @@ go run ./cmd/aegisr ingest secure-keygen -out data/ingest_keys.json
 go run ./cmd/aegisr ingest secure-pack \
   -in events.json \
   -out events.aegis \
-  -enc-key <b64> \
-  -hmac-key <b64> \
+  -keyring data/ingest_keys.json \
   -compress auto \
   -policy adaptive \
   -risk medium
@@ -30,9 +37,16 @@ go run ./cmd/aegisr ingest secure-pack \
 go run ./cmd/aegisr ingest secure-unpack \
   -in events.aegis \
   -out events.json \
-  -enc-key <b64> \
-  -hmac-key <b64>
+  -keyring data/ingest_keys.json
 ```
+
+## Key Rotation
+```bash
+go run ./cmd/aegisr ingest secure-rotate -in data/ingest_keys.json
+```
+
+## Health Checks
+`/ingest-health` returns failure rates for HMAC verification, decrypt failures, and schema errors.
 
 ## Notes
 - HMAC validation is mandatory; invalid envelopes are rejected.
