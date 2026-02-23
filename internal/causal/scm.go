@@ -5,6 +5,8 @@ import (
 	"sort"
 )
 
+const maxNecessaryCauseSetSize = 3
+
 type Assignment map[string]bool
 
 type Expr interface {
@@ -41,6 +43,9 @@ type AndExpr struct {
 }
 
 func (x AndExpr) Eval(a Assignment) bool {
+	if len(x.Terms) == 0 {
+		return false
+	}
 	for _, t := range x.Terms {
 		if !t.Eval(a) {
 			return false
@@ -203,6 +208,9 @@ func (m Model) NecessaryCauses(base Assignment, outcomeMustBe bool) ([]string, e
 func (m Model) NecessaryCauseSets(base Assignment, outcomeMustBe bool, maxSetSize int) ([][]string, error) {
 	if maxSetSize < 1 {
 		maxSetSize = 1
+	}
+	if maxSetSize > maxNecessaryCauseSetSize {
+		return nil, fmt.Errorf("%w: requested=%d max=%d", ErrCauseSetTooLarge, maxSetSize, maxNecessaryCauseSetSize)
 	}
 	actual, err := m.Evaluate(base, nil)
 	if err != nil {

@@ -3,10 +3,6 @@ package logic
 import "time"
 
 const (
-	confidenceFeasibleHeuristic   = 0.85
-	confidenceIncompleteHeuristic = 0.55
-	confidenceLowHeuristic        = 0.40
-
 	confidenceFloor       = 0.10
 	confidenceCeiling     = 0.95
 	confidenceCoverageW   = 0.65
@@ -28,4 +24,17 @@ func DefaultReasonerConfig() ReasonerConfig {
 		AllowProcessCreationAsCredentialAccess: false,
 		CausalMaxSetSize:                       2,
 	}
+}
+
+func sanitizeReasonerConfig(cfg ReasonerConfig) ReasonerConfig {
+	if cfg.Now == nil {
+		cfg.Now = func() time.Time { return time.Now().UTC() }
+	}
+	if cfg.CausalMaxSetSize < 1 {
+		cfg.CausalMaxSetSize = 1
+	}
+	if cfg.CausalMaxSetSize > 3 {
+		cfg.CausalMaxSetSize = 3
+	}
+	return cfg
 }

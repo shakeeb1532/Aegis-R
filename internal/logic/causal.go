@@ -48,11 +48,17 @@ func deriveCausalFacts(events []model.Event, index map[string][]int, cfg Reasone
 	}
 
 	if t, ok := earliestAnyEventTime(events, index,
-		"impossible_travel", "new_device_login", "mfa_disabled",
-		"token_refresh_anomaly", "oauth_consent", "new_app_grant",
-		"device_code_flow_success", "device_join_complete",
+		"impossible_travel", "new_device_login", "mfa_disabled", "token_refresh_anomaly",
 	); ok {
 		facts["identity_compromise"] = causalFact{Observed: true, At: t}
+	} else if countObservedEventTypes(index,
+		"oauth_consent", "new_app_grant", "device_code_flow_success", "device_join_complete",
+	) >= 2 {
+		if t, ok := earliestAnyEventTime(events, index,
+			"oauth_consent", "new_app_grant", "device_code_flow_success", "device_join_complete",
+		); ok {
+			facts["identity_compromise"] = causalFact{Observed: true, At: t}
+		}
 	}
 	if t, ok := earliestEventTime(events, index["valid_account_login"]); ok {
 		facts["valid_account_login"] = causalFact{Observed: true, At: t}
@@ -142,4 +148,14 @@ func maxTime(a, b time.Time) time.Time {
 		return a
 	}
 	return b
+}
+
+func countObservedEventTypes(index map[string][]int, types ...string) int {
+	count := 0
+	for _, typ := range types {
+		if len(index[typ]) > 0 {
+			count++
+		}
+	}
+	return count
 }

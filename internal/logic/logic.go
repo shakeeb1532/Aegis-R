@@ -53,7 +53,7 @@ func DefaultRules() []Rule {
 	if rules, err := loadEmbeddedDefaultRules(); err == nil && len(rules) > 0 {
 		return rules
 	}
-	return []Rule{
+	rules := []Rule{
 		{
 			ID:   "TA0001.PHISHING",
 			Name: "Initial Access via Phishing",
@@ -407,6 +407,8 @@ func DefaultRules() []Rule {
 			Explain:  "Stolen credentials with anomalous device access indicate initial compromise.",
 		},
 	}
+	normalizeRuleMetadata(rules)
+	return rules
 }
 
 func LoadRules(path string) ([]Rule, error) {
@@ -426,6 +428,7 @@ func LoadRules(path string) ([]Rule, error) {
 	if err := json.Unmarshal(data, &rules); err != nil {
 		return nil, err
 	}
+	normalizeRuleMetadata(rules)
 	if len(rules) == 0 {
 		return nil, fmt.Errorf("%w: empty catalog", ErrInvalidRuleCatalog)
 	}
@@ -505,6 +508,8 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		index[e.Type] = append(index[e.Type], i)
 	}
 	cfg := DefaultReasonerConfig()
+	cfg = sanitizeReasonerConfig(cfg)
+	now := cfg.Now()
 	facts := deriveCausalFacts(events, index, cfg)
 
 	results := make([]model.RuleResult, 0, len(rules))
@@ -576,12 +581,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 				Description: "Causal model evaluation failed",
 			})
 		}
-		confidence := confidenceLowHeuristic
-		if feasible {
-			confidence = confidenceFeasibleHeuristic
-		} else if precondOK && len(missing) > 0 {
-			confidence = confidenceIncompleteHeuristic
-		}
+		confidence := scoreConfidence(rule, supporting, missing, precondOK, now)
 		if feasible && rule.Constraints.MinConfidence > 0 && confidence < rule.Constraints.MinConfidence {
 			feasible = false
 			missing = append(missing, model.EvidenceRequirement{
@@ -635,12 +635,12 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		})
 	}
 	return model.ReasoningReport{
-		GeneratedAt:     DefaultReasonerConfig().Now(),
+		GeneratedAt:     now,
 		Summary:         "Feasibility reasoning over evidence and preconditions.",
 		Results:         results,
 		Narrative:       narrative,
-		ConfidenceModel: "heuristic",
-		ConfidenceNote:  "Rule-based heuristic confidence; not calibrated.",
+		ConfidenceModel: "evidence_weighted",
+		ConfidenceNote:  "Confidence weighted by evidence coverage, corroboration, and recency. Not ML-calibrated.",
 	}
 }
 

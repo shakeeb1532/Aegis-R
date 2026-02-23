@@ -86,6 +86,24 @@ func TestModelNecessaryCauseSets_JointCause(t *testing.T) {
 	}
 }
 
+func TestModelNecessaryCauseSets_RejectsUnsafeSetSize(t *testing.T) {
+	nodes := []Node{
+		{Name: "a", Exogenous: true},
+		{Name: "y", Parents: []string{"a"}, Equation: VarExpr{"a"}},
+	}
+	m, err := NewModel("y", nodes)
+	if err != nil {
+		t.Fatalf("new model: %v", err)
+	}
+	_, err = m.NecessaryCauseSets(Assignment{"a": true}, true, 10)
+	if err == nil {
+		t.Fatalf("expected safe bound error")
+	}
+	if !errors.Is(err, ErrCauseSetTooLarge) {
+		t.Fatalf("expected ErrCauseSetTooLarge, got %v", err)
+	}
+}
+
 func TestModelCycleRejected(t *testing.T) {
 	_, err := NewModel("a", []Node{
 		{Name: "a", Parents: []string{"b"}, Equation: VarExpr{"b"}},

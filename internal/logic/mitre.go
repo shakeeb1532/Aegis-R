@@ -7,6 +7,8 @@ import (
 	"aman/internal/env"
 )
 
+var mitreNowUTC = func() time.Time { return time.Now().UTC() }
+
 type MitreCoverageReport struct {
 	GeneratedAt      time.Time             `json:"generated_at"`
 	TotalRules       int                   `json:"total_rules"`
@@ -105,7 +107,7 @@ func BuildMitreCoverage(rules []Rule) MitreCoverageReport {
 	sort.Strings(missing)
 
 	return MitreCoverageReport{
-		GeneratedAt:      time.Now().UTC(),
+		GeneratedAt:      mitreNowUTC(),
 		TotalRules:       len(rules),
 		ApplicableRules:  len(rules),
 		RulesWithMitre:   withMitre,

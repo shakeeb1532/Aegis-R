@@ -41,9 +41,8 @@ func ReasonWithEnvAndMetricsWithConfig(
 	includeEvidence bool,
 	cfg ReasonerConfig,
 ) model.ReasoningReport {
-	if cfg.Now == nil {
-		cfg = DefaultReasonerConfig()
-	}
+	cfg = sanitizeReasonerConfig(cfg)
+	now := cfg.Now()
 	if isEnvEmpty(environment) {
 		return ReasonWithMetrics(events, rules, metrics, includeEvidence)
 	}
@@ -147,7 +146,7 @@ func ReasonWithEnvAndMetricsWithConfig(
 				Description: "Causal model evaluation failed",
 			})
 		}
-		confidence := scoreConfidence(rule, supporting, missing, precondOK, cfg.Now())
+		confidence := scoreConfidence(rule, supporting, missing, precondOK, now)
 		if feasible && rule.Constraints.MinConfidence > 0 && confidence < rule.Constraints.MinConfidence {
 			feasible = false
 			missing = append(missing, model.EvidenceRequirement{
@@ -213,7 +212,7 @@ func ReasonWithEnvAndMetricsWithConfig(
 	}
 
 	return model.ReasoningReport{
-		GeneratedAt:     cfg.Now(),
+		GeneratedAt:     now,
 		Summary:         "Env-aware feasibility reasoning over evidence, trust graph, and identity privileges.",
 		Results:         results,
 		Narrative:       narrative,

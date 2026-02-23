@@ -3,10 +3,14 @@ package logic
 import (
 	"fmt"
 	"sort"
+	"strings"
+	"sync"
 
 	"aman/internal/causal"
 	"aman/internal/model"
 )
+
+var causalModelCache sync.Map
 
 func evaluateRuleCausally(
 	rule Rule,
@@ -15,31 +19,22 @@ func evaluateRuleCausally(
 	gates map[string]bool,
 	maxSetSize int,
 ) (bool, []string, []string, [][]string, error) {
-	nodes := []causal.Node{}
 	base := causal.Assignment{}
 
 	reqVars := []string{}
 	for _, req := range rule.Requirements {
 		v := "req:" + req.Type
 		reqVars = append(reqVars, v)
-		nodes = append(nodes, causal.Node{Name: v, Exogenous: true})
 		base[v] = reqPresent[req.Type]
 	}
 	preVars := []string{}
 	for _, p := range rule.Preconds {
 		v := "pre:" + p
 		preVars = append(preVars, v)
-		nodes = append(nodes, causal.Node{Name: v, Exogenous: true})
 		base[v] = precondOK[p]
 	}
 
 	gateVars := []string{"gate:no_contradiction", "gate:context_ok", "gate:env_reachable", "gate:identity_priv_ok"}
-	nodes = append(nodes,
-		causal.Node{Name: gateVars[0], Exogenous: true},
-		causal.Node{Name: gateVars[1], Exogenous: true},
-		causal.Node{Name: gateVars[2], Exogenous: true},
-		causal.Node{Name: gateVars[3], Exogenous: true},
-	)
 	base[gateVars[0]] = gates["no_contradiction"]
 	base[gateVars[1]] = gates["context_ok"]
 	base[gateVars[2]] = gates["env_reachable"]
@@ -53,15 +48,9 @@ func evaluateRuleCausally(
 	for _, p := range parents {
 		terms = append(terms, causal.VarExpr{Name: p})
 	}
-	nodes = append(nodes, causal.Node{
-		Name:     "outcome:feasible",
-		Parents:  parents,
-		Equation: causal.AndExpr{Terms: terms},
-	})
-
-	m, err := causal.NewModel("outcome:feasible", nodes)
+	m, err := cachedCausalModel(rule, reqVars, preVars, gateVars, parents, terms)
 	if err != nil {
-		return false, []string{"scm_error"}, nil, nil, fmt.Errorf("build causal model for %s: %w", rule.ID, err)
+		return false, []string{"scm_error"}, nil, nil, err
 	}
 	assignment, err := m.Evaluate(base, nil)
 	if err != nil {
@@ -94,6 +83,53 @@ func evaluateRuleCausally(
 		}
 	}
 	return feasible, blockers, necessary, necessarySets, nil
+}
+
+func cachedCausalModel(
+	rule Rule,
+	reqVars []string,
+	preVars []string,
+	gateVars []string,
+	parents []string,
+	terms []causal.Expr,
+) (causal.Model, error) {
+	key := causalModelCacheKey(rule, reqVars, preVars)
+	if v, ok := causalModelCache.Load(key); ok {
+		if m, ok := v.(causal.Model); ok {
+			return m, nil
+		}
+	}
+	nodes := make([]causal.Node, 0, len(reqVars)+len(preVars)+len(gateVars)+1)
+	for _, v := range reqVars {
+		nodes = append(nodes, causal.Node{Name: v, Exogenous: true})
+	}
+	for _, v := range preVars {
+		nodes = append(nodes, causal.Node{Name: v, Exogenous: true})
+	}
+	for _, v := range gateVars {
+		nodes = append(nodes, causal.Node{Name: v, Exogenous: true})
+	}
+	nodes = append(nodes, causal.Node{
+		Name:     "outcome:feasible",
+		Parents:  parents,
+		Equation: causal.AndExpr{Terms: terms},
+	})
+	m, err := causal.NewModel("outcome:feasible", nodes)
+	if err != nil {
+		return causal.Model{}, fmt.Errorf("build causal model for %s: %w", rule.ID, err)
+	}
+	causalModelCache.Store(key, m)
+	return m, nil
+}
+
+func causalModelCacheKey(rule Rule, reqVars []string, preVars []string) string {
+	b := strings.Builder{}
+	b.WriteString(rule.ID)
+	b.WriteString("|")
+	b.WriteString(strings.Join(reqVars, ","))
+	b.WriteString("|")
+	b.WriteString(strings.Join(preVars, ","))
+	return b.String()
 }
 
 func reqPresence(index map[string][]int, rule Rule) map[string]bool {

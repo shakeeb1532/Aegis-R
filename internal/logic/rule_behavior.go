@@ -50,6 +50,10 @@ var legacyHighPrivByRule = map[string]bool{
 	"TA0005.LOG_TAMPER":       true,
 }
 
+// NOTE: Keep these legacy maps aligned with Rule fields in logic.go:
+// RequiresContext, RequiresReachability, RequiresHighPriv, TargetEventTypes.
+// Rule-level values always override these defaults.
+
 var legacyTargetEventTypesByRule = map[string][]string{
 	"TA0008.LATERAL":                {"remote_service_creation", "network_logon"},
 	"TA0008.ADMIN_PROTOCOL_LATERAL": {"new_inbound_admin_protocol"},
@@ -69,7 +73,9 @@ func contradictionsForRule(rule Rule) []string {
 		sort.Strings(out)
 		return out
 	}
-	return legacyContradictions[rule.ID]
+	out := append([]string(nil), legacyContradictions[rule.ID]...)
+	sort.Strings(out)
+	return out
 }
 
 func contextForRule(rule Rule) string {

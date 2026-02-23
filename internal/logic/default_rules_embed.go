@@ -13,6 +13,7 @@ func loadEmbeddedDefaultRules() ([]Rule, error) {
 	if err := json.Unmarshal(embeddedDefaultRules, &rules); err != nil {
 		return nil, err
 	}
+	normalizeRuleMetadata(rules)
 	if err := ValidateRules(rules); err != nil {
 		return nil, err
 	}

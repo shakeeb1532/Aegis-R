@@ -9,4 +9,5 @@ var (
 	ErrMissingEquation   = errors.New("missing causal equation")
 	ErrModelNotReady     = errors.New("causal model not initialized")
 	ErrOutcomeNotPresent = errors.New("causal outcome not present")
+	ErrCauseSetTooLarge  = errors.New("causal cause-set size exceeds safe bound")
 )
