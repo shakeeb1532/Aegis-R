@@ -32,7 +32,7 @@ func AssessWithMetrics(events []model.Event, rules []logic.Rule, environment env
 	if metrics != nil {
 		metrics.IncEvents(len(events))
 	}
-	rep := logic.ReasonWithMetrics(events, rules, metrics, includeEvidence)
+	rep := logic.ReasonWithEnvAndMetrics(events, rules, environment, metrics, includeEvidence)
 	st.UpdatedAt = time.Now().UTC()
 
 	envelopes := progression.Normalize(events, environment)
@@ -263,7 +263,7 @@ func decisionLabel(r *model.RuleResult, host string, principal string) (string, 
 
 func hasMissingPreconds(reqs []model.EvidenceRequirement) bool {
 	for _, req := range reqs {
-		if strings.HasPrefix(req.Type, "precond:") || req.Type == "environment_context" {
+		if strings.HasPrefix(req.Type, "precond:") || strings.HasPrefix(req.Type, "precond_order:") || req.Type == "environment_context" {
 			return true
 		}
 	}

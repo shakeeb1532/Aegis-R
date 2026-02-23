@@ -17,6 +17,12 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: '1.22'
+      - name: Pre-release readiness gates
+        run: |
+          go test ./...
+          go run ./cmd/aman system integration-readiness --strict --min-events 1 --min-feasible 0 --out /tmp/integration_readiness.json
+          go run ./cmd/aman system demo-pack --outdir /tmp/demo_pack --rules data/rules.json
+          go run ./cmd/aman system roi-scorecard --pilot /tmp/demo_pack/pilot_metrics_report.json --integration /tmp/demo_pack/integration_readiness.json --benchmark docs/production_benchmark_report.md --out /tmp/roi_scorecard.md
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:

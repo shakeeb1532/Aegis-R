@@ -1,0 +1,51 @@
+{
+  "generated_at": "2026-02-19T17:50:19.579544Z",
+  "output_dir": "data/onboarding",
+  "rules_path": "data/rules.json",
+  "runs": [
+    {
+      "category": "identity",
+      "fixture": "data/fixtures/okta_systemlog.json",
+      "schema": "okta_systemlog",
+      "events_path": "data/onboarding/identity_events.normalized.json",
+      "report_path": "data/onboarding/identity_report.ai_overlay.json",
+      "event_count": 10,
+      "feasible_count": 1,
+      "candidate_count": 35,
+      "escalated_count": 1,
+      "triaged_count": 34,
+      "suppressed_count": 0,
+      "pass": true
+    },
+    {
+      "category": "cloud",
+      "fixture": "data/fixtures/aws_cloudtrail.json",
+      "schema": "aws_cloudtrail",
+      "events_path": "data/onboarding/cloud_events.normalized.json",
+      "report_path": "data/onboarding/cloud_report.ai_overlay.json",
+      "event_count": 7,
+      "feasible_count": 0,
+      "candidate_count": 35,
+      "escalated_count": 0,
+      "triaged_count": 35,
+      "suppressed_count": 0,
+      "pass": true
+    },
+    {
+      "category": "edr",
+      "fixture": "data/fixtures/crowdstrike_fdr.json",
+      "schema": "crowdstrike_fdr",
+      "events_path": "data/onboarding/edr_events.normalized.json",
+      "report_path": "data/onboarding/edr_report.ai_overlay.json",
+      "event_count": 6,
+      "feasible_count": 0,
+      "candidate_count": 35,
+      "escalated_count": 0,
+      "triaged_count": 35,
+      "suppressed_count": 0,
+      "pass": true
+    }
+  ],
+  "passed": 3,
+  "failed": 0
+}

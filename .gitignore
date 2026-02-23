@@ -29,3 +29,15 @@ node_modules
 ui/node_modules
 ui/dist
 ui/tsconfig.tsbuildinfo
+
+# Vendored noisegraph runtime artifacts
+external/noisegraph/.venv/
+external/noisegraph/.pytest_cache/
+external/noisegraph/noisegraph.egg-info/
+external/noisegraph/logs/*
+!external/noisegraph/logs/.gitkeep
+external/noisegraph/state/*
+!external/noisegraph/state/.gitkeep
+external/noisegraph/out/*
+!external/noisegraph/out/.gitkeep
+external/noisegraph/bench.log

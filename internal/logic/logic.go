@@ -2,9 +2,9 @@ package logic
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"strings"
-	"time"
 
 	"aman/internal/governance"
 	"aman/internal/model"
@@ -12,16 +12,21 @@ import (
 )
 
 type Rule struct {
-	ID           string                      `json:"id"`
-	Name         string                      `json:"name"`
-	Requirements []model.EvidenceRequirement `json:"requirements"`
-	Preconds     []string                    `json:"preconds"`
-	Explain      string                      `json:"explain"`
-	Mitre        MitreMeta                   `json:"mitre"`
-	Provenance   Provenance                  `json:"provenance"`
-	Constraints  RuleConstraints             `json:"constraints"`
-	NistCSF      []string                    `json:"nist_csf,omitempty"`
-	KillChain    []string                    `json:"kill_chain,omitempty"`
+	ID                   string                      `json:"id"`
+	Name                 string                      `json:"name"`
+	Requirements         []model.EvidenceRequirement `json:"requirements"`
+	Preconds             []string                    `json:"preconds"`
+	Explain              string                      `json:"explain"`
+	Contradictions       []string                    `json:"contradictions,omitempty"`
+	RequiresContext      string                      `json:"requires_context,omitempty"` // "", "host", "identity"
+	RequiresReachability *bool                       `json:"requires_reachability,omitempty"`
+	RequiresHighPriv     *bool                       `json:"requires_high_priv,omitempty"`
+	TargetEventTypes     []string                    `json:"target_event_types,omitempty"`
+	Mitre                MitreMeta                   `json:"mitre"`
+	Provenance           Provenance                  `json:"provenance"`
+	Constraints          RuleConstraints             `json:"constraints"`
+	NistCSF              []string                    `json:"nist_csf,omitempty"`
+	KillChain            []string                    `json:"kill_chain,omitempty"`
 }
 
 type MitreMeta struct {
@@ -45,6 +50,9 @@ type RuleConstraints struct {
 }
 
 func DefaultRules() []Rule {
+	if rules, err := loadEmbeddedDefaultRules(); err == nil && len(rules) > 0 {
+		return rules
+	}
 	return []Rule{
 		{
 			ID:   "TA0001.PHISHING",
@@ -406,7 +414,7 @@ func LoadRules(path string) ([]Rule, error) {
 		return DefaultRules(), nil
 	}
 	if !ops.IsSafePath(path) {
-		return nil, os.ErrInvalid
+		return nil, fmt.Errorf("%w: %s", ErrInvalidRulePath, path)
 	}
 	//nolint:gosec // path validated via IsSafePath
 	// #nosec G304
@@ -419,7 +427,7 @@ func LoadRules(path string) ([]Rule, error) {
 		return nil, err
 	}
 	if len(rules) == 0 {
-		return nil, os.ErrInvalid
+		return nil, fmt.Errorf("%w: empty catalog", ErrInvalidRuleCatalog)
 	}
 	if err := ValidateRules(rules); err != nil {
 		return nil, err
@@ -443,17 +451,17 @@ func LoadRulesCombined(basePath string, extraPath string) ([]Rule, error) {
 	merged := make([]Rule, 0, len(base)+len(extra))
 	for _, r := range base {
 		if r.ID == "" {
-			return nil, os.ErrInvalid
+			return nil, fmt.Errorf("%w: empty rule id in base rules", ErrInvalidRuleCatalog)
 		}
 		seen[r.ID] = true
 		merged = append(merged, r)
 	}
 	for _, r := range extra {
 		if r.ID == "" {
-			return nil, os.ErrInvalid
+			return nil, fmt.Errorf("%w: empty rule id in extra rules", ErrInvalidRuleCatalog)
 		}
 		if seen[r.ID] {
-			return nil, os.ErrInvalid
+			return nil, fmt.Errorf("%w: duplicate rule id %s", ErrInvalidRuleCatalog, r.ID)
 		}
 		seen[r.ID] = true
 		merged = append(merged, r)
@@ -468,39 +476,36 @@ func ValidateRules(rules []Rule) error {
 	seen := map[string]bool{}
 	for _, r := range rules {
 		if r.ID == "" || r.Name == "" {
-			return os.ErrInvalid
+			return fmt.Errorf("%w: rule missing id or name", ErrInvalidRuleCatalog)
 		}
 		if seen[r.ID] {
-			return os.ErrInvalid
+			return fmt.Errorf("%w: duplicate rule id %s", ErrInvalidRuleCatalog, r.ID)
 		}
 		seen[r.ID] = true
 		if len(r.Requirements) == 0 {
-			return os.ErrInvalid
+			return fmt.Errorf("%w: rule %s has no requirements", ErrInvalidRuleCatalog, r.ID)
+		}
+		if r.RequiresContext != "" && r.RequiresContext != "host" && r.RequiresContext != "identity" {
+			return fmt.Errorf("%w: rule %s invalid requires_context %q", ErrInvalidRuleCatalog, r.ID, r.RequiresContext)
 		}
 		if r.Constraints.MinConfidence < 0 || r.Constraints.MinConfidence > 1 {
-			return os.ErrInvalid
+			return fmt.Errorf("%w: rule %s min_confidence out of range", ErrInvalidRuleCatalog, r.ID)
 		}
 	}
 	return nil
 }
 
 func Reason(events []model.Event, rules []Rule) model.ReasoningReport {
-	return ReasonWithMetrics(events, rules, nil, true)
+	return ReasonWithMetrics(events, rules, nil, false)
 }
 
 func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics, includeEvidence bool) model.ReasoningReport {
-	index := make(map[string][]model.Event)
-	for _, e := range events {
-		index[e.Type] = append(index[e.Type], e)
+	index := make(map[string][]int, 64)
+	for i, e := range events {
+		index[e.Type] = append(index[e.Type], i)
 	}
-	facts := make(map[string]bool)
-	// derive high-level facts from evidence
-	facts["initial_access"] = len(index["email_attachment_open"]) > 0 && len(index["macro_execution"]) > 0
-	facts["privilege_escalation"] = len(index["token_manipulation"]) > 0 || len(index["admin_group_change"]) > 0
-	facts["credential_access"] = len(index["lsass_access"]) > 0 || len(index["process_creation"]) > 0
-	facts["c2_established"] = len(index["beacon_outbound"]) > 0 || len(index["dns_tunneling"]) > 0
-	facts["identity_compromise"] = len(index["impossible_travel"]) > 0 || len(index["new_device_login"]) > 0 || len(index["mfa_disabled"]) > 0 || len(index["token_refresh_anomaly"]) > 0 || len(index["oauth_consent"]) > 0 || len(index["new_app_grant"]) > 0 || len(index["device_code_flow_success"]) > 0 || len(index["device_join_complete"]) > 0
-	facts["valid_account_login"] = len(index["valid_account_login"]) > 0
+	cfg := DefaultReasonerConfig()
+	facts := deriveCausalFacts(events, index, cfg)
 
 	results := make([]model.RuleResult, 0, len(rules))
 	narrative := []string{}
@@ -516,49 +521,66 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 				missing = append(missing, req)
 			} else {
 				if includeEvidence {
-					supporting = append(supporting, index[req.Type]...)
+					for _, idx := range index[req.Type] {
+						supporting = append(supporting, events[idx])
+					}
 				}
-				for _, ev := range index[req.Type] {
-					if ev.ID != "" {
-						supportingIDs = append(supportingIDs, ev.ID)
+				for _, idx := range index[req.Type] {
+					if events[idx].ID != "" {
+						supportingIDs = append(supportingIDs, events[idx].ID)
 					}
 				}
 			}
 		}
 		precondOK := true
-		missingPreconds := []string{}
-		for _, p := range rule.Preconds {
-			if !facts[p] {
-				missingPreconds = append(missingPreconds, p)
-			}
+		requirementAt, hasReqTime := earliestRequirementTime(events, index, rule)
+		missingPreconds := preconditionGaps(rule, facts, requirementAt, hasReqTime)
+		if len(missingPreconds) > 0 {
+			precondOK = false
 		}
-		contradiction := hasContradiction(rule.ID, index)
-		contextReq := requiresContext(rule.ID)
+		contradiction := hasContradiction(rule, index)
+		contextReq := contextForRule(rule)
 		missingContext := false
-		if contextReq != "" && !hasContext(index, contextReq) {
+		if contextReq != "" && !hasContext(events, index, contextReq) {
 			missingContext = true
 		}
 		if contradiction {
 			precondOK = false
 		}
-		for _, p := range missingPreconds {
-			missing = append(missing, model.EvidenceRequirement{
-				Type:        "precond:" + p,
-				Description: "Precondition not observed: " + p,
-			})
-		}
+		missing = append(missing, missingPreconds...)
 		if missingContext {
 			missing = append(missing, model.EvidenceRequirement{
 				Type:        "environment_context",
 				Description: "Required context not present for rule evaluation",
 			})
 		}
-		feasible := precondOK && len(missing) == 0
-		confidence := 0.4
+		causalFeasible, causalBlockers, necessaryCauses, necessaryCauseSets, causalErr := evaluateRuleCausally(
+			rule,
+			reqPresence(index, rule),
+			precondStatusMap(rule, missing),
+			map[string]bool{
+				"no_contradiction": !contradiction,
+				"context_ok":       !missingContext,
+				"env_reachable":    true,
+				"identity_priv_ok": true,
+			},
+			cfg.CausalMaxSetSize,
+		)
+		feasible := causalFeasible
+		causalErrMsg := ""
+		if causalErr != nil {
+			feasible = false
+			causalErrMsg = causalErr.Error()
+			missing = append(missing, model.EvidenceRequirement{
+				Type:        "causal_model_error",
+				Description: "Causal model evaluation failed",
+			})
+		}
+		confidence := confidenceLowHeuristic
 		if feasible {
-			confidence = 0.85
+			confidence = confidenceFeasibleHeuristic
 		} else if precondOK && len(missing) > 0 {
-			confidence = 0.55
+			confidence = confidenceIncompleteHeuristic
 		}
 		if feasible && rule.Constraints.MinConfidence > 0 && confidence < rule.Constraints.MinConfidence {
 			feasible = false
@@ -606,10 +628,14 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 			Explanation:        reason,
 			GapNarrative:       gapNarrative,
 			ReasonCode:         reasonCodeWithContradiction(precondOK, missing, len(events), contradiction, missingContext),
+			CausalBlockers:     causalBlockers,
+			CausalError:        causalErrMsg,
+			NecessaryCauses:    necessaryCauses,
+			NecessaryCauseSets: necessaryCauseSets,
 		})
 	}
 	return model.ReasoningReport{
-		GeneratedAt:     time.Now().UTC(),
+		GeneratedAt:     DefaultReasonerConfig().Now(),
 		Summary:         "Feasibility reasoning over evidence and preconditions.",
 		Results:         results,
 		Narrative:       narrative,
@@ -621,6 +647,9 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 func reasonCode(precondOK bool, missing []model.EvidenceRequirement, eventCount int) string {
 	switch {
 	case !precondOK:
+		if len(missing) > 0 {
+			return "evidence_gap"
+		}
 		return "precond_missing"
 	case len(missing) > 0 && eventCount == 0:
 		return "environment_unknown"
@@ -641,17 +670,9 @@ func reasonCodeWithContradiction(precondOK bool, missing []model.EvidenceRequire
 	return reasonCode(precondOK, missing, eventCount)
 }
 
-func hasContradiction(ruleID string, index map[string][]model.Event) bool {
-	contradictions := map[string][]string{
-		"TA0006.VALID_ACCOUNTS": {"access_denied", "login_denied", "account_locked"},
-		"TA0006.BRUTE_FORCE":    {"mfa_success"},
-		"TA0010.BULK_EXFIL":     {"access_denied", "egress_blocked"},
-		"TA0010.EXFIL":          {"access_denied", "egress_blocked"},
-		"TA0008.LATERAL":        {"network_logon_failure", "admin_protocol_denied"},
-		"TA0004.PRIVESCA":       {"privilege_escalation_blocked", "admin_action_denied"},
-	}
-	types, ok := contradictions[ruleID]
-	if !ok {
+func hasContradiction(rule Rule, index map[string][]int) bool {
+	types := contradictionsForRule(rule)
+	if len(types) == 0 {
 		return false
 	}
 	for _, t := range types {
@@ -662,40 +683,13 @@ func hasContradiction(ruleID string, index map[string][]model.Event) bool {
 	return false
 }
 
-func requiresContext(ruleID string) string {
-	hostRules := map[string]bool{
-		"TA0010.EXFIL":                  true,
-		"TA0010.BULK_EXFIL":             true,
-		"TA0011.C2":                     true,
-		"TA0011.APP_LAYER_C2":           true,
-		"TA0008.LATERAL":                true,
-		"TA0008.ADMIN_PROTOCOL_LATERAL": true,
-		"TA0003.PERSIST":                true,
-		"TA0003.PERSIST_EXTENDED":       true,
-		"TA0040.IMPACT_ENCRYPT":         true,
-	}
-	identityRules := map[string]bool{
-		"TA0006.VALID_ACCOUNTS":   true,
-		"TA0006.IDENTITY_ANOMALY": true,
-		"TA0004.MFA_BYPASS":       true,
-		"TA0004.ACCOUNT_MANIP":    true,
-		"TA0003.MAILBOX_PERSIST":  true,
-	}
-	if hostRules[ruleID] {
-		return "host"
-	}
-	if identityRules[ruleID] {
-		return "identity"
-	}
-	return ""
-}
-
-func hasContext(index map[string][]model.Event, kind string) bool {
+func hasContext(events []model.Event, index map[string][]int, kind string) bool {
 	if kind == "" {
 		return true
 	}
-	for _, events := range index {
-		for _, ev := range events {
+	for _, idxs := range index {
+		for _, i := range idxs {
+			ev := events[i]
 			if kind == "host" && ev.Host != "" {
 				return true
 			}

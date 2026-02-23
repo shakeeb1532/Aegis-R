@@ -1,0 +1,109 @@
+{
+  "generated_at": "2026-02-20T07:23:53.614397Z",
+  "out_dir": "docs/demo_pack",
+  "integration_readiness": {
+    "generated_at": "2026-02-20T07:23:53.610675Z",
+    "rules_path": "data/rules.json",
+    "checks": [
+      {
+        "category": "identity",
+        "fixture": "data/fixtures/okta_systemlog.json",
+        "schema": "okta_systemlog",
+        "event_count": 10,
+        "feasible_count": 1,
+        "pass": true
+      },
+      {
+        "category": "cloud",
+        "fixture": "data/fixtures/aws_cloudtrail.json",
+        "schema": "aws_cloudtrail",
+        "event_count": 7,
+        "feasible_count": 0,
+        "pass": true
+      },
+      {
+        "category": "edr",
+        "fixture": "data/fixtures/crowdstrike_fdr.json",
+        "schema": "crowdstrike_fdr",
+        "event_count": 6,
+        "feasible_count": 0,
+        "pass": true
+      }
+    ],
+    "passed": 3,
+    "failed": 0
+  },
+  "integration_quickstart": {
+    "generated_at": "2026-02-20T07:23:53.611478Z",
+    "output_dir": "docs/demo_pack/onboarding",
+    "rules_path": "data/rules.json",
+    "runs": [
+      {
+        "category": "identity",
+        "fixture": "data/fixtures/okta_systemlog.json",
+        "schema": "okta_systemlog",
+        "events_path": "docs/demo_pack/onboarding/identity_events.normalized.json",
+        "report_path": "docs/demo_pack/onboarding/identity_report.ai_overlay.json",
+        "event_count": 10,
+        "feasible_count": 1,
+        "candidate_count": 35,
+        "escalated_count": 1,
+        "triaged_count": 34,
+        "suppressed_count": 0,
+        "pass": true
+      },
+      {
+        "category": "cloud",
+        "fixture": "data/fixtures/aws_cloudtrail.json",
+        "schema": "aws_cloudtrail",
+        "events_path": "docs/demo_pack/onboarding/cloud_events.normalized.json",
+        "report_path": "docs/demo_pack/onboarding/cloud_report.ai_overlay.json",
+        "event_count": 7,
+        "feasible_count": 0,
+        "candidate_count": 35,
+        "escalated_count": 0,
+        "triaged_count": 35,
+        "suppressed_count": 0,
+        "pass": true
+      },
+      {
+        "category": "edr",
+        "fixture": "data/fixtures/crowdstrike_fdr.json",
+        "schema": "crowdstrike_fdr",
+        "events_path": "docs/demo_pack/onboarding/edr_events.normalized.json",
+        "report_path": "docs/demo_pack/onboarding/edr_report.ai_overlay.json",
+        "event_count": 6,
+        "feasible_count": 0,
+        "candidate_count": 35,
+        "escalated_count": 0,
+        "triaged_count": 35,
+        "suppressed_count": 0,
+        "pass": true
+      }
+    ],
+    "passed": 3,
+    "failed": 0
+  },
+  "roi_scorecard": {
+    "generated_at": "2026-02-20T07:23:53.614234Z",
+    "pilot_metrics_path": "docs/demo_pack/pilot_metrics_report.json",
+    "benchmark_path": "docs/production_benchmark_report.md",
+    "queue_reduction_pct": 15.151515151515152,
+    "escalated_precision_proxy_pct": 75,
+    "suppressed_later_true_rate_pct": 0,
+    "overlay_overhead_pct": 17.3,
+    "integration_passed": 3,
+    "integration_failed": 0,
+    "readiness_score": 7.8711515151515155,
+    "notes": [
+      "score favors measurable queue reduction, precision proxy, safety, and integration reliability",
+      "commercial proof still depends on broader real-world labeled outcomes"
+    ]
+  },
+  "files": [
+    "docs/demo_pack/integration_readiness.json",
+    "docs/demo_pack/roi_scorecard.json",
+    "docs/demo_pack/roi_scorecard.md",
+    "docs/demo_pack/onboarding"
+  ]
+}

@@ -1,0 +1,8 @@
+goos: darwin
+goarch: arm64
+pkg: aman/internal/compress
+cpu: Apple M1
+BenchmarkCompressText1MB-8     	   13881	     83103 ns/op	12617.79 MB/s	 1056772 B/op	       1 allocs/op
+BenchmarkDecompressText1MB-8   	    5736	    218803 ns/op	4792.33 MB/s	 1048578 B/op	       1 allocs/op
+PASS
+ok  	aman/internal/compress	3.713s

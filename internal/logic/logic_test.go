@@ -54,3 +54,54 @@ func TestReasonMissingEvidence(t *testing.T) {
 		}
 	}
 }
+
+func TestReasonCausalOrdering_PreconditionAfterEffect(t *testing.T) {
+	// Persistence evidence appears before initial_access chain.
+	events := []model.Event{
+		{ID: "1", Time: time.Date(2026, 2, 1, 10, 0, 0, 0, time.UTC), Host: "host-1", User: "alice", Type: "registry_run_key"},
+		{ID: "2", Time: time.Date(2026, 2, 1, 10, 1, 0, 0, time.UTC), Host: "host-1", User: "alice", Type: "scheduled_task"},
+		{ID: "3", Time: time.Date(2026, 2, 1, 10, 5, 0, 0, time.UTC), Host: "host-1", User: "alice", Type: "email_attachment_open"},
+		{ID: "4", Time: time.Date(2026, 2, 1, 10, 6, 0, 0, time.UTC), Host: "host-1", User: "alice", Type: "macro_execution"},
+	}
+
+	rep := Reason(events, DefaultRules())
+	for _, r := range rep.Results {
+		if r.RuleID == "TA0003.PERSIST" {
+			if r.Feasible {
+				t.Fatalf("expected infeasible when precondition ordering is violated")
+			}
+			if r.PrecondOK {
+				t.Fatalf("expected precond_ok=false for precondition ordering failure")
+			}
+			found := false
+			for _, m := range r.MissingEvidence {
+				if m.Type == "precond_order:initial_access" {
+					found = true
+					break
+				}
+			}
+			if !found {
+				t.Fatalf("expected precond_order gap for initial_access")
+			}
+			return
+		}
+	}
+	t.Fatalf("persist rule not found")
+}
+
+func TestReasonIncludesCausalBlockers(t *testing.T) {
+	events := []model.Event{
+		{ID: "1", Time: time.Date(2026, 2, 1, 10, 0, 0, 0, time.UTC), Host: "host-1", User: "alice", Type: "email_attachment_open"},
+		{ID: "2", Time: time.Date(2026, 2, 1, 10, 1, 0, 0, time.UTC), Host: "host-1", User: "alice", Type: "macro_execution"},
+	}
+	rep := Reason(events, DefaultRules())
+	for _, r := range rep.Results {
+		if r.RuleID == "TA0001.PHISHING" {
+			if len(r.CausalBlockers) == 0 {
+				t.Fatalf("expected causal blockers for infeasible rule")
+			}
+			return
+		}
+	}
+	t.Fatalf("rule not found")
+}

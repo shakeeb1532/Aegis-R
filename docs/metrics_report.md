@@ -17,5 +17,12 @@ Source: `data/scenarios_public.json`
 - Report: `docs/public_dataset_report.md`
 
 ## Pilot Dataset Impact
-Status: Pending pilot data
-- Will include false-positive reduction, analyst time saved, and audit artifacts generated.
+Source: `docs/pilot_metrics_report.md` (generated from `data/bench/report.json` + `data/incident_history.json`)
+- Candidate alerts: 33
+- Escalated alerts: 28
+- Triaged alerts: 5
+- Suppressed alerts: 0
+- Queue reduction: 15.15%
+- Escalated precision proxy (history-matched): 75.00%
+- Suppressed-but-later-true rate: 0.00%
+- Note: 24 escalated alerts are currently unmatched in history outcomes and require broader pilot labeling.

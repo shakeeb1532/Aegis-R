@@ -124,5 +124,19 @@ func RenderCLI(rep model.ReasoningReport) string {
 			fmt.Fprintf(buf, "- %s\n", pb)
 		}
 	}
+	if rep.AIOverlay.Enabled {
+		fmt.Fprintln(buf, "")
+		fmt.Fprintf(buf, "AI overlay (%s):\n", rep.AIOverlay.Mode)
+		fmt.Fprintf(buf, "- Candidates: %d\n", rep.AIOverlay.CandidateCount)
+		fmt.Fprintf(buf, "- Escalated: %d\n", rep.AIOverlay.EscalatedCount)
+		fmt.Fprintf(buf, "- Triaged: %d\n", rep.AIOverlay.TriagedCount)
+		fmt.Fprintf(buf, "- Suppressed: %d\n", rep.AIOverlay.SuppressedCount)
+		for i, a := range rep.AIAlerts {
+			if i >= 10 {
+				break
+			}
+			fmt.Fprintf(buf, "- %s (%s): %.2f %s\n", a.RuleID, a.Status, a.Sensitivity, a.Reason)
+		}
+	}
 	return buf.String()
 }

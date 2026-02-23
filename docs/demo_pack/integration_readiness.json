@@ -1,0 +1,32 @@
+{
+  "generated_at": "2026-02-20T07:23:53.610675Z",
+  "rules_path": "data/rules.json",
+  "checks": [
+    {
+      "category": "identity",
+      "fixture": "data/fixtures/okta_systemlog.json",
+      "schema": "okta_systemlog",
+      "event_count": 10,
+      "feasible_count": 1,
+      "pass": true
+    },
+    {
+      "category": "cloud",
+      "fixture": "data/fixtures/aws_cloudtrail.json",
+      "schema": "aws_cloudtrail",
+      "event_count": 7,
+      "feasible_count": 0,
+      "pass": true
+    },
+    {
+      "category": "edr",
+      "fixture": "data/fixtures/crowdstrike_fdr.json",
+      "schema": "crowdstrike_fdr",
+      "event_count": 6,
+      "feasible_count": 0,
+      "pass": true
+    }
+  ],
+  "passed": 3,
+  "failed": 0
+}

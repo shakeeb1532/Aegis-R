@@ -1,0 +1,1359 @@
+{
+  "generated_at": "2026-02-19T17:50:19.579915Z",
+  "summary": "Feasibility reasoning over evidence and preconditions.",
+  "results": [
+    {
+      "rule_id": "TA0001.PHISHING",
+      "name": "Initial Access via Phishing",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "email_attachment_open",
+          "description": "User opened malicious attachment"
+        },
+        {
+          "type": "macro_execution",
+          "description": "Macro executed from attachment"
+        },
+        {
+          "type": "beacon_outbound",
+          "description": "Outbound beacon to known C2"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "User interaction and macro execution leading to outbound beaconing. Missing evidence: email_attachment_open, macro_execution, beacon_outbound",
+      "gap_narrative": "This attack would require email_attachment_open, macro_execution, beacon_outbound but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0004.PRIVESCA",
+      "name": "Privilege Escalation",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "token_manipulation",
+          "description": "Token manipulation activity"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [
+        "okta-admin-1:group.user_membership.add"
+      ],
+      "explanation": "Evidence of elevating access beyond initial privileges. Missing evidence: token_manipulation",
+      "gap_narrative": "This attack would require token_manipulation but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0006.CREDDUMP",
+      "name": "Credential Dumping",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "process_creation",
+          "description": "Credential dumping tool execution"
+        },
+        {
+          "type": "lsass_access",
+          "description": "Access to LSASS"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Requires elevated privileges to access credential stores. Missing evidence: process_creation, lsass_access",
+      "gap_narrative": "This attack would require process_creation, lsass_access but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0008.LATERAL",
+      "name": "Lateral Movement",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "remote_service_creation",
+          "description": "Remote service created"
+        },
+        {
+          "type": "network_logon",
+          "description": "Successful network logon"
+        },
+        {
+          "type": "precond:credential_access",
+          "description": "Precondition not observed: credential_access"
+        },
+        {
+          "type": "environment_context",
+          "description": "Required context not present for rule evaluation"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Requires valid credentials before remote execution. Required context missing.",
+      "gap_narrative": "Required context is missing to evaluate this rule; treat as incomplete until context is provided.",
+      "reason_code": "environment_unknown",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0003.PERSIST",
+      "name": "Persistence",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "registry_run_key",
+          "description": "Registry run key set"
+        },
+        {
+          "type": "scheduled_task",
+          "description": "Scheduled task created"
+        },
+        {
+          "type": "precond:initial_access",
+          "description": "Precondition not observed: initial_access"
+        },
+        {
+          "type": "environment_context",
+          "description": "Required context not present for rule evaluation"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Persistence established after initial access. Required context missing.",
+      "gap_narrative": "Required context is missing to evaluate this rule; treat as incomplete until context is provided.",
+      "reason_code": "environment_unknown",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0011.C2",
+      "name": "Command and Control",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "beacon_outbound",
+          "description": "Outbound beacon to known C2"
+        },
+        {
+          "type": "dns_tunneling",
+          "description": "DNS tunneling patterns"
+        },
+        {
+          "type": "precond:initial_access",
+          "description": "Precondition not observed: initial_access"
+        },
+        {
+          "type": "environment_context",
+          "description": "Required context not present for rule evaluation"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "C2 established after initial access. Required context missing.",
+      "gap_narrative": "Required context is missing to evaluate this rule; treat as incomplete until context is provided.",
+      "reason_code": "environment_unknown",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0010.EXFIL",
+      "name": "Exfiltration",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "data_staging",
+          "description": "Data staged in archive"
+        },
+        {
+          "type": "large_outbound_transfer",
+          "description": "Large outbound data transfer"
+        },
+        {
+          "type": "precond:c2_established",
+          "description": "Precondition not observed: c2_established"
+        },
+        {
+          "type": "precond:credential_access",
+          "description": "Precondition not observed: credential_access"
+        },
+        {
+          "type": "environment_context",
+          "description": "Required context not present for rule evaluation"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Exfiltration typically follows C2 and credential access. Required context missing.",
+      "gap_narrative": "Required context is missing to evaluate this rule; treat as incomplete until context is provided.",
+      "reason_code": "environment_unknown",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0006.IDENTITY_ANOMALY",
+      "name": "Identity Anomaly (Impossible Travel / New Device)",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "impossible_travel",
+          "description": "Login from distant geographies"
+        },
+        {
+          "type": "new_device_login",
+          "description": "New device or unknown client"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Identity anomalies indicate possible account compromise. Missing evidence: impossible_travel, new_device_login",
+      "gap_narrative": "This attack would require impossible_travel, new_device_login but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0004.MFA_BYPASS",
+      "name": "MFA Disable or Bypass",
+      "feasible": true,
+      "precond_ok": true,
+      "confidence": 0.85,
+      "missing_evidence": [],
+      "supporting_events": [],
+      "supporting_event_ids": [
+        "okta-user-1:user.mfa.factor.deactivate",
+        "okta-user-3:user.mfa.factor.reset",
+        "okta-user-4:user.session.refresh_token",
+        "okta-user-4:user.session.revoke_token"
+      ],
+      "explanation": "MFA changes combined with token anomalies indicate bypass.",
+      "gap_narrative": "",
+      "reason_code": "",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0002.LOLBIN_CHAIN",
+      "name": "Suspicious LOLBin Execution Chain",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "process_creation",
+          "description": "Suspicious process creation"
+        },
+        {
+          "type": "lolbin_execution",
+          "description": "Known LOLBin executed (rundll32/mshta/certutil)"
+        },
+        {
+          "type": "precond:initial_access",
+          "description": "Precondition not observed: initial_access"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "LOLBin execution following initial access suggests hands-on-keyboard activity. Missing evidence: process_creation, lolbin_execution, precond:initial_access",
+      "gap_narrative": "This attack would require process_creation, lolbin_execution, precond:initial_access but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0003.PERSIST_EXTENDED",
+      "name": "Extended Persistence Mechanisms",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "registry_run_key",
+          "description": "Registry run key set"
+        },
+        {
+          "type": "service_install",
+          "description": "Service installed for persistence"
+        },
+        {
+          "type": "precond:initial_access",
+          "description": "Precondition not observed: initial_access"
+        },
+        {
+          "type": "environment_context",
+          "description": "Required context not present for rule evaluation"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Persistence via registry and services after initial access. Required context missing.",
+      "gap_narrative": "Required context is missing to evaluate this rule; treat as incomplete until context is provided.",
+      "reason_code": "environment_unknown",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0006.VALID_ACCOUNTS",
+      "name": "Valid Accounts Abuse",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "new_device_login",
+          "description": "New device or unknown client"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [
+        "okta-user-1:user.session.start"
+      ],
+      "explanation": "Compromised valid accounts enable access without malware. Missing evidence: new_device_login",
+      "gap_narrative": "This attack would require new_device_login but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0006.BRUTE_FORCE",
+      "name": "Brute Force / Credential Stuffing",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "password_spray",
+          "description": "Password spraying pattern detected"
+        },
+        {
+          "type": "credential_stuffing",
+          "description": "Credential stuffing pattern detected"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "High-volume authentication failures followed by access attempts. Missing evidence: password_spray, credential_stuffing",
+      "gap_narrative": "This attack would require password_spray, credential_stuffing but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0004.ACCOUNT_MANIP",
+      "name": "Account Manipulation",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "account_manipulation",
+          "description": "Account permissions or credentials modified"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [
+        "okta-admin-1:group.user_membership.add"
+      ],
+      "explanation": "Account changes used to persist or elevate access. Missing evidence: account_manipulation",
+      "gap_narrative": "This attack would require account_manipulation but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0005.AUTH_PROCESS_MOD",
+      "name": "Modify Authentication Process",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "auth_process_modify",
+          "description": "Authentication process modified"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [
+        "okta-user-1:user.mfa.factor.deactivate",
+        "okta-user-3:user.mfa.factor.reset"
+      ],
+      "explanation": "Authentication controls were altered to bypass access checks. Missing evidence: auth_process_modify",
+      "gap_narrative": "This attack would require auth_process_modify but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0011.APP_LAYER_C2",
+      "name": "Application Layer Protocol C2",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "app_layer_c2",
+          "description": "C2 over web/mail/DNS protocols"
+        },
+        {
+          "type": "beacon_outbound",
+          "description": "Outbound beaconing to known C2"
+        },
+        {
+          "type": "precond:initial_access",
+          "description": "Precondition not observed: initial_access"
+        },
+        {
+          "type": "environment_context",
+          "description": "Required context not present for rule evaluation"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "C2 over common application protocols for stealth. Required context missing.",
+      "gap_narrative": "Required context is missing to evaluate this rule; treat as incomplete until context is provided.",
+      "reason_code": "environment_unknown",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0005.IMPAIR_DEFENSES",
+      "name": "Impair Defenses",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "disable_logging",
+          "description": "Security logging disabled or altered"
+        },
+        {
+          "type": "cloud_firewall_change",
+          "description": "Cloud firewall or security group opened"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Defensive controls weakened to evade detection. Missing evidence: disable_logging, cloud_firewall_change",
+      "gap_narrative": "This attack would require disable_logging, cloud_firewall_change but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0010.EXFIL_WEB",
+      "name": "Exfiltration Over Web Service",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "exfil_web_service",
+          "description": "Data exfil via web service"
+        },
+        {
+          "type": "large_outbound_transfer",
+          "description": "Large outbound data transfer"
+        },
+        {
+          "type": "precond:c2_established",
+          "description": "Precondition not observed: c2_established"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Exfiltration using legitimate web services. Missing evidence: exfil_web_service, large_outbound_transfer, precond:c2_established",
+      "gap_narrative": "This attack would require exfil_web_service, large_outbound_transfer, precond:c2_established but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0001.PHISH_LINK",
+      "name": "Phishing via Link and OAuth Consent",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "phish_link_click",
+          "description": "User clicked phishing link"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [
+        "okta-user-2:oauth2.consent.grant"
+      ],
+      "explanation": "Link phishing followed by OAuth consent indicates account compromise. Missing evidence: phish_link_click",
+      "gap_narrative": "This attack would require phish_link_click but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0003.MAILBOX_PERSIST",
+      "name": "Mailbox Rule Persistence",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "mailbox_rule_create",
+          "description": "Mailbox rule created"
+        },
+        {
+          "type": "forwarding_rule_set",
+          "description": "Auto-forwarding rule set"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Persistence through mailbox rules and forwarding. Missing evidence: mailbox_rule_create, forwarding_rule_set",
+      "gap_narrative": "This attack would require mailbox_rule_create, forwarding_rule_set but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0040.IMPACT_ENCRYPT",
+      "name": "Data Encrypted for Impact",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "mass_file_rename",
+          "description": "Mass file renaming"
+        },
+        {
+          "type": "encrypt_activity",
+          "description": "High-rate encryption activity"
+        },
+        {
+          "type": "environment_context",
+          "description": "Required context not present for rule evaluation"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Encryption activity at scale indicates ransomware impact. Required context missing.",
+      "gap_narrative": "Required context is missing to evaluate this rule; treat as incomplete until context is provided.",
+      "reason_code": "environment_unknown",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0040.RECOVERY_INHIBIT",
+      "name": "Inhibit System Recovery",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "shadow_copy_delete",
+          "description": "Shadow copies deleted"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Recovery features disabled to prevent restoration. Missing evidence: shadow_copy_delete",
+      "gap_narrative": "This attack would require shadow_copy_delete but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0006.INSIDER_EXFIL",
+      "name": "Insider Data Exfiltration",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "bulk_download",
+          "description": "Bulk download or data access"
+        },
+        {
+          "type": "unusual_access_scope",
+          "description": "Unusual access scope"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Large-scale access without compromise signals suggests insider misuse. Missing evidence: bulk_download, unusual_access_scope",
+      "gap_narrative": "This attack would require bulk_download, unusual_access_scope but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0043.SUPPLY_CHAIN",
+      "name": "Supply Chain Compromise",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "ci_runner_compromise",
+          "description": "CI runner compromise"
+        },
+        {
+          "type": "artifact_tamper",
+          "description": "Build artifact tampering"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Build pipeline compromise with artifact tampering. Missing evidence: ci_runner_compromise, artifact_tamper",
+      "gap_narrative": "This attack would require ci_runner_compromise, artifact_tamper but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0008.CLOUD_PIVOT",
+      "name": "Cloud Lateral Movement",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "role_assume",
+          "description": "Role assumed"
+        },
+        {
+          "type": "trust_policy_change",
+          "description": "Trust policy modified"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Cross-account pivot using trust policy changes. Missing evidence: role_assume, trust_policy_change",
+      "gap_narrative": "This attack would require role_assume, trust_policy_change but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0004.SAAS_ADMIN",
+      "name": "SaaS Admin Takeover",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "oauth_app_grant",
+          "description": "High-privilege OAuth grant"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [
+        "okta-admin-3:admin.role.assign"
+      ],
+      "explanation": "Admin access gained through OAuth grants and role changes. Missing evidence: oauth_app_grant",
+      "gap_narrative": "This attack would require oauth_app_grant but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0005.EVASION_C2",
+      "name": "Network Evasion via Proxy/Tunnel",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "domain_fronting",
+          "description": "Domain fronting detected"
+        },
+        {
+          "type": "tor_exit",
+          "description": "TOR exit node traffic"
+        },
+        {
+          "type": "dns_tunnel",
+          "description": "DNS tunnel detected"
+        },
+        {
+          "type": "precond:initial_access",
+          "description": "Precondition not observed: initial_access"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Evasive networking used to hide C2 channels. Missing evidence: domain_fronting, tor_exit, dns_tunnel, precond:initial_access",
+      "gap_narrative": "This attack would require domain_fronting, tor_exit, dns_tunnel, precond:initial_access but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0005.LOG_TAMPER",
+      "name": "Disable or Modify Security Logging",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "disable_logging",
+          "description": "Security logging disabled"
+        },
+        {
+          "type": "policy_bypass",
+          "description": "Control policy bypassed"
+        },
+        {
+          "type": "precond:initial_access",
+          "description": "Precondition not observed: initial_access"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Disabling logging to hide attacker activity. Missing evidence: disable_logging, policy_bypass, precond:initial_access",
+      "gap_narrative": "This attack would require disable_logging, policy_bypass, precond:initial_access but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0010.BULK_EXFIL",
+      "name": "Bulk Data Exfiltration",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "bulk_download",
+          "description": "Bulk data access or download"
+        },
+        {
+          "type": "large_outbound_transfer",
+          "description": "Large outbound data transfer"
+        },
+        {
+          "type": "precond:credential_access",
+          "description": "Precondition not observed: credential_access"
+        },
+        {
+          "type": "environment_context",
+          "description": "Required context not present for rule evaluation"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Bulk data access followed by outbound transfer. Required context missing.",
+      "gap_narrative": "Required context is missing to evaluate this rule; treat as incomplete until context is provided.",
+      "reason_code": "environment_unknown",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0008.ADMIN_PROTOCOL_LATERAL",
+      "name": "Admin Protocol Lateral Movement",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "new_inbound_admin_protocol",
+          "description": "New inbound admin protocol used"
+        },
+        {
+          "type": "network_logon",
+          "description": "Successful network logon"
+        },
+        {
+          "type": "precond:credential_access",
+          "description": "Precondition not observed: credential_access"
+        },
+        {
+          "type": "environment_context",
+          "description": "Required context not present for rule evaluation"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Lateral movement over admin protocols with valid credentials. Required context missing.",
+      "gap_narrative": "Required context is missing to evaluate this rule; treat as incomplete until context is provided.",
+      "reason_code": "environment_unknown",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0001.DEVICE_CODE_PHISH",
+      "name": "Device Code Phishing",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "device_code_flow_start",
+          "description": "Device code flow initiated"
+        },
+        {
+          "type": "device_code_flow_success",
+          "description": "Device code flow completed"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Abuse of device code authentication flow indicates likely credential theft. Missing evidence: device_code_flow_start, device_code_flow_success",
+      "gap_narrative": "This attack would require device_code_flow_start, device_code_flow_success but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0001.OAUTH_CONSENT_PHISH",
+      "name": "OAuth Consent Phishing",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "new_app_grant",
+          "description": "New app grant with elevated scopes"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [
+        "okta-user-2:oauth2.consent.grant"
+      ],
+      "explanation": "Malicious app consent grants attacker access tokens and persistent access. Missing evidence: new_app_grant",
+      "gap_narrative": "This attack would require new_app_grant but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0001.DEVICE_JOIN_PHISH",
+      "name": "Device Join Phishing",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "device_join_request",
+          "description": "Device join request initiated"
+        },
+        {
+          "type": "device_join_complete",
+          "description": "Device successfully joined/registered"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [],
+      "explanation": "Phishing to register attacker-controlled device to tenant. Missing evidence: device_join_request, device_join_complete",
+      "gap_narrative": "This attack would require device_join_request, device_join_complete but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0001.STOLEN_CREDS",
+      "name": "Stolen Credentials Initial Access",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "token_reuse",
+          "description": "Token reuse or session replay"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [
+        "okta-user-1:user.session.start"
+      ],
+      "explanation": "Stolen credentials used for initial access, often detected by token reuse. Missing evidence: token_reuse",
+      "gap_narrative": "This attack would require token_reuse but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    },
+    {
+      "rule_id": "TA0001.STOLEN_CREDS_ANOMALY",
+      "name": "Stolen Credentials with Anomalous Access",
+      "feasible": false,
+      "precond_ok": true,
+      "confidence": 0.55,
+      "missing_evidence": [
+        {
+          "type": "token_reuse",
+          "description": "Token reuse or session replay"
+        },
+        {
+          "type": "new_device_login",
+          "description": "New device or unknown client"
+        }
+      ],
+      "supporting_events": [],
+      "supporting_event_ids": [
+        "okta-user-1:user.session.start"
+      ],
+      "explanation": "Stolen credentials with anomalous device access indicate initial compromise. Missing evidence: token_reuse, new_device_login",
+      "gap_narrative": "This attack would require token_reuse, new_device_login but no such evidence was observed.",
+      "reason_code": "evidence_gap",
+      "decision_label": "",
+      "cache_hit": false,
+      "thread_id": "",
+      "thread_confidence": 0,
+      "thread_reason": ""
+    }
+  ],
+  "narrative": [
+    "Incomplete: TA0001.PHISHING (Initial Access via Phishing) missing evidence email_attachment_open, macro_execution, beacon_outbound.",
+    "Incomplete: TA0004.PRIVESCA (Privilege Escalation) missing evidence token_manipulation.",
+    "Incomplete: TA0006.CREDDUMP (Credential Dumping) missing evidence process_creation, lsass_access.",
+    "Incomplete: TA0008.LATERAL (Lateral Movement) missing evidence remote_service_creation, network_logon, precond:credential_access, environment_context.",
+    "Incomplete: TA0003.PERSIST (Persistence) missing evidence registry_run_key, scheduled_task, precond:initial_access, environment_context.",
+    "Incomplete: TA0011.C2 (Command and Control) missing evidence beacon_outbound, dns_tunneling, precond:initial_access, environment_context.",
+    "Incomplete: TA0010.EXFIL (Exfiltration) missing evidence data_staging, large_outbound_transfer, precond:c2_established, precond:credential_access, environment_context.",
+    "Incomplete: TA0006.IDENTITY_ANOMALY (Identity Anomaly (Impossible Travel / New Device)) missing evidence impossible_travel, new_device_login.",
+    "Proved feasible: TA0004.MFA_BYPASS (MFA Disable or Bypass) with all preconditions and evidence satisfied.",
+    "Incomplete: TA0002.LOLBIN_CHAIN (Suspicious LOLBin Execution Chain) missing evidence process_creation, lolbin_execution, precond:initial_access.",
+    "Incomplete: TA0003.PERSIST_EXTENDED (Extended Persistence Mechanisms) missing evidence registry_run_key, service_install, precond:initial_access, environment_context.",
+    "Incomplete: TA0006.VALID_ACCOUNTS (Valid Accounts Abuse) missing evidence new_device_login.",
+    "Incomplete: TA0006.BRUTE_FORCE (Brute Force / Credential Stuffing) missing evidence password_spray, credential_stuffing.",
+    "Incomplete: TA0004.ACCOUNT_MANIP (Account Manipulation) missing evidence account_manipulation.",
+    "Incomplete: TA0005.AUTH_PROCESS_MOD (Modify Authentication Process) missing evidence auth_process_modify.",
+    "Incomplete: TA0011.APP_LAYER_C2 (Application Layer Protocol C2) missing evidence app_layer_c2, beacon_outbound, precond:initial_access, environment_context.",
+    "Incomplete: TA0005.IMPAIR_DEFENSES (Impair Defenses) missing evidence disable_logging, cloud_firewall_change.",
+    "Incomplete: TA0010.EXFIL_WEB (Exfiltration Over Web Service) missing evidence exfil_web_service, large_outbound_transfer, precond:c2_established.",
+    "Incomplete: TA0001.PHISH_LINK (Phishing via Link and OAuth Consent) missing evidence phish_link_click.",
+    "Incomplete: TA0003.MAILBOX_PERSIST (Mailbox Rule Persistence) missing evidence mailbox_rule_create, forwarding_rule_set.",
+    "Incomplete: TA0040.IMPACT_ENCRYPT (Data Encrypted for Impact) missing evidence mass_file_rename, encrypt_activity, environment_context.",
+    "Incomplete: TA0040.RECOVERY_INHIBIT (Inhibit System Recovery) missing evidence shadow_copy_delete.",
+    "Incomplete: TA0006.INSIDER_EXFIL (Insider Data Exfiltration) missing evidence bulk_download, unusual_access_scope.",
+    "Incomplete: TA0043.SUPPLY_CHAIN (Supply Chain Compromise) missing evidence ci_runner_compromise, artifact_tamper.",
+    "Incomplete: TA0008.CLOUD_PIVOT (Cloud Lateral Movement) missing evidence role_assume, trust_policy_change.",
+    "Incomplete: TA0004.SAAS_ADMIN (SaaS Admin Takeover) missing evidence oauth_app_grant.",
+    "Incomplete: TA0005.EVASION_C2 (Network Evasion via Proxy/Tunnel) missing evidence domain_fronting, tor_exit, dns_tunnel, precond:initial_access.",
+    "Incomplete: TA0005.LOG_TAMPER (Disable or Modify Security Logging) missing evidence disable_logging, policy_bypass, precond:initial_access.",
+    "Incomplete: TA0010.BULK_EXFIL (Bulk Data Exfiltration) missing evidence bulk_download, large_outbound_transfer, precond:credential_access, environment_context.",
+    "Incomplete: TA0008.ADMIN_PROTOCOL_LATERAL (Admin Protocol Lateral Movement) missing evidence new_inbound_admin_protocol, network_logon, precond:credential_access, environment_context.",
+    "Incomplete: TA0001.DEVICE_CODE_PHISH (Device Code Phishing) missing evidence device_code_flow_start, device_code_flow_success.",
+    "Incomplete: TA0001.OAUTH_CONSENT_PHISH (OAuth Consent Phishing) missing evidence new_app_grant.",
+    "Incomplete: TA0001.DEVICE_JOIN_PHISH (Device Join Phishing) missing evidence device_join_request, device_join_complete.",
+    "Incomplete: TA0001.STOLEN_CREDS (Stolen Credentials Initial Access) missing evidence token_reuse.",
+    "Incomplete: TA0001.STOLEN_CREDS_ANOMALY (Stolen Credentials with Anomalous Access) missing evidence token_reuse, new_device_login."
+  ],
+  "confidence_model": "heuristic",
+  "confidence_note": "Rule-based heuristic confidence; not calibrated.",
+  "ai_overlay": {
+    "enabled": true,
+    "mode": "high-recall-overlay",
+    "candidate_count": 35,
+    "escalated_count": 1,
+    "triaged_count": 34,
+    "threshold": 0.2,
+    "notes": [
+      "ai_layer_is_high_recall",
+      "aman_causal_validation_controls_escalation"
+    ]
+  },
+  "ai_alerts": [
+    {
+      "rule_id": "TA0004.MFA_BYPASS",
+      "name": "MFA Disable or Bypass",
+      "sensitivity": 1,
+      "evidence_hits": 2,
+      "status": "escalated",
+      "reason": "causal preconditions and evidence are feasible"
+    },
+    {
+      "rule_id": "TA0001.OAUTH_CONSENT_PHISH",
+      "name": "OAuth Consent Phishing",
+      "sensitivity": 0.8350000000000001,
+      "evidence_hits": 1,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0001.PHISH_LINK",
+      "name": "Phishing via Link and OAuth Consent",
+      "sensitivity": 0.8350000000000001,
+      "evidence_hits": 1,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0001.STOLEN_CREDS",
+      "name": "Stolen Credentials Initial Access",
+      "sensitivity": 0.8350000000000001,
+      "evidence_hits": 1,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0005.AUTH_PROCESS_MOD",
+      "name": "Modify Authentication Process",
+      "sensitivity": 0.8350000000000001,
+      "evidence_hits": 1,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0006.VALID_ACCOUNTS",
+      "name": "Valid Accounts Abuse",
+      "sensitivity": 0.8350000000000001,
+      "evidence_hits": 1,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0004.ACCOUNT_MANIP",
+      "name": "Account Manipulation",
+      "sensitivity": 0.755,
+      "evidence_hits": 1,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0004.PRIVESCA",
+      "name": "Privilege Escalation",
+      "sensitivity": 0.755,
+      "evidence_hits": 1,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0004.SAAS_ADMIN",
+      "name": "SaaS Admin Takeover",
+      "sensitivity": 0.755,
+      "evidence_hits": 1,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0001.STOLEN_CREDS_ANOMALY",
+      "name": "Stolen Credentials with Anomalous Access",
+      "sensitivity": 0.7266666666666667,
+      "evidence_hits": 1,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0001.DEVICE_CODE_PHISH",
+      "name": "Device Code Phishing",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0001.DEVICE_JOIN_PHISH",
+      "name": "Device Join Phishing",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0001.PHISHING",
+      "name": "Initial Access via Phishing",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0002.LOLBIN_CHAIN",
+      "name": "Suspicious LOLBin Execution Chain",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0003.MAILBOX_PERSIST",
+      "name": "Mailbox Rule Persistence",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0003.PERSIST",
+      "name": "Persistence",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0003.PERSIST_EXTENDED",
+      "name": "Extended Persistence Mechanisms",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0005.EVASION_C2",
+      "name": "Network Evasion via Proxy/Tunnel",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0005.IMPAIR_DEFENSES",
+      "name": "Impair Defenses",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0005.LOG_TAMPER",
+      "name": "Disable or Modify Security Logging",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0006.BRUTE_FORCE",
+      "name": "Brute Force / Credential Stuffing",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0006.CREDDUMP",
+      "name": "Credential Dumping",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0006.IDENTITY_ANOMALY",
+      "name": "Identity Anomaly (Impossible Travel / New Device)",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0006.INSIDER_EXFIL",
+      "name": "Insider Data Exfiltration",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0008.ADMIN_PROTOCOL_LATERAL",
+      "name": "Admin Protocol Lateral Movement",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0008.CLOUD_PIVOT",
+      "name": "Cloud Lateral Movement",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0008.LATERAL",
+      "name": "Lateral Movement",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0010.BULK_EXFIL",
+      "name": "Bulk Data Exfiltration",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0010.EXFIL",
+      "name": "Exfiltration",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0010.EXFIL_WEB",
+      "name": "Exfiltration Over Web Service",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0011.APP_LAYER_C2",
+      "name": "Application Layer Protocol C2",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0011.C2",
+      "name": "Command and Control",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0040.IMPACT_ENCRYPT",
+      "name": "Data Encrypted for Impact",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0040.RECOVERY_INHIBIT",
+      "name": "Inhibit System Recovery",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    },
+    {
+      "rule_id": "TA0043.SUPPLY_CHAIN",
+      "name": "Supply Chain Compromise",
+      "sensitivity": 0.51,
+      "evidence_hits": 0,
+      "status": "triaged",
+      "reason": "potential path requires more evidence"
+    }
+  ]
+}
