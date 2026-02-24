@@ -31,6 +31,9 @@ type RuleResult struct {
 	RuleID             string                `json:"rule_id"`
 	Name               string                `json:"name"`
 	Feasible           bool                  `json:"feasible"`
+	Conflicted         bool                  `json:"conflicted,omitempty"`
+	PolicyImpossible   bool                  `json:"policy_impossible,omitempty"`
+	PolicyReason       string                `json:"policy_reason,omitempty"`
 	PrecondOK          bool                  `json:"precond_ok"`
 	Confidence         float64               `json:"confidence"`
 	MissingEvidence    []EvidenceRequirement `json:"missing_evidence"`
@@ -39,6 +42,10 @@ type RuleResult struct {
 	Explanation        string                `json:"explanation"`
 	GapNarrative       string                `json:"gap_narrative"`
 	ReasonCode         string                `json:"reason_code"`
+	CausalBlockers     []string              `json:"causal_blockers,omitempty"`
+	CausalError        string                `json:"causal_error,omitempty"`
+	NecessaryCauses    []string              `json:"necessary_causes,omitempty"`
+	NecessaryCauseSets [][]string            `json:"necessary_cause_sets,omitempty"`
 	DecisionLabel      string                `json:"decision_label"`
 	CacheHit           bool                  `json:"cache_hit"`
 	ThreadID           string                `json:"thread_id"`
@@ -64,6 +71,8 @@ type ReasoningReport struct {
 	SuggestedPlaybooks   []string          `json:"suggested_playbooks,omitempty"`
 	MLAssistEnabled      bool              `json:"ml_assist_enabled,omitempty"`
 	MLAssistNotes        []string          `json:"ml_assist_notes,omitempty"`
+	AIOverlay            AIOverlaySummary  `json:"ai_overlay,omitempty"`
+	AIAlerts             []AIAlert         `json:"ai_alerts,omitempty"`
 }
 
 type SimilarIncident struct {
@@ -72,4 +81,24 @@ type SimilarIncident struct {
 	RuleIDs  []string `json:"rule_ids"`
 	Score    float64  `json:"score"`
 	Playbook string   `json:"playbook"`
+}
+
+type AIOverlaySummary struct {
+	Enabled         bool     `json:"enabled,omitempty"`
+	Mode            string   `json:"mode,omitempty"`
+	CandidateCount  int      `json:"candidate_count,omitempty"`
+	EscalatedCount  int      `json:"escalated_count,omitempty"`
+	TriagedCount    int      `json:"triaged_count,omitempty"`
+	SuppressedCount int      `json:"suppressed_count,omitempty"`
+	Threshold       float64  `json:"threshold,omitempty"`
+	Notes           []string `json:"notes,omitempty"`
+}
+
+type AIAlert struct {
+	RuleID       string  `json:"rule_id"`
+	Name         string  `json:"name"`
+	Sensitivity  float64 `json:"sensitivity"`
+	EvidenceHits int     `json:"evidence_hits"`
+	Status       string  `json:"status"`
+	Reason       string  `json:"reason"`
 }

@@ -1,0 +1,16 @@
+{
+  "generated_at": "2026-02-20T07:23:53.614234Z",
+  "pilot_metrics_path": "docs/demo_pack/pilot_metrics_report.json",
+  "benchmark_path": "docs/production_benchmark_report.md",
+  "queue_reduction_pct": 15.151515151515152,
+  "escalated_precision_proxy_pct": 75,
+  "suppressed_later_true_rate_pct": 0,
+  "overlay_overhead_pct": 17.3,
+  "integration_passed": 3,
+  "integration_failed": 0,
+  "readiness_score": 7.8711515151515155,
+  "notes": [
+    "score favors measurable queue reduction, precision proxy, safety, and integration reliability",
+    "commercial proof still depends on broader real-world labeled outcomes"
+  ]
+}

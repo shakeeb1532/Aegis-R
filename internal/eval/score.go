@@ -104,6 +104,9 @@ func coerceEvents(v any) ([]model.Event, error) {
 }
 
 func classify(r model.RuleResult) Outcome {
+	if r.PolicyImpossible || r.Conflicted {
+		return OutcomeImpossible
+	}
 	if r.Feasible {
 		return OutcomeFeasible
 	}

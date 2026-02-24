@@ -32,7 +32,7 @@ func AssessWithMetrics(events []model.Event, rules []logic.Rule, environment env
 	if metrics != nil {
 		metrics.IncEvents(len(events))
 	}
-	rep := logic.ReasonWithMetrics(events, rules, metrics, includeEvidence)
+	rep := logic.ReasonWithEnvAndMetrics(events, rules, environment, metrics, includeEvidence)
 	st.UpdatedAt = time.Now().UTC()
 
 	envelopes := progression.Normalize(events, environment)
@@ -225,6 +225,12 @@ func applyDecisionCacheAndThreads(rep *model.ReasoningReport, events []model.Eve
 }
 
 func decisionLabel(r *model.RuleResult, host string, principal string) (string, string) {
+	if r.PolicyImpossible {
+		return "suppress", "policy_impossible"
+	}
+	if r.Conflicted {
+		return "keep", "conflicted"
+	}
 	if r.Feasible {
 		if host == "" && principal == "" {
 			return "escalate", "environment_unknown"
@@ -257,7 +263,7 @@ func decisionLabel(r *model.RuleResult, host string, principal string) (string, 
 
 func hasMissingPreconds(reqs []model.EvidenceRequirement) bool {
 	for _, req := range reqs {
-		if strings.HasPrefix(req.Type, "precond:") || req.Type == "environment_context" {
+		if strings.HasPrefix(req.Type, "precond:") || strings.HasPrefix(req.Type, "precond_order:") || req.Type == "environment_context" {
 			return true
 		}
 	}
@@ -327,13 +333,19 @@ func cacheKey(host string, principal string, ruleID string) string {
 }
 
 func verdictForRule(r *model.RuleResult) string {
+	if r.PolicyImpossible {
+		return "impossible"
+	}
+	if r.Conflicted {
+		return "conflicted"
+	}
 	if r.Feasible {
 		return "confirmed"
 	}
 	if len(r.MissingEvidence) > 0 {
 		return "incomplete"
 	}
-	return "impossible"
+	return "incomplete"
 }
 
 func upsertThread(st *state.AttackState, host string, principal string, when time.Time, ruleID string, confidence float64, reason string) string {

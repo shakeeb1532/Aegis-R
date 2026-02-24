@@ -2,6 +2,7 @@ package env
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 
 	"aman/internal/ops"
@@ -38,10 +39,10 @@ type Environment struct {
 func Load(path string) (Environment, error) {
 	var e Environment
 	if path == "" {
-		return e, os.ErrInvalid
+		return e, fmt.Errorf("%w", ErrEmptyPath)
 	}
 	if !ops.IsSafePath(path) {
-		return e, os.ErrInvalid
+		return e, fmt.Errorf("%w: %s", ErrUnsafePath, path)
 	}
 	//nolint:gosec // path validated via IsSafePath
 	// #nosec G304

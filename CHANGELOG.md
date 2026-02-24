@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-02-12
+### Added
+- Expansion rule pack support (`data/rules_expansion.json`) for optional coverage growth.
+- CLI support for `-rules-extra` across assess/reason/evaluate/coverage commands.
+- MITRE environment gap reporting in coverage output.
+- Synthetic scenario generator now supports `-multiplier` and `-noise` to increase size and add benign event types.
+- Impossible scenarios now include contradiction/precondition-violation events for more realistic evaluation.
+- Reasoning output now excludes full supporting events by default; use `-include-events` to include them for memory-heavy runs.
+- Reasoning index now stores event indices (not full event copies) to lower heap pressure.
+
 ## 2026-02-11
 ### Added
 - Optional explanation layer (local + LLM endpoint) with suggested steps (CLI/JSON).
@@ -71,6 +81,8 @@
 - Secure ingest envelope (phase 1) with AES-GCM + HMAC + optional LZ4 compression.
 - Secure HTTP ingest endpoint using the same envelope, plus `/ingest-health` failure metrics.
 - Keyring-based secure ingest (`secure-init`, `secure-rotate`, keyring support for pack/unpack).
+- Optional engine registry for external modules with `system engines`.
+- External engine docs and references (`docs/engines.md`).
 
 ### Fixed
 - Gated rule packs now surface as `admin_hold` placeholders.

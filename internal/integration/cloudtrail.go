@@ -58,11 +58,16 @@ func extractUserIdentity(m map[string]interface{}) string {
 	if m == nil {
 		return ""
 	}
-	if arn, ok := m["arn"].(string); ok && arn != "" {
-		return arn
-	}
 	if user, ok := m["userName"].(string); ok && user != "" {
 		return user
+	}
+	if arn, ok := m["arn"].(string); ok && arn != "" {
+		// Normalize STS session ARNs so thread correlation groups by role.
+		parts := strings.Split(arn, "/")
+		if len(parts) > 0 {
+			return parts[0]
+		}
+		return arn
 	}
 	if principal, ok := m["principalId"].(string); ok {
 		return principal
@@ -78,8 +83,10 @@ func mapCloudTrailEventType(source string, name string) string {
 			return "trust_boundary_change"
 		case containsAny(nameLower, "assumerole"):
 			return "role_assume"
-		case containsAny(nameLower, "createuser", "createrole", "createpolicy"):
+		case containsAny(nameLower, "createuser", "createrole"):
 			return "new_admin_account"
+		case containsAny(nameLower, "createpolicy"):
+			return "policy_change"
 		case containsAny(nameLower, "addusertogroup", "addroletoinstanceprofile", "attachgrouppolicy"):
 			return "admin_group_change"
 		case containsAny(nameLower, "attachrolepolicy", "attachuserpolicy", "putrolepolicy", "putuserpolicy"):

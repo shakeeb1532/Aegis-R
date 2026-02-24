@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"crypto/rand"
 	"encoding/base64"
@@ -12,15 +13,19 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
 	"aman/internal/approval"
 	"aman/internal/assist"
 	"aman/internal/audit"
+	"aman/internal/compliance"
 	"aman/internal/compress"
 	"aman/internal/core"
+	"aman/internal/engines"
 	"aman/internal/env"
 	"aman/internal/eval"
 	"aman/internal/explain"
@@ -30,6 +35,8 @@ import (
 	"aman/internal/logic"
 	"aman/internal/model"
 	"aman/internal/ops"
+	"aman/internal/overlay"
+	"aman/internal/progression"
 	"aman/internal/report"
 	"aman/internal/secureingest"
 	"aman/internal/sim"
@@ -54,6 +61,161 @@ type GlobalFlags struct {
 	Quiet   bool
 	NoColor bool
 	Profile string
+}
+
+type PilotMetrics struct {
+	GeneratedAt                      time.Time `json:"generated_at"`
+	ReportPath                       string    `json:"report_path"`
+	HistoryPath                      string    `json:"history_path"`
+	CandidateCount                   int       `json:"candidate_count"`
+	EscalatedCount                   int       `json:"escalated_count"`
+	TriagedCount                     int       `json:"triaged_count"`
+	SuppressedCount                  int       `json:"suppressed_count"`
+	QueueReductionPct                float64   `json:"queue_reduction_pct"`
+	EscalatedConfirmedCount          int       `json:"escalated_confirmed_count"`
+	EscalatedFalsePositiveCount      int       `json:"escalated_false_positive_count"`
+	EscalatedUnknownOutcomeCount     int       `json:"escalated_unknown_outcome_count"`
+	EscalatedPrecisionProxyPct       float64   `json:"escalated_precision_proxy_pct"`
+	SuppressedLaterTrueCount         int       `json:"suppressed_later_true_count"`
+	SuppressedLaterTrueRatePct       float64   `json:"suppressed_later_true_rate_pct"`
+	KnownConfirmedRulesInHistory     int       `json:"known_confirmed_rules_in_history"`
+	KnownFalsePositiveRulesInHistory int       `json:"known_false_positive_rules_in_history"`
+}
+
+type IntegrationCheck struct {
+	Category      string `json:"category"`
+	Fixture       string `json:"fixture"`
+	Schema        string `json:"schema"`
+	Kind          string `json:"kind,omitempty"`
+	EventCount    int    `json:"event_count"`
+	FeasibleCount int    `json:"feasible_count"`
+	Pass          bool   `json:"pass"`
+	Error         string `json:"error,omitempty"`
+}
+
+type IntegrationReadinessReport struct {
+	GeneratedAt time.Time          `json:"generated_at"`
+	RulesPath   string             `json:"rules_path"`
+	Checks      []IntegrationCheck `json:"checks"`
+	Passed      int                `json:"passed"`
+	Failed      int                `json:"failed"`
+}
+
+type IntegrationQuickstartRun struct {
+	Category        string `json:"category"`
+	Fixture         string `json:"fixture"`
+	Schema          string `json:"schema"`
+	Kind            string `json:"kind,omitempty"`
+	EventsPath      string `json:"events_path"`
+	ReportPath      string `json:"report_path"`
+	EventCount      int    `json:"event_count"`
+	FeasibleCount   int    `json:"feasible_count"`
+	CandidateCount  int    `json:"candidate_count"`
+	EscalatedCount  int    `json:"escalated_count"`
+	TriagedCount    int    `json:"triaged_count"`
+	SuppressedCount int    `json:"suppressed_count"`
+	Pass            bool   `json:"pass"`
+	Error           string `json:"error,omitempty"`
+}
+
+type IntegrationQuickstartReport struct {
+	GeneratedAt time.Time                  `json:"generated_at"`
+	OutputDir   string                     `json:"output_dir"`
+	RulesPath   string                     `json:"rules_path"`
+	Runs        []IntegrationQuickstartRun `json:"runs"`
+	Passed      int                        `json:"passed"`
+	Failed      int                        `json:"failed"`
+}
+
+type NoisegraphQuickstartReport struct {
+	GeneratedAt   time.Time             `json:"generated_at"`
+	DecisionsPath string                `json:"decisions_path"`
+	EventsPath    string                `json:"events_path"`
+	ReportPath    string                `json:"report_path,omitempty"`
+	Included      []string              `json:"included_statuses"`
+	ParsedLines   int                   `json:"parsed_lines"`
+	EventsCount   int                   `json:"events_count"`
+	Reasoning     model.ReasoningReport `json:"reasoning"`
+}
+
+type ROIScorecard struct {
+	GeneratedAt                time.Time `json:"generated_at"`
+	PilotMetricsPath           string    `json:"pilot_metrics_path"`
+	BenchmarkPath              string    `json:"benchmark_path"`
+	QueueReductionPct          float64   `json:"queue_reduction_pct"`
+	EscalatedPrecisionProxyPct float64   `json:"escalated_precision_proxy_pct"`
+	SuppressedLaterTrueRatePct float64   `json:"suppressed_later_true_rate_pct"`
+	OverlayOverheadPct         float64   `json:"overlay_overhead_pct"`
+	IntegrationPassed          int       `json:"integration_passed"`
+	IntegrationFailed          int       `json:"integration_failed"`
+	ReadinessScore             float64   `json:"readiness_score"`
+	Notes                      []string  `json:"notes"`
+}
+
+type DemoPackReport struct {
+	GeneratedAt           time.Time                   `json:"generated_at"`
+	OutDir                string                      `json:"out_dir"`
+	IntegrationReadiness  IntegrationReadinessReport  `json:"integration_readiness"`
+	IntegrationQuickstart IntegrationQuickstartReport `json:"integration_quickstart"`
+	ROIScorecard          ROIScorecard                `json:"roi_scorecard"`
+	Files                 []string                    `json:"files"`
+}
+
+type ControlsExport struct {
+	GeneratedAt         time.Time                       `json:"generated_at"`
+	AuditChainVerified  bool                            `json:"audit_chain_verified"`
+	AuditChainError     string                          `json:"audit_chain_error,omitempty"`
+	DecisionControls    []DecisionControlLink           `json:"decision_controls"`
+	RuleControlMappings []compliance.RuleControlMapping `json:"rule_control_mappings"`
+	DualApprovals       []DualApprovalSummary           `json:"dual_approvals"`
+}
+
+type DecisionControlLink struct {
+	DecisionID string   `json:"decision_id"`
+	RuleID     string   `json:"rule_id"`
+	NistCSF    []string `json:"nist_csf,omitempty"`
+	Soc2CC     []string `json:"soc2_cc,omitempty"`
+	ISO27001   []string `json:"iso_27001,omitempty"`
+}
+
+type DualApprovalSummary struct {
+	DecisionID    string   `json:"decision_id"`
+	Required      int      `json:"required"`
+	ValidSigners  int      `json:"valid_signers"`
+	DualApproved  bool     `json:"dual_approved"`
+	SignerIDs     []string `json:"signer_ids"`
+	AnyOktaBypass bool     `json:"any_okta_bypass"`
+}
+
+type DecisionPackage struct {
+	DecisionID string   `json:"decision_id"`
+	Summary    string   `json:"summary"`
+	Findings   []string `json:"findings"`
+	Reasoning  []string `json:"reasoning"`
+	CreatedAt  string   `json:"created_at"`
+	Hash       string   `json:"hash"`
+	PrevHash   string   `json:"prev_hash"`
+}
+
+type WhyChainItem struct {
+	RuleID           string   `json:"rule_id"`
+	RuleName         string   `json:"rule_name"`
+	Verdict          string   `json:"verdict"`
+	Explanation      string   `json:"explanation"`
+	GapNarrative     string   `json:"gap_narrative,omitempty"`
+	ReasonCode       string   `json:"reason_code,omitempty"`
+	PreconditionOK   bool     `json:"precondition_ok"`
+	SupportingEvents []string `json:"supporting_event_ids,omitempty"`
+	MissingEvidence  []string `json:"missing_evidence,omitempty"`
+	CausalBlockers   []string `json:"causal_blockers,omitempty"`
+	NecessaryCauses  []string `json:"necessary_causes,omitempty"`
+}
+
+type CounterfactualItem struct {
+	RuleID      string   `json:"rule_id"`
+	Assumption  string   `json:"assumption"`
+	Prediction  string   `json:"prediction"`
+	NextActions []string `json:"next_actions,omitempty"`
 }
 
 var gFlags GlobalFlags
@@ -162,8 +324,8 @@ func usage() {
 	fmt.Println("  aman audit <verb> [flags]")
 	fmt.Println("  aman system <verb> [flags]")
 	fmt.Println("  generate -out events.json -count 60 -seed 42")
-	fmt.Println("  reason -in events.json [-approval approval.json] [-require-okta] [-rules rules.json] [-format cli|json] [--explain --explain-ack I_ACKNOWLEDGE_LLM_RISK] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n]")
-	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log [-rules rules.json] [-approval approval.json] [-policy policy.json] [-constraints data/constraints.json] [-config ops.json] [-format cli|json] [-out report.json|report.json.lz4] [-baseline data/zero_trust_baseline.json] [--explain --explain-ack I_ACKNOWLEDGE_LLM_RISK] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n]")
+	fmt.Println("  reason -in events.json [-approval approval.json] [-require-okta] [-rules rules.json] [-rules-extra rules_expansion.json] [-include-events] [-format cli|json] [--explain --explain-ack I_ACKNOWLEDGE_LLM_RISK] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n] [--ai-overlay] [--ai-threshold 0.20]")
+	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log [-rules rules.json] [-rules-extra rules_expansion.json] [-approval approval.json] [-policy policy.json] [-constraints data/constraints.json] [-config ops.json] [-format cli|json] [-out report.json|report.json.lz4] [-baseline data/zero_trust_baseline.json] [--explain --explain-ack I_ACKNOWLEDGE_LLM_RISK] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n] [--ai-overlay] [--ai-threshold 0.20]")
 	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log -siem siem.json (optional)")
 	fmt.Println("  keys -out keypair.json")
 	fmt.Println("  approve -key keypair.json -id change-1 -ttl 10m -okta true -signer alice -role approver -out approval.json")
@@ -171,7 +333,7 @@ func usage() {
 	fmt.Println("  verify -approval approval.json [-require-okta]")
 	fmt.Println("  audit-verify -audit audit.log")
 	fmt.Println("  audit-sign -audit audit.log -out signed_audit.log -signer soc-admin")
-	fmt.Println("  generate-scenarios -out scenarios.json [-rules rules.json]")
+	fmt.Println("  generate-scenarios -out scenarios.json [-rules rules.json] [-rules-extra rules_expansion.json] [-multiplier 1] [-noise]")
 	fmt.Println("  evaluate -scenarios scenarios.json [-rules rules.json] [-format cli|json|md] [-out report.md]")
 	fmt.Println("  ingest-http -addr :8080 [-secure-keyring data/ingest_keys.json] (schema: ecs|elastic_ecs|ocsf|cim|splunk_cim_auth|splunk_cim_net|mde)")
 	fmt.Println("  ingest secure-pack -in events.json -out events.aman --keyring data/ingest_keys.json [-compress auto|none|lz4] [-policy adaptive] [-risk medium]")
@@ -185,6 +347,14 @@ func usage() {
 	fmt.Println("  inventory-refresh -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json")
 	fmt.Println("  inventory-schedule -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json -interval 6h -jitter 30m")
 	fmt.Println("  serve-api -addr :8081 -report data/report.json -audit data/audit.log -approvals data/approvals.log")
+	fmt.Println("  system engines")
+	fmt.Println("  system pilot-metrics -report data/bench/report.json -history data/incident_history.json [-format json|md] [-out docs/pilot_metrics_report.md]")
+	fmt.Println("  system integration-readiness [-rules data/rules.json] [-out docs/integration_readiness.json]")
+	fmt.Println("  system integration-quickstart [-rules data/rules.json] [-outdir data/onboarding] [-ai-threshold 0.20]")
+	fmt.Println("  system noisegraph-quickstart [-decisions external/noisegraph/state/decisions.jsonl] [-events data/noisegraph_events.json] [-report docs/noisegraph_quickstart.json]")
+	fmt.Println("  system roi-scorecard [-pilot docs/pilot_metrics_report.json] [-integration docs/integration_readiness.json] [-benchmark docs/production_benchmark_report.md] [-out docs/roi_scorecard.md]")
+	fmt.Println("  system demo-pack [-outdir docs/demo_pack] [-rules data/rules.json]")
+	fmt.Println("  graph killchain|blast-radius|controls|identity-pivots|timelapse|evidence-confidence -state data/state.json [-env data/env.json] [-format text|mermaid]")
 	fmt.Println("  system nist -rules data/rules.json [-out nist.json]")
 	fmt.Println("  system killchain -rules data/rules.json [-out killchain.json]")
 	fmt.Println("  init-scan -baseline data/zero_trust_baseline.json")
@@ -259,9 +429,17 @@ func outJSON(v interface{}) {
 func verdictFromResults(results []model.RuleResult) string {
 	hasMissing := false
 	hasFeasible := false
+	hasConflicted := false
+	hasPolicyImpossible := false
 	for _, r := range results {
 		if r.Feasible {
 			hasFeasible = true
+		}
+		if r.Conflicted {
+			hasConflicted = true
+		}
+		if r.PolicyImpossible {
+			hasPolicyImpossible = true
 		}
 		if len(r.MissingEvidence) > 0 {
 			hasMissing = true
@@ -272,6 +450,12 @@ func verdictFromResults(results []model.RuleResult) string {
 	}
 	if hasMissing {
 		return "INCOMPLETE"
+	}
+	if hasConflicted {
+		return "CONFLICTED"
+	}
+	if hasPolicyImpossible {
+		return "IMPOSSIBLE"
 	}
 	return "IMPOSSIBLE"
 }
@@ -368,6 +552,31 @@ func renderCoverageMarkdown(report logic.MitreCoverageReport) string {
 			fmt.Fprintf(buf, "- %s\n", id)
 		}
 		fmt.Fprintln(buf, "")
+	}
+	if len(report.Gaps.TacticsMissing) > 0 || len(report.Gaps.TechniquesMissing) > 0 {
+		fmt.Fprintf(buf, "## Coverage Gaps (Environment)\n")
+		if len(report.Gaps.TacticsMissing) > 0 {
+			fmt.Fprintf(buf, "### Missing Tactics\n")
+			for _, tactic := range report.Gaps.TacticsMissing {
+				fmt.Fprintf(buf, "- %s\n", tactic)
+			}
+			fmt.Fprintln(buf, "")
+		}
+		if len(report.Gaps.TechniquesMissing) > 0 {
+			fmt.Fprintf(buf, "### Missing Techniques\n")
+			tactics := make([]string, 0, len(report.Gaps.TechniquesMissing))
+			for tactic := range report.Gaps.TechniquesMissing {
+				tactics = append(tactics, tactic)
+			}
+			sort.Strings(tactics)
+			for _, tactic := range tactics {
+				fmt.Fprintf(buf, "- %s:\n", tactic)
+				for _, tech := range report.Gaps.TechniquesMissing[tactic] {
+					fmt.Fprintf(buf, "  - %s\n", tech)
+				}
+			}
+			fmt.Fprintln(buf, "")
+		}
 	}
 	fmt.Fprintf(buf, "## Tactics\n")
 	for _, t := range report.Tactics {
@@ -699,12 +908,15 @@ func samplePath(name string) (string, integration.Schema) {
 
 func handleGraph(args []string) {
 	if len(args) == 0 {
-		fatal(errors.New("graph requires a subcommand: status|threads|show|explain|export"))
+		fatal(errors.New("graph requires a subcommand: status|threads|paths|killchain|blast-radius|controls|identity-pivots|timelapse|evidence-confidence|show|explain|mermaid|export"))
 	}
 	fs := flag.NewFlagSet("graph", flag.ExitOnError)
 	statePath := fs.String("state", "data/state.json", "state file")
+	envPath := fs.String("env", "data/env.json", "environment file")
+	reportPath := fs.String("report", "data/bench/report.json", "reason/assess report (optional)")
 	thread := fs.String("thread", "", "thread id")
 	node := fs.String("node", "", "node id")
+	step := fs.Duration("step", 5*time.Minute, "time-lapse step")
 	format := fs.String("format", "text", "format")
 	if err := fs.Parse(args[1:]); err != nil {
 		fatal(err)
@@ -745,6 +957,88 @@ func handleGraph(args []string) {
 		for i, k := range keys {
 			outln(fmt.Sprintf("T-%03d %s (%d events)", i+1, k, len(threadMap[k])))
 		}
+	case "paths":
+		paths := progression.BuildAttackPaths(st.Progression)
+		for _, p := range paths {
+			outln(fmt.Sprintf("%s asset=%s principal=%s confidence=%.2f", p.ID, p.Asset, p.Principal, p.Confidence))
+			outln("  stages: " + strings.Join(p.Stages, " -> "))
+			outln("  actions: " + strings.Join(p.Actions, ", "))
+			outln("  window: " + p.FirstSeen.Format(time.RFC3339) + " .. " + p.LastSeen.Format(time.RFC3339))
+		}
+	case "killchain":
+		edges := progression.BuildKillChainEdges(st.Progression)
+		if *format == "mermaid" {
+			outln(progression.RenderKillChainMermaid(edges))
+			return
+		}
+		for _, e := range edges {
+			outln(fmt.Sprintf("%s -> %s (n=%d, conf=%.2f)", e.From, e.To, e.Count, e.AvgConfidence))
+		}
+	case "blast-radius":
+		environment, err := env.Load(*envPath)
+		if err != nil {
+			fatal(err)
+		}
+		br := progression.BuildBlastRadius(environment, st)
+		outln(fmt.Sprintf("Reachable total hosts: %d", br.ReachableTotal))
+		outln("Compromised critical hosts: " + strings.Join(br.CompromisedCritical, ", "))
+		outln("Reachable critical hosts: " + strings.Join(br.ReachableCritical, ", "))
+	case "controls":
+		environment, err := env.Load(*envPath)
+		if err != nil {
+			fatal(err)
+		}
+		cps := progression.SuggestControlPoints(environment, st)
+		for _, cp := range cps {
+			outln(fmt.Sprintf("%s [%s] target=%s", cp.ID, cp.Layer, cp.Target))
+			outln("  action: " + cp.Action)
+			outln("  reason: " + cp.Reason)
+		}
+	case "identity-pivots":
+		pivots := progression.BuildIdentityPivots(st.Progression)
+		if *format == "mermaid" {
+			outln(progression.RenderIdentityPivotMermaid(pivots))
+			return
+		}
+		for _, p := range pivots {
+			outln(fmt.Sprintf("%s %s -> %s via=%s (n=%d conf=%.2f)", p.Kind, p.From, p.To, p.Via, p.Count, p.AvgConfidence))
+		}
+	case "timelapse":
+		slices := progression.BuildTimeLapse(st.Progression, *step)
+		for _, s := range slices {
+			outln(fmt.Sprintf("%s .. %s events=%d assets=%d principals=%d",
+				s.Start.Format(time.RFC3339), s.End.Format(time.RFC3339), s.EventCount, s.UniqueAssets, s.UniquePrincipals))
+			keys := []string{}
+			for k := range s.StageCounts {
+				keys = append(keys, k)
+			}
+			sort.Strings(keys)
+			for _, k := range keys {
+				outln(fmt.Sprintf("  stage %s: %d", k, s.StageCounts[k]))
+			}
+		}
+	case "evidence-confidence":
+		edges := progression.BuildEvidenceConfidenceEdges(st.Progression)
+		if *format == "mermaid" {
+			outln(progression.RenderConfidenceMermaid(edges))
+			return
+		}
+		for _, e := range edges {
+			level := "high"
+			if e.LowConfidence {
+				level = "low"
+			}
+			outln(fmt.Sprintf("%s -> %s conf=%.2f level=%s n=%d", e.From, e.To, e.AvgConfidence, level, e.Count))
+		}
+		if rep, err := loadReportFile(*reportPath); err == nil {
+			incomplete := 0
+			for _, r := range rep.Results {
+				if !r.Feasible && len(r.MissingEvidence) > 0 {
+					incomplete++
+				}
+			}
+			outln(fmt.Sprintf("report_evidence_gaps=%d (%s)", incomplete, *reportPath))
+		}
 	case "show":
 		if *thread == "" {
 			fatal(errors.New("graph show requires --thread"))
@@ -779,6 +1073,9 @@ func handleGraph(args []string) {
 			return
 		}
 		outln("Use --format json for export")
+	case "mermaid":
+		paths := progression.BuildAttackPaths(st.Progression)
+		outln(progression.RenderMermaid(paths))
 	default:
 		fatal(errors.New("unknown graph subcommand"))
 	}
@@ -807,7 +1104,10 @@ func handleReasonV2(args []string) {
 	case "event":
 		fs := flag.NewFlagSet("reason event", flag.ExitOnError)
 		in := fs.String("in", "", "events file")
+		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
 		adminApproval := fs.String("admin-approval", "", "admin approval for gated rule packs")
+		includeEvents := fs.Bool("include-events", false, "include full supporting events in output")
 		explainOn := fs.Bool("explain", false, "add explanation layer")
 		explainAck := fs.String("explain-ack", "", "acknowledge llm output risk")
 		explainEndpoint := fs.String("explain-endpoint", "", "llm explanation endpoint (optional)")
@@ -818,6 +1118,9 @@ func handleReasonV2(args []string) {
 		mlCategories := fs.String("ml-categories", "identity,cloud", "ml ranking categories")
 		mlSimilarLimit := fs.Int("ml-similar-limit", 3, "similar incident limit")
 		mlPlaybookLimit := fs.Int("ml-playbook-limit", 3, "playbook suggestion limit")
+		aiOverlay := fs.Bool("ai-overlay", false, "high-recall AI candidate alerts filtered by causal validation")
+		aiThreshold := fs.Float64("ai-threshold", 0.20, "minimum AI candidate sensitivity (0-1)")
+		aiMax := fs.Int("ai-max", 50, "maximum AI candidate alerts to include")
 		rest := args[1:]
 		pos := ""
 		if len(rest) > 0 && !strings.HasPrefix(rest[0], "-") {
@@ -841,12 +1144,12 @@ func handleReasonV2(args []string) {
 		if err != nil {
 			fatal(err)
 		}
-		rules, err := logic.LoadRules("")
+		rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 		if err != nil {
 			fatal(err)
 		}
 		rules, placeholders := applyGatedRules(rules, *adminApproval)
-		rep := logic.Reason(events, rules)
+		rep := logic.ReasonWithMetrics(events, rules, nil, *includeEvents)
 		if len(placeholders) > 0 {
 			rep.Results = append(rep.Results, placeholders...)
 		}
@@ -859,6 +1162,9 @@ func handleReasonV2(args []string) {
 			if err := applyMLAssist(&rep, *mlHistory, *mlLimit, *mlCategories, *mlSimilarLimit, *mlPlaybookLimit); err != nil {
 				fmt.Fprintf(os.Stderr, "ml assist unavailable: %s\n", err.Error())
 			}
+		}
+		if *aiOverlay {
+			applyAIOverlay(&rep, events, rules, *aiThreshold, *aiMax)
 		}
 		if gFlags.JSON {
 			outJSON(rep)
@@ -918,7 +1224,10 @@ func handleReasonV2(args []string) {
 		fs := flag.NewFlagSet("reason host", flag.ExitOnError)
 		in := fs.String("in", "", "events file")
 		host := fs.String("host", "", "host id")
+		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
 		adminApproval := fs.String("admin-approval", "", "admin approval for gated rule packs")
+		includeEvents := fs.Bool("include-events", false, "include full supporting events in output")
 		explainOn := fs.Bool("explain", false, "add explanation layer")
 		explainAck := fs.String("explain-ack", "", "acknowledge llm output risk")
 		explainEndpoint := fs.String("explain-endpoint", "", "llm explanation endpoint (optional)")
@@ -929,6 +1238,9 @@ func handleReasonV2(args []string) {
 		mlCategories := fs.String("ml-categories", "identity,cloud", "ml ranking categories")
 		mlSimilarLimit := fs.Int("ml-similar-limit", 3, "similar incident limit")
 		mlPlaybookLimit := fs.Int("ml-playbook-limit", 3, "playbook suggestion limit")
+		aiOverlay := fs.Bool("ai-overlay", false, "high-recall AI candidate alerts filtered by causal validation")
+		aiThreshold := fs.Float64("ai-threshold", 0.20, "minimum AI candidate sensitivity (0-1)")
+		aiMax := fs.Int("ai-max", 50, "maximum AI candidate alerts to include")
 		rest := args[1:]
 		pos := ""
 		if len(rest) > 0 && !strings.HasPrefix(rest[0], "-") {
@@ -958,12 +1270,12 @@ func handleReasonV2(args []string) {
 				filtered = append(filtered, e)
 			}
 		}
-		rules, err := logic.LoadRules("")
+		rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 		if err != nil {
 			fatal(err)
 		}
 		rules, placeholders := applyGatedRules(rules, *adminApproval)
-		rep := logic.Reason(filtered, rules)
+		rep := logic.ReasonWithMetrics(filtered, rules, nil, *includeEvents)
 		if len(placeholders) > 0 {
 			rep.Results = append(rep.Results, placeholders...)
 		}
@@ -976,6 +1288,9 @@ func handleReasonV2(args []string) {
 			if err := applyMLAssist(&rep, *mlHistory, *mlLimit, *mlCategories, *mlSimilarLimit, *mlPlaybookLimit); err != nil {
 				fmt.Fprintf(os.Stderr, "ml assist unavailable: %s\n", err.Error())
 			}
+		}
+		if *aiOverlay {
+			applyAIOverlay(&rep, filtered, rules, *aiThreshold, *aiMax)
 		}
 		if gFlags.JSON {
 			outJSON(rep)
@@ -1072,6 +1387,12 @@ func printConfidenceModel(rep model.ReasoningReport) {
 		outln("Confidence note: " + rep.ConfidenceNote)
 	}
 }
+
+// Policy constraint helper for marking impossible paths.
+// Example:
+// [
+//   {"id":"p1","rule_id":"TA0008.LATERAL","policy_impossible":true,"policy_reason":"HR systems cannot reach prod DB"}
+// ]
 
 func handleGovern(args []string) {
 	if len(args) == 0 {
@@ -1299,9 +1620,322 @@ func readApprovalRecords(path string) ([]approvalRecord, error) {
 	return out, nil
 }
 
+func readAuditArtifacts(path string) ([]audit.Artifact, error) {
+	if !ops.IsSafePath(path) {
+		return nil, os.ErrInvalid
+	}
+	buf := bytes.Buffer{}
+	if err := audit.ExportLog(path, &buf); err != nil {
+		return nil, err
+	}
+	lines := strings.Split(strings.TrimSpace(buf.String()), "\n")
+	out := make([]audit.Artifact, 0, len(lines))
+	for _, line := range lines {
+		if strings.TrimSpace(line) == "" {
+			continue
+		}
+		var a audit.Artifact
+		if err := json.Unmarshal([]byte(line), &a); err != nil || a.ID == "" {
+			continue
+		}
+		out = append(out, a)
+	}
+	return out, nil
+}
+
+func findArtifactByID(artifacts []audit.Artifact, decisionID string) (audit.Artifact, error) {
+	for _, a := range artifacts {
+		if a.ID == decisionID {
+			return a, nil
+		}
+	}
+	return audit.Artifact{}, errors.New("decision not found")
+}
+
+func buildControlsExport(auditPath, approvalsPath, rulesPath, rulesExtra string, reproducible bool) (ControlsExport, error) {
+	export := ControlsExport{
+		DecisionControls: []DecisionControlLink{},
+		DualApprovals:    []DualApprovalSummary{},
+	}
+	if err := audit.VerifyChain(auditPath); err != nil {
+		export.AuditChainVerified = false
+		export.AuditChainError = err.Error()
+	} else {
+		export.AuditChainVerified = true
+	}
+
+	rules, err := logic.LoadRulesCombined(rulesPath, rulesExtra)
+	if err != nil {
+		return export, err
+	}
+	artifacts, err := readAuditArtifacts(auditPath)
+	if err != nil {
+		return export, err
+	}
+	records, err := readApprovalRecords(approvalsPath)
+	if err != nil && !errors.Is(err, os.ErrNotExist) {
+		return export, err
+	}
+	export.GeneratedAt = time.Now().UTC()
+	if reproducible {
+		deterministicNow := time.Unix(0, 0).UTC()
+		for _, a := range artifacts {
+			if a.CreatedAt.After(deterministicNow) {
+				deterministicNow = a.CreatedAt
+			}
+		}
+		for _, rec := range records {
+			if rec.Approval.IssuedAt.After(deterministicNow) {
+				deterministicNow = rec.Approval.IssuedAt
+			}
+		}
+		export.GeneratedAt = deterministicNow
+	}
+
+	allRuleIDs := map[string]bool{}
+	for _, a := range artifacts {
+		ids := compliance.ExtractRuleIDsFromFindings(a.Findings)
+		if len(ids) == 0 {
+			continue
+		}
+		mappings := compliance.BuildRuleControlMappings(ids, rules)
+		for _, m := range mappings {
+			allRuleIDs[m.RuleID] = true
+			export.DecisionControls = append(export.DecisionControls, DecisionControlLink{
+				DecisionID: a.ID,
+				RuleID:     m.RuleID,
+				NistCSF:    m.NistCSF,
+				Soc2CC:     m.Soc2CC,
+				ISO27001:   m.ISO27001,
+			})
+		}
+	}
+	ruleIDs := make([]string, 0, len(allRuleIDs))
+	for id := range allRuleIDs {
+		ruleIDs = append(ruleIDs, id)
+	}
+	sort.Strings(ruleIDs)
+	export.RuleControlMappings = compliance.BuildRuleControlMappings(ruleIDs, rules)
+
+	byID := map[string][]approval.Approval{}
+	for _, rec := range records {
+		if rec.Approval.ID == "" {
+			continue
+		}
+		byID[rec.Approval.ID] = append(byID[rec.Approval.ID], rec.Approval)
+	}
+	decisionIDs := make([]string, 0, len(byID))
+	for id := range byID {
+		decisionIDs = append(decisionIDs, id)
+	}
+	sort.Strings(decisionIDs)
+	now := export.GeneratedAt
+	for _, id := range decisionIDs {
+		apps := byID[id]
+		signers := map[string]bool{}
+		validSigners := map[string]bool{}
+		anyOktaBypass := false
+		for _, a := range apps {
+			if a.SignerID != "" {
+				signers[a.SignerID] = true
+			}
+			if !a.OktaVerified {
+				anyOktaBypass = true
+			}
+			if err := approval.Verify(a, true, now); err == nil && a.SignerID != "" {
+				validSigners[a.SignerID] = true
+			}
+		}
+		signerList := make([]string, 0, len(signers))
+		for signer := range signers {
+			signerList = append(signerList, signer)
+		}
+		sort.Strings(signerList)
+		export.DualApprovals = append(export.DualApprovals, DualApprovalSummary{
+			DecisionID:    id,
+			Required:      2,
+			ValidSigners:  len(validSigners),
+			DualApproved:  len(validSigners) >= 2,
+			SignerIDs:     signerList,
+			AnyOktaBypass: anyOktaBypass,
+		})
+	}
+	return export, nil
+}
+
+func loadCoreOutput(path string) (core.Output, error) {
+	if path == "" {
+		return core.Output{}, errors.New("report path is required")
+	}
+	if !ops.IsSafePath(path) {
+		return core.Output{}, os.ErrInvalid
+	}
+	// #nosec G304 - validated by IsSafePath
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return core.Output{}, err
+	}
+	if strings.HasSuffix(path, ".lz4") {
+		data, err = compress.Decompress(data)
+		if err != nil {
+			return core.Output{}, err
+		}
+	}
+	var out core.Output
+	if err := json.Unmarshal(data, &out); err != nil {
+		// Some saved reports may include prefixed operator text before JSON.
+		idx := bytes.IndexByte(data, '{')
+		if idx < 0 {
+			return core.Output{}, err
+		}
+		if err2 := json.Unmarshal(data[idx:], &out); err2 != nil {
+			return core.Output{}, err2
+		}
+	}
+	return out, nil
+}
+
+func matchRuleResultsForDecision(artifact audit.Artifact, results []model.RuleResult) []model.RuleResult {
+	ids := compliance.ExtractRuleIDsFromFindings(artifact.Findings)
+	set := map[string]bool{}
+	for _, id := range ids {
+		set[id] = true
+	}
+	out := make([]model.RuleResult, 0, len(ids))
+	for _, r := range results {
+		if set[r.RuleID] {
+			out = append(out, r)
+		}
+	}
+	sort.Slice(out, func(i, j int) bool { return out[i].RuleID < out[j].RuleID })
+	return out
+}
+
+func buildWhyChain(results []model.RuleResult) []WhyChainItem {
+	out := make([]WhyChainItem, 0, len(results))
+	for _, r := range results {
+		missing := make([]string, 0, len(r.MissingEvidence))
+		for _, req := range r.MissingEvidence {
+			missing = append(missing, req.Type)
+		}
+		out = append(out, WhyChainItem{
+			RuleID:           r.RuleID,
+			RuleName:         r.Name,
+			Verdict:          verdictOfResult(r),
+			Explanation:      r.Explanation,
+			GapNarrative:     r.GapNarrative,
+			ReasonCode:       r.ReasonCode,
+			PreconditionOK:   r.PrecondOK,
+			SupportingEvents: append([]string(nil), r.SupportingEventIDs...),
+			MissingEvidence:  missing,
+			CausalBlockers:   append([]string(nil), r.CausalBlockers...),
+			NecessaryCauses:  append([]string(nil), r.NecessaryCauses...),
+		})
+	}
+	return out
+}
+
+func buildCounterfactuals(results []model.RuleResult, nextMoves []string) []CounterfactualItem {
+	out := make([]CounterfactualItem, 0, len(results))
+	for _, r := range results {
+		item := CounterfactualItem{RuleID: r.RuleID}
+		if r.Conflicted {
+			item.Assumption = "Contradictory evidence is resolved in attacker favor."
+			item.Prediction = "Attack path may become feasible if contradiction is removed and required evidence appears."
+		} else if len(r.MissingEvidence) > 0 {
+			missing := make([]string, 0, len(r.MissingEvidence))
+			for _, req := range r.MissingEvidence {
+				missing = append(missing, req.Type)
+			}
+			item.Assumption = "Missing evidence appears: " + strings.Join(missing, ", ")
+			item.Prediction = "Verdict likely shifts from INCOMPLETE to POSSIBLE/CONFIRMED if preconditions remain true."
+		} else if r.Feasible {
+			item.Assumption = "Current feasible path is uninterrupted."
+			item.Prediction = "Attacker likely advances along reachable state graph."
+		} else {
+			item.Assumption = "Policy or environment constraint changes."
+			item.Prediction = "Path may open if controls degrade or telemetry context changes."
+		}
+		if len(nextMoves) > 0 {
+			limit := 3
+			if len(nextMoves) < limit {
+				limit = len(nextMoves)
+			}
+			item.NextActions = append(item.NextActions, nextMoves[:limit]...)
+		}
+		out = append(out, item)
+	}
+	return out
+}
+
+func filterControlsForDecision(export ControlsExport, decisionID string) ControlsExport {
+	filtered := ControlsExport{
+		GeneratedAt:        export.GeneratedAt,
+		AuditChainVerified: export.AuditChainVerified,
+		AuditChainError:    export.AuditChainError,
+	}
+	ruleIDs := map[string]bool{}
+	for _, d := range export.DecisionControls {
+		if d.DecisionID != decisionID {
+			continue
+		}
+		filtered.DecisionControls = append(filtered.DecisionControls, d)
+		ruleIDs[d.RuleID] = true
+	}
+	for _, m := range export.RuleControlMappings {
+		if ruleIDs[m.RuleID] {
+			filtered.RuleControlMappings = append(filtered.RuleControlMappings, m)
+		}
+	}
+	for _, d := range export.DualApprovals {
+		if d.DecisionID == decisionID {
+			filtered.DualApprovals = append(filtered.DualApprovals, d)
+		}
+	}
+	return filtered
+}
+
+func approvalSummaryForDecision(approvals []DualApprovalSummary, decisionID string) DualApprovalSummary {
+	for _, a := range approvals {
+		if a.DecisionID == decisionID {
+			return a
+		}
+	}
+	return DualApprovalSummary{
+		DecisionID:   decisionID,
+		Required:     2,
+		DualApproved: false,
+	}
+}
+
+func verdictOfResult(r model.RuleResult) string {
+	switch {
+	case r.PolicyImpossible:
+		return "POLICY_IMPOSSIBLE"
+	case r.Conflicted:
+		return "CONFLICTED"
+	case r.Feasible:
+		return "POSSIBLE"
+	case !r.PrecondOK || len(r.MissingEvidence) > 0:
+		return "INCOMPLETE"
+	default:
+		return "IMPOSSIBLE"
+	}
+}
+
+func packageTimestamp(reproducible bool, fallback time.Time) time.Time {
+	if reproducible {
+		if !fallback.IsZero() {
+			return fallback.UTC()
+		}
+		return time.Unix(0, 0).UTC()
+	}
+	return time.Now().UTC()
+}
+
 func handleAudit(args []string) {
 	if len(args) == 0 {
-		fatal(errors.New("audit requires a subcommand: verify|explain|export"))
+		fatal(errors.New("audit requires a subcommand: verify|explain|export|bundle|bundle-verify|package"))
 	}
 	switch args[0] {
 	case "verify":
@@ -1318,6 +1952,8 @@ func handleAudit(args []string) {
 		fs := flag.NewFlagSet("audit explain", flag.ExitOnError)
 		auditPath := fs.String("audit", "data/audit.log", "audit log")
 		decision := fs.String("decision", "", "decision id")
+		rulesPath := fs.String("rules", "data/rules.json", "rules file")
+		extraPath := fs.String("rules-extra", "", "optional extra rules file")
 		if err := fs.Parse(args[1:]); err != nil {
 			fatal(err)
 		}
@@ -1331,6 +1967,29 @@ func handleAudit(args []string) {
 		outln("Decision: " + artifact.ID)
 		outln("Summary: " + artifact.Summary)
 		outln("Findings: " + strings.Join(artifact.Findings, "; "))
+		ruleIDs := compliance.ExtractRuleIDsFromFindings(artifact.Findings)
+		if len(ruleIDs) > 0 {
+			rules, err := logic.LoadRulesCombined(*rulesPath, *extraPath)
+			if err != nil {
+				fatal(err)
+			}
+			mappings := compliance.BuildRuleControlMappings(ruleIDs, rules)
+			if len(mappings) > 0 {
+				outln("Control mapping (SOC 2 / NIST CSF / ISO 27001):")
+				for _, m := range mappings {
+					outln("- " + m.RuleID + " (" + m.RuleName + ")")
+					if len(m.NistCSF) > 0 {
+						outln("  NIST CSF: " + strings.Join(m.NistCSF, ", "))
+					}
+					if len(m.Soc2CC) > 0 {
+						outln("  SOC 2: " + strings.Join(m.Soc2CC, ", "))
+					}
+					if len(m.ISO27001) > 0 {
+						outln("  ISO 27001: " + strings.Join(m.ISO27001, ", "))
+					}
+				}
+			}
+		}
 	case "export":
 		fs := flag.NewFlagSet("audit export", flag.ExitOnError)
 		auditPath := fs.String("audit", "data/audit.log", "audit log")
@@ -1360,6 +2019,232 @@ func handleAudit(args []string) {
 			fatal(err)
 		}
 		outln("Audit export written: " + *out)
+	case "bundle":
+		fs := flag.NewFlagSet("audit bundle", flag.ExitOnError)
+		auditPath := fs.String("audit", "data/audit.log", "audit log")
+		signedAuditPath := fs.String("signed-audit", "data/signed_audit.log", "signed audit log")
+		approvalsPath := fs.String("approvals", "data/approvals.log", "approvals log")
+		reportPath := fs.String("report", "data/report.json", "assessment report")
+		rulesPath := fs.String("rules", "data/rules.json", "rules file")
+		rulesExtra := fs.String("rules-extra", "", "optional extra rules file")
+		controlsJSON := fs.Bool("controls-json", false, "embed structured controls export into the bundle")
+		reproducible := fs.Bool("reproducible", false, "produce deterministic bundle bytes for identical inputs")
+		out := fs.String("out", "data/evidence_bundle.zip", "bundle output path")
+		keyPath := fs.String("key", "", "optional keypair json for bundle signature")
+		signer := fs.String("signer", "", "bundle signer id")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		inputs := map[string]string{}
+		if strings.TrimSpace(*auditPath) != "" {
+			inputs["audit"] = *auditPath
+		}
+		if strings.TrimSpace(*signedAuditPath) != "" {
+			inputs["signed_audit"] = *signedAuditPath
+		}
+		if strings.TrimSpace(*approvalsPath) != "" {
+			inputs["approvals"] = *approvalsPath
+		}
+		if strings.TrimSpace(*reportPath) != "" {
+			inputs["report"] = *reportPath
+		}
+		opts := audit.BundleOptions{
+			OutputPath:   *out,
+			Inputs:       inputs,
+			Reproducible: *reproducible,
+			Signer:       strings.TrimSpace(*signer),
+		}
+		if *controlsJSON {
+			export, err := buildControlsExport(*auditPath, *approvalsPath, *rulesPath, *rulesExtra, *reproducible)
+			if err != nil {
+				fatal(err)
+			}
+			payload, err := json.MarshalIndent(export, "", "  ")
+			if err != nil {
+				fatal(err)
+			}
+			opts.Inline = map[string][]byte{
+				"controls.json": payload,
+			}
+		}
+		if strings.TrimSpace(*keyPath) != "" {
+			var kp KeypairFile
+			readJSON(*keyPath, &kp)
+			opts.PublicKey = kp.PublicKey
+			opts.PrivateKey = kp.PrivateKey
+		}
+		manifest, err := audit.CreateEvidenceBundle(opts)
+		if err != nil {
+			fatal(err)
+		}
+		outln("Evidence bundle written: " + *out)
+		outln(fmt.Sprintf("Files: %d", len(manifest.Files)))
+		outln("Digest: " + manifest.Digest)
+		if manifest.Signature != "" {
+			outln("Signature: present")
+		}
+	case "bundle-verify":
+		fs := flag.NewFlagSet("audit bundle-verify", flag.ExitOnError)
+		bundle := fs.String("bundle", "", "bundle zip path")
+		pubkey := fs.String("pubkey", "", "optional expected base64 public key")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		if strings.TrimSpace(*bundle) == "" {
+			fatal(errors.New("audit bundle-verify requires --bundle"))
+		}
+		res, err := audit.VerifyEvidenceBundle(*bundle, strings.TrimSpace(*pubkey))
+		if err != nil {
+			if gFlags.JSON {
+				outJSON(res)
+			}
+			fatal(err)
+		}
+		if gFlags.JSON {
+			outJSON(res)
+			return
+		}
+		outln(fmt.Sprintf("Bundle files verified: %d", res.FilesVerified))
+		outln("Digest: VALID")
+		if res.SignaturePresent && res.SignatureValid {
+			outln("Signature: VALID")
+		} else if !res.SignaturePresent {
+			outln("Signature: NOT PRESENT")
+		}
+		outln("Evidence bundle verification passed")
+	case "package":
+		fs := flag.NewFlagSet("audit package", flag.ExitOnError)
+		decisionID := fs.String("decision", "", "decision id")
+		auditPath := fs.String("audit", "data/audit.log", "audit log")
+		approvalsPath := fs.String("approvals", "data/approvals.log", "approvals log")
+		reportPath := fs.String("report", "data/report.json", "assessment report")
+		rulesPath := fs.String("rules", "data/rules.json", "rules file")
+		rulesExtra := fs.String("rules-extra", "", "optional extra rules file")
+		out := fs.String("out", "", "output evidence zip")
+		keyPath := fs.String("key", "", "optional keypair json for bundle signature")
+		signer := fs.String("signer", "", "bundle signer id")
+		includeWhy := fs.Bool("include-why", true, "include causal why-chain export")
+		includeCounterfactuals := fs.Bool("include-counterfactuals", true, "include counterfactual what-if export")
+		includeControls := fs.Bool("controls-json", true, "include controls mapping export")
+		requireDual := fs.Bool("require-dual", false, "require dual approval before packaging")
+		reproducible := fs.Bool("reproducible", false, "produce deterministic package bytes for identical inputs")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		if strings.TrimSpace(*decisionID) == "" {
+			fatal(errors.New("audit package requires --decision"))
+		}
+		if strings.TrimSpace(*out) == "" {
+			fatal(errors.New("audit package requires --out"))
+		}
+		artifacts, err := readAuditArtifacts(*auditPath)
+		if err != nil {
+			fatal(err)
+		}
+		artifact, err := findArtifactByID(artifacts, *decisionID)
+		if err != nil {
+			fatal(err)
+		}
+		rep, err := loadCoreOutput(*reportPath)
+		if err != nil {
+			fatal(err)
+		}
+		rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
+		if err != nil {
+			fatal(err)
+		}
+		controlsExport, err := buildControlsExport(*auditPath, *approvalsPath, *rulesPath, *rulesExtra, *reproducible)
+		if err != nil {
+			fatal(err)
+		}
+		decisionApprovals := approvalSummaryForDecision(controlsExport.DualApprovals, *decisionID)
+		if *requireDual && !decisionApprovals.DualApproved {
+			fatal(errors.New("dual approval required but not satisfied for decision"))
+		}
+		inline := map[string][]byte{}
+		decisionPayload := DecisionPackage{
+			DecisionID: artifact.ID,
+			Summary:    artifact.Summary,
+			Findings:   artifact.Findings,
+			Reasoning:  artifact.Reasoning,
+			CreatedAt:  artifact.CreatedAt.Format(time.RFC3339),
+			Hash:       artifact.Hash,
+			PrevHash:   artifact.PrevHash,
+		}
+		decisionBytes, err := json.MarshalIndent(decisionPayload, "", "  ")
+		if err != nil {
+			fatal(err)
+		}
+		inline["decision.json"] = decisionBytes
+
+		matched := matchRuleResultsForDecision(artifact, rep.Reasoning.Results)
+		if *includeWhy {
+			why := buildWhyChain(matched)
+			whyBytes, err := json.MarshalIndent(why, "", "  ")
+			if err != nil {
+				fatal(err)
+			}
+			inline["why_chain.json"] = whyBytes
+		}
+		if *includeCounterfactuals {
+			counterfactuals := buildCounterfactuals(matched, rep.NextMoves)
+			cfBytes, err := json.MarshalIndent(counterfactuals, "", "  ")
+			if err != nil {
+				fatal(err)
+			}
+			inline["counterfactuals.json"] = cfBytes
+		}
+		if *includeControls {
+			filtered := filterControlsForDecision(controlsExport, *decisionID)
+			controlsBytes, err := json.MarshalIndent(filtered, "", "  ")
+			if err != nil {
+				fatal(err)
+			}
+			inline["controls.json"] = controlsBytes
+		}
+		oversightBytes, err := json.MarshalIndent(decisionApprovals, "", "  ")
+		if err != nil {
+			fatal(err)
+		}
+		inline["oversight.json"] = oversightBytes
+		inline["rule_catalog_version.json"], err = json.MarshalIndent(map[string]any{
+			"generated_at": packageTimestamp(*reproducible, artifact.CreatedAt).Format(time.RFC3339),
+			"rule_count":   len(rules),
+			"rules_file":   *rulesPath,
+		}, "", "  ")
+		if err != nil {
+			fatal(err)
+		}
+
+		inputs := map[string]string{
+			"audit":     *auditPath,
+			"approvals": *approvalsPath,
+			"report":    *reportPath,
+		}
+		opts := audit.BundleOptions{
+			OutputPath:   *out,
+			Inputs:       inputs,
+			Inline:       inline,
+			Reproducible: *reproducible,
+			Signer:       strings.TrimSpace(*signer),
+		}
+		if strings.TrimSpace(*keyPath) != "" {
+			var kp KeypairFile
+			readJSON(*keyPath, &kp)
+			opts.PublicKey = kp.PublicKey
+			opts.PrivateKey = kp.PrivateKey
+		}
+		manifest, err := audit.CreateEvidenceBundle(opts)
+		if err != nil {
+			fatal(err)
+		}
+		outln("Audit package written: " + *out)
+		outln(fmt.Sprintf("Decision: %s", artifact.ID))
+		outln(fmt.Sprintf("Files: %d", len(manifest.Files)))
+		outln("Digest: " + manifest.Digest)
+		if manifest.Signature != "" {
+			outln("Signature: present")
+		}
 	default:
 		fatal(errors.New("unknown audit subcommand"))
 	}
@@ -1367,7 +2252,7 @@ func handleAudit(args []string) {
 
 func handleSystem(args []string) {
 	if len(args) == 0 {
-		fatal(errors.New("system requires a subcommand: status|config|health|coverage|nist|killchain|confidence"))
+		fatal(errors.New("system requires a subcommand: status|config|health|coverage|nist|killchain|confidence|engines|pilot-metrics|integration-readiness|integration-quickstart|noisegraph-quickstart|roi-scorecard|demo-pack"))
 	}
 	switch args[0] {
 	case "status":
@@ -1390,15 +2275,240 @@ func handleSystem(args []string) {
 		outln("Ingest: OK")
 		outln("Reasoning: OK")
 		outln("Governance: OK")
+	case "engines":
+		specs := engines.Builtins()
+		if gFlags.JSON {
+			outJSON(specs)
+			return
+		}
+		outln("Optional engines (external modules):")
+		for _, spec := range specs {
+			outln("- " + spec.Name + " (" + spec.ID + ")")
+			outln("  Purpose: " + spec.Purpose)
+			outln("  Integration: " + spec.Integration)
+			outln("  Status: " + spec.Status)
+		}
+	case "pilot-metrics":
+		fs := flag.NewFlagSet("system pilot-metrics", flag.ExitOnError)
+		reportPath := fs.String("report", "data/bench/report.json", "reason/assess report with ai_overlay")
+		historyPath := fs.String("history", "data/incident_history.json", "incident history with analyst outcomes")
+		outPath := fs.String("out", "", "output file (optional)")
+		format := fs.String("format", "json", "output format: json|md")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		rep, err := loadReportFile(*reportPath)
+		if err != nil {
+			fatal(err)
+		}
+		if len(rep.AIAlerts) == 0 && !rep.AIOverlay.Enabled {
+			fatal(errors.New("report has no ai overlay data; rerun assess/reason with --ai-overlay"))
+		}
+		history, err := assist.LoadHistory(*historyPath)
+		if err != nil {
+			fatal(err)
+		}
+		metrics := computePilotMetrics(rep, history, *reportPath, *historyPath)
+		switch strings.ToLower(strings.TrimSpace(*format)) {
+		case "json":
+			data, err := json.MarshalIndent(metrics, "", "  ")
+			if err != nil {
+				fatal(err)
+			}
+			if *outPath == "" {
+				outln(string(data))
+			} else {
+				if !ops.IsSafePath(*outPath) {
+					fatal(os.ErrInvalid)
+				}
+				if err := os.WriteFile(*outPath, data, 0600); err != nil {
+					fatal(err)
+				}
+				outln("Pilot metrics written: " + *outPath)
+			}
+		case "md":
+			md := renderPilotMetricsMarkdown(metrics)
+			writeText(*outPath, md)
+		default:
+			fatal(errors.New("unknown format"))
+		}
+	case "integration-readiness":
+		fs := flag.NewFlagSet("system integration-readiness", flag.ExitOnError)
+		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
+		outPath := fs.String("out", "", "output file (optional)")
+		strict := fs.Bool("strict", false, "fail checks unless category meets strict thresholds")
+		minEvents := fs.Int("min-events", 1, "minimum normalized events per category in strict mode")
+		minFeasible := fs.Int("min-feasible", 1, "minimum feasible findings per category in strict mode")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		rep, err := runIntegrationReadiness(*rulesPath, *rulesExtra, *strict, *minEvents, *minFeasible)
+		if err != nil {
+			fatal(err)
+		}
+		if *outPath != "" {
+			data, err := json.MarshalIndent(rep, "", "  ")
+			if err != nil {
+				fatal(err)
+			}
+			if !ops.IsSafePath(*outPath) {
+				fatal(os.ErrInvalid)
+			}
+			if err := os.WriteFile(*outPath, data, 0600); err != nil {
+				fatal(err)
+			}
+			outln("Integration readiness written: " + *outPath)
+		}
+		if gFlags.JSON {
+			outJSON(rep)
+			return
+		}
+		outln(fmt.Sprintf("Integration readiness: passed=%d failed=%d", rep.Passed, rep.Failed))
+		for _, c := range rep.Checks {
+			status := "PASS"
+			if !c.Pass {
+				status = "FAIL"
+			}
+			outln(fmt.Sprintf("- [%s] %s schema=%s events=%d feasible=%d fixture=%s", status, c.Category, c.Schema, c.EventCount, c.FeasibleCount, c.Fixture))
+			if c.Error != "" {
+				outln("  error: " + c.Error)
+			}
+		}
+		if *strict && rep.Failed > 0 {
+			fatal(errors.New("integration readiness strict mode failed"))
+		}
+	case "integration-quickstart":
+		fs := flag.NewFlagSet("system integration-quickstart", flag.ExitOnError)
+		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
+		outDir := fs.String("outdir", "data/onboarding", "output directory")
+		outPath := fs.String("out", "", "output summary report path (optional)")
+		aiThreshold := fs.Float64("ai-threshold", 0.20, "ai overlay threshold")
+		aiMax := fs.Int("ai-max", 50, "ai overlay max alerts")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		rep, err := runIntegrationQuickstart(*rulesPath, *rulesExtra, *outDir, *aiThreshold, *aiMax)
+		if err != nil {
+			fatal(err)
+		}
+		if *outPath != "" {
+			data, err := json.MarshalIndent(rep, "", "  ")
+			if err != nil {
+				fatal(err)
+			}
+			if !ops.IsSafePath(*outPath) {
+				fatal(os.ErrInvalid)
+			}
+			if err := os.WriteFile(*outPath, data, 0600); err != nil {
+				fatal(err)
+			}
+			outln("Integration quickstart written: " + *outPath)
+		}
+		if gFlags.JSON {
+			outJSON(rep)
+			return
+		}
+		outln(fmt.Sprintf("Integration quickstart: passed=%d failed=%d outdir=%s", rep.Passed, rep.Failed, rep.OutputDir))
+		for _, r := range rep.Runs {
+			status := "PASS"
+			if !r.Pass {
+				status = "FAIL"
+			}
+			outln(fmt.Sprintf("- [%s] %s schema=%s events=%d feasible=%d candidates=%d escalated=%d", status, r.Category, r.Schema, r.EventCount, r.FeasibleCount, r.CandidateCount, r.EscalatedCount))
+			outln("  events: " + r.EventsPath)
+			outln("  report: " + r.ReportPath)
+			if r.Error != "" {
+				outln("  error: " + r.Error)
+			}
+		}
+	case "noisegraph-quickstart":
+		fs := flag.NewFlagSet("system noisegraph-quickstart", flag.ExitOnError)
+		decisions := fs.String("decisions", "external/noisegraph/state/decisions.jsonl", "noisegraph decisions JSONL path")
+		eventsOut := fs.String("events", "data/noisegraph_events.json", "converted Aman events output path")
+		reportOut := fs.String("report", "docs/noisegraph_quickstart.json", "quickstart report output path")
+		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
+		only := fs.String("only", "keep,escalate", "comma-separated statuses to include")
+		aiThreshold := fs.Float64("ai-threshold", 0.20, "ai overlay threshold")
+		aiMax := fs.Int("ai-max", 50, "ai overlay max alerts")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		rep, err := runNoisegraphQuickstart(*decisions, *eventsOut, *reportOut, *rulesPath, *rulesExtra, *only, *aiThreshold, *aiMax)
+		if err != nil {
+			fatal(err)
+		}
+		if gFlags.JSON {
+			outJSON(rep)
+			return
+		}
+		outln("Noisegraph quickstart completed")
+		outln(fmt.Sprintf("- Decisions parsed: %d", rep.ParsedLines))
+		outln(fmt.Sprintf("- Events written: %d (%s)", rep.EventsCount, rep.EventsPath))
+		outln(fmt.Sprintf("- AI candidates: %d", rep.Reasoning.AIOverlay.CandidateCount))
+		outln(fmt.Sprintf("- Escalated: %d", rep.Reasoning.AIOverlay.EscalatedCount))
+		outln(fmt.Sprintf("- Triaged: %d", rep.Reasoning.AIOverlay.TriagedCount))
+		outln(fmt.Sprintf("- Suppressed: %d", rep.Reasoning.AIOverlay.SuppressedCount))
+		if rep.ReportPath != "" {
+			outln(fmt.Sprintf("- Report: %s", rep.ReportPath))
+		}
+	case "roi-scorecard":
+		fs := flag.NewFlagSet("system roi-scorecard", flag.ExitOnError)
+		pilotPath := fs.String("pilot", "docs/pilot_metrics_report.json", "pilot metrics JSON path")
+		integrationPath := fs.String("integration", "docs/integration_readiness.json", "integration readiness JSON path")
+		benchmarkPath := fs.String("benchmark", "docs/production_benchmark_report.md", "production benchmark report markdown path")
+		outPath := fs.String("out", "", "output path (optional, .md or .json)")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		score, err := buildROIScorecard(*pilotPath, *integrationPath, *benchmarkPath)
+		if err != nil {
+			fatal(err)
+		}
+		if *outPath != "" {
+			if strings.HasSuffix(strings.ToLower(*outPath), ".md") {
+				writeText(*outPath, renderROIScorecardMarkdown(score))
+			} else {
+				writeJSON(*outPath, score)
+			}
+		}
+		if gFlags.JSON {
+			outJSON(score)
+			return
+		}
+		outln(renderROIScorecardMarkdown(score))
+	case "demo-pack":
+		fs := flag.NewFlagSet("system demo-pack", flag.ExitOnError)
+		outDir := fs.String("outdir", "docs/demo_pack", "output directory")
+		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		rep, err := buildDemoPack(*outDir, *rulesPath, *rulesExtra)
+		if err != nil {
+			fatal(err)
+		}
+		if gFlags.JSON {
+			outJSON(rep)
+			return
+		}
+		outln(fmt.Sprintf("Demo pack generated: %s", rep.OutDir))
+		for _, f := range rep.Files {
+			outln("- " + f)
+		}
 	case "coverage":
 		fs := flag.NewFlagSet("system coverage", flag.ExitOnError)
 		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
 		envPath := fs.String("env", "", "environment json (optional)")
 		out := fs.String("out", "", "output file (optional)")
 		if err := fs.Parse(args[1:]); err != nil {
 			fatal(err)
 		}
-		rules, err := logic.LoadRules(*rulesPath)
+		rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 		if err != nil {
 			fatal(err)
 		}
@@ -1429,6 +2539,26 @@ func handleSystem(args []string) {
 		}
 		outln(fmt.Sprintf("Rules with MITRE: %d", report.RulesWithMitre))
 		outln(fmt.Sprintf("Rules missing MITRE: %d", len(report.RulesMissingMeta)))
+		if len(report.Gaps.TacticsMissing) > 0 {
+			outln("Missing tactics (environment):")
+			for _, tactic := range report.Gaps.TacticsMissing {
+				outln("- " + tactic)
+			}
+		}
+		if len(report.Gaps.TechniquesMissing) > 0 {
+			outln("Missing techniques (environment):")
+			tactics := make([]string, 0, len(report.Gaps.TechniquesMissing))
+			for tactic := range report.Gaps.TechniquesMissing {
+				tactics = append(tactics, tactic)
+			}
+			sort.Strings(tactics)
+			for _, tactic := range tactics {
+				outln("- " + tactic)
+				for _, tech := range report.Gaps.TechniquesMissing[tactic] {
+					outln("  - " + tech)
+				}
+			}
+		}
 		if len(report.ExcludedRules) > 0 {
 			outln("Excluded by environment filter:")
 			for _, id := range report.ExcludedRules {
@@ -1455,11 +2585,12 @@ func handleSystem(args []string) {
 	case "nist":
 		fs := flag.NewFlagSet("system nist", flag.ExitOnError)
 		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
 		out := fs.String("out", "", "output file (optional)")
 		if err := fs.Parse(args[1:]); err != nil {
 			fatal(err)
 		}
-		rules, err := logic.LoadRules(*rulesPath)
+		rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 		if err != nil {
 			fatal(err)
 		}
@@ -1487,11 +2618,12 @@ func handleSystem(args []string) {
 	case "killchain":
 		fs := flag.NewFlagSet("system killchain", flag.ExitOnError)
 		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
 		out := fs.String("out", "", "output file (optional)")
 		if err := fs.Parse(args[1:]); err != nil {
 			fatal(err)
 		}
-		rules, err := logic.LoadRules(*rulesPath)
+		rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 		if err != nil {
 			fatal(err)
 		}
@@ -1608,7 +2740,12 @@ func handleReason(args []string) {
 	adminApproval := fs.String("admin-approval", "", "admin approval for gated rule packs")
 	requireOkta := fs.Bool("require-okta", true, "require okta verified approvals")
 	rulesPath := fs.String("rules", "", "rules json (optional)")
+	rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
+	includeEvents := fs.Bool("include-events", false, "include full supporting events in output")
 	format := fs.String("format", "cli", "output format: cli or json")
+	aiOverlay := fs.Bool("ai-overlay", false, "high-recall AI candidate alerts filtered by causal validation")
+	aiThreshold := fs.Float64("ai-threshold", 0.20, "minimum AI candidate sensitivity (0-1)")
+	aiMax := fs.Int("ai-max", 50, "maximum AI candidate alerts to include")
 	if err := fs.Parse(args); err != nil {
 		fatal(err)
 	}
@@ -1620,14 +2757,17 @@ func handleReason(args []string) {
 	var events []model.Event
 	readJSON(*in, &events)
 
-	rules, err := logic.LoadRules(*rulesPath)
+	rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 	if err != nil {
 		fatal(err)
 	}
 	rules, placeholders := applyGatedRules(rules, *adminApproval)
-	rep := logic.Reason(events, rules)
+	rep := logic.ReasonWithMetrics(events, rules, nil, *includeEvents)
 	if len(placeholders) > 0 {
 		rep.Results = append(rep.Results, placeholders...)
+	}
+	if *aiOverlay {
+		applyAIOverlay(&rep, events, rules, *aiThreshold, *aiMax)
 	}
 	switch *format {
 	case "cli":
@@ -1665,6 +2805,7 @@ func handleAssess(args []string) {
 	policyPath := fs.String("policy", "", "governance policy json (optional)")
 	constraintsPath := fs.String("constraints", "", "reasoning constraints json (optional)")
 	rulesPath := fs.String("rules", "", "rules json (optional)")
+	rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
 	format := fs.String("format", "json", "output format: cli or json")
 	outPath := fs.String("out", "", "output file (optional)")
 	configPath := fs.String("config", "", "ops config json (optional)")
@@ -1679,6 +2820,9 @@ func handleAssess(args []string) {
 	mlCategories := fs.String("ml-categories", "identity,cloud", "ml ranking categories")
 	mlSimilarLimit := fs.Int("ml-similar-limit", 3, "similar incident limit")
 	mlPlaybookLimit := fs.Int("ml-playbook-limit", 3, "playbook suggestion limit")
+	aiOverlay := fs.Bool("ai-overlay", false, "high-recall AI candidate alerts filtered by causal validation")
+	aiThreshold := fs.Float64("ai-threshold", 0.20, "minimum AI candidate sensitivity (0-1)")
+	aiMax := fs.Int("ai-max", 50, "maximum AI candidate alerts to include")
 	if err := fs.Parse(args); err != nil {
 		fatal(err)
 	}
@@ -1695,7 +2839,7 @@ func handleAssess(args []string) {
 	var events []model.Event
 	readJSON(*in, &events)
 
-	rules, err := logic.LoadRules(*rulesPath)
+	rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 	if err != nil {
 		fatal(err)
 	}
@@ -1742,9 +2886,10 @@ func handleAssess(args []string) {
 		if err != nil {
 			fatal(err)
 		}
-		rep := logic.ReasonWithMetrics(events, rules, metrics, includeEvidence)
-		logic.ApplyConstraints(&rep, cons)
-		out.Reasoning = rep
+		logic.ApplyConstraints(&out.Reasoning, cons)
+	}
+	if *aiOverlay {
+		applyAIOverlay(&out.Reasoning, events, rules, *aiThreshold, *aiMax)
 	}
 	if err := state.Save(*statePath, out.State); err != nil {
 		fatal(err)
@@ -1797,6 +2942,10 @@ func handleAssess(args []string) {
 		if *mlCategories != "" {
 			artifact.Metadata["ml_categories"] = *mlCategories
 		}
+	}
+	if out.Reasoning.AIOverlay.Enabled {
+		artifact.Metadata["ai_overlay"] = out.Reasoning.AIOverlay.Mode
+		artifact.Metadata["ai_overlay_threshold"] = fmt.Sprintf("%.2f", out.Reasoning.AIOverlay.Threshold)
 	}
 	if *explainOn {
 		artifact.Metadata["llm_explain"] = "true"
@@ -2024,15 +3173,21 @@ func handleGenerateScenarios(args []string) {
 	fs := flag.NewFlagSet("generate-scenarios", flag.ExitOnError)
 	out := fs.String("out", "scenarios.json", "output scenarios file")
 	rulesPath := fs.String("rules", "", "rules json (optional)")
+	rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
+	multiplier := fs.Int("multiplier", 1, "scenario multiplier per rule")
+	noise := fs.Bool("noise", false, "add benign noise events")
 	if err := fs.Parse(args); err != nil {
 		fatal(err)
 	}
 
-	rules, err := logic.LoadRules(*rulesPath)
+	rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 	if err != nil {
 		fatal(err)
 	}
-	f := eval.GenerateScenarios(rules)
+	f := eval.GenerateScenariosWithOptions(rules, eval.ScenarioOptions{
+		Multiplier: *multiplier,
+		Noise:      *noise,
+	})
 	if err := eval.SaveScenarios(*out, f); err != nil {
 		fatal(err)
 	}
@@ -2043,6 +3198,7 @@ func handleEvaluate(args []string) {
 	fs := flag.NewFlagSet("evaluate", flag.ExitOnError)
 	scenariosPath := fs.String("scenarios", "", "scenarios json")
 	rulesPath := fs.String("rules", "", "rules json (optional)")
+	rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
 	format := fs.String("format", "json", "output format: cli, json, or md")
 	outPath := fs.String("out", "", "output file (optional)")
 	if err := fs.Parse(args); err != nil {
@@ -2053,7 +3209,7 @@ func handleEvaluate(args []string) {
 		fatal(errors.New("-scenarios is required"))
 	}
 
-	rules, err := logic.LoadRules(*rulesPath)
+	rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
 	if err != nil {
 		fatal(err)
 	}
@@ -2720,6 +3876,751 @@ func applyMLAssist(rep *model.ReasoningReport, historyPath string, limit int, ca
 	rep.MLAssistEnabled = true
 	rep.MLAssistNotes = []string{"advisory_only", "deterministic_verdicts_unchanged"}
 	return nil
+}
+
+func applyAIOverlay(rep *model.ReasoningReport, events []model.Event, rules []logic.Rule, threshold float64, maxAlerts int) {
+	alerts := overlay.BuildHighRecallAlerts(events, rules, threshold, maxAlerts)
+	filtered, summary := overlay.ApplyCausalFilter(alerts, rep.Results)
+	summary.Threshold = threshold
+	rep.AIOverlay = summary
+	rep.AIAlerts = filtered
+	enforceAmanEscalationAuthority(rep)
+}
+
+func enforceAmanEscalationAuthority(rep *model.ReasoningReport) {
+	if rep == nil || len(rep.AIAlerts) == 0 {
+		return
+	}
+	byRule := map[string]model.RuleResult{}
+	for _, r := range rep.Results {
+		byRule[r.RuleID] = r
+	}
+	downgraded := 0
+	for i := range rep.AIAlerts {
+		a := &rep.AIAlerts[i]
+		if a.Status != "escalated" {
+			continue
+		}
+		r, ok := byRule[a.RuleID]
+		if !ok || !r.Feasible {
+			a.Status = "triaged"
+			a.Reason = "downgraded: Aman deterministic validation is escalation authority"
+			downgraded++
+		}
+	}
+	if downgraded > 0 {
+		esc := 0
+		tri := 0
+		sup := 0
+		for _, a := range rep.AIAlerts {
+			switch a.Status {
+			case "escalated":
+				esc++
+			case "triaged":
+				tri++
+			case "suppressed":
+				sup++
+			}
+		}
+		rep.AIOverlay.EscalatedCount = esc
+		rep.AIOverlay.TriagedCount = tri
+		rep.AIOverlay.SuppressedCount = sup
+		rep.AIOverlay.Notes = append(rep.AIOverlay.Notes, "aman_escalation_authority_enforced")
+	}
+}
+
+func runIntegrationReadiness(rulesPath string, rulesExtra string, strict bool, minEvents int, minFeasible int) (IntegrationReadinessReport, error) {
+	rules, err := logic.LoadRulesCombined(rulesPath, rulesExtra)
+	if err != nil {
+		return IntegrationReadinessReport{}, err
+	}
+	checks := []IntegrationCheck{
+		{Category: "identity", Fixture: "data/fixtures/okta_systemlog.json", Schema: string(integration.SchemaOkta)},
+		{Category: "cloud", Fixture: "data/fixtures/aws_cloudtrail.json", Schema: string(integration.SchemaCloudTrail)},
+		{Category: "edr", Fixture: "data/fixtures/crowdstrike_fdr.json", Schema: string(integration.SchemaCrowdStrike)},
+	}
+	out := IntegrationReadinessReport{
+		GeneratedAt: time.Now().UTC(),
+		RulesPath:   rulesPath,
+		Checks:      make([]IntegrationCheck, len(checks)),
+	}
+	for i, c := range checks {
+		cc := c
+		fixturePath := resolveFixturePath(cc.Fixture)
+		if fixturePath == "" {
+			cc.Error = "fixture not found"
+			out.Failed++
+			out.Checks[i] = cc
+			continue
+		}
+		cc.Fixture = fixturePath
+		if !ops.IsSafePath(cc.Fixture) {
+			cc.Error = os.ErrInvalid.Error()
+			out.Failed++
+			out.Checks[i] = cc
+			continue
+		}
+		// #nosec G304 - fixture path is static and validated
+		raw, err := os.ReadFile(cc.Fixture)
+		if err != nil {
+			cc.Error = err.Error()
+			out.Failed++
+			out.Checks[i] = cc
+			continue
+		}
+		events, err := integration.IngestEvents(raw, integration.IngestOptions{
+			Schema: integration.Schema(cc.Schema),
+			Kind:   cc.Kind,
+		})
+		if err != nil {
+			cc.Error = err.Error()
+			out.Failed++
+			out.Checks[i] = cc
+			continue
+		}
+		cc.EventCount = len(events)
+		rep := logic.ReasonWithMetrics(events, rules, nil, false)
+		feasible := 0
+		for _, r := range rep.Results {
+			if r.Feasible {
+				feasible++
+			}
+		}
+		cc.FeasibleCount = feasible
+		cc.Pass = cc.EventCount > 0
+		if strict {
+			if cc.EventCount < minEvents || cc.FeasibleCount < minFeasible {
+				cc.Pass = false
+				if cc.Error == "" {
+					cc.Error = fmt.Sprintf("strict threshold unmet (events>=%d feasible>=%d)", minEvents, minFeasible)
+				}
+			}
+		}
+		if cc.Pass {
+			out.Passed++
+		} else {
+			if cc.Error == "" {
+				cc.Error = "no events produced after normalization"
+			}
+			out.Failed++
+		}
+		out.Checks[i] = cc
+	}
+	return out, nil
+}
+
+func runIntegrationQuickstart(rulesPath string, rulesExtra string, outDir string, aiThreshold float64, aiMax int) (IntegrationQuickstartReport, error) {
+	if !ops.IsSafePath(outDir) {
+		return IntegrationQuickstartReport{}, os.ErrInvalid
+	}
+	if err := os.MkdirAll(outDir, 0755); err != nil {
+		return IntegrationQuickstartReport{}, err
+	}
+	rules, err := logic.LoadRulesCombined(rulesPath, rulesExtra)
+	if err != nil {
+		return IntegrationQuickstartReport{}, err
+	}
+	type runCfg struct {
+		category string
+		fixture  string
+		schema   integration.Schema
+		kind     string
+	}
+	cfgs := []runCfg{
+		{category: "identity", fixture: "data/fixtures/okta_systemlog.json", schema: integration.SchemaOkta},
+		{category: "cloud", fixture: "data/fixtures/aws_cloudtrail.json", schema: integration.SchemaCloudTrail},
+		{category: "edr", fixture: "data/fixtures/crowdstrike_fdr.json", schema: integration.SchemaCrowdStrike},
+	}
+	out := IntegrationQuickstartReport{
+		GeneratedAt: time.Now().UTC(),
+		OutputDir:   outDir,
+		RulesPath:   rulesPath,
+		Runs:        make([]IntegrationQuickstartRun, 0, len(cfgs)),
+	}
+	for _, cfg := range cfgs {
+		run := IntegrationQuickstartRun{
+			Category: cfg.category,
+			Fixture:  cfg.fixture,
+			Schema:   string(cfg.schema),
+			Kind:     cfg.kind,
+		}
+		fixturePath := resolveFixturePath(cfg.fixture)
+		if fixturePath == "" {
+			run.Error = "fixture not found"
+			out.Failed++
+			out.Runs = append(out.Runs, run)
+			continue
+		}
+		raw, err := os.ReadFile(fixturePath) // #nosec G304
+		if err != nil {
+			run.Error = err.Error()
+			out.Failed++
+			out.Runs = append(out.Runs, run)
+			continue
+		}
+		events, err := integration.IngestEvents(raw, integration.IngestOptions{
+			Schema: cfg.schema,
+			Kind:   cfg.kind,
+		})
+		if err != nil {
+			run.Error = err.Error()
+			out.Failed++
+			out.Runs = append(out.Runs, run)
+			continue
+		}
+		run.EventCount = len(events)
+		rep := logic.ReasonWithMetrics(events, rules, nil, false)
+		feasible := 0
+		for _, r := range rep.Results {
+			if r.Feasible {
+				feasible++
+			}
+		}
+		run.FeasibleCount = feasible
+		applyAIOverlay(&rep, events, rules, aiThreshold, aiMax)
+		run.CandidateCount = rep.AIOverlay.CandidateCount
+		run.EscalatedCount = rep.AIOverlay.EscalatedCount
+		run.TriagedCount = rep.AIOverlay.TriagedCount
+		run.SuppressedCount = rep.AIOverlay.SuppressedCount
+
+		eventsPath := filepath.Join(outDir, cfg.category+"_events.normalized.json")
+		reportPath := filepath.Join(outDir, cfg.category+"_report.ai_overlay.json")
+		if !ops.IsSafePath(eventsPath) || !ops.IsSafePath(reportPath) {
+			run.Error = os.ErrInvalid.Error()
+			out.Failed++
+			out.Runs = append(out.Runs, run)
+			continue
+		}
+		eventsData, err := json.MarshalIndent(events, "", "  ")
+		if err != nil {
+			run.Error = err.Error()
+			out.Failed++
+			out.Runs = append(out.Runs, run)
+			continue
+		}
+		reportData, err := json.MarshalIndent(rep, "", "  ")
+		if err != nil {
+			run.Error = err.Error()
+			out.Failed++
+			out.Runs = append(out.Runs, run)
+			continue
+		}
+		if err := os.WriteFile(eventsPath, eventsData, 0600); err != nil {
+			run.Error = err.Error()
+			out.Failed++
+			out.Runs = append(out.Runs, run)
+			continue
+		}
+		if err := os.WriteFile(reportPath, reportData, 0600); err != nil {
+			run.Error = err.Error()
+			out.Failed++
+			out.Runs = append(out.Runs, run)
+			continue
+		}
+		run.EventsPath = eventsPath
+		run.ReportPath = reportPath
+		run.Pass = run.EventCount > 0
+		if run.Pass {
+			out.Passed++
+		} else {
+			out.Failed++
+		}
+		out.Runs = append(out.Runs, run)
+	}
+	return out, nil
+}
+
+func runNoisegraphQuickstart(decisionsPath string, eventsOut string, reportOut string, rulesPath string, rulesExtra string, only string, aiThreshold float64, aiMax int) (NoisegraphQuickstartReport, error) {
+	if !ops.IsSafePath(decisionsPath) || !ops.IsSafePath(eventsOut) || (reportOut != "" && !ops.IsSafePath(reportOut)) {
+		return NoisegraphQuickstartReport{}, os.ErrInvalid
+	}
+	include := map[string]bool{}
+	included := []string{}
+	for _, s := range strings.Split(only, ",") {
+		v := strings.ToLower(strings.TrimSpace(s))
+		if v == "" || include[v] {
+			continue
+		}
+		include[v] = true
+		included = append(included, v)
+	}
+	if len(include) == 0 {
+		include["keep"] = true
+		include["escalate"] = true
+		included = []string{"keep", "escalate"}
+	}
+
+	f, err := os.Open(decisionsPath) // #nosec G304
+	if err != nil {
+		return NoisegraphQuickstartReport{}, err
+	}
+	defer func() { _ = f.Close() }()
+
+	events := []model.Event{}
+	scanner := bufio.NewScanner(f)
+	parsed := 0
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		if line == "" {
+			continue
+		}
+		parsed++
+		var d map[string]interface{}
+		if err := json.Unmarshal([]byte(line), &d); err != nil {
+			continue
+		}
+		status := strings.ToLower(strings.TrimSpace(asString(d["decision"])))
+		if !include[status] {
+			continue
+		}
+		ev := noisegraphDecisionToEvent(d, parsed, status)
+		events = append(events, ev)
+	}
+	if err := scanner.Err(); err != nil {
+		return NoisegraphQuickstartReport{}, err
+	}
+
+	eventsData, err := json.MarshalIndent(events, "", "  ")
+	if err != nil {
+		return NoisegraphQuickstartReport{}, err
+	}
+	if err := os.WriteFile(eventsOut, eventsData, 0600); err != nil {
+		return NoisegraphQuickstartReport{}, err
+	}
+
+	rules, err := logic.LoadRulesCombined(rulesPath, rulesExtra)
+	if err != nil {
+		return NoisegraphQuickstartReport{}, err
+	}
+	rep := logic.ReasonWithMetrics(events, rules, nil, false)
+	applyAIOverlay(&rep, events, rules, aiThreshold, aiMax)
+
+	out := NoisegraphQuickstartReport{
+		GeneratedAt:   time.Now().UTC(),
+		DecisionsPath: decisionsPath,
+		EventsPath:    eventsOut,
+		ReportPath:    reportOut,
+		Included:      included,
+		ParsedLines:   parsed,
+		EventsCount:   len(events),
+		Reasoning:     rep,
+	}
+	if reportOut != "" {
+		data, err := json.MarshalIndent(out, "", "  ")
+		if err != nil {
+			return NoisegraphQuickstartReport{}, err
+		}
+		if err := os.WriteFile(reportOut, data, 0600); err != nil {
+			return NoisegraphQuickstartReport{}, err
+		}
+	}
+	return out, nil
+}
+
+func buildROIScorecard(pilotPath string, integrationPath string, benchmarkPath string) (ROIScorecard, error) {
+	if !ops.IsSafePath(pilotPath) || !ops.IsSafePath(integrationPath) || !ops.IsSafePath(benchmarkPath) {
+		return ROIScorecard{}, os.ErrInvalid
+	}
+	var pilot PilotMetrics
+	pilotRaw, err := os.ReadFile(pilotPath) // #nosec G304
+	if err != nil {
+		return ROIScorecard{}, err
+	}
+	if err := json.Unmarshal(pilotRaw, &pilot); err != nil {
+		return ROIScorecard{}, err
+	}
+	var integ IntegrationReadinessReport
+	integRaw, err := os.ReadFile(integrationPath) // #nosec G304
+	if err != nil {
+		return ROIScorecard{}, err
+	}
+	if err := json.Unmarshal(integRaw, &integ); err != nil {
+		return ROIScorecard{}, err
+	}
+	benchRaw, err := os.ReadFile(benchmarkPath) // #nosec G304
+	if err != nil {
+		return ROIScorecard{}, err
+	}
+	overhead := parseOverlayOverheadPct(string(benchRaw))
+	score := ROIScorecard{
+		GeneratedAt:                time.Now().UTC(),
+		PilotMetricsPath:           pilotPath,
+		BenchmarkPath:              benchmarkPath,
+		QueueReductionPct:          pilot.QueueReductionPct,
+		EscalatedPrecisionProxyPct: pilot.EscalatedPrecisionProxyPct,
+		SuppressedLaterTrueRatePct: pilot.SuppressedLaterTrueRatePct,
+		OverlayOverheadPct:         overhead,
+		IntegrationPassed:          integ.Passed,
+		IntegrationFailed:          integ.Failed,
+		Notes: []string{
+			"score favors measurable queue reduction, precision proxy, safety, and integration reliability",
+			"commercial proof still depends on broader real-world labeled outcomes",
+		},
+	}
+	score.ReadinessScore = compositeReadinessScore(score)
+	return score, nil
+}
+
+func parseOverlayOverheadPct(markdown string) float64 {
+	re := regexp.MustCompile(`([+-]?\d+(?:\.\d+)?)\s*%`)
+	lines := strings.Split(markdown, "\n")
+	for _, line := range lines {
+		l := strings.TrimSpace(line)
+		if !strings.Contains(strings.ToLower(l), "overlay overhead") {
+			continue
+		}
+		m := re.FindStringSubmatch(l)
+		if len(m) < 2 {
+			continue
+		}
+		v := strings.TrimSpace(strings.TrimPrefix(m[1], "+"))
+		f, err := strconv.ParseFloat(v, 64)
+		if err == nil {
+			return f
+		}
+	}
+	return 0
+}
+
+func compositeReadinessScore(s ROIScorecard) float64 {
+	// Weighted composite mapped to a 0-10 scale.
+	queue := clampPercent(s.QueueReductionPct / 25 * 10)         // 25% queue reduction ~= 10
+	precision := clampPercent(s.EscalatedPrecisionProxyPct / 10) // already %
+	safety := clampPercent((100 - s.SuppressedLaterTrueRatePct) / 10)
+	overhead := clampPercent((100 - minFloat(50, s.OverlayOverheadPct)*2) / 10)
+	integ := 0.0
+	total := s.IntegrationPassed + s.IntegrationFailed
+	if total > 0 {
+		integ = 10 * (float64(s.IntegrationPassed) / float64(total))
+	}
+	raw := 0.25*queue + 0.25*precision + 0.20*safety + 0.15*overhead + 0.15*integ
+	if raw > 10 {
+		return 10
+	}
+	if raw < 0 {
+		return 0
+	}
+	return raw
+}
+
+func clampPercent(v float64) float64 {
+	if v < 0 {
+		return 0
+	}
+	if v > 10 {
+		return 10
+	}
+	return v
+}
+
+func minFloat(a, b float64) float64 {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func renderROIScorecardMarkdown(s ROIScorecard) string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "# ROI Scorecard\n\n")
+	fmt.Fprintf(buf, "Generated: %s\n\n", s.GeneratedAt.Format(time.RFC3339))
+	fmt.Fprintf(buf, "- Queue reduction: %.2f%%\n", s.QueueReductionPct)
+	fmt.Fprintf(buf, "- Escalated precision proxy: %.2f%%\n", s.EscalatedPrecisionProxyPct)
+	fmt.Fprintf(buf, "- Suppressed-but-later-true rate: %.2f%%\n", s.SuppressedLaterTrueRatePct)
+	fmt.Fprintf(buf, "- AI overlay overhead: %.2f%%\n", s.OverlayOverheadPct)
+	fmt.Fprintf(buf, "- Integration readiness: %d pass / %d fail\n", s.IntegrationPassed, s.IntegrationFailed)
+	fmt.Fprintf(buf, "- Composite readiness score: %.2f / 10\n\n", s.ReadinessScore)
+	fmt.Fprintf(buf, "## Notes\n")
+	for _, n := range s.Notes {
+		fmt.Fprintf(buf, "- %s\n", n)
+	}
+	return buf.String()
+}
+
+func buildDemoPack(outDir string, rulesPath string, rulesExtra string) (DemoPackReport, error) {
+	if !ops.IsSafePath(outDir) {
+		return DemoPackReport{}, os.ErrInvalid
+	}
+	if err := os.MkdirAll(outDir, 0755); err != nil {
+		return DemoPackReport{}, err
+	}
+	intRead, err := runIntegrationReadiness(rulesPath, rulesExtra, true, 1, 0)
+	if err != nil {
+		return DemoPackReport{}, err
+	}
+	intQuick, err := runIntegrationQuickstart(rulesPath, rulesExtra, filepath.Join(outDir, "onboarding"), 0.20, 50)
+	if err != nil {
+		return DemoPackReport{}, err
+	}
+	// Ensure pilot/integration artifacts exist for ROI generation.
+	pilotPath := filepath.Join(outDir, "pilot_metrics_report.json")
+	if err := writePilotMetricsArtifact("docs/pilot_metrics_report.json", pilotPath, time.Now().UTC()); err != nil {
+		return DemoPackReport{}, err
+	}
+	intPath := filepath.Join(outDir, "integration_readiness.json")
+	if err := writeJSONFile(intPath, intRead); err != nil {
+		return DemoPackReport{}, err
+	}
+	benchPath := "docs/production_benchmark_report.md"
+	score, err := buildROIScorecard(pilotPath, intPath, benchPath)
+	if err != nil {
+		return DemoPackReport{}, err
+	}
+	scorePathJSON := filepath.Join(outDir, "roi_scorecard.json")
+	scorePathMD := filepath.Join(outDir, "roi_scorecard.md")
+	writeJSON(scorePathJSON, score)
+	writeText(scorePathMD, renderROIScorecardMarkdown(score))
+
+	rep := DemoPackReport{
+		GeneratedAt:           time.Now().UTC(),
+		OutDir:                outDir,
+		IntegrationReadiness:  intRead,
+		IntegrationQuickstart: intQuick,
+		ROIScorecard:          score,
+		Files: []string{
+			intPath,
+			scorePathJSON,
+			scorePathMD,
+			filepath.Join(outDir, "onboarding"),
+		},
+	}
+	packPath := filepath.Join(outDir, "demo_pack_report.json")
+	writeJSON(packPath, rep)
+	rep.Files = append(rep.Files, packPath)
+	return rep, nil
+}
+
+func writeJSONFile(path string, v interface{}) error {
+	data, err := json.MarshalIndent(v, "", "  ")
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(path, data, 0600)
+}
+
+func writePilotMetricsArtifact(srcPath string, dstPath string, now time.Time) error {
+	if _, err := os.Stat(srcPath); err == nil {
+		raw, err := os.ReadFile(srcPath) // #nosec G304
+		if err != nil {
+			return err
+		}
+		return os.WriteFile(dstPath, raw, 0600)
+	}
+	emptyPilot := PilotMetrics{GeneratedAt: now}
+	return writeJSONFile(dstPath, emptyPilot)
+}
+
+func noisegraphDecisionToEvent(d map[string]interface{}, idx int, status string) model.Event {
+	event := asMap(d["event"])
+	entity := asMap(event["entity"])
+	host := firstString(entity["source"], entity["host"], entity["asset"], event["source"], d["source"])
+	if strings.TrimSpace(host) == "" {
+		host = "unknown-host"
+	}
+	user := firstString(entity["user"], entity["principal"], event["user"], d["user"])
+	reasons := asStringSlice(d["reasons"])
+	template := asString(event["template"])
+	return model.Event{
+		ID:   firstString(d["fingerprint"], d["id"], fmt.Sprintf("ng-%d", idx)),
+		Time: parseNoisegraphTime(asString(d["ts"])),
+		Host: host,
+		User: user,
+		Type: "noisegraph_" + status,
+		Details: map[string]interface{}{
+			"source":      "noisegraph",
+			"decision":    status,
+			"risk":        d["risk"],
+			"reasons":     reasons,
+			"template":    template,
+			"incident_id": d["incident_id"],
+		},
+	}
+}
+
+func parseNoisegraphTime(v string) time.Time {
+	s := strings.TrimSpace(v)
+	if s == "" {
+		return time.Now().UTC()
+	}
+	if t, err := time.Parse(time.RFC3339Nano, s); err == nil {
+		return t
+	}
+	if t, err := time.Parse(time.RFC3339, s); err == nil {
+		return t
+	}
+	return time.Now().UTC()
+}
+
+func asMap(v interface{}) map[string]interface{} {
+	if m, ok := v.(map[string]interface{}); ok {
+		return m
+	}
+	return map[string]interface{}{}
+}
+
+func asString(v interface{}) string {
+	if s, ok := v.(string); ok {
+		return s
+	}
+	return ""
+}
+
+func firstString(vals ...interface{}) string {
+	for _, v := range vals {
+		if s, ok := v.(string); ok {
+			if strings.TrimSpace(s) != "" {
+				return s
+			}
+		}
+	}
+	return ""
+}
+
+func asStringSlice(v interface{}) []string {
+	if v == nil {
+		return []string{}
+	}
+	if list, ok := v.([]interface{}); ok {
+		out := []string{}
+		for _, it := range list {
+			s := strings.TrimSpace(asString(it))
+			if s != "" {
+				out = append(out, s)
+			}
+		}
+		return out
+	}
+	if s := strings.TrimSpace(asString(v)); s != "" {
+		return []string{s}
+	}
+	return []string{}
+}
+
+func resolveFixturePath(path string) string {
+	candidates := []string{path}
+	if abs, err := filepath.Abs(filepath.Join("..", "..", path)); err == nil {
+		candidates = append(candidates, abs)
+	}
+	if abs, err := filepath.Abs(path); err == nil {
+		candidates = append(candidates, abs)
+	}
+	for _, c := range candidates {
+		if c == "" {
+			continue
+		}
+		if _, err := os.Stat(c); err == nil {
+			return c
+		}
+	}
+	return ""
+}
+
+func computePilotMetrics(rep model.ReasoningReport, history assist.HistoryFile, reportPath string, historyPath string) PilotMetrics {
+	confirmedRules := map[string]bool{}
+	falsePositiveRules := map[string]bool{}
+	for _, inc := range history.Incidents {
+		rules := dedupeHistoryRules(inc)
+		switch strings.ToLower(strings.TrimSpace(inc.Outcome)) {
+		case "confirmed", "true_positive":
+			for _, r := range rules {
+				confirmedRules[r] = true
+			}
+		case "false_positive", "benign":
+			for _, r := range rules {
+				falsePositiveRules[r] = true
+			}
+		}
+	}
+
+	candidates := rep.AIOverlay.CandidateCount
+	if candidates == 0 {
+		candidates = len(rep.AIAlerts)
+	}
+	m := PilotMetrics{
+		GeneratedAt:                      time.Now().UTC(),
+		ReportPath:                       reportPath,
+		HistoryPath:                      historyPath,
+		CandidateCount:                   candidates,
+		KnownConfirmedRulesInHistory:     len(confirmedRules),
+		KnownFalsePositiveRulesInHistory: len(falsePositiveRules),
+	}
+
+	for _, a := range rep.AIAlerts {
+		switch a.Status {
+		case "escalated":
+			m.EscalatedCount++
+			if confirmedRules[a.RuleID] {
+				m.EscalatedConfirmedCount++
+			} else if falsePositiveRules[a.RuleID] {
+				m.EscalatedFalsePositiveCount++
+			} else {
+				m.EscalatedUnknownOutcomeCount++
+			}
+		case "triaged":
+			m.TriagedCount++
+		case "suppressed":
+			m.SuppressedCount++
+			if confirmedRules[a.RuleID] {
+				m.SuppressedLaterTrueCount++
+			}
+		}
+	}
+
+	if m.CandidateCount > 0 {
+		m.QueueReductionPct = 100 * (float64(m.CandidateCount-m.EscalatedCount) / float64(m.CandidateCount))
+		m.SuppressedLaterTrueRatePct = 100 * (float64(m.SuppressedLaterTrueCount) / float64(m.CandidateCount))
+	}
+	knownEscalated := m.EscalatedConfirmedCount + m.EscalatedFalsePositiveCount
+	if knownEscalated > 0 {
+		m.EscalatedPrecisionProxyPct = 100 * (float64(m.EscalatedConfirmedCount) / float64(knownEscalated))
+	}
+	return m
+}
+
+func dedupeHistoryRules(inc assist.HistoryEntry) []string {
+	seen := map[string]bool{}
+	out := []string{}
+	for _, r := range inc.RuleIDs {
+		r = strings.TrimSpace(r)
+		if r == "" || seen[r] {
+			continue
+		}
+		seen[r] = true
+		out = append(out, r)
+	}
+	if inc.RuleID != "" {
+		r := strings.TrimSpace(inc.RuleID)
+		if r != "" && !seen[r] {
+			out = append(out, r)
+		}
+	}
+	return out
+}
+
+func renderPilotMetricsMarkdown(m PilotMetrics) string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "# Pilot Metrics Report\n\n")
+	fmt.Fprintf(buf, "Generated: %s\n\n", m.GeneratedAt.Format(time.RFC3339))
+	fmt.Fprintf(buf, "- Report source: `%s`\n", m.ReportPath)
+	fmt.Fprintf(buf, "- History source: `%s`\n\n", m.HistoryPath)
+	fmt.Fprintf(buf, "## Funnel\n")
+	fmt.Fprintf(buf, "- Candidate alerts: %d\n", m.CandidateCount)
+	fmt.Fprintf(buf, "- Escalated alerts: %d\n", m.EscalatedCount)
+	fmt.Fprintf(buf, "- Triaged alerts: %d\n", m.TriagedCount)
+	fmt.Fprintf(buf, "- Suppressed alerts: %d\n", m.SuppressedCount)
+	fmt.Fprintf(buf, "- Queue reduction: %.2f%%\n\n", m.QueueReductionPct)
+	fmt.Fprintf(buf, "## Outcome Alignment (History-Matched)\n")
+	fmt.Fprintf(buf, "- Escalated + confirmed: %d\n", m.EscalatedConfirmedCount)
+	fmt.Fprintf(buf, "- Escalated + false positive: %d\n", m.EscalatedFalsePositiveCount)
+	fmt.Fprintf(buf, "- Escalated + unknown outcome: %d\n", m.EscalatedUnknownOutcomeCount)
+	fmt.Fprintf(buf, "- Escalated precision proxy: %.2f%%\n\n", m.EscalatedPrecisionProxyPct)
+	fmt.Fprintf(buf, "## Safety\n")
+	fmt.Fprintf(buf, "- Suppressed but later true (history overlap): %d\n", m.SuppressedLaterTrueCount)
+	fmt.Fprintf(buf, "- Suppressed-but-later-true rate: %.2f%%\n\n", m.SuppressedLaterTrueRatePct)
+	fmt.Fprintf(buf, "## History Coverage\n")
+	fmt.Fprintf(buf, "- Confirmed rules in history: %d\n", m.KnownConfirmedRulesInHistory)
+	fmt.Fprintf(buf, "- False-positive rules in history: %d\n", m.KnownFalsePositiveRulesInHistory)
+	return buf.String()
 }
 
 func fatal(err error) {

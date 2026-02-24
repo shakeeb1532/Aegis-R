@@ -39,11 +39,17 @@ type QueueItem struct {
 }
 
 type ApprovalItem struct {
-	ID       string `json:"id"`
-	Scope    string `json:"scope"`
-	Status   string `json:"status"`
-	Approver string `json:"approver"`
-	Expires  string `json:"expires"`
+	ID            string   `json:"id"`
+	Scope         string   `json:"scope"`
+	Status        string   `json:"status"`
+	Approver      string   `json:"approver"`
+	Approvers     []string `json:"approvers,omitempty"`
+	Expires       string   `json:"expires"`
+	DualRequired  int      `json:"dual_required"`
+	ValidSigners  int      `json:"valid_signers"`
+	DualApproved  bool     `json:"dual_approved"`
+	OktaVerified  bool     `json:"okta_verified"`
+	HumanDecision string   `json:"human_decision"`
 }
 
 type AuditItem struct {

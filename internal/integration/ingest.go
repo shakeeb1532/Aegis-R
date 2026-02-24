@@ -1,8 +1,12 @@
 package integration
 
 import (
+	"crypto/sha1"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"strings"
 
 	"aman/internal/model"
 )
@@ -69,6 +73,8 @@ type ecsEvent struct {
 	Event struct {
 		ID   string   `json:"id"`
 		Kind string   `json:"kind"`
+		Action string `json:"action"`
+		Category []string `json:"category"`
 		Type []string `json:"type"`
 	} `json:"event"`
 	Host struct {
@@ -88,10 +94,13 @@ func mapECS(raw []byte) ([]model.Event, error) {
 	}
 	out := make([]model.Event, 0, len(in))
 	for _, e := range in {
-		etype := "ecs_event"
-		if len(e.Event.Type) > 0 {
-			etype = e.Event.Type[0]
-		}
+		etype := normalizeInternalEventType(firstNonEmpty(
+			e.Event.Action,
+			firstSlice(e.Event.Type),
+			firstSlice(e.Event.Category),
+			e.Event.Kind,
+			"ecs_event",
+		))
 		out = append(out, model.Event{
 			ID:      e.Event.ID,
 			Time:    parseTime(e.Timestamp),
@@ -133,7 +142,9 @@ func mapOCSF(raw []byte) ([]model.Event, error) {
 }
 
 type cimEvent struct {
-	ID     string                 `json:"_time"`
+	Time   string                 `json:"_time"`
+	ID     string                 `json:"event_id"`
+	CD     string                 `json:"_cd"`
 	Source string                 `json:"source"`
 	User   string                 `json:"user"`
 	Host   string                 `json:"host"`
@@ -148,14 +159,42 @@ func mapCIM(raw []byte) ([]model.Event, error) {
 	}
 	out := make([]model.Event, 0, len(in))
 	for _, e := range in {
+		id := firstNonEmpty(e.ID, e.CD)
+		if id == "" {
+			id = hashEventID(e.Time, e.Source, e.Host, e.User, e.Action)
+		}
 		out = append(out, model.Event{
-			ID:      e.ID,
-			Time:    parseTime(e.ID),
+			ID:      id,
+			Time:    parseTime(e.Time),
 			Host:    e.Host,
 			User:    e.User,
-			Type:    e.Action,
+			Type:    normalizeInternalEventType(e.Action),
 			Details: e.Fields,
 		})
 	}
 	return out, nil
+}
+
+func normalizeInternalEventType(v string) string {
+	s := strings.ToLower(strings.TrimSpace(v))
+	switch s {
+	case "", "ecs_event", "event":
+		return "event"
+	case "process", "process_start", "start":
+		return "process_creation"
+	case "authentication", "auth", "login", "user_login":
+		return "valid_account_login"
+	case "network", "connection", "network_connection":
+		return "network_connection"
+	case "privilege_change", "role_change":
+		return "admin_group_change"
+	default:
+		return s
+	}
+}
+
+func hashEventID(parts ...string) string {
+	h := sha1.New() //nolint:gosec // non-crypto identifier only
+	_, _ = h.Write([]byte(strings.Join(parts, "|")))
+	return fmt.Sprintf("evt-%s", hex.EncodeToString(h.Sum(nil)))
 }

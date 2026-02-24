@@ -3,11 +3,12 @@
 Date: 2026-02-05
 
 ## Summary
-Aman is a security reasoning infrastructure that evaluates causal feasibility, maintains attack progression state, and produces audit-ready explanations. The MVP now supports human-governed approvals, tamper-evident artifacts, and SIEM-sidecar export without automated remediation.
+Aman is a security reasoning infrastructure that evaluates causal feasibility, maintains attack progression state, and produces audit-ready explanations. The MVP is now positioned as an AI-validation overlay: high-recall detections feed Aman, and Aman filters them with deterministic causal checks before escalation.
 
 ## Core Capabilities Implemented
 - Logical feasibility reasoning with explicit evidence gaps and narrative proof.
 - Stateful attack progression (compromised hosts/users, reachable zones, next-move prediction).
+- High-recall AI overlay that classifies candidates as escalated, triaged, or suppressed.
 - Human governance via signed approvals with TTL and optional Okta gating.
 - Dual-approval enforcement for critical trust promotions.
 - Tamper-evident artifact chain with replay verification.
@@ -41,4 +42,3 @@ Aman is a security reasoning infrastructure that evaluates causal feasibility, m
 1. Expand MITRE rule set and add schema-enforced provenance/versioning.
 2. Add decision artifact signing (non-repudiation) and export to immutable storage.
 3. Build minimal web UI for analyst review and approvals.
-

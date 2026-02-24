@@ -1,0 +1,141 @@
+[
+  {
+    "id": "ct-1",
+    "time": "2026-02-06T12:35:00Z",
+    "host": "123456789012",
+    "user": "arn:aws:iam::123456789012:user/admin",
+    "type": "admin_group_change",
+    "details": {
+      "aws_region": "us-east-1",
+      "error_code": "",
+      "error_message": "",
+      "event_source": "iam.amazonaws.com",
+      "request": {
+        "groupName": "Admins",
+        "userName": "jane"
+      },
+      "response": {},
+      "source_ip": "198.51.100.10",
+      "user_agent": "aws-cli"
+    }
+  },
+  {
+    "id": "ct-2",
+    "time": "2026-02-06T12:36:00Z",
+    "host": "123456789012",
+    "user": "secops",
+    "type": "new_firewall_rule",
+    "details": {
+      "aws_region": "us-east-1",
+      "error_code": "",
+      "error_message": "",
+      "event_source": "ec2.amazonaws.com",
+      "request": {
+        "fromPort": 22,
+        "groupId": "sg-123",
+        "ipProtocol": "tcp",
+        "toPort": 22
+      },
+      "response": {},
+      "source_ip": "198.51.100.11",
+      "user_agent": "aws-cli"
+    }
+  },
+  {
+    "id": "ct-3",
+    "time": "2026-02-06T12:37:00Z",
+    "host": "123456789012",
+    "user": "secops",
+    "type": "trust_boundary_change",
+    "details": {
+      "aws_region": "us-east-1",
+      "error_code": "",
+      "error_message": "",
+      "event_source": "iam.amazonaws.com",
+      "request": {
+        "roleName": "AppRole"
+      },
+      "response": {},
+      "source_ip": "198.51.100.12",
+      "user_agent": "aws-cli"
+    }
+  },
+  {
+    "id": "ct-4",
+    "time": "2026-02-06T12:38:00Z",
+    "host": "123456789012",
+    "user": "secops",
+    "type": "policy_override",
+    "details": {
+      "aws_region": "us-east-1",
+      "error_code": "",
+      "error_message": "",
+      "event_source": "iam.amazonaws.com",
+      "request": {
+        "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess",
+        "roleName": "AppRole"
+      },
+      "response": {},
+      "source_ip": "198.51.100.13",
+      "user_agent": "aws-cli"
+    }
+  },
+  {
+    "id": "ct-5",
+    "time": "2026-02-06T12:39:00Z",
+    "host": "123456789012",
+    "user": "secops",
+    "type": "new_admin_account",
+    "details": {
+      "aws_region": "us-east-1",
+      "error_code": "",
+      "error_message": "",
+      "event_source": "iam.amazonaws.com",
+      "request": {
+        "policyName": "CustomPolicy"
+      },
+      "response": {},
+      "source_ip": "198.51.100.14",
+      "user_agent": "aws-cli"
+    }
+  },
+  {
+    "id": "ct-6",
+    "time": "2026-02-06T12:40:00Z",
+    "host": "123456789012",
+    "user": "secops",
+    "type": "admin_group_change",
+    "details": {
+      "aws_region": "us-east-1",
+      "error_code": "",
+      "error_message": "",
+      "event_source": "iam.amazonaws.com",
+      "request": {
+        "groupName": "Admins",
+        "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+      },
+      "response": {},
+      "source_ip": "198.51.100.15",
+      "user_agent": "aws-cli"
+    }
+  },
+  {
+    "id": "ct-7",
+    "time": "2026-02-06T12:41:00Z",
+    "host": "123456789012",
+    "user": "secops",
+    "type": "role_assume",
+    "details": {
+      "aws_region": "us-east-1",
+      "error_code": "",
+      "error_message": "",
+      "event_source": "sts.amazonaws.com",
+      "request": {
+        "roleArn": "arn:aws:iam::123456789012:role/AppRole"
+      },
+      "response": {},
+      "source_ip": "198.51.100.16",
+      "user_agent": "aws-cli"
+    }
+  }
+]

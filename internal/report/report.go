@@ -32,7 +32,11 @@ func RenderCLI(rep model.ReasoningReport) string {
 
 	for _, r := range rep.Results {
 		status := "NOT FEASIBLE"
-		if r.Feasible {
+		if r.PolicyImpossible {
+			status = "IMPOSSIBLE (POLICY)"
+		} else if r.Conflicted {
+			status = "CONFLICTED"
+		} else if r.Feasible {
 			status = "FEASIBLE"
 		}
 		fmt.Fprintf(buf, "- [%s] %s (%s, %.2f)\n", status, r.Name, r.RuleID, r.Confidence)
@@ -118,6 +122,20 @@ func RenderCLI(rep model.ReasoningReport) string {
 		fmt.Fprintln(buf, "Suggested playbooks (advisory):")
 		for _, pb := range rep.SuggestedPlaybooks {
 			fmt.Fprintf(buf, "- %s\n", pb)
+		}
+	}
+	if rep.AIOverlay.Enabled {
+		fmt.Fprintln(buf, "")
+		fmt.Fprintf(buf, "AI overlay (%s):\n", rep.AIOverlay.Mode)
+		fmt.Fprintf(buf, "- Candidates: %d\n", rep.AIOverlay.CandidateCount)
+		fmt.Fprintf(buf, "- Escalated: %d\n", rep.AIOverlay.EscalatedCount)
+		fmt.Fprintf(buf, "- Triaged: %d\n", rep.AIOverlay.TriagedCount)
+		fmt.Fprintf(buf, "- Suppressed: %d\n", rep.AIOverlay.SuppressedCount)
+		for i, a := range rep.AIAlerts {
+			if i >= 10 {
+				break
+			}
+			fmt.Fprintf(buf, "- %s (%s): %.2f %s\n", a.RuleID, a.Status, a.Sensitivity, a.Reason)
 		}
 	}
 	return buf.String()

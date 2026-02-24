@@ -2,12 +2,22 @@
 
 License: Apache-2.0
 
-Aman is a human-governed security reasoning system that evaluates causal feasibility, maintains attack progression state, and produces audit-ready, tamper-evident explanations. It focuses on reducing false positives by eliminating impossible attack paths while preserving human authority and compliance.
+Aman is a human-governed security reasoning system that evaluates causal feasibility, maintains attack progression state, and produces audit-ready, tamper-evident explanations. It is designed to sit on top of SIEM/EDR/XDR and AI detections to reduce false positives by eliminating impossible attack paths while preserving human authority and compliance.
+
+## v1 vs v2 (Positioning)
+| Dimension | v1 (Original) | v2.0 (Current Direction) |
+| --- | --- | --- |
+| Market message | "Causal validation over noisy detection" | "AI-first discovery + causal validation gate" |
+| Detection flow | Rule/event-first reasoning | High-recall AI candidates, then deterministic validation |
+| Analyst queue effect | Fewer impossible alerts | Keep recall while reducing non-actionable AI noise |
+| Attack visibility | Progression state and feasibility | Progression + explicit attack-path output for SOC review |
+| Buyer narrative | Accuracy and governance | Return on AI investment: speed + precision + explainability |
 
 ## What It Does
 - Determines whether a security event is logically possible in your environment.
 - Explains why an alert is real, impossible, or incomplete (not just “high/low risk”).
 - Maintains live attack-progression state, not isolated alerts.
+- Accepts high-recall AI candidate alerts, then validates each path causally before escalation.
 - Explains every decision with a reasoning chain and evidence gaps.
 - Produces audit-ready artifacts with hash chaining and signatures.
 - Integrates alongside existing SIEM / EDR / XDR systems (no auto-remediation).
@@ -15,7 +25,7 @@ Aman is a human-governed security reasoning system that evaluates causal feasibi
 ## What It Explicitly Does NOT Do
 - Does **not** automatically block or remediate threats.
 - Does **not** replace SIEM, EDR, or analysts.
-- Does **not** rely on black-box AI decisions.
+- Does **not** allow black-box AI output to bypass causal validation.
 - Does **not** silently adapt trust based on attacker behavior.
 
 ## Core Concepts
@@ -26,6 +36,7 @@ Aman is a human-governed security reasoning system that evaluates causal feasibi
 - **Zero-Trust Initialization**: A strict install-time scan that creates a baseline and prevents poisoning.
 - **Explanation Layer (Optional)**: Generates a narrative summary and investigation steps from structured reasoning output. This never changes verdicts.
 - **ML Assist (Optional, Advisory)**: Suggests missing telemetry, ranks feasible findings (identity + cloud only), and surfaces similar incidents/playbooks. This never changes verdicts.
+- **AI Overlay (Optional, High Recall)**: Generates broad candidate alerts first, then routes them through Aman causal filtering (`escalated`, `triaged`, `suppressed`). Default sensitivity profiles are source-aware (`identity`, `cloud`, `edr`) while final escalation remains Aman-governed.
 
 ## Docs
 - `docs/sample_outputs.md` — example MITRE coverage and reasoning outputs
@@ -41,12 +52,20 @@ Aman is a human-governed security reasoning system that evaluates causal feasibi
 - `PRIVATE_FEATURES.md` — protected components tracker
 - `docs/pilot_demo_pack.md` — pilot-grade demo pack guide
 - `docs/metrics_report.md` — synthetic vs public vs pilot metrics summary
+- `docs/pilot_metrics_report.md` — candidate->escalated->confirmed and suppression safety metrics
+- `docs/integration_onboarding.md` — fast onboarding flow for identity/cloud/EDR integrations
+- `docs/noisegraph_integration.md` — vendored noisegraph usage and conversion bridge into Aman
+- `docs/pilot_runbook.md` — 2-week pilot execution plan and success gates
 - `docs/inventory_schema.md` — file-based inventory ingestion schema
 - `docs/architecture.md` — system architecture diagram
 - `docs/incident_history.md` — ML-assist history schema and examples
 - `docs/known_edge_cases.md` — documented mismatches kept for conservative behavior
 - `docs/ui_api_contract.md` — UI API contract (demo)
 - `docs/secure_ingest.md` — secure ingest envelope (phase 1)
+- `docs/engines.md` — optional external engines (Blackbox Data, Time Travel Forensics)
+- `docs/v2_0_experiment.md` — v2.0 positioning and validation-overlay experiment
+- `docs/production_benchmark_report.md` — production benchmark snapshot and AI overlay overhead
+- `docs/initialization_simulation_policy.md` — controlled initialization, safe attack simulation, approvals, and baseline lifecycle
 
 ---
 
@@ -141,6 +160,17 @@ flowchart LR
   A --> C["Throughput (events/sec)"]
   A --> D["Allocations (B/op)"]
 ```
+
+---
+
+## Optional Engines (External Modules)
+
+For scale and forensic replay, Aman can reference **separate engines** that remain external to the core. These are optional and not bundled.
+
+- Blackbox Data Engine: https://github.com/shakeeb1532/blackbox-data
+- Time Travel Forensics Engine: https://github.com/shakeeb1532/TimeTravel-Forensics
+
+Details: `docs/engines.md`
 
 ---
 
@@ -301,6 +331,14 @@ docker compose up --build
 
 Aman requires a **strict initialization scan** on first install. The baseline is immutable unless an **admin** explicitly overrides.
 
+### v2.0 Initialization and Tuning Model
+- Use controlled initialization validation first, not offensive exploitation by default.
+- Build a safe baseline from configuration, identity, network, and telemetry checks.
+- Run optional safe attack simulation only as approval-gated, non-destructive emulation (staging by default; tightly scoped production windows only when approved).
+- Require human approval for high-risk simulation scope, timing, and methods.
+- Treat baseline as versioned and immutable per release, with signed updates and explicit drift/change history.
+- Tune continuously after initialization using analyst feedback and incident outcomes rather than one-time setup.
+
 ### Run Init Scan
 ```bash
 go run ./cmd/aman init-scan \
@@ -421,6 +459,18 @@ go run ./cmd/aman ingest secure-unpack \
 go run ./cmd/aman ingest secure-rotate -in data/ingest_keys.json
 ```
 `/ingest-health` reports HMAC/decrypt/schema failure rates for the secure pipeline.
+
+### Rule Expansion Packs
+You can keep the pilot rules stable and load optional expansion packs.
+```bash
+go run ./cmd/aman assess \
+  -in events.json \
+  -env data/env.json \
+  -state data/state.json \
+  -audit data/audit.log \
+  -rules data/rules.json \
+  -rules-extra data/rules_expansion.json
+```
 
 ### Zero-Trust
 - `init-scan` — strict install-time baseline creation

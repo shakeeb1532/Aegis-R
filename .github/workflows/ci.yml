@@ -16,3 +16,9 @@ jobs:
         run: go test ./...
       - name: Go race
         run: go test -race ./...
+      - name: Integration readiness gate
+        run: go run ./cmd/aman system integration-readiness --strict --min-events 1 --min-feasible 0 --out /tmp/integration_readiness.json
+      - name: Demo pack gate
+        run: go run ./cmd/aman system demo-pack --outdir /tmp/demo_pack --rules data/rules.json
+      - name: ROI scorecard gate
+        run: go run ./cmd/aman system roi-scorecard --pilot /tmp/demo_pack/pilot_metrics_report.json --integration /tmp/demo_pack/integration_readiness.json --benchmark docs/production_benchmark_report.md --out /tmp/roi_scorecard.md

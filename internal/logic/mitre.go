@@ -7,6 +7,8 @@ import (
 	"aman/internal/env"
 )
 
+var mitreNowUTC = func() time.Time { return time.Now().UTC() }
+
 type MitreCoverageReport struct {
 	GeneratedAt      time.Time             `json:"generated_at"`
 	TotalRules       int                   `json:"total_rules"`
@@ -15,7 +17,13 @@ type MitreCoverageReport struct {
 	RulesMissingMeta []string              `json:"rules_missing_mitre"`
 	ExcludedRules    []string              `json:"excluded_rules"`
 	FilterNote       string                `json:"filter_note"`
+	Gaps             MitreCoverageGaps     `json:"gaps"`
 	Tactics          []MitreTacticCoverage `json:"tactics"`
+}
+
+type MitreCoverageGaps struct {
+	TacticsMissing    []string            `json:"tactics_missing"`
+	TechniquesMissing map[string][]string `json:"techniques_missing"`
 }
 
 type MitreTacticCoverage struct {
@@ -99,7 +107,7 @@ func BuildMitreCoverage(rules []Rule) MitreCoverageReport {
 	sort.Strings(missing)
 
 	return MitreCoverageReport{
-		GeneratedAt:      time.Now().UTC(),
+		GeneratedAt:      mitreNowUTC(),
 		TotalRules:       len(rules),
 		ApplicableRules:  len(rules),
 		RulesWithMitre:   withMitre,
@@ -115,7 +123,54 @@ func BuildMitreCoverageForEnv(rules []Rule, environment env.Environment) MitreCo
 	report.ApplicableRules = len(applicable)
 	report.ExcludedRules = excluded
 	report.FilterNote = "Filtered by environment tags and asset types"
+	report.Gaps = buildCoverageGaps(rules, applicable)
 	return report
+}
+
+func buildCoverageGaps(allRules []Rule, applicable []Rule) MitreCoverageGaps {
+	all := map[string]map[string]bool{}
+	for _, r := range allRules {
+		if r.Mitre.Tactic == "" || r.Mitre.Technique == "" {
+			continue
+		}
+		if _, ok := all[r.Mitre.Tactic]; !ok {
+			all[r.Mitre.Tactic] = map[string]bool{}
+		}
+		all[r.Mitre.Tactic][r.Mitre.Technique] = true
+	}
+	app := map[string]map[string]bool{}
+	for _, r := range applicable {
+		if r.Mitre.Tactic == "" || r.Mitre.Technique == "" {
+			continue
+		}
+		if _, ok := app[r.Mitre.Tactic]; !ok {
+			app[r.Mitre.Tactic] = map[string]bool{}
+		}
+		app[r.Mitre.Tactic][r.Mitre.Technique] = true
+	}
+
+	gaps := MitreCoverageGaps{
+		TacticsMissing:    []string{},
+		TechniquesMissing: map[string][]string{},
+	}
+	for tactic, techniques := range all {
+		appTechs := app[tactic]
+		missing := []string{}
+		for tech := range techniques {
+			if appTechs == nil || !appTechs[tech] {
+				missing = append(missing, tech)
+			}
+		}
+		sort.Strings(missing)
+		if len(missing) > 0 {
+			gaps.TechniquesMissing[tactic] = missing
+		}
+		if len(appTechs) == 0 {
+			gaps.TacticsMissing = append(gaps.TacticsMissing, tactic)
+		}
+	}
+	sort.Strings(gaps.TacticsMissing)
+	return gaps
 }
 
 func keysSorted(set map[string]bool) []string {

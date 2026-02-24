@@ -1,0 +1,7 @@
+whitelist:
+  - "AWS CreateUser user=*"
+  - "ERROR service=ssh *"
+blacklist:
+  - "Healthcheck OK service=*"
+  - "nginx access *"
+  - "kubelet pod=*"

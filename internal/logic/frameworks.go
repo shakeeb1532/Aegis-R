@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+var frameworkNowUTC = func() time.Time { return time.Now().UTC() }
+
 type NistCoverageReport struct {
 	GeneratedAt      time.Time           `json:"generated_at"`
 	TotalRules       int                 `json:"total_rules"`
@@ -46,7 +48,7 @@ func BuildNistCoverage(rules []Rule) NistCoverageReport {
 	cats := buildFrameworkCoverage(agg)
 	sort.Strings(missing)
 	return NistCoverageReport{
-		GeneratedAt:      time.Now().UTC(),
+		GeneratedAt:      frameworkNowUTC(),
 		TotalRules:       len(rules),
 		RulesMissingMeta: missing,
 		Categories:       cats,
@@ -74,7 +76,7 @@ func BuildKillChainCoverage(rules []Rule) KillChainCoverageReport {
 	phases := buildFrameworkCoverage(agg)
 	sort.Strings(missing)
 	return KillChainCoverageReport{
-		GeneratedAt:      time.Now().UTC(),
+		GeneratedAt:      frameworkNowUTC(),
 		TotalRules:       len(rules),
 		RulesMissingMeta: missing,
 		Phases:           phases,

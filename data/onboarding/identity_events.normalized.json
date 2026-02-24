@@ -1,0 +1,157 @@
+[
+  {
+    "id": "okta-user-1:user.session.start",
+    "time": "2026-02-06T12:30:00Z",
+    "host": "",
+    "user": "hank@example.com",
+    "type": "valid_account_login",
+    "details": {
+      "actor_id": "okta-user-1",
+      "client_ip": "203.0.113.55",
+      "targets": [],
+      "user_agent": "Chrome"
+    }
+  },
+  {
+    "id": "okta-user-1:user.mfa.factor.deactivate",
+    "time": "2026-02-06T12:31:00Z",
+    "host": "",
+    "user": "hank@example.com",
+    "type": "mfa_disabled",
+    "details": {
+      "actor_id": "okta-user-1",
+      "client_ip": "203.0.113.55",
+      "targets": [],
+      "user_agent": "Chrome"
+    }
+  },
+  {
+    "id": "okta-admin-1:group.user_membership.add",
+    "time": "2026-02-06T12:32:00Z",
+    "host": "",
+    "user": "admin@example.com",
+    "type": "admin_group_change",
+    "details": {
+      "actor_id": "okta-admin-1",
+      "client_ip": "203.0.113.56",
+      "targets": [
+        {
+          "displayName": "Admins",
+          "type": "Group"
+        }
+      ],
+      "user_agent": "Chrome"
+    }
+  },
+  {
+    "id": "okta-user-2:oauth2.consent.grant",
+    "time": "2026-02-06T12:33:00Z",
+    "host": "",
+    "user": "ivy@example.com",
+    "type": "oauth_consent",
+    "details": {
+      "actor_id": "okta-user-2",
+      "client_ip": "203.0.113.57",
+      "targets": [
+        {
+          "displayName": "ThirdPartyApp",
+          "type": "App"
+        }
+      ],
+      "user_agent": "Chrome"
+    }
+  },
+  {
+    "id": "okta-user-3:user.mfa.factor.reset",
+    "time": "2026-02-06T12:34:00Z",
+    "host": "",
+    "user": "jill@example.com",
+    "type": "mfa_disabled",
+    "details": {
+      "actor_id": "okta-user-3",
+      "client_ip": "203.0.113.58",
+      "targets": [],
+      "user_agent": "Chrome"
+    }
+  },
+  {
+    "id": "okta-user-4:user.session.refresh_token",
+    "time": "2026-02-06T12:35:00Z",
+    "host": "",
+    "user": "kyle@example.com",
+    "type": "token_refresh_anomaly",
+    "details": {
+      "actor_id": "okta-user-4",
+      "client_ip": "203.0.113.59",
+      "targets": [],
+      "user_agent": "Chrome"
+    }
+  },
+  {
+    "id": "okta-user-4:user.session.revoke_token",
+    "time": "2026-02-06T12:36:00Z",
+    "host": "",
+    "user": "kyle@example.com",
+    "type": "token_refresh_anomaly",
+    "details": {
+      "actor_id": "okta-user-4",
+      "client_ip": "203.0.113.59",
+      "targets": [],
+      "user_agent": "Chrome"
+    }
+  },
+  {
+    "id": "okta-admin-2:policy.rule.update",
+    "time": "2026-02-06T12:37:00Z",
+    "host": "",
+    "user": "policy@example.com",
+    "type": "policy_override",
+    "details": {
+      "actor_id": "okta-admin-2",
+      "client_ip": "203.0.113.60",
+      "targets": [
+        {
+          "displayName": "MFA Rule",
+          "type": "PolicyRule"
+        }
+      ],
+      "user_agent": "Chrome"
+    }
+  },
+  {
+    "id": "okta-admin-2:user.lifecycle.deactivate",
+    "time": "2026-02-06T12:38:00Z",
+    "host": "",
+    "user": "policy@example.com",
+    "type": "iam_change",
+    "details": {
+      "actor_id": "okta-admin-2",
+      "client_ip": "203.0.113.60",
+      "targets": [
+        {
+          "displayName": "old-user@example.com",
+          "type": "User"
+        }
+      ],
+      "user_agent": "Chrome"
+    }
+  },
+  {
+    "id": "okta-admin-3:admin.role.assign",
+    "time": "2026-02-06T12:39:00Z",
+    "host": "",
+    "user": "super@example.com",
+    "type": "new_admin_role",
+    "details": {
+      "actor_id": "okta-admin-3",
+      "client_ip": "203.0.113.61",
+      "targets": [
+        {
+          "displayName": "new-admin@example.com",
+          "type": "User"
+        }
+      ],
+      "user_agent": "Chrome"
+    }
+  }
+]
