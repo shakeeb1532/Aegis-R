@@ -15,4 +15,8 @@ func TestAttackPathRegression(t *testing.T) {
 	if !reach["zone:c"] {
 		t.Fatalf("expected zone c reachable")
 	}
+	reverse := g.ReachableTo([]string{"zone:c"})
+	if !reverse["zone:a"] {
+		t.Fatalf("expected zone a to be in reverse reachability set for zone c")
+	}
 }

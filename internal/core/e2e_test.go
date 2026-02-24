@@ -53,6 +53,9 @@ func TestEndToEndAssessAudit(t *testing.T) {
 	if err != nil {
 		t.Fatalf("sign: %v", err)
 	}
+	if err := audit.RegisterTrustedSigner("soc-admin", pub); err != nil {
+		t.Fatalf("register signer: %v", err)
+	}
 	if err := audit.VerifySignedArtifact(signed); err != nil {
 		t.Fatalf("verify signed: %v", err)
 	}

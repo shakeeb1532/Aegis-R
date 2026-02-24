@@ -1,0 +1,222 @@
+{
+  "generated_at": "2026-02-23T12:26:30.863284Z",
+  "summary": "Causal synthetic stress validation using shadow scenarios, adversarial variants, telemetry degradation, and high-volume noise with domain profiles and vendor-noise patterns.",
+  "causal_shadow": {
+    "checks": [
+      {
+        "name": "logic-conflict-unreachable-zone",
+        "expected": "infeasible/env_unreachable",
+        "actual": "false/env_unreachable",
+        "pass": true,
+        "details": "Requires valid credentials before remote execution. Target zone is not reachable from current foothold."
+      },
+      {
+        "name": "missing-necessary-cause",
+        "expected": "incomplete/evidence_gap-or-precond_missing",
+        "actual": "false/evidence_gap",
+        "pass": true,
+        "details": "Exfiltration typically follows C2 and credential access. Missing evidence: precond:credential_access"
+      },
+      {
+        "name": "shadow-admin-capability-check",
+        "expected": "infeasible/identity_insufficient_priv-or-environment_unknown",
+        "actual": "false/identity_insufficient_priv",
+        "pass": true,
+        "details": "Requires elevated privileges to access credential stores. Acting identity privilege is insufficient for this technique."
+      }
+    ],
+    "pass_rate": 1
+  },
+  "adversarial": {
+    "evasion_detection_rate": 0.734,
+    "evasion_runs": 500,
+    "profile_coverage": {
+      "cloud-policy-abuse": 0,
+      "identity-takeover": 1,
+      "impact-encryption": 1,
+      "lateral-movement": 1
+    },
+    "vendor_noise_mix": [
+      "ecs",
+      "ocsf",
+      "splunk",
+      "okta",
+      "cloudtrail",
+      "sentinel",
+      "crowdstrike",
+      "mde"
+    ],
+    "governance_checks": [
+      {
+        "name": "governance-duplicate-signer",
+        "expected": "reject",
+        "actual": "pass",
+        "pass": true,
+        "details": "insufficient valid approvals"
+      },
+      {
+        "name": "governance-empty-signer-ignored",
+        "expected": "reject",
+        "actual": "pass",
+        "pass": true,
+        "details": "insufficient valid approvals"
+      }
+    ]
+  },
+  "telemetry_degradation": {
+    "profiles": [
+      {
+        "name": "exfil-chain",
+        "rule_id": "TA0010.EXFIL",
+        "points": [
+          {
+            "degrade_pct": 0,
+            "outcome": "feasible",
+            "reason_code": "",
+            "confidence": 0.8500000000000001
+          },
+          {
+            "degrade_pct": 0.1,
+            "outcome": "feasible",
+            "reason_code": "",
+            "confidence": 0.8500000000000001
+          },
+          {
+            "degrade_pct": 0.25,
+            "outcome": "feasible",
+            "reason_code": "environment_unknown",
+            "confidence": 0.8500000000000001
+          },
+          {
+            "degrade_pct": 0.5,
+            "outcome": "incomplete",
+            "reason_code": "evidence_gap",
+            "confidence": 0.1
+          },
+          {
+            "degrade_pct": 0.75,
+            "outcome": "incomplete",
+            "reason_code": "evidence_gap",
+            "confidence": 0.1
+          },
+          {
+            "degrade_pct": 0.9,
+            "outcome": "incomplete",
+            "reason_code": "evidence_gap",
+            "confidence": 0.1
+          }
+        ],
+        "dropoff": "quality drop observed at 50% telemetry degradation"
+      },
+      {
+        "name": "identity-anomaly-chain",
+        "rule_id": "TA0006.IDENTITY_ANOMALY",
+        "points": [
+          {
+            "degrade_pct": 0,
+            "outcome": "feasible",
+            "reason_code": "environment_unknown",
+            "confidence": 0.8500000000000001
+          },
+          {
+            "degrade_pct": 0.1,
+            "outcome": "feasible",
+            "reason_code": "environment_unknown",
+            "confidence": 0.8500000000000001
+          },
+          {
+            "degrade_pct": 0.25,
+            "outcome": "feasible",
+            "reason_code": "environment_unknown",
+            "confidence": 0.8500000000000001
+          },
+          {
+            "degrade_pct": 0.5,
+            "outcome": "incomplete",
+            "reason_code": "environment_unknown",
+            "confidence": 0.1
+          },
+          {
+            "degrade_pct": 0.75,
+            "outcome": "feasible",
+            "reason_code": "environment_unknown",
+            "confidence": 0.8499999998617725
+          },
+          {
+            "degrade_pct": 0.9,
+            "outcome": "incomplete",
+            "reason_code": "environment_unknown",
+            "confidence": 0.1
+          }
+        ],
+        "dropoff": "quality drop observed at 50% telemetry degradation"
+      },
+      {
+        "name": "persistence-chain",
+        "rule_id": "TA0003.PERSIST_EXTENDED",
+        "points": [
+          {
+            "degrade_pct": 0,
+            "outcome": "impossible",
+            "reason_code": "env_unreachable",
+            "confidence": 0.1
+          },
+          {
+            "degrade_pct": 0.1,
+            "outcome": "impossible",
+            "reason_code": "env_unreachable",
+            "confidence": 0.1
+          },
+          {
+            "degrade_pct": 0.25,
+            "outcome": "impossible",
+            "reason_code": "env_unreachable",
+            "confidence": 0.1
+          },
+          {
+            "degrade_pct": 0.5,
+            "outcome": "incomplete",
+            "reason_code": "evidence_gap",
+            "confidence": 0.1
+          },
+          {
+            "degrade_pct": 0.75,
+            "outcome": "incomplete",
+            "reason_code": "evidence_gap",
+            "confidence": 0.1
+          },
+          {
+            "degrade_pct": 0.9,
+            "outcome": "incomplete",
+            "reason_code": "evidence_gap",
+            "confidence": 0.1
+          }
+        ],
+        "dropoff": "quality drop observed at 10% telemetry degradation"
+      }
+    ]
+  },
+  "noise_firehose": {
+    "events": 281010,
+    "corrupted_pct": 0.05,
+    "duration_seconds": 0.565573417,
+    "throughput_eps": 496858.5714133732,
+    "mem_alloc_mb": 173.81958770751953,
+    "audit_chain_verified": true
+  },
+  "regression": {
+    "scenarios": 137,
+    "accuracy": 0.9124087591240876,
+    "mismatches": 12
+  },
+  "causal_blind_spots": [
+    {
+      "name": "adversarial-cloud-policy-abuse",
+      "detail": "detection 0.00"
+    }
+  ],
+  "recommendations": [
+    "Improve adversarial resilience by adding stricter context checks for noisy lateral chains.",
+    "Telemetry quality drops early for persistence-chain; prioritize ingestion quality guards."
+  ]
+}

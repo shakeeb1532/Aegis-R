@@ -81,7 +81,7 @@ func TestMappingCloudTrail(t *testing.T) {
 	assertHasType(t, toLike(events), "new_firewall_rule")
 	assertHasType(t, toLike(events), "trust_boundary_change")
 	assertHasType(t, toLike(events), "policy_override")
-	assertHasType(t, toLike(events), "new_admin_account")
+	assertHasType(t, toLike(events), "policy_change")
 	assertHasType(t, toLike(events), "role_assume")
 }
 

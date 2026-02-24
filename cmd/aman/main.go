@@ -22,6 +22,7 @@ import (
 	"aman/internal/approval"
 	"aman/internal/assist"
 	"aman/internal/audit"
+	"aman/internal/compliance"
 	"aman/internal/compress"
 	"aman/internal/core"
 	"aman/internal/engines"
@@ -158,6 +159,63 @@ type DemoPackReport struct {
 	IntegrationQuickstart IntegrationQuickstartReport `json:"integration_quickstart"`
 	ROIScorecard          ROIScorecard                `json:"roi_scorecard"`
 	Files                 []string                    `json:"files"`
+}
+
+type ControlsExport struct {
+	GeneratedAt         time.Time                       `json:"generated_at"`
+	AuditChainVerified  bool                            `json:"audit_chain_verified"`
+	AuditChainError     string                          `json:"audit_chain_error,omitempty"`
+	DecisionControls    []DecisionControlLink           `json:"decision_controls"`
+	RuleControlMappings []compliance.RuleControlMapping `json:"rule_control_mappings"`
+	DualApprovals       []DualApprovalSummary           `json:"dual_approvals"`
+}
+
+type DecisionControlLink struct {
+	DecisionID string   `json:"decision_id"`
+	RuleID     string   `json:"rule_id"`
+	NistCSF    []string `json:"nist_csf,omitempty"`
+	Soc2CC     []string `json:"soc2_cc,omitempty"`
+	ISO27001   []string `json:"iso_27001,omitempty"`
+}
+
+type DualApprovalSummary struct {
+	DecisionID    string   `json:"decision_id"`
+	Required      int      `json:"required"`
+	ValidSigners  int      `json:"valid_signers"`
+	DualApproved  bool     `json:"dual_approved"`
+	SignerIDs     []string `json:"signer_ids"`
+	AnyOktaBypass bool     `json:"any_okta_bypass"`
+}
+
+type DecisionPackage struct {
+	DecisionID string   `json:"decision_id"`
+	Summary    string   `json:"summary"`
+	Findings   []string `json:"findings"`
+	Reasoning  []string `json:"reasoning"`
+	CreatedAt  string   `json:"created_at"`
+	Hash       string   `json:"hash"`
+	PrevHash   string   `json:"prev_hash"`
+}
+
+type WhyChainItem struct {
+	RuleID           string   `json:"rule_id"`
+	RuleName         string   `json:"rule_name"`
+	Verdict          string   `json:"verdict"`
+	Explanation      string   `json:"explanation"`
+	GapNarrative     string   `json:"gap_narrative,omitempty"`
+	ReasonCode       string   `json:"reason_code,omitempty"`
+	PreconditionOK   bool     `json:"precondition_ok"`
+	SupportingEvents []string `json:"supporting_event_ids,omitempty"`
+	MissingEvidence  []string `json:"missing_evidence,omitempty"`
+	CausalBlockers   []string `json:"causal_blockers,omitempty"`
+	NecessaryCauses  []string `json:"necessary_causes,omitempty"`
+}
+
+type CounterfactualItem struct {
+	RuleID      string   `json:"rule_id"`
+	Assumption  string   `json:"assumption"`
+	Prediction  string   `json:"prediction"`
+	NextActions []string `json:"next_actions,omitempty"`
 }
 
 var gFlags GlobalFlags
@@ -1562,9 +1620,322 @@ func readApprovalRecords(path string) ([]approvalRecord, error) {
 	return out, nil
 }
 
+func readAuditArtifacts(path string) ([]audit.Artifact, error) {
+	if !ops.IsSafePath(path) {
+		return nil, os.ErrInvalid
+	}
+	buf := bytes.Buffer{}
+	if err := audit.ExportLog(path, &buf); err != nil {
+		return nil, err
+	}
+	lines := strings.Split(strings.TrimSpace(buf.String()), "\n")
+	out := make([]audit.Artifact, 0, len(lines))
+	for _, line := range lines {
+		if strings.TrimSpace(line) == "" {
+			continue
+		}
+		var a audit.Artifact
+		if err := json.Unmarshal([]byte(line), &a); err != nil || a.ID == "" {
+			continue
+		}
+		out = append(out, a)
+	}
+	return out, nil
+}
+
+func findArtifactByID(artifacts []audit.Artifact, decisionID string) (audit.Artifact, error) {
+	for _, a := range artifacts {
+		if a.ID == decisionID {
+			return a, nil
+		}
+	}
+	return audit.Artifact{}, errors.New("decision not found")
+}
+
+func buildControlsExport(auditPath, approvalsPath, rulesPath, rulesExtra string, reproducible bool) (ControlsExport, error) {
+	export := ControlsExport{
+		DecisionControls: []DecisionControlLink{},
+		DualApprovals:    []DualApprovalSummary{},
+	}
+	if err := audit.VerifyChain(auditPath); err != nil {
+		export.AuditChainVerified = false
+		export.AuditChainError = err.Error()
+	} else {
+		export.AuditChainVerified = true
+	}
+
+	rules, err := logic.LoadRulesCombined(rulesPath, rulesExtra)
+	if err != nil {
+		return export, err
+	}
+	artifacts, err := readAuditArtifacts(auditPath)
+	if err != nil {
+		return export, err
+	}
+	records, err := readApprovalRecords(approvalsPath)
+	if err != nil && !errors.Is(err, os.ErrNotExist) {
+		return export, err
+	}
+	export.GeneratedAt = time.Now().UTC()
+	if reproducible {
+		deterministicNow := time.Unix(0, 0).UTC()
+		for _, a := range artifacts {
+			if a.CreatedAt.After(deterministicNow) {
+				deterministicNow = a.CreatedAt
+			}
+		}
+		for _, rec := range records {
+			if rec.Approval.IssuedAt.After(deterministicNow) {
+				deterministicNow = rec.Approval.IssuedAt
+			}
+		}
+		export.GeneratedAt = deterministicNow
+	}
+
+	allRuleIDs := map[string]bool{}
+	for _, a := range artifacts {
+		ids := compliance.ExtractRuleIDsFromFindings(a.Findings)
+		if len(ids) == 0 {
+			continue
+		}
+		mappings := compliance.BuildRuleControlMappings(ids, rules)
+		for _, m := range mappings {
+			allRuleIDs[m.RuleID] = true
+			export.DecisionControls = append(export.DecisionControls, DecisionControlLink{
+				DecisionID: a.ID,
+				RuleID:     m.RuleID,
+				NistCSF:    m.NistCSF,
+				Soc2CC:     m.Soc2CC,
+				ISO27001:   m.ISO27001,
+			})
+		}
+	}
+	ruleIDs := make([]string, 0, len(allRuleIDs))
+	for id := range allRuleIDs {
+		ruleIDs = append(ruleIDs, id)
+	}
+	sort.Strings(ruleIDs)
+	export.RuleControlMappings = compliance.BuildRuleControlMappings(ruleIDs, rules)
+
+	byID := map[string][]approval.Approval{}
+	for _, rec := range records {
+		if rec.Approval.ID == "" {
+			continue
+		}
+		byID[rec.Approval.ID] = append(byID[rec.Approval.ID], rec.Approval)
+	}
+	decisionIDs := make([]string, 0, len(byID))
+	for id := range byID {
+		decisionIDs = append(decisionIDs, id)
+	}
+	sort.Strings(decisionIDs)
+	now := export.GeneratedAt
+	for _, id := range decisionIDs {
+		apps := byID[id]
+		signers := map[string]bool{}
+		validSigners := map[string]bool{}
+		anyOktaBypass := false
+		for _, a := range apps {
+			if a.SignerID != "" {
+				signers[a.SignerID] = true
+			}
+			if !a.OktaVerified {
+				anyOktaBypass = true
+			}
+			if err := approval.Verify(a, true, now); err == nil && a.SignerID != "" {
+				validSigners[a.SignerID] = true
+			}
+		}
+		signerList := make([]string, 0, len(signers))
+		for signer := range signers {
+			signerList = append(signerList, signer)
+		}
+		sort.Strings(signerList)
+		export.DualApprovals = append(export.DualApprovals, DualApprovalSummary{
+			DecisionID:    id,
+			Required:      2,
+			ValidSigners:  len(validSigners),
+			DualApproved:  len(validSigners) >= 2,
+			SignerIDs:     signerList,
+			AnyOktaBypass: anyOktaBypass,
+		})
+	}
+	return export, nil
+}
+
+func loadCoreOutput(path string) (core.Output, error) {
+	if path == "" {
+		return core.Output{}, errors.New("report path is required")
+	}
+	if !ops.IsSafePath(path) {
+		return core.Output{}, os.ErrInvalid
+	}
+	// #nosec G304 - validated by IsSafePath
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return core.Output{}, err
+	}
+	if strings.HasSuffix(path, ".lz4") {
+		data, err = compress.Decompress(data)
+		if err != nil {
+			return core.Output{}, err
+		}
+	}
+	var out core.Output
+	if err := json.Unmarshal(data, &out); err != nil {
+		// Some saved reports may include prefixed operator text before JSON.
+		idx := bytes.IndexByte(data, '{')
+		if idx < 0 {
+			return core.Output{}, err
+		}
+		if err2 := json.Unmarshal(data[idx:], &out); err2 != nil {
+			return core.Output{}, err2
+		}
+	}
+	return out, nil
+}
+
+func matchRuleResultsForDecision(artifact audit.Artifact, results []model.RuleResult) []model.RuleResult {
+	ids := compliance.ExtractRuleIDsFromFindings(artifact.Findings)
+	set := map[string]bool{}
+	for _, id := range ids {
+		set[id] = true
+	}
+	out := make([]model.RuleResult, 0, len(ids))
+	for _, r := range results {
+		if set[r.RuleID] {
+			out = append(out, r)
+		}
+	}
+	sort.Slice(out, func(i, j int) bool { return out[i].RuleID < out[j].RuleID })
+	return out
+}
+
+func buildWhyChain(results []model.RuleResult) []WhyChainItem {
+	out := make([]WhyChainItem, 0, len(results))
+	for _, r := range results {
+		missing := make([]string, 0, len(r.MissingEvidence))
+		for _, req := range r.MissingEvidence {
+			missing = append(missing, req.Type)
+		}
+		out = append(out, WhyChainItem{
+			RuleID:           r.RuleID,
+			RuleName:         r.Name,
+			Verdict:          verdictOfResult(r),
+			Explanation:      r.Explanation,
+			GapNarrative:     r.GapNarrative,
+			ReasonCode:       r.ReasonCode,
+			PreconditionOK:   r.PrecondOK,
+			SupportingEvents: append([]string(nil), r.SupportingEventIDs...),
+			MissingEvidence:  missing,
+			CausalBlockers:   append([]string(nil), r.CausalBlockers...),
+			NecessaryCauses:  append([]string(nil), r.NecessaryCauses...),
+		})
+	}
+	return out
+}
+
+func buildCounterfactuals(results []model.RuleResult, nextMoves []string) []CounterfactualItem {
+	out := make([]CounterfactualItem, 0, len(results))
+	for _, r := range results {
+		item := CounterfactualItem{RuleID: r.RuleID}
+		if r.Conflicted {
+			item.Assumption = "Contradictory evidence is resolved in attacker favor."
+			item.Prediction = "Attack path may become feasible if contradiction is removed and required evidence appears."
+		} else if len(r.MissingEvidence) > 0 {
+			missing := make([]string, 0, len(r.MissingEvidence))
+			for _, req := range r.MissingEvidence {
+				missing = append(missing, req.Type)
+			}
+			item.Assumption = "Missing evidence appears: " + strings.Join(missing, ", ")
+			item.Prediction = "Verdict likely shifts from INCOMPLETE to POSSIBLE/CONFIRMED if preconditions remain true."
+		} else if r.Feasible {
+			item.Assumption = "Current feasible path is uninterrupted."
+			item.Prediction = "Attacker likely advances along reachable state graph."
+		} else {
+			item.Assumption = "Policy or environment constraint changes."
+			item.Prediction = "Path may open if controls degrade or telemetry context changes."
+		}
+		if len(nextMoves) > 0 {
+			limit := 3
+			if len(nextMoves) < limit {
+				limit = len(nextMoves)
+			}
+			item.NextActions = append(item.NextActions, nextMoves[:limit]...)
+		}
+		out = append(out, item)
+	}
+	return out
+}
+
+func filterControlsForDecision(export ControlsExport, decisionID string) ControlsExport {
+	filtered := ControlsExport{
+		GeneratedAt:        export.GeneratedAt,
+		AuditChainVerified: export.AuditChainVerified,
+		AuditChainError:    export.AuditChainError,
+	}
+	ruleIDs := map[string]bool{}
+	for _, d := range export.DecisionControls {
+		if d.DecisionID != decisionID {
+			continue
+		}
+		filtered.DecisionControls = append(filtered.DecisionControls, d)
+		ruleIDs[d.RuleID] = true
+	}
+	for _, m := range export.RuleControlMappings {
+		if ruleIDs[m.RuleID] {
+			filtered.RuleControlMappings = append(filtered.RuleControlMappings, m)
+		}
+	}
+	for _, d := range export.DualApprovals {
+		if d.DecisionID == decisionID {
+			filtered.DualApprovals = append(filtered.DualApprovals, d)
+		}
+	}
+	return filtered
+}
+
+func approvalSummaryForDecision(approvals []DualApprovalSummary, decisionID string) DualApprovalSummary {
+	for _, a := range approvals {
+		if a.DecisionID == decisionID {
+			return a
+		}
+	}
+	return DualApprovalSummary{
+		DecisionID:   decisionID,
+		Required:     2,
+		DualApproved: false,
+	}
+}
+
+func verdictOfResult(r model.RuleResult) string {
+	switch {
+	case r.PolicyImpossible:
+		return "POLICY_IMPOSSIBLE"
+	case r.Conflicted:
+		return "CONFLICTED"
+	case r.Feasible:
+		return "POSSIBLE"
+	case !r.PrecondOK || len(r.MissingEvidence) > 0:
+		return "INCOMPLETE"
+	default:
+		return "IMPOSSIBLE"
+	}
+}
+
+func packageTimestamp(reproducible bool, fallback time.Time) time.Time {
+	if reproducible {
+		if !fallback.IsZero() {
+			return fallback.UTC()
+		}
+		return time.Unix(0, 0).UTC()
+	}
+	return time.Now().UTC()
+}
+
 func handleAudit(args []string) {
 	if len(args) == 0 {
-		fatal(errors.New("audit requires a subcommand: verify|explain|export"))
+		fatal(errors.New("audit requires a subcommand: verify|explain|export|bundle|bundle-verify|package"))
 	}
 	switch args[0] {
 	case "verify":
@@ -1581,6 +1952,8 @@ func handleAudit(args []string) {
 		fs := flag.NewFlagSet("audit explain", flag.ExitOnError)
 		auditPath := fs.String("audit", "data/audit.log", "audit log")
 		decision := fs.String("decision", "", "decision id")
+		rulesPath := fs.String("rules", "data/rules.json", "rules file")
+		extraPath := fs.String("rules-extra", "", "optional extra rules file")
 		if err := fs.Parse(args[1:]); err != nil {
 			fatal(err)
 		}
@@ -1594,6 +1967,29 @@ func handleAudit(args []string) {
 		outln("Decision: " + artifact.ID)
 		outln("Summary: " + artifact.Summary)
 		outln("Findings: " + strings.Join(artifact.Findings, "; "))
+		ruleIDs := compliance.ExtractRuleIDsFromFindings(artifact.Findings)
+		if len(ruleIDs) > 0 {
+			rules, err := logic.LoadRulesCombined(*rulesPath, *extraPath)
+			if err != nil {
+				fatal(err)
+			}
+			mappings := compliance.BuildRuleControlMappings(ruleIDs, rules)
+			if len(mappings) > 0 {
+				outln("Control mapping (SOC 2 / NIST CSF / ISO 27001):")
+				for _, m := range mappings {
+					outln("- " + m.RuleID + " (" + m.RuleName + ")")
+					if len(m.NistCSF) > 0 {
+						outln("  NIST CSF: " + strings.Join(m.NistCSF, ", "))
+					}
+					if len(m.Soc2CC) > 0 {
+						outln("  SOC 2: " + strings.Join(m.Soc2CC, ", "))
+					}
+					if len(m.ISO27001) > 0 {
+						outln("  ISO 27001: " + strings.Join(m.ISO27001, ", "))
+					}
+				}
+			}
+		}
 	case "export":
 		fs := flag.NewFlagSet("audit export", flag.ExitOnError)
 		auditPath := fs.String("audit", "data/audit.log", "audit log")
@@ -1623,6 +2019,232 @@ func handleAudit(args []string) {
 			fatal(err)
 		}
 		outln("Audit export written: " + *out)
+	case "bundle":
+		fs := flag.NewFlagSet("audit bundle", flag.ExitOnError)
+		auditPath := fs.String("audit", "data/audit.log", "audit log")
+		signedAuditPath := fs.String("signed-audit", "data/signed_audit.log", "signed audit log")
+		approvalsPath := fs.String("approvals", "data/approvals.log", "approvals log")
+		reportPath := fs.String("report", "data/report.json", "assessment report")
+		rulesPath := fs.String("rules", "data/rules.json", "rules file")
+		rulesExtra := fs.String("rules-extra", "", "optional extra rules file")
+		controlsJSON := fs.Bool("controls-json", false, "embed structured controls export into the bundle")
+		reproducible := fs.Bool("reproducible", false, "produce deterministic bundle bytes for identical inputs")
+		out := fs.String("out", "data/evidence_bundle.zip", "bundle output path")
+		keyPath := fs.String("key", "", "optional keypair json for bundle signature")
+		signer := fs.String("signer", "", "bundle signer id")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		inputs := map[string]string{}
+		if strings.TrimSpace(*auditPath) != "" {
+			inputs["audit"] = *auditPath
+		}
+		if strings.TrimSpace(*signedAuditPath) != "" {
+			inputs["signed_audit"] = *signedAuditPath
+		}
+		if strings.TrimSpace(*approvalsPath) != "" {
+			inputs["approvals"] = *approvalsPath
+		}
+		if strings.TrimSpace(*reportPath) != "" {
+			inputs["report"] = *reportPath
+		}
+		opts := audit.BundleOptions{
+			OutputPath:   *out,
+			Inputs:       inputs,
+			Reproducible: *reproducible,
+			Signer:       strings.TrimSpace(*signer),
+		}
+		if *controlsJSON {
+			export, err := buildControlsExport(*auditPath, *approvalsPath, *rulesPath, *rulesExtra, *reproducible)
+			if err != nil {
+				fatal(err)
+			}
+			payload, err := json.MarshalIndent(export, "", "  ")
+			if err != nil {
+				fatal(err)
+			}
+			opts.Inline = map[string][]byte{
+				"controls.json": payload,
+			}
+		}
+		if strings.TrimSpace(*keyPath) != "" {
+			var kp KeypairFile
+			readJSON(*keyPath, &kp)
+			opts.PublicKey = kp.PublicKey
+			opts.PrivateKey = kp.PrivateKey
+		}
+		manifest, err := audit.CreateEvidenceBundle(opts)
+		if err != nil {
+			fatal(err)
+		}
+		outln("Evidence bundle written: " + *out)
+		outln(fmt.Sprintf("Files: %d", len(manifest.Files)))
+		outln("Digest: " + manifest.Digest)
+		if manifest.Signature != "" {
+			outln("Signature: present")
+		}
+	case "bundle-verify":
+		fs := flag.NewFlagSet("audit bundle-verify", flag.ExitOnError)
+		bundle := fs.String("bundle", "", "bundle zip path")
+		pubkey := fs.String("pubkey", "", "optional expected base64 public key")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		if strings.TrimSpace(*bundle) == "" {
+			fatal(errors.New("audit bundle-verify requires --bundle"))
+		}
+		res, err := audit.VerifyEvidenceBundle(*bundle, strings.TrimSpace(*pubkey))
+		if err != nil {
+			if gFlags.JSON {
+				outJSON(res)
+			}
+			fatal(err)
+		}
+		if gFlags.JSON {
+			outJSON(res)
+			return
+		}
+		outln(fmt.Sprintf("Bundle files verified: %d", res.FilesVerified))
+		outln("Digest: VALID")
+		if res.SignaturePresent && res.SignatureValid {
+			outln("Signature: VALID")
+		} else if !res.SignaturePresent {
+			outln("Signature: NOT PRESENT")
+		}
+		outln("Evidence bundle verification passed")
+	case "package":
+		fs := flag.NewFlagSet("audit package", flag.ExitOnError)
+		decisionID := fs.String("decision", "", "decision id")
+		auditPath := fs.String("audit", "data/audit.log", "audit log")
+		approvalsPath := fs.String("approvals", "data/approvals.log", "approvals log")
+		reportPath := fs.String("report", "data/report.json", "assessment report")
+		rulesPath := fs.String("rules", "data/rules.json", "rules file")
+		rulesExtra := fs.String("rules-extra", "", "optional extra rules file")
+		out := fs.String("out", "", "output evidence zip")
+		keyPath := fs.String("key", "", "optional keypair json for bundle signature")
+		signer := fs.String("signer", "", "bundle signer id")
+		includeWhy := fs.Bool("include-why", true, "include causal why-chain export")
+		includeCounterfactuals := fs.Bool("include-counterfactuals", true, "include counterfactual what-if export")
+		includeControls := fs.Bool("controls-json", true, "include controls mapping export")
+		requireDual := fs.Bool("require-dual", false, "require dual approval before packaging")
+		reproducible := fs.Bool("reproducible", false, "produce deterministic package bytes for identical inputs")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		if strings.TrimSpace(*decisionID) == "" {
+			fatal(errors.New("audit package requires --decision"))
+		}
+		if strings.TrimSpace(*out) == "" {
+			fatal(errors.New("audit package requires --out"))
+		}
+		artifacts, err := readAuditArtifacts(*auditPath)
+		if err != nil {
+			fatal(err)
+		}
+		artifact, err := findArtifactByID(artifacts, *decisionID)
+		if err != nil {
+			fatal(err)
+		}
+		rep, err := loadCoreOutput(*reportPath)
+		if err != nil {
+			fatal(err)
+		}
+		rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
+		if err != nil {
+			fatal(err)
+		}
+		controlsExport, err := buildControlsExport(*auditPath, *approvalsPath, *rulesPath, *rulesExtra, *reproducible)
+		if err != nil {
+			fatal(err)
+		}
+		decisionApprovals := approvalSummaryForDecision(controlsExport.DualApprovals, *decisionID)
+		if *requireDual && !decisionApprovals.DualApproved {
+			fatal(errors.New("dual approval required but not satisfied for decision"))
+		}
+		inline := map[string][]byte{}
+		decisionPayload := DecisionPackage{
+			DecisionID: artifact.ID,
+			Summary:    artifact.Summary,
+			Findings:   artifact.Findings,
+			Reasoning:  artifact.Reasoning,
+			CreatedAt:  artifact.CreatedAt.Format(time.RFC3339),
+			Hash:       artifact.Hash,
+			PrevHash:   artifact.PrevHash,
+		}
+		decisionBytes, err := json.MarshalIndent(decisionPayload, "", "  ")
+		if err != nil {
+			fatal(err)
+		}
+		inline["decision.json"] = decisionBytes
+
+		matched := matchRuleResultsForDecision(artifact, rep.Reasoning.Results)
+		if *includeWhy {
+			why := buildWhyChain(matched)
+			whyBytes, err := json.MarshalIndent(why, "", "  ")
+			if err != nil {
+				fatal(err)
+			}
+			inline["why_chain.json"] = whyBytes
+		}
+		if *includeCounterfactuals {
+			counterfactuals := buildCounterfactuals(matched, rep.NextMoves)
+			cfBytes, err := json.MarshalIndent(counterfactuals, "", "  ")
+			if err != nil {
+				fatal(err)
+			}
+			inline["counterfactuals.json"] = cfBytes
+		}
+		if *includeControls {
+			filtered := filterControlsForDecision(controlsExport, *decisionID)
+			controlsBytes, err := json.MarshalIndent(filtered, "", "  ")
+			if err != nil {
+				fatal(err)
+			}
+			inline["controls.json"] = controlsBytes
+		}
+		oversightBytes, err := json.MarshalIndent(decisionApprovals, "", "  ")
+		if err != nil {
+			fatal(err)
+		}
+		inline["oversight.json"] = oversightBytes
+		inline["rule_catalog_version.json"], err = json.MarshalIndent(map[string]any{
+			"generated_at": packageTimestamp(*reproducible, artifact.CreatedAt).Format(time.RFC3339),
+			"rule_count":   len(rules),
+			"rules_file":   *rulesPath,
+		}, "", "  ")
+		if err != nil {
+			fatal(err)
+		}
+
+		inputs := map[string]string{
+			"audit":     *auditPath,
+			"approvals": *approvalsPath,
+			"report":    *reportPath,
+		}
+		opts := audit.BundleOptions{
+			OutputPath:   *out,
+			Inputs:       inputs,
+			Inline:       inline,
+			Reproducible: *reproducible,
+			Signer:       strings.TrimSpace(*signer),
+		}
+		if strings.TrimSpace(*keyPath) != "" {
+			var kp KeypairFile
+			readJSON(*keyPath, &kp)
+			opts.PublicKey = kp.PublicKey
+			opts.PrivateKey = kp.PrivateKey
+		}
+		manifest, err := audit.CreateEvidenceBundle(opts)
+		if err != nil {
+			fatal(err)
+		}
+		outln("Audit package written: " + *out)
+		outln(fmt.Sprintf("Decision: %s", artifact.ID))
+		outln(fmt.Sprintf("Files: %d", len(manifest.Files)))
+		outln("Digest: " + manifest.Digest)
+		if manifest.Signature != "" {
+			outln("Signature: present")
+		}
 	default:
 		fatal(errors.New("unknown audit subcommand"))
 	}

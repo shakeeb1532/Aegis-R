@@ -43,3 +43,20 @@ func TestVerifyDualRequiresDistinctSigners(t *testing.T) {
 		t.Fatalf("expected insufficient valid approvals")
 	}
 }
+
+func TestVerifyDualRejectsMinSignersBelowTwo(t *testing.T) {
+	pub1, priv1, err := GenerateKeypair()
+	if err != nil {
+		t.Fatalf("keygen: %v", err)
+	}
+	pub2, priv2, err := GenerateKeypair()
+	if err != nil {
+		t.Fatalf("keygen: %v", err)
+	}
+	a1, _ := Sign("change-1", 5*time.Minute, true, "alice", "approver", pub1, priv1)
+	a2, _ := Sign("change-1", 5*time.Minute, true, "bob", "approver", pub2, priv2)
+	d := DualApproval{Approvals: []Approval{a1, a2}, MinSigners: 1, RequireOkta: true}
+	if err := VerifyDual(d, time.Now().UTC()); err == nil {
+		t.Fatalf("expected min_signers validation error")
+	}
+}

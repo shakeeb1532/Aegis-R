@@ -9,7 +9,9 @@ import (
 	"errors"
 	"io"
 	"os"
+	"path/filepath"
 	"strings"
+	"sync"
 	"time"
 
 	"aman/internal/compress"
@@ -26,6 +28,11 @@ type Artifact struct {
 	Hash      string            `json:"hash"`
 	Metadata  map[string]string `json:"metadata"`
 }
+
+var (
+	appendMu       sync.Mutex
+	lastHashByPath = map[string]string{}
+)
 
 func HashArtifact(a Artifact) (string, error) {
 	clone := a
@@ -45,6 +52,35 @@ func LoadLastHash(path string) (string, error) {
 	if !ops.IsSafePath(path) {
 		return "", os.ErrInvalid
 	}
+	cleanPath := filepath.Clean(path)
+	appendMu.Lock()
+	if cached, ok := lastHashByPath[cleanPath]; ok {
+		appendMu.Unlock()
+		return cached, nil
+	}
+	appendMu.Unlock()
+
+	if !strings.HasSuffix(path, ".lz4") {
+		lastLine, err := readLastLine(path)
+		if err != nil {
+			if errors.Is(err, os.ErrNotExist) {
+				return "", nil
+			}
+			return "", err
+		}
+		if strings.TrimSpace(lastLine) == "" {
+			return "", nil
+		}
+		var a Artifact
+		if err := json.Unmarshal([]byte(lastLine), &a); err != nil {
+			return "", err
+		}
+		appendMu.Lock()
+		lastHashByPath[cleanPath] = a.Hash
+		appendMu.Unlock()
+		return a.Hash, nil
+	}
+
 	var last string
 	if err := forEachAuditLine(path, func(line []byte) error {
 		text := strings.TrimSpace(string(line))
@@ -66,6 +102,9 @@ func LoadLastHash(path string) (string, error) {
 	if err := json.Unmarshal([]byte(last), &a); err != nil {
 		return "", err
 	}
+	appendMu.Lock()
+	lastHashByPath[cleanPath] = a.Hash
+	appendMu.Unlock()
 	return a.Hash, nil
 }
 
@@ -76,11 +115,13 @@ func AppendLog(path string, a Artifact) error {
 	if !ops.IsSafePath(path) {
 		return os.ErrInvalid
 	}
-	data, err := json.Marshal(a)
-	if err != nil {
+	if err := appendLine(path, a); err != nil {
 		return err
 	}
-	return appendAuditBytes(path, data)
+	appendMu.Lock()
+	lastHashByPath[filepath.Clean(path)] = a.Hash
+	appendMu.Unlock()
+	return nil
 }
 
 func AppendSigned(path string, s SignedArtifact) error {
@@ -90,11 +131,7 @@ func AppendSigned(path string, s SignedArtifact) error {
 	if !ops.IsSafePath(path) {
 		return os.ErrInvalid
 	}
-	data, err := json.Marshal(s)
-	if err != nil {
-		return err
-	}
-	return appendAuditBytes(path, data)
+	return appendLine(path, s)
 }
 
 func VerifyChain(path string) error {
@@ -105,6 +142,8 @@ func VerifyChain(path string) error {
 		return os.ErrInvalid
 	}
 	prevHash := ""
+	appendMu.Lock()
+	defer appendMu.Unlock()
 	if err := forEachAuditLine(path, func(line []byte) error {
 		text := strings.TrimSpace(string(line))
 		if text == "" {
@@ -129,6 +168,7 @@ func VerifyChain(path string) error {
 	}); err != nil {
 		return err
 	}
+	lastHashByPath[filepath.Clean(path)] = prevHash
 	return nil
 }
 
@@ -225,6 +265,8 @@ func forEachAuditLine(path string, fn func([]byte) error) error {
 	}
 
 	scanner := bufio.NewScanner(f)
+	const maxAuditLine = 16 * 1024 * 1024
+	scanner.Buffer(make([]byte, 0, 64*1024), maxAuditLine)
 	for scanner.Scan() {
 		if err := fn(scanner.Bytes()); err != nil {
 			if errors.Is(err, io.EOF) {
@@ -267,4 +309,70 @@ func appendAuditBytes(path string, data []byte) error {
 	defer func() { _ = f.Close() }()
 	_, err = f.Write(data)
 	return err
+}
+
+func appendLine(path string, v any) error {
+	data, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+	appendMu.Lock()
+	defer appendMu.Unlock()
+	return appendAuditBytes(path, data)
+}
+
+func readLastLine(path string) (string, error) {
+	//nolint:gosec // path validated via IsSafePath by caller
+	// #nosec G304
+	f, err := os.Open(path)
+	if err != nil {
+		return "", err
+	}
+	defer func() { _ = f.Close() }()
+
+	info, err := f.Stat()
+	if err != nil {
+		return "", err
+	}
+	if info.Size() == 0 {
+		return "", nil
+	}
+	var (
+		pos     = info.Size()
+		buf     []byte
+		chunkSz int64 = 4096
+	)
+	for pos > 0 {
+		readSz := chunkSz
+		if pos < readSz {
+			readSz = pos
+		}
+		pos -= readSz
+		chunk := make([]byte, readSz)
+		if _, err := f.ReadAt(chunk, pos); err != nil {
+			return "", err
+		}
+		buf = append(chunk, buf...)
+		if idx := strings.LastIndexByte(strings.TrimRight(string(buf), "\n"), '\n'); idx >= 0 {
+			line := strings.TrimSpace(string(buf[idx+1:]))
+			if line != "" {
+				return line, nil
+			}
+		}
+	}
+	line := strings.TrimSpace(string(buf))
+	if line == "" {
+		return "", nil
+	}
+	return line, nil
+}
+
+func ResetCacheForTests(path string) {
+	appendMu.Lock()
+	defer appendMu.Unlock()
+	if path == "" {
+		lastHashByPath = map[string]string{}
+		return
+	}
+	delete(lastHashByPath, filepath.Clean(path))
 }

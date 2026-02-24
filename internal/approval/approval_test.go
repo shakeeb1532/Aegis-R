@@ -19,6 +19,21 @@ func TestApprovalVerify(t *testing.T) {
 	}
 }
 
+func TestApprovalSignAtDeterministic(t *testing.T) {
+	pub, priv, err := GenerateKeypair()
+	if err != nil {
+		t.Fatalf("keygen: %v", err)
+	}
+	now := time.Date(2026, 2, 23, 10, 0, 0, 0, time.UTC)
+	app, err := SignAt("change-1", 5*time.Minute, true, "alice", "approver", pub, priv, now)
+	if err != nil {
+		t.Fatalf("signat: %v", err)
+	}
+	if !app.IssuedAt.Equal(now) {
+		t.Fatalf("expected deterministic issued_at")
+	}
+}
+
 func TestApprovalExpired(t *testing.T) {
 	pub, priv, err := GenerateKeypair()
 	if err != nil {

@@ -5,7 +5,10 @@ import (
 	"encoding/json"
 	"net/http"
 	"os"
+	"sort"
 	"time"
+
+	"aman/internal/approval"
 )
 
 type Server struct {
@@ -77,14 +80,66 @@ func (s *Server) handleGovernance(w http.ResponseWriter, _ *http.Request) {
 	items := []ApprovalItem{}
 	file, err := os.Open(s.approvalsPath)
 	if err == nil {
+		type group struct {
+			latest  approval.Approval
+			signers map[string]bool
+			valid   int
+		}
+		groups := map[string]*group{}
 		scanner := bufio.NewScanner(file)
 		for scanner.Scan() {
-			var item ApprovalItem
-			if err := json.Unmarshal(scanner.Bytes(), &item); err == nil {
-				items = append(items, item)
+			line := scanner.Bytes()
+			var wrapped struct {
+				Approval approval.Approval `json:"approval"`
+			}
+			a := approval.Approval{}
+			if err := json.Unmarshal(line, &wrapped); err == nil && wrapped.Approval.ID != "" {
+				a = wrapped.Approval
+			} else if err := json.Unmarshal(line, &a); err != nil || a.ID == "" {
+				continue
+			}
+			g, ok := groups[a.ID]
+			if !ok {
+				g = &group{signers: map[string]bool{}}
+				groups[a.ID] = g
+			}
+			g.latest = a
+			if a.SignerID != "" {
+				g.signers[a.SignerID] = true
+			}
+			if err := approval.Verify(a, false, time.Now().UTC()); err == nil && a.SignerID != "" {
+				g.valid++
 			}
 		}
 		_ = file.Close()
+		for id, g := range groups {
+			signers := make([]string, 0, len(g.signers))
+			for s := range g.signers {
+				signers = append(signers, s)
+			}
+			sort.Strings(signers)
+			status := "pending_second_approval"
+			dualApproved := g.valid >= 2
+			if dualApproved {
+				status = "dual_approved"
+			} else if g.valid == 1 {
+				status = "single_approved"
+			}
+			items = append(items, ApprovalItem{
+				ID:            id,
+				Scope:         id,
+				Status:        status,
+				Approver:      g.latest.SignerID,
+				Approvers:     signers,
+				Expires:       formatTime(g.latest.ExpiresAt.Format(time.RFC3339)),
+				DualRequired:  2,
+				ValidSigners:  g.valid,
+				DualApproved:  dualApproved,
+				OktaVerified:  g.latest.OktaVerified,
+				HumanDecision: "human_signoff_required",
+			})
+		}
+		sort.Slice(items, func(i, j int) bool { return items[i].ID < items[j].ID })
 	}
 	writeJSON(w, items)
 }

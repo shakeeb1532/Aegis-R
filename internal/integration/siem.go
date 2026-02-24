@@ -2,7 +2,6 @@ package integration
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"strings"
 
@@ -46,6 +45,5 @@ func ExportSIEM(path string, out core.Output) error {
 	if err := os.WriteFile(path, data, 0600); err != nil {
 		return err
 	}
-	fmt.Printf("SIEM export written: %s\n", path)
 	return nil
 }

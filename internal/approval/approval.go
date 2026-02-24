@@ -42,7 +42,11 @@ func GenerateKeypair() (ed25519.PublicKey, ed25519.PrivateKey, error) {
 }
 
 func Sign(id string, ttl time.Duration, oktaVerified bool, signerID string, signerRole string, pub ed25519.PublicKey, priv ed25519.PrivateKey) (Approval, error) {
-	issued := time.Now().UTC()
+	return SignAt(id, ttl, oktaVerified, signerID, signerRole, pub, priv, time.Now().UTC())
+}
+
+func SignAt(id string, ttl time.Duration, oktaVerified bool, signerID string, signerRole string, pub ed25519.PublicKey, priv ed25519.PrivateKey, now time.Time) (Approval, error) {
+	issued := now.UTC()
 	expires := issued.Add(ttl)
 	payload := Payload{
 		ID:           id,
@@ -105,6 +109,7 @@ func Verify(a Approval, requireOkta bool, now time.Time) error {
 }
 
 func VerifySignerRole(a Approval, allowedRoles []string) error {
+	// Empty allowedRoles means "no role restriction".
 	if len(allowedRoles) == 0 {
 		return nil
 	}
@@ -120,14 +125,17 @@ func VerifyDual(d DualApproval, now time.Time) error {
 	if d.MinSigners <= 0 {
 		d.MinSigners = 2
 	}
+	if d.MinSigners < 2 {
+		return errors.New("min_signers must be at least 2 for dual approval")
+	}
 	valid := 0
 	unique := map[string]bool{}
 	for _, a := range d.Approvals {
 		if err := Verify(a, d.RequireOkta, now); err == nil {
-			key := a.SignerID
-			if key == "" {
-				key = a.PublicKey
+			if a.SignerID == "" {
+				continue
 			}
+			key := a.SignerID
 			if !unique[key] {
 				unique[key] = true
 				valid++
