@@ -213,6 +213,75 @@ graph TD
   G --> L
 ```
 
+
+## Verification Battery (Reproducible)
+
+Use this exact battery to validate Aman behavior end-to-end:
+
+```bash
+cd /Users/shak1532/Downloads/Aegis-R
+go test ./...
+go test -race ./...
+go vet ./...
+cd ui && npm run build
+```
+
+Audit/governance artifact verification:
+
+```bash
+cd /Users/shak1532/Downloads/Aegis-R
+go run ./cmd/aman audit verify --audit data/audit.log
+go run ./cmd/aman audit package \
+  --decision artifact-1770804823227571000 \
+  --audit data/audit.log \
+  --approvals data/approvals.log \
+  --report data/report.json \
+  --rules data/rules.json \
+  --controls-json \
+  --include-why \
+  --include-counterfactuals \
+  --key data/keypair.json \
+  --signer soc-admin \
+  --out /tmp/aman-check.evidence.zip
+go run ./cmd/aman audit bundle-verify --bundle /tmp/aman-check.evidence.zip
+```
+
+Expected outputs:
+- `Audit chain: VALID`
+- `Digest: VALID`
+- `Signature: VALID` (if a signing key is provided)
+
+## Pilot-Focused Capability Snapshot
+
+- Causal verdicting (`POSSIBLE`, `INCOMPLETE`, `CONFLICTED`, `POLICY_IMPOSSIBLE`)
+- Human governance with signed approvals and dual-control checks
+- Signed `.evidence.zip` package with:
+  - `decision.json`
+  - `why_chain.json`
+  - `counterfactuals.json`
+  - `controls.json`
+  - `oversight.json`
+  - `manifest.json`
+- Control mapping export (NIST CSF, SOC 2 CC, ISO 27001)
+- Audit chain verification and bundle verification commands
+
+## Audit Package Command (Single Artifact)
+
+```bash
+go run ./cmd/aman audit package \
+  --decision <decision_id> \
+  --audit data/audit.log \
+  --approvals data/approvals.log \
+  --report data/report.json \
+  --rules data/rules.json \
+  --controls-json \
+  --include-why \
+  --include-counterfactuals \
+  --key data/keypair.json \
+  --signer soc-admin \
+  --out data/evidence_inspect/<decision_id>.evidence.zip
+```
+
 ## Quick Start
 
 ### 1) Install Go
