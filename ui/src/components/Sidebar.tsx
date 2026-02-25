@@ -1,23 +1,30 @@
 import { NavLink } from "react-router-dom";
 
 const nav = [
-  { path: "/", label: "Overview" },
-  { path: "/attack-graph", label: "Attack Graph" },
-  { path: "/reasoning", label: "Reasoning" },
-  { path: "/queue", label: "Reasoning Queue" },
-  { path: "/governance", label: "Governance" },
-  { path: "/audit", label: "Audit & Evidence" },
-  { path: "/evaluations", label: "Evaluations" }
+  { path: "/", label: "Dashboard", icon: "▦" },
+  { path: "/reasoning", label: "Decisions", icon: "◌" },
+  { path: "/queue", label: "Queue", icon: "◍" },
+  { path: "/governance", label: "Governance", icon: "✶" },
+  { path: "/audit", label: "Audit", icon: "◫" },
+  { path: "/attack-graph", label: "Attack Graph", icon: "◉" },
+  { path: "/evaluations", label: "Evaluations", icon: "◈" }
 ];
 
 export function Sidebar() {
   return (
-    <aside className="h-screen w-64 border-r border-border bg-panel px-6 py-8">
-      <div className="mb-10">
-        <p className="text-xs uppercase tracking-[0.3em] text-muted">Aman</p>
-        <h1 className="section-title text-2xl font-semibold">Analyst Console</h1>
+    <aside className="sticky top-0 flex h-screen w-72 flex-col border-r border-border/80 bg-panel px-5 py-6">
+      <div className="mb-8 flex items-center gap-3 rounded-2xl border border-border/70 bg-panelElev px-3 py-3">
+        <div className="grid h-12 w-12 place-items-center rounded-xl border border-teal/30 bg-panel text-lg text-teal">
+          ⛨
+        </div>
+        <div>
+          <p className="section-title text-xl font-semibold tracking-wide">AMAN</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-muted">Security Governance</p>
+        </div>
       </div>
-      <nav className="flex flex-col gap-2 text-sm">
+
+      <p className="mb-3 px-2 text-xs uppercase tracking-[0.2em] text-muted">Navigation</p>
+      <nav className="flex flex-col gap-1.5 text-base">
         {nav.map((item) => (
           <NavLink
             key={item.path}
@@ -25,20 +32,23 @@ export function Sidebar() {
             end={item.path === "/"}
             className={({ isActive }) =>
               [
-                "rounded-xl px-4 py-3 transition",
+                "group flex items-center gap-3 rounded-xl px-4 py-3 transition",
                 isActive
-                  ? "bg-panelElev text-teal shadow-glow"
-                  : "text-muted hover:bg-panelElev hover:text-text"
+                  ? "border border-[#1f4f73] bg-[#0d2234] text-[#34c9ff] shadow-glow"
+                  : "border border-transparent text-muted hover:border-border/60 hover:bg-panelElev hover:text-text"
               ].join(" ")
             }
           >
+            <span className="text-sm opacity-80">{item.icon}</span>
             {item.label}
           </NavLink>
         ))}
       </nav>
-      <div className="mt-auto pt-12 text-xs text-muted">
-        Tenant: pilot-01<br />
-        Mode: Human-governed
+
+      <div className="mt-auto rounded-xl border border-border/70 bg-panelElev p-3 text-xs text-muted">
+        <div className="mb-1 uppercase tracking-[0.14em]">Pilot Status</div>
+        <div>Tenant: aman-pilot</div>
+        <div>Mode: Human-governed</div>
       </div>
     </aside>
   );
