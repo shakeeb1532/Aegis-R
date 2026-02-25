@@ -4,21 +4,24 @@
 
 :root {
   color-scheme: dark;
-  --base: #0b1117;
-  --panel: #121a22;
-  --panel-elev: #18222c;
-  --border: #233140;
-  --text: #eef2f6;
-  --muted: #98a6b8;
-  --teal: #2dd4bf;
-  --amber: #f59e0b;
-  --red: #f87171;
-  --purple: #8b5cf6;
+  --base: #070d16;
+  --panel: #0f1824;
+  --panel-elev: #162334;
+  --border: #203347;
+  --text: #e9f1ff;
+  --muted: #8399b3;
+  --teal: #27beff;
+  --amber: #f7b53b;
+  --red: #ff4f5e;
+  --purple: #9b6dff;
 }
 
 body {
+  margin: 0;
+  min-height: 100vh;
   font-family: "IBM Plex Sans", sans-serif;
-  background: radial-gradient(circle at 20% 20%, #16212d 0%, #0b1117 45%) fixed;
+  background: linear-gradient(180deg, #070d16 0%, #0a1320 100%) fixed;
+  color: var(--text);
 }
 
 a {

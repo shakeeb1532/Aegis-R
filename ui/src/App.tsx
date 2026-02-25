@@ -12,11 +12,11 @@ import { Evaluations } from "./pages/Evaluations";
 
 export default function App() {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-base text-text">
       <Sidebar />
       <div className="flex flex-1 flex-col">
         <TopBar />
-        <main className="flex-1 space-y-8 bg-base px-8 py-8">
+        <main className="flex-1 space-y-8 bg-base px-4 py-6 md:px-6 xl:px-8">
           <Routes>
             <Route path="/" element={<Overview />} />
             <Route path="/attack-graph" element={<AttackGraph />} />
