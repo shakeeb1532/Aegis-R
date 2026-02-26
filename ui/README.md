@@ -53,3 +53,4 @@ Expected:
 ## Notes
 - If API is unavailable, the UI falls back to sample data for visual testing.
 - For pilot demos, use real API mode (`VITE_API_BASE`) to show live governance/audit status.
+- Backend enforces conditional trust boundaries (`requires`) and stricter credential-access signals; keep `env.json` and `rules.json` aligned.

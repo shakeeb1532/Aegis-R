@@ -69,6 +69,24 @@ Aman is a human-governed security reasoning system that evaluates causal feasibi
 
 ---
 
+## Recent Correctness Updates (Batch A)
+- **Temporal preconditions** now enforce causal ordering (preconditions must occur before supporting evidence).
+- **Credential access** facts are restricted to credential-specific signals (e.g., `lsass_access`, `credential_dumping`).
+- **Conditional trust boundaries** are supported via `requires` on `trust_boundaries` and validated on load.
+- **Contradictions** expanded for key rules (LOLBin chain, C2, persistence, log tampering).
+
+Example trust boundary with conditions (`env.json`):
+```json
+{
+  "id": "tb-conditional-1",
+  "from": "user-net",
+  "to": "secure-net",
+  "mode": "conditional",
+  "requires": ["valid_account_login", "c2_established"],
+  "notes": "Requires active session + C2 before traversal"
+}
+```
+
 ## Test Results (Latest)
 
 Command:
