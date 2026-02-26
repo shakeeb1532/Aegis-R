@@ -6279,6 +6279,926 @@
           "ticket_status": "in_review"
         }
       ]
+    },
+    {
+      "id": "realistic-271",
+      "description": "Drive-by Compromise",
+      "events": [
+        {
+          "id": "b5-0-e",
+          "time": "2026-02-06T19:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0001_drive_by",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.DRIVE_BY",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0001.DRIVE_BY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-272",
+      "description": "Exploit Public-Facing Application",
+      "events": [
+        {
+          "id": "b5-1-e",
+          "time": "2026-02-06T19:02:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0001_exploit_public",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.EXPLOIT_PUBLIC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0001.EXPLOIT_PUBLIC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-273",
+      "description": "External Remote Services",
+      "events": [
+        {
+          "id": "b5-2-e",
+          "time": "2026-02-06T19:04:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0001_extern_remote_svc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.EXTERN_REMOTE_SVC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0001.EXTERN_REMOTE_SVC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-274",
+      "description": "Replication Through Removable Media",
+      "events": [
+        {
+          "id": "b5-3-e",
+          "time": "2026-02-06T19:06:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0001_repl_removable",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.REPL_REMOVABLE",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0001.REPL_REMOVABLE",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-275",
+      "description": "Trusted Relationship",
+      "events": [
+        {
+          "id": "b5-4-e",
+          "time": "2026-02-06T19:08:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0001_trusted_relation",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.TRUSTED_RELATION",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0001.TRUSTED_RELATION",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-276",
+      "description": "Valid Accounts \u2013 External",
+      "events": [
+        {
+          "id": "b5-5-e",
+          "time": "2026-02-06T19:10:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0001_valid_accounts_ext",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.VALID_ACCOUNTS_EXT",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0001.VALID_ACCOUNTS_EXT",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-277",
+      "description": "Content Injection",
+      "events": [
+        {
+          "id": "b5-6-e",
+          "time": "2026-02-06T19:12:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0001_content_injection",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0001.CONTENT_INJECTION",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0001.CONTENT_INJECTION",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-278",
+      "description": "Command & Scripting \u2013 PowerShell",
+      "events": [
+        {
+          "id": "b5-7-p1",
+          "time": "2026-02-06T19:14:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b5-7-p2",
+          "time": "2026-02-06T19:15:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b5-7-e",
+          "time": "2026-02-06T19:16:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_cmd_script_ps",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.CMD_SCRIPT_PS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.CMD_SCRIPT_PS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-279",
+      "description": "Command & Scripting \u2013 Bash/Shell",
+      "events": [
+        {
+          "id": "b5-8-p1",
+          "time": "2026-02-06T19:16:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b5-8-p2",
+          "time": "2026-02-06T19:17:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b5-8-e",
+          "time": "2026-02-06T19:18:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_cmd_script_bash",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.CMD_SCRIPT_BASH",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.CMD_SCRIPT_BASH",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-280",
+      "description": "Command & Scripting \u2013 Python",
+      "events": [
+        {
+          "id": "b5-9-p1",
+          "time": "2026-02-06T19:18:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b5-9-p2",
+          "time": "2026-02-06T19:19:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b5-9-e",
+          "time": "2026-02-06T19:20:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_cmd_script_python",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.CMD_SCRIPT_PYTHON",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.CMD_SCRIPT_PYTHON",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-281",
+      "description": "Command & Scripting \u2013 Visual Basic/VBA",
+      "events": [
+        {
+          "id": "b5-10-p1",
+          "time": "2026-02-06T19:20:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b5-10-p2",
+          "time": "2026-02-06T19:21:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b5-10-e",
+          "time": "2026-02-06T19:22:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_cmd_script_vba",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.CMD_SCRIPT_VBA",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.CMD_SCRIPT_VBA",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-282",
+      "description": "Command & Scripting \u2013 JavaScript/JScript",
+      "events": [
+        {
+          "id": "b5-11-p1",
+          "time": "2026-02-06T19:22:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b5-11-p2",
+          "time": "2026-02-06T19:23:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b5-11-e",
+          "time": "2026-02-06T19:24:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_cmd_script_js",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.CMD_SCRIPT_JS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.CMD_SCRIPT_JS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-283",
+      "description": "Command & Scripting \u2013 Cloud API",
+      "events": [
+        {
+          "id": "b5-12-p1",
+          "time": "2026-02-06T19:24:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b5-12-p2",
+          "time": "2026-02-06T19:25:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b5-12-e",
+          "time": "2026-02-06T19:26:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_cmd_script_cloud",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.CMD_SCRIPT_CLOUD",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.CMD_SCRIPT_CLOUD",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-284",
+      "description": "Container Administration Command",
+      "events": [
+        {
+          "id": "b5-13-p1",
+          "time": "2026-02-06T19:26:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b5-13-p2",
+          "time": "2026-02-06T19:27:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b5-13-e",
+          "time": "2026-02-06T19:28:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_container_admin",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.CONTAINER_ADMIN",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.CONTAINER_ADMIN",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-285",
+      "description": "Deploy Container",
+      "events": [
+        {
+          "id": "b5-14-p1",
+          "time": "2026-02-06T19:28:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b5-14-p2",
+          "time": "2026-02-06T19:29:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b5-14-e",
+          "time": "2026-02-06T19:30:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_deploy_container",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.DEPLOY_CONTAINER",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.DEPLOY_CONTAINER",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-286",
+      "description": "Exploitation for Client Execution",
+      "events": [
+        {
+          "id": "b5-15-p1",
+          "time": "2026-02-06T19:30:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b5-15-p2",
+          "time": "2026-02-06T19:31:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b5-15-e",
+          "time": "2026-02-06T19:32:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_exploit_client",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.EXPLOIT_CLIENT",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.EXPLOIT_CLIENT",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-287",
+      "description": "Inter-Process Communication (COM/DCOM)",
+      "events": [
+        {
+          "id": "b5-16-p1",
+          "time": "2026-02-06T19:32:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b5-16-p2",
+          "time": "2026-02-06T19:33:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b5-16-e",
+          "time": "2026-02-06T19:34:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_inter_proc_comm",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.INTER_PROC_COMM",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.INTER_PROC_COMM",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-288",
+      "description": "Native API Abuse",
+      "events": [
+        {
+          "id": "b5-17-p1",
+          "time": "2026-02-06T19:34:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b5-17-p2",
+          "time": "2026-02-06T19:35:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b5-17-e",
+          "time": "2026-02-06T19:36:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_native_api",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.NATIVE_API",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.NATIVE_API",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-289",
+      "description": "Scheduled Task/Job \u2013 Execution",
+      "events": [
+        {
+          "id": "b5-18-p1",
+          "time": "2026-02-06T19:36:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b5-18-p2",
+          "time": "2026-02-06T19:37:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b5-18-e",
+          "time": "2026-02-06T19:38:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_sched_task_exec",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.SCHED_TASK_EXEC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.SCHED_TASK_EXEC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-290",
+      "description": "Serverless Execution",
+      "events": [
+        {
+          "id": "b5-19-p1",
+          "time": "2026-02-06T19:38:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b5-19-p2",
+          "time": "2026-02-06T19:39:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b5-19-e",
+          "time": "2026-02-06T19:40:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_serverless_exec",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.SERVERLESS_EXEC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.SERVERLESS_EXEC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-291",
+      "description": "System Services \u2013 Service Execution",
+      "events": [
+        {
+          "id": "b5-20-p1",
+          "time": "2026-02-06T19:40:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b5-20-p2",
+          "time": "2026-02-06T19:41:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b5-20-e",
+          "time": "2026-02-06T19:42:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_svc_execution",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.SVC_EXECUTION",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.SVC_EXECUTION",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-292",
+      "description": "User Execution \u2013 Malicious File",
+      "events": [
+        {
+          "id": "b5-21-p1",
+          "time": "2026-02-06T19:42:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b5-21-p2",
+          "time": "2026-02-06T19:43:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b5-21-e",
+          "time": "2026-02-06T19:44:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_user_exec_file",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.USER_EXEC_FILE",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.USER_EXEC_FILE",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-293",
+      "description": "User Execution \u2013 Malicious Link",
+      "events": [
+        {
+          "id": "b5-22-p1",
+          "time": "2026-02-06T19:44:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b5-22-p2",
+          "time": "2026-02-06T19:45:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b5-22-e",
+          "time": "2026-02-06T19:46:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_user_exec_link",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.USER_EXEC_LINK",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.USER_EXEC_LINK",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-294",
+      "description": "Windows Management Instrumentation",
+      "events": [
+        {
+          "id": "b5-23-p1",
+          "time": "2026-02-06T19:46:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b5-23-p2",
+          "time": "2026-02-06T19:47:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b5-23-e",
+          "time": "2026-02-06T19:48:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_wmi_exec",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.WMI_EXEC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.WMI_EXEC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
     }
   ]
 }
