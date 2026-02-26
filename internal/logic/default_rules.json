@@ -560,6 +560,41 @@
     }
   },
   {
+    "id": "TA0003.ACCOUNT_CREATE",
+    "name": "Create Account",
+    "requirements": [
+      {
+        "type": "account_create",
+        "description": "Account created"
+      },
+      {
+        "type": "account_privilege_change",
+        "description": "Account privilege change"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Account creation for persistence.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0003.CLOUD_IMAGE_IMPLANT",
     "name": "Implant Internal Cloud Image",
     "requirements": [
@@ -1170,6 +1205,41 @@
     ]
   },
   {
+    "id": "TA0005.INDICATOR_REMOVAL",
+    "name": "Indicator Removal",
+    "requirements": [
+      {
+        "type": "log_clear",
+        "description": "Logs cleared"
+      },
+      {
+        "type": "file_delete",
+        "description": "Evidence files deleted"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Indicators removed to evade detection.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0005.LOG_TAMPER",
     "name": "Disable or Modify Security Logging",
     "requirements": [
@@ -1219,6 +1289,68 @@
     "kill_chain": [
       "Actions"
     ]
+  },
+  {
+    "id": "TA0005.MASQUERADING",
+    "name": "Masquerading",
+    "requirements": [
+      {
+        "type": "process_masquerade",
+        "description": "Process masquerading"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Masquerading to evade detection.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.OBFUSCATED_FILES",
+    "name": "Obfuscated Files or Information",
+    "requirements": [
+      {
+        "type": "obfuscated_payload",
+        "description": "Obfuscated payload detected"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Obfuscation used to evade defenses.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
   },
   {
     "id": "TA0005.PROCESS_INJECTION",
@@ -1272,6 +1404,37 @@
       "initial_access"
     ],
     "explain": "Living-off-the-land proxy execution after initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.SIGNED_BINARY_PROXY_EXEC",
+    "name": "Signed Binary Proxy Execution",
+    "requirements": [
+      {
+        "type": "signed_binary_proxy",
+        "description": "Signed binary proxy execution"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Abuse of signed binaries to proxy execution.",
     "mitre": {
       "tactic": "",
       "technique": "",
@@ -1812,6 +1975,37 @@
     }
   },
   {
+    "id": "TA0007.ACCOUNT_POLICY_DISCOVERY",
+    "name": "Account Policy Discovery",
+    "requirements": [
+      {
+        "type": "password_policy_discovery",
+        "description": "Password policy discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Discovery of account password policies.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0007.CLOUD_IAM_DISCOVERY",
     "name": "Cloud IAM Discovery",
     "requirements": [
@@ -1925,6 +2119,37 @@
       "initial_access"
     ],
     "explain": "Enumerating network services after initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.NETWORK_SHARE_DISCOVERY",
+    "name": "Network Share Discovery",
+    "requirements": [
+      {
+        "type": "network_share_discovery",
+        "description": "Network share discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Discovery of network shares.",
     "mitre": {
       "tactic": "",
       "technique": "",
@@ -2184,6 +2409,142 @@
     "kill_chain": [
       "Exploitation"
     ]
+  },
+  {
+    "id": "TA0009.ARCHIVE_COLLECTED_DATA",
+    "name": "Archive Collected Data",
+    "requirements": [
+      {
+        "type": "archive_create",
+        "description": "Archive created"
+      },
+      {
+        "type": "bulk_access_download",
+        "description": "Bulk access/download"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Collected data archived prior to exfiltration.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0009.CLOUD_STORAGE_COLLECTION",
+    "name": "Cloud Storage Collection (Alt)",
+    "requirements": [
+      {
+        "type": "cloud_storage_read",
+        "description": "Read from cloud storage"
+      },
+      {
+        "type": "bulk_access_download",
+        "description": "Bulk access/download"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Collection of data from cloud storage.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0009.EMAIL_COLLECTION",
+    "name": "Email Collection",
+    "requirements": [
+      {
+        "type": "mailbox_access",
+        "description": "Mailbox accessed"
+      },
+      {
+        "type": "bulk_access_download",
+        "description": "Bulk access/download"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Bulk collection of email content.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0009.SCREEN_CAPTURE",
+    "name": "Screen Capture",
+    "requirements": [
+      {
+        "type": "screen_capture",
+        "description": "Screen capture activity"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Screen capture used to collect information.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
   },
   {
     "id": "TA0010.BULK_EXFIL",
@@ -2615,6 +2976,134 @@
     ]
   },
   {
+    "id": "TA0011.DNS_TUNNEL",
+    "name": "DNS Tunneling C2",
+    "requirements": [
+      {
+        "type": "dns_tunneling",
+        "description": "DNS tunneling"
+      },
+      {
+        "type": "beacon_outbound",
+        "description": "Beacon outbound"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Command and control via DNS tunneling.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0011.NON_STANDARD_PORT",
+    "name": "Non-Standard Port C2",
+    "requirements": [
+      {
+        "type": "c2_nonstandard_port",
+        "description": "C2 on non-standard port"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "C2 traffic on non-standard ports.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0040.DATA_DESTRUCTION",
+    "name": "Data Destruction",
+    "requirements": [
+      {
+        "type": "data_destroy",
+        "description": "Data destruction observed"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Destructive activity against data.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0040.DISK_WIPE",
+    "name": "Disk Wipe",
+    "requirements": [
+      {
+        "type": "disk_wipe",
+        "description": "Disk wipe observed"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Disk wipe or destructive overwrite.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0040.IMPACT_ENCRYPT",
     "name": "Data Encrypted for Impact",
     "requirements": [
@@ -2711,6 +3200,72 @@
     "kill_chain": [
       "Actions"
     ]
+  },
+  {
+    "id": "TA0040.RESOURCE_HIJACK",
+    "name": "Resource Hijacking",
+    "requirements": [
+      {
+        "type": "cryptomining_process",
+        "description": "Cryptomining process detected"
+      },
+      {
+        "type": "resource_spike",
+        "description": "Resource utilization spike"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Resources hijacked for unauthorized compute.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0040.SERVICE_STOP",
+    "name": "Service Stop",
+    "requirements": [
+      {
+        "type": "service_stop",
+        "description": "Service stopped"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Service interruption for impact.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
   },
   {
     "id": "TA0043.SUPPLY_CHAIN",
