@@ -32,6 +32,7 @@ Aman is a human-governed security reasoning system that evaluates causal feasibi
 - **Reasoning**: Event feasibility checks using environment and rule preconditions.
 - **Progression**: A live attack-progression model that tracks attacker position, confidence, and reachability over time.
 - **Audit**: Tamper-evident decision logs and signed artifacts.
+- **Audit Bundles**: `controls.json` now includes explicit control mappings plus policy + audit lifecycle metadata.
 - **Governance**: Human approvals and constraints that bind reasoning outcomes.
 - **Zero-Trust Initialization**: A strict install-time scan that creates a baseline and prevents poisoning.
 - **Explanation Layer (Optional)**: Generates a narrative summary and investigation steps from structured reasoning output. This never changes verdicts.

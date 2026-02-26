@@ -3,8 +3,10 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"crypto/sha256"
 	"crypto/rand"
 	"encoding/base64"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"flag"
@@ -165,9 +167,35 @@ type ControlsExport struct {
 	GeneratedAt         time.Time                       `json:"generated_at"`
 	AuditChainVerified  bool                            `json:"audit_chain_verified"`
 	AuditChainError     string                          `json:"audit_chain_error,omitempty"`
+	AuditLifecycle      AuditLifecycleMetadata          `json:"audit_lifecycle"`
+	PolicyLifecycle     PolicyLifecycleMetadata         `json:"policy_lifecycle"`
 	DecisionControls    []DecisionControlLink           `json:"decision_controls"`
 	RuleControlMappings []compliance.RuleControlMapping `json:"rule_control_mappings"`
 	DualApprovals       []DualApprovalSummary           `json:"dual_approvals"`
+}
+
+type AuditLifecycleMetadata struct {
+	AuditLog          string    `json:"audit_log"`
+	AuditEntries      int       `json:"audit_entries"`
+	FirstEntryAt      time.Time `json:"first_entry_at"`
+	LastEntryAt       time.Time `json:"last_entry_at"`
+	LastHash          string    `json:"last_hash,omitempty"`
+	SignedAuditLog    string    `json:"signed_audit_log,omitempty"`
+	SignedEntries     int       `json:"signed_entries"`
+	SignedLastAt      time.Time `json:"signed_last_at"`
+	SignedSignerIDs   []string  `json:"signed_signer_ids,omitempty"`
+	SignedAuditError  string    `json:"signed_audit_error,omitempty"`
+}
+
+type PolicyLifecycleMetadata struct {
+	Source                string    `json:"source,omitempty"`
+	PolicyID              string    `json:"policy_id,omitempty"`
+	PolicyHash            string    `json:"policy_hash,omitempty"`
+	LoadedAt              time.Time `json:"loaded_at"`
+	MinApprovals          int       `json:"min_approvals"`
+	AllowedSignerRoles    []string  `json:"allowed_signer_roles,omitempty"`
+	RequireDualForSignals []string  `json:"require_dual_for_signals,omitempty"`
+	Error                 string    `json:"error,omitempty"`
 }
 
 type DecisionControlLink struct {
@@ -1643,6 +1671,35 @@ func readAuditArtifacts(path string) ([]audit.Artifact, error) {
 	return out, nil
 }
 
+func readSignedArtifacts(path string) ([]audit.SignedArtifact, error) {
+	if path == "" {
+		return nil, os.ErrInvalid
+	}
+	if !ops.IsSafePath(path) {
+		return nil, os.ErrInvalid
+	}
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	lines := strings.Split(strings.TrimSpace(string(data)), "\n")
+	out := make([]audit.SignedArtifact, 0, len(lines))
+	for _, line := range lines {
+		if strings.TrimSpace(line) == "" {
+			continue
+		}
+		var s audit.SignedArtifact
+		if err := json.Unmarshal([]byte(line), &s); err != nil {
+			continue
+		}
+		if s.Artifact.ID == "" {
+			continue
+		}
+		out = append(out, s)
+	}
+	return out, nil
+}
+
 func findArtifactByID(artifacts []audit.Artifact, decisionID string) (audit.Artifact, error) {
 	for _, a := range artifacts {
 		if a.ID == decisionID {
@@ -1652,7 +1709,7 @@ func findArtifactByID(artifacts []audit.Artifact, decisionID string) (audit.Arti
 	return audit.Artifact{}, errors.New("decision not found")
 }
 
-func buildControlsExport(auditPath, approvalsPath, rulesPath, rulesExtra string, reproducible bool) (ControlsExport, error) {
+func buildControlsExport(auditPath, signedAuditPath, approvalsPath, rulesPath, rulesExtra, policyPath string, reproducible bool) (ControlsExport, error) {
 	export := ControlsExport{
 		DecisionControls: []DecisionControlLink{},
 		DualApprovals:    []DualApprovalSummary{},
@@ -1691,6 +1748,9 @@ func buildControlsExport(auditPath, approvalsPath, rulesPath, rulesExtra string,
 		}
 		export.GeneratedAt = deterministicNow
 	}
+
+	export.AuditLifecycle = buildAuditLifecycle(export.GeneratedAt, auditPath, signedAuditPath, artifacts)
+	export.PolicyLifecycle = buildPolicyLifecycle(export.GeneratedAt, policyPath)
 
 	allRuleIDs := map[string]bool{}
 	for _, a := range artifacts {
@@ -1761,6 +1821,91 @@ func buildControlsExport(auditPath, approvalsPath, rulesPath, rulesExtra string,
 		})
 	}
 	return export, nil
+}
+
+func buildAuditLifecycle(now time.Time, auditPath, signedAuditPath string, artifacts []audit.Artifact) AuditLifecycleMetadata {
+	meta := AuditLifecycleMetadata{
+		AuditLog:     filepath.Base(auditPath),
+		AuditEntries: len(artifacts),
+	}
+	if len(artifacts) > 0 {
+		meta.FirstEntryAt = artifacts[0].CreatedAt
+		meta.LastEntryAt = artifacts[len(artifacts)-1].CreatedAt
+		meta.LastHash = artifacts[len(artifacts)-1].Hash
+		for _, a := range artifacts {
+			if a.CreatedAt.Before(meta.FirstEntryAt) {
+				meta.FirstEntryAt = a.CreatedAt
+			}
+			if a.CreatedAt.After(meta.LastEntryAt) {
+				meta.LastEntryAt = a.CreatedAt
+			}
+		}
+	}
+	if strings.TrimSpace(signedAuditPath) == "" {
+		return meta
+	}
+	meta.SignedAuditLog = filepath.Base(signedAuditPath)
+	signed, err := readSignedArtifacts(signedAuditPath)
+	if err != nil {
+		if !errors.Is(err, os.ErrNotExist) {
+			meta.SignedAuditError = err.Error()
+		}
+		return meta
+	}
+	meta.SignedEntries = len(signed)
+	signers := map[string]bool{}
+	for _, s := range signed {
+		if s.SignedAt.After(meta.SignedLastAt) {
+			meta.SignedLastAt = s.SignedAt
+		}
+		if s.SignerID != "" {
+			signers[s.SignerID] = true
+		}
+	}
+	if len(signers) > 0 {
+		meta.SignedSignerIDs = make([]string, 0, len(signers))
+		for signer := range signers {
+			meta.SignedSignerIDs = append(meta.SignedSignerIDs, signer)
+		}
+		sort.Strings(meta.SignedSignerIDs)
+	}
+	if meta.SignedLastAt.IsZero() {
+		meta.SignedLastAt = now
+	}
+	return meta
+}
+
+func buildPolicyLifecycle(now time.Time, policyPath string) PolicyLifecycleMetadata {
+	meta := PolicyLifecycleMetadata{LoadedAt: now}
+	if strings.TrimSpace(policyPath) == "" {
+		meta.Error = "policy path not provided"
+		return meta
+	}
+	meta.Source = filepath.Base(policyPath)
+	if !ops.IsSafePath(policyPath) {
+		meta.Error = "policy path rejected"
+		return meta
+	}
+	data, err := os.ReadFile(policyPath)
+	if err != nil {
+		meta.Error = err.Error()
+		return meta
+	}
+	sum := sha256.Sum256(data)
+	meta.PolicyHash = hex.EncodeToString(sum[:])
+	var p governance.Policy
+	if err := json.Unmarshal(data, &p); err != nil {
+		meta.Error = err.Error()
+		return meta
+	}
+	if p.MinApprovals <= 0 {
+		p.MinApprovals = 2
+	}
+	meta.PolicyID = p.ID
+	meta.MinApprovals = p.MinApprovals
+	meta.AllowedSignerRoles = p.AllowedSignerRoles
+	meta.RequireDualForSignals = p.RequireDualForSignals
+	return meta
 }
 
 func loadCoreOutput(path string) (core.Output, error) {
@@ -1873,6 +2018,8 @@ func filterControlsForDecision(export ControlsExport, decisionID string) Control
 		GeneratedAt:        export.GeneratedAt,
 		AuditChainVerified: export.AuditChainVerified,
 		AuditChainError:    export.AuditChainError,
+		AuditLifecycle:     export.AuditLifecycle,
+		PolicyLifecycle:    export.PolicyLifecycle,
 	}
 	ruleIDs := map[string]bool{}
 	for _, d := range export.DecisionControls {
@@ -2027,6 +2174,7 @@ func handleAudit(args []string) {
 		reportPath := fs.String("report", "data/report.json", "assessment report")
 		rulesPath := fs.String("rules", "data/rules.json", "rules file")
 		rulesExtra := fs.String("rules-extra", "", "optional extra rules file")
+		policyPath := fs.String("policy", "data/policy.json", "policy file")
 		controlsJSON := fs.Bool("controls-json", false, "embed structured controls export into the bundle")
 		reproducible := fs.Bool("reproducible", false, "produce deterministic bundle bytes for identical inputs")
 		out := fs.String("out", "data/evidence_bundle.zip", "bundle output path")
@@ -2055,7 +2203,7 @@ func handleAudit(args []string) {
 			Signer:       strings.TrimSpace(*signer),
 		}
 		if *controlsJSON {
-			export, err := buildControlsExport(*auditPath, *approvalsPath, *rulesPath, *rulesExtra, *reproducible)
+			export, err := buildControlsExport(*auditPath, *signedAuditPath, *approvalsPath, *rulesPath, *rulesExtra, *policyPath, *reproducible)
 			if err != nil {
 				fatal(err)
 			}
@@ -2116,10 +2264,12 @@ func handleAudit(args []string) {
 		fs := flag.NewFlagSet("audit package", flag.ExitOnError)
 		decisionID := fs.String("decision", "", "decision id")
 		auditPath := fs.String("audit", "data/audit.log", "audit log")
+		signedAuditPath := fs.String("signed-audit", "data/signed_audit.log", "signed audit log")
 		approvalsPath := fs.String("approvals", "data/approvals.log", "approvals log")
 		reportPath := fs.String("report", "data/report.json", "assessment report")
 		rulesPath := fs.String("rules", "data/rules.json", "rules file")
 		rulesExtra := fs.String("rules-extra", "", "optional extra rules file")
+		policyPath := fs.String("policy", "data/policy.json", "policy file")
 		out := fs.String("out", "", "output evidence zip")
 		keyPath := fs.String("key", "", "optional keypair json for bundle signature")
 		signer := fs.String("signer", "", "bundle signer id")
@@ -2153,7 +2303,7 @@ func handleAudit(args []string) {
 		if err != nil {
 			fatal(err)
 		}
-		controlsExport, err := buildControlsExport(*auditPath, *approvalsPath, *rulesPath, *rulesExtra, *reproducible)
+		controlsExport, err := buildControlsExport(*auditPath, *signedAuditPath, *approvalsPath, *rulesPath, *rulesExtra, *policyPath, *reproducible)
 		if err != nil {
 			fatal(err)
 		}
