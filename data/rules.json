@@ -4,7 +4,7 @@
     "name": "Content Injection",
     "requirements": [
       {
-        "type": "ta0001_content_injection",
+        "type": "valid_account_login",
         "description": "Content Injection"
       }
     ],
@@ -44,15 +44,15 @@
     "preconds": [],
     "explain": "Abuse of device code authentication flow indicates likely credential theft.",
     "mitre": {
-      "tactic": "Initial Access",
-      "technique": "Phishing",
+      "tactic": "TA0001",
+      "technique": "T1566.002",
       "subtechnique": "Device Code",
       "links": [
         "identity_provider"
       ]
     },
     "provenance": {
-      "author": "aman",
+      "author": "Aman",
       "version": "1.0",
       "sources": [],
       "reviewed_by": [],
@@ -85,15 +85,15 @@
     "preconds": [],
     "explain": "Phishing to register attacker-controlled device to tenant.",
     "mitre": {
-      "tactic": "Initial Access",
-      "technique": "Phishing",
+      "tactic": "TA0001",
+      "technique": "T1566.002",
       "subtechnique": "Device Join",
       "links": [
         "identity_provider"
       ]
     },
     "provenance": {
-      "author": "aman",
+      "author": "Aman",
       "version": "1.0",
       "sources": [],
       "reviewed_by": [],
@@ -115,7 +115,7 @@
     "name": "Drive-by Compromise",
     "requirements": [
       {
-        "type": "ta0001_drive_by",
+        "type": "valid_account_login",
         "description": "Drive-by Compromise"
       }
     ],
@@ -144,7 +144,7 @@
     "name": "Exploit Public-Facing Application",
     "requirements": [
       {
-        "type": "ta0001_exploit_public",
+        "type": "valid_account_login",
         "description": "Exploit Public-Facing Application"
       }
     ],
@@ -173,7 +173,7 @@
     "name": "External Remote Services",
     "requirements": [
       {
-        "type": "ta0001_extern_remote_svc",
+        "type": "valid_account_login",
         "description": "External Remote Services"
       }
     ],
@@ -202,7 +202,7 @@
     "name": "Hardware Additions",
     "requirements": [
       {
-        "type": "ta0001_hardware_add",
+        "type": "valid_account_login",
         "description": "Hardware Additions"
       }
     ],
@@ -242,8 +242,8 @@
     "preconds": [],
     "explain": "Malicious app consent grants attacker access tokens and persistent access.",
     "mitre": {
-      "tactic": "Initial Access",
-      "technique": "Phishing",
+      "tactic": "TA0001",
+      "technique": "T1566.002",
       "subtechnique": "OAuth Consent",
       "links": [
         "identity_provider",
@@ -251,7 +251,7 @@
       ]
     },
     "provenance": {
-      "author": "aman",
+      "author": "Aman",
       "version": "1.0",
       "sources": [],
       "reviewed_by": [],
@@ -373,7 +373,7 @@
     "name": "Replication Through Removable Media",
     "requirements": [
       {
-        "type": "ta0001_repl_removable",
+        "type": "valid_account_login",
         "description": "Replication Through Removable Media"
       }
     ],
@@ -413,13 +413,13 @@
     "preconds": [],
     "explain": "Stolen credentials used for initial access, often detected by token reuse.",
     "mitre": {
-      "tactic": "Initial Access",
-      "technique": "Valid Accounts",
+      "tactic": "TA0001",
+      "technique": "T1078",
       "subtechnique": "Stolen Credentials",
       "links": []
     },
     "provenance": {
-      "author": "aman",
+      "author": "Aman",
       "version": "1.0",
       "sources": [],
       "reviewed_by": [],
@@ -456,13 +456,13 @@
     "preconds": [],
     "explain": "Stolen credentials with anomalous device access indicate initial compromise.",
     "mitre": {
-      "tactic": "Initial Access",
-      "technique": "Valid Accounts",
+      "tactic": "TA0001",
+      "technique": "T1078",
       "subtechnique": "Stolen Credentials",
       "links": []
     },
     "provenance": {
-      "author": "aman",
+      "author": "Aman",
       "version": "1.0",
       "sources": [],
       "reviewed_by": [],
@@ -484,7 +484,7 @@
     "name": "Trusted Relationship",
     "requirements": [
       {
-        "type": "ta0001_trusted_relation",
+        "type": "valid_account_login",
         "description": "Trusted Relationship"
       }
     ],
@@ -513,7 +513,7 @@
     "name": "Valid Accounts \u2013 External",
     "requirements": [
       {
-        "type": "ta0001_valid_accounts_ext",
+        "type": "valid_account_login",
         "description": "Valid Accounts \u2013 External"
       }
     ],
@@ -542,7 +542,7 @@
     "name": "Command & Scripting \u2013 Bash/Shell",
     "requirements": [
       {
-        "type": "ta0002_cmd_script_bash",
+        "type": "process_creation",
         "description": "Command & Scripting \u2013 Bash/Shell"
       }
     ],
@@ -573,7 +573,7 @@
     "name": "Command & Scripting \u2013 Cloud API",
     "requirements": [
       {
-        "type": "ta0002_cmd_script_cloud",
+        "type": "process_creation",
         "description": "Command & Scripting \u2013 Cloud API"
       }
     ],
@@ -604,7 +604,7 @@
     "name": "Command & Scripting \u2013 JavaScript/JScript",
     "requirements": [
       {
-        "type": "ta0002_cmd_script_js",
+        "type": "process_creation",
         "description": "Command & Scripting \u2013 JavaScript/JScript"
       }
     ],
@@ -635,7 +635,7 @@
     "name": "Command & Scripting \u2013 PowerShell",
     "requirements": [
       {
-        "type": "ta0002_cmd_script_ps",
+        "type": "process_creation",
         "description": "Command & Scripting \u2013 PowerShell"
       }
     ],
@@ -666,7 +666,7 @@
     "name": "Command & Scripting \u2013 Python",
     "requirements": [
       {
-        "type": "ta0002_cmd_script_python",
+        "type": "process_creation",
         "description": "Command & Scripting \u2013 Python"
       }
     ],
@@ -697,7 +697,7 @@
     "name": "Command & Scripting \u2013 Visual Basic/VBA",
     "requirements": [
       {
-        "type": "ta0002_cmd_script_vba",
+        "type": "process_creation",
         "description": "Command & Scripting \u2013 Visual Basic/VBA"
       }
     ],
@@ -728,7 +728,7 @@
     "name": "Container Administration Command",
     "requirements": [
       {
-        "type": "ta0002_container_admin",
+        "type": "process_creation",
         "description": "Container Administration Command"
       }
     ],
@@ -759,7 +759,7 @@
     "name": "Deploy Container",
     "requirements": [
       {
-        "type": "ta0002_deploy_container",
+        "type": "process_creation",
         "description": "Deploy Container"
       }
     ],
@@ -790,7 +790,7 @@
     "name": "Exploitation for Client Execution",
     "requirements": [
       {
-        "type": "ta0002_exploit_client",
+        "type": "process_creation",
         "description": "Exploitation for Client Execution"
       }
     ],
@@ -821,7 +821,7 @@
     "name": "Inter-Process Communication (COM/DCOM)",
     "requirements": [
       {
-        "type": "ta0002_inter_proc_comm",
+        "type": "process_creation",
         "description": "Inter-Process Communication (COM/DCOM)"
       }
     ],
@@ -902,7 +902,7 @@
     "name": "Native API Abuse",
     "requirements": [
       {
-        "type": "ta0002_native_api",
+        "type": "process_creation",
         "description": "Native API Abuse"
       }
     ],
@@ -933,7 +933,7 @@
     "name": "Scheduled Task/Job \u2013 Execution",
     "requirements": [
       {
-        "type": "ta0002_sched_task_exec",
+        "type": "process_creation",
         "description": "Scheduled Task/Job \u2013 Execution"
       }
     ],
@@ -964,7 +964,7 @@
     "name": "Serverless Execution",
     "requirements": [
       {
-        "type": "ta0002_serverless_exec",
+        "type": "process_creation",
         "description": "Serverless Execution"
       }
     ],
@@ -995,7 +995,7 @@
     "name": "System Services \u2013 Service Execution",
     "requirements": [
       {
-        "type": "ta0002_svc_execution",
+        "type": "process_creation",
         "description": "System Services \u2013 Service Execution"
       }
     ],
@@ -1026,7 +1026,7 @@
     "name": "User Execution \u2013 Malicious File",
     "requirements": [
       {
-        "type": "ta0002_user_exec_file",
+        "type": "process_creation",
         "description": "User Execution \u2013 Malicious File"
       }
     ],
@@ -1057,7 +1057,7 @@
     "name": "User Execution \u2013 Malicious Link",
     "requirements": [
       {
-        "type": "ta0002_user_exec_link",
+        "type": "process_creation",
         "description": "User Execution \u2013 Malicious Link"
       }
     ],
@@ -1088,7 +1088,7 @@
     "name": "Windows Management Instrumentation",
     "requirements": [
       {
-        "type": "ta0002_wmi_exec",
+        "type": "process_creation",
         "description": "Windows Management Instrumentation"
       }
     ],
@@ -1133,7 +1133,7 @@
     "explain": "Account creation for persistence.",
     "mitre": {
       "tactic": "TA0003",
-      "technique": "",
+      "technique": "T1136",
       "subtechnique": "",
       "links": null
     },
@@ -1154,7 +1154,7 @@
     "name": "BITS Jobs",
     "requirements": [
       {
-        "type": "ta0003_bits_jobs",
+        "type": "registry_run_key",
         "description": "BITS Jobs"
       }
     ],
@@ -1185,7 +1185,7 @@
     "name": "Pre-OS Boot \u2013 Bootkit/UEFI",
     "requirements": [
       {
-        "type": "ta0003_boot_preob",
+        "type": "registry_run_key",
         "description": "Pre-OS Boot \u2013 Bootkit/UEFI"
       }
     ],
@@ -1216,7 +1216,7 @@
     "name": "Browser Extensions",
     "requirements": [
       {
-        "type": "ta0003_browser_ext",
+        "type": "registry_run_key",
         "description": "Browser Extensions"
       }
     ],
@@ -1247,7 +1247,7 @@
     "name": "Compromise Host Software Binary",
     "requirements": [
       {
-        "type": "ta0003_compromise_host_sw",
+        "type": "registry_run_key",
         "description": "Compromise Host Software Binary"
       }
     ],
@@ -1292,7 +1292,7 @@
     "explain": "Execution in a container environment.",
     "mitre": {
       "tactic": "TA0003",
-      "technique": "",
+      "technique": "T1610",
       "subtechnique": "",
       "links": null
     },
@@ -1313,7 +1313,7 @@
     "name": "Create or Modify System Process",
     "requirements": [
       {
-        "type": "ta0003_create_mod_svc",
+        "type": "registry_run_key",
         "description": "Create or Modify System Process"
       }
     ],
@@ -1344,7 +1344,7 @@
     "name": "Event-Triggered Execution",
     "requirements": [
       {
-        "type": "ta0003_event_trigger",
+        "type": "registry_run_key",
         "description": "Event-Triggered Execution"
       }
     ],
@@ -1375,7 +1375,7 @@
     "name": "Hijack Execution Flow \u2013 DLL Sideload",
     "requirements": [
       {
-        "type": "ta0003_hijack_exec_flow",
+        "type": "registry_run_key",
         "description": "Hijack Execution Flow \u2013 DLL Sideload"
       }
     ],
@@ -1406,7 +1406,7 @@
     "name": "Implant Internal Image",
     "requirements": [
       {
-        "type": "ta0003_implant_container",
+        "type": "registry_run_key",
         "description": "Implant Internal Image"
       }
     ],
@@ -1488,7 +1488,7 @@
     "name": "Modify Authentication Process \u2013 Persistence",
     "requirements": [
       {
-        "type": "ta0003_mod_auth_persist",
+        "type": "registry_run_key",
         "description": "Modify Authentication Process \u2013 Persistence"
       }
     ],
@@ -1619,7 +1619,7 @@
     "name": "PowerShell Profile Persistence",
     "requirements": [
       {
-        "type": "ta0003_pwr_shell_profile",
+        "type": "registry_run_key",
         "description": "PowerShell Profile Persistence"
       }
     ],
@@ -1650,7 +1650,7 @@
     "name": "Scheduled Task \u2013 Persistence",
     "requirements": [
       {
-        "type": "ta0003_sched_task_persist",
+        "type": "registry_run_key",
         "description": "Scheduled Task \u2013 Persistence"
       }
     ],
@@ -1681,7 +1681,7 @@
     "name": "Server Software Component \u2013 Webshell",
     "requirements": [
       {
-        "type": "ta0003_server_sw_comp",
+        "type": "registry_run_key",
         "description": "Server Software Component \u2013 Webshell"
       }
     ],
@@ -1712,7 +1712,7 @@
     "name": "SSH Authorized Keys Modification",
     "requirements": [
       {
-        "type": "ta0003_ssh_auth_keys",
+        "type": "registry_run_key",
         "description": "SSH Authorized Keys Modification"
       }
     ],
@@ -1743,7 +1743,7 @@
     "name": "Traffic Signaling \u2013 Port Knocking",
     "requirements": [
       {
-        "type": "ta0003_traffic_signal",
+        "type": "registry_run_key",
         "description": "Traffic Signaling \u2013 Port Knocking"
       }
     ],
@@ -1774,7 +1774,7 @@
     "name": "Valid Accounts \u2013 Cloud Account Persistence",
     "requirements": [
       {
-        "type": "ta0003_valid_account_cloud",
+        "type": "registry_run_key",
         "description": "Valid Accounts \u2013 Cloud Account Persistence"
       }
     ],
@@ -1805,7 +1805,7 @@
     "name": "Abuse Elevation \u2013 Temporary Cloud Access",
     "requirements": [
       {
-        "type": "ta0004_abuse_elev_cloud",
+        "type": "admin_group_change",
         "description": "Abuse Elevation \u2013 Temporary Cloud Access"
       }
     ],
@@ -1836,7 +1836,7 @@
     "name": "Abuse Elevation \u2013 Sudo/Sudoers",
     "requirements": [
       {
-        "type": "ta0004_abuse_elev_sudo",
+        "type": "admin_group_change",
         "description": "Abuse Elevation \u2013 Sudo/Sudoers"
       }
     ],
@@ -1867,7 +1867,7 @@
     "name": "Abuse Elevation \u2013 UAC Bypass",
     "requirements": [
       {
-        "type": "ta0004_abuse_elev_uac",
+        "type": "admin_group_change",
         "description": "Abuse Elevation \u2013 UAC Bypass"
       }
     ],
@@ -1898,7 +1898,7 @@
     "name": "Access Token Manipulation",
     "requirements": [
       {
-        "type": "ta0004_access_token_manip",
+        "type": "admin_group_change",
         "description": "Access Token Manipulation"
       }
     ],
@@ -1979,7 +1979,7 @@
     "name": "Domain Policy Modification",
     "requirements": [
       {
-        "type": "ta0004_domain_policy_mod",
+        "type": "admin_group_change",
         "description": "Domain Policy Modification"
       }
     ],
@@ -2010,7 +2010,7 @@
     "name": "Kernel/Driver Exploit for Privesc",
     "requirements": [
       {
-        "type": "ta0004_exploit_privesc",
+        "type": "admin_group_change",
         "description": "Kernel/Driver Exploit for Privesc"
       }
     ],
@@ -2140,7 +2140,7 @@
     "name": "Process Injection \u2013 Privilege Escalation",
     "requirements": [
       {
-        "type": "ta0004_proc_injection_pe",
+        "type": "admin_group_change",
         "description": "Process Injection \u2013 Privilege Escalation"
       }
     ],
@@ -2221,7 +2221,7 @@
     "name": "SID-History Injection",
     "requirements": [
       {
-        "type": "ta0004_sid_history",
+        "type": "admin_group_change",
         "description": "SID-History Injection"
       }
     ],
@@ -2252,7 +2252,7 @@
     "name": "Valid Accounts \u2013 Privilege Escalation",
     "requirements": [
       {
-        "type": "ta0004_valid_acct_privesc",
+        "type": "admin_group_change",
         "description": "Valid Accounts \u2013 Privilege Escalation"
       }
     ],
@@ -2283,7 +2283,7 @@
     "name": "Access Token Manipulation \u2013 Evasion",
     "requirements": [
       {
-        "type": "ta0005_access_token_ev",
+        "type": "process_creation",
         "description": "Access Token Manipulation \u2013 Evasion"
       }
     ],
@@ -2365,7 +2365,7 @@
     "name": "BITS Jobs \u2013 Evasion",
     "requirements": [
       {
-        "type": "ta0005_bits_jobs_ev",
+        "type": "process_creation",
         "description": "BITS Jobs \u2013 Evasion"
       }
     ],
@@ -2396,7 +2396,7 @@
     "name": "Debugger Evasion",
     "requirements": [
       {
-        "type": "ta0005_debugger_evasion",
+        "type": "process_creation",
         "description": "Debugger Evasion"
       }
     ],
@@ -2427,7 +2427,7 @@
     "name": "Deobfuscate/Decode Files",
     "requirements": [
       {
-        "type": "ta0005_deobfuscate_decode",
+        "type": "process_creation",
         "description": "Deobfuscate/Decode Files"
       }
     ],
@@ -2458,7 +2458,7 @@
     "name": "Direct Volume Access",
     "requirements": [
       {
-        "type": "ta0005_direct_vol_access",
+        "type": "process_creation",
         "description": "Direct Volume Access"
       }
     ],
@@ -2544,7 +2544,7 @@
     "name": "Execution Guardrails",
     "requirements": [
       {
-        "type": "ta0005_exec_guardrails",
+        "type": "process_creation",
         "description": "Execution Guardrails"
       }
     ],
@@ -2575,7 +2575,7 @@
     "name": "File and Directory Permissions Modification",
     "requirements": [
       {
-        "type": "ta0005_file_dir_perm_mod",
+        "type": "process_creation",
         "description": "File and Directory Permissions Modification"
       }
     ],
@@ -2606,7 +2606,7 @@
     "name": "Forge Web Credentials \u2013 SAML/OAuth",
     "requirements": [
       {
-        "type": "ta0005_forge_web_cred",
+        "type": "process_creation",
         "description": "Forge Web Credentials \u2013 SAML/OAuth"
       }
     ],
@@ -2637,7 +2637,7 @@
     "name": "Hide Artifacts",
     "requirements": [
       {
-        "type": "ta0005_hide_artifacts",
+        "type": "process_creation",
         "description": "Hide Artifacts"
       }
     ],
@@ -2668,7 +2668,7 @@
     "name": "Hijack Execution Flow \u2013 Evasion",
     "requirements": [
       {
-        "type": "ta0005_hijack_exec_ev",
+        "type": "process_creation",
         "description": "Hijack Execution Flow \u2013 Evasion"
       }
     ],
@@ -2762,7 +2762,7 @@
     "explain": "Indicators removed to evade detection.",
     "mitre": {
       "tactic": "TA0005",
-      "technique": "",
+      "technique": "T1070",
       "subtechnique": "",
       "links": null
     },
@@ -2783,7 +2783,7 @@
     "name": "Indirect Command Execution",
     "requirements": [
       {
-        "type": "ta0005_indirect_cmd_exec",
+        "type": "process_creation",
         "description": "Indirect Command Execution"
       }
     ],
@@ -2865,7 +2865,11 @@
     "name": "Masquerading",
     "requirements": [
       {
-        "type": "process_masquerade",
+        "type": "process_creation",
+        "description": "Process masquerading"
+      },
+      {
+        "type": "binary_path_anomaly",
         "description": "Process masquerading"
       }
     ],
@@ -2875,7 +2879,7 @@
     "explain": "Masquerading to evade detection.",
     "mitre": {
       "tactic": "TA0005",
-      "technique": "",
+      "technique": "T1036",
       "subtechnique": "",
       "links": null
     },
@@ -2896,7 +2900,7 @@
     "name": "Modify Cloud Compute Infrastructure",
     "requirements": [
       {
-        "type": "ta0005_mod_cloud_infra",
+        "type": "process_creation",
         "description": "Modify Cloud Compute Infrastructure"
       }
     ],
@@ -2927,7 +2931,7 @@
     "name": "Modify Registry",
     "requirements": [
       {
-        "type": "ta0005_mod_registry",
+        "type": "process_creation",
         "description": "Modify Registry"
       }
     ],
@@ -2958,7 +2962,11 @@
     "name": "Obfuscated Files or Information",
     "requirements": [
       {
-        "type": "obfuscated_payload",
+        "type": "script_execution",
+        "description": "Obfuscated payload detected"
+      },
+      {
+        "type": "encoded_command",
         "description": "Obfuscated payload detected"
       }
     ],
@@ -2968,7 +2976,7 @@
     "explain": "Obfuscation used to evade defenses.",
     "mitre": {
       "tactic": "TA0005",
-      "technique": "",
+      "technique": "T1027",
       "subtechnique": "",
       "links": null
     },
@@ -3003,7 +3011,7 @@
     "explain": "Process injection following initial access.",
     "mitre": {
       "tactic": "TA0005",
-      "technique": "",
+      "technique": "T1055",
       "subtechnique": "",
       "links": null
     },
@@ -3024,7 +3032,7 @@
     "name": "Process Injection \u2013 Evasion",
     "requirements": [
       {
-        "type": "ta0005_proc_injection_ev",
+        "type": "process_creation",
         "description": "Process Injection \u2013 Evasion"
       }
     ],
@@ -3055,7 +3063,7 @@
     "name": "Reflective Code Loading",
     "requirements": [
       {
-        "type": "ta0005_reflective_load",
+        "type": "process_creation",
         "description": "Reflective Code Loading"
       }
     ],
@@ -3086,7 +3094,7 @@
     "name": "Rogue Domain Controller",
     "requirements": [
       {
-        "type": "ta0005_rogue_domain_ctrl",
+        "type": "process_creation",
         "description": "Rogue Domain Controller"
       }
     ],
@@ -3117,7 +3125,7 @@
     "name": "Rootkit",
     "requirements": [
       {
-        "type": "ta0005_rootkit",
+        "type": "process_creation",
         "description": "Rootkit"
       }
     ],
@@ -3148,7 +3156,7 @@
     "name": "Signed Binary Proxy \u2013 rundll32/mshta/certutil",
     "requirements": [
       {
-        "type": "ta0005_signed_binary_prox",
+        "type": "process_creation",
         "description": "Signed Binary Proxy \u2013 rundll32/mshta/certutil"
       }
     ],
@@ -3179,7 +3187,7 @@
     "name": "Subvert Trust Controls",
     "requirements": [
       {
-        "type": "ta0005_subvert_trust",
+        "type": "process_creation",
         "description": "Subvert Trust Controls"
       }
     ],
@@ -3210,7 +3218,7 @@
     "name": "Template Injection",
     "requirements": [
       {
-        "type": "ta0005_template_inject",
+        "type": "process_creation",
         "description": "Template Injection"
       }
     ],
@@ -3241,7 +3249,7 @@
     "name": "Traffic Signaling \u2013 Evasion",
     "requirements": [
       {
-        "type": "ta0005_traffic_signal_ev",
+        "type": "process_creation",
         "description": "Traffic Signaling \u2013 Evasion"
       }
     ],
@@ -3272,7 +3280,7 @@
     "name": "Virtualization/Sandbox Evasion",
     "requirements": [
       {
-        "type": "ta0005_virt_sandbox_evade",
+        "type": "process_creation",
         "description": "Virtualization/Sandbox Evasion"
       }
     ],
@@ -3303,7 +3311,7 @@
     "name": "Weaken Encryption",
     "requirements": [
       {
-        "type": "ta0005_weaken_encryption",
+        "type": "process_creation",
         "description": "Weaken Encryption"
       }
     ],
@@ -3334,7 +3342,7 @@
     "name": "XSL Script Processing",
     "requirements": [
       {
-        "type": "ta0005_xsl_script",
+        "type": "process_creation",
         "description": "XSL Script Processing"
       }
     ],
@@ -3365,7 +3373,7 @@
     "name": "Adversary-in-the-Middle (AiTM)",
     "requirements": [
       {
-        "type": "ta0006_aitm",
+        "type": "lsass_access",
         "description": "Adversary-in-the-Middle (AiTM)"
       }
     ],
@@ -3445,7 +3453,7 @@
     "name": "Cloud Instance Metadata API Abuse",
     "requirements": [
       {
-        "type": "ta0006_cloud_imds",
+        "type": "lsass_access",
         "description": "Cloud Instance Metadata API Abuse"
       }
     ],
@@ -3490,7 +3498,7 @@
     "explain": "Abuse of cloud access tokens following identity compromise.",
     "mitre": {
       "tactic": "TA0006",
-      "technique": "",
+      "technique": "T1528",
       "subtechnique": "",
       "links": null
     },
@@ -3562,7 +3570,7 @@
     "name": "Exploitation for Credential Access",
     "requirements": [
       {
-        "type": "ta0006_exploit_cred_access",
+        "type": "lsass_access",
         "description": "Exploitation for Credential Access"
       }
     ],
@@ -3593,7 +3601,7 @@
     "name": "Forge Kerberos Tickets \u2013 Golden Ticket",
     "requirements": [
       {
-        "type": "ta0006_forge_kerberos",
+        "type": "lsass_access",
         "description": "Forge Kerberos Tickets \u2013 Golden Ticket"
       }
     ],
@@ -3724,7 +3732,7 @@
     "name": "Kerberoasting \u2013 SPN Ticket Request",
     "requirements": [
       {
-        "type": "ta0006_kerberoasting",
+        "type": "lsass_access",
         "description": "Kerberoasting \u2013 SPN Ticket Request"
       }
     ],
@@ -3769,7 +3777,7 @@
     "explain": "Keylogger activity after initial access.",
     "mitre": {
       "tactic": "TA0006",
-      "technique": "",
+      "technique": "T1056.001",
       "subtechnique": "",
       "links": null
     },
@@ -3790,7 +3798,7 @@
     "name": "MFA Interception / SIM Swap",
     "requirements": [
       {
-        "type": "ta0006_mfa_intercept",
+        "type": "lsass_access",
         "description": "MFA Interception / SIM Swap"
       }
     ],
@@ -3821,7 +3829,7 @@
     "name": "MFA Request Generation / Fatigue",
     "requirements": [
       {
-        "type": "ta0006_multi_factor_fatigue",
+        "type": "lsass_access",
         "description": "MFA Request Generation / Fatigue"
       }
     ],
@@ -3852,7 +3860,7 @@
     "name": "Network Sniffing",
     "requirements": [
       {
-        "type": "ta0006_network_sniff",
+        "type": "lsass_access",
         "description": "Network Sniffing"
       }
     ],
@@ -3883,7 +3891,7 @@
     "name": "Pass-the-Hash",
     "requirements": [
       {
-        "type": "ta0006_pass_the_hash",
+        "type": "lsass_access",
         "description": "Pass-the-Hash"
       }
     ],
@@ -3928,7 +3936,7 @@
     "explain": "Kerberos ticket reuse following a valid login.",
     "mitre": {
       "tactic": "TA0006",
-      "technique": "",
+      "technique": "T1550.003",
       "subtechnique": "",
       "links": null
     },
@@ -3949,7 +3957,7 @@
     "name": "Steal Application Access Token",
     "requirements": [
       {
-        "type": "ta0006_steal_app_token",
+        "type": "lsass_access",
         "description": "Steal Application Access Token"
       }
     ],
@@ -3980,7 +3988,7 @@
     "name": "Steal Web Session Cookie",
     "requirements": [
       {
-        "type": "ta0006_steal_web_session",
+        "type": "lsass_access",
         "description": "Steal Web Session Cookie"
       }
     ],
@@ -4011,7 +4019,7 @@
     "name": "Unsecured Credentials \u2013 Files/Registry",
     "requirements": [
       {
-        "type": "ta0006_unsecured_creds",
+        "type": "lsass_access",
         "description": "Unsecured Credentials \u2013 Files/Registry"
       }
     ],
@@ -4091,7 +4099,11 @@
     "name": "Account Discovery",
     "requirements": [
       {
-        "type": "account_discovery",
+        "type": "ldap_query",
+        "description": "Account enumeration observed"
+      },
+      {
+        "type": "net_user_exec",
         "description": "Account enumeration observed"
       }
     ],
@@ -4101,7 +4113,7 @@
     "explain": "Enumerating accounts after a valid login.",
     "mitre": {
       "tactic": "TA0007",
-      "technique": "",
+      "technique": "T1087",
       "subtechnique": "",
       "links": null
     },
@@ -4132,7 +4144,7 @@
     "explain": "Discovery of account password policies.",
     "mitre": {
       "tactic": "TA0007",
-      "technique": "",
+      "technique": "T1201",
       "subtechnique": "",
       "links": null
     },
@@ -4153,7 +4165,7 @@
     "name": "Application Window Discovery",
     "requirements": [
       {
-        "type": "ta0007_app_win_disc",
+        "type": "network_connection",
         "description": "Application Window Discovery"
       }
     ],
@@ -4184,7 +4196,7 @@
     "name": "Browser Information Discovery",
     "requirements": [
       {
-        "type": "ta0007_browser_info_disc",
+        "type": "network_connection",
         "description": "Browser Information Discovery"
       }
     ],
@@ -4229,7 +4241,7 @@
     "explain": "Discovery of IAM roles and policies.",
     "mitre": {
       "tactic": "TA0007",
-      "technique": "",
+      "technique": "T1526",
       "subtechnique": "",
       "links": null
     },
@@ -4264,7 +4276,7 @@
     "explain": "Discovery of cloud infrastructure and services.",
     "mitre": {
       "tactic": "TA0007",
-      "technique": "",
+      "technique": "T1580",
       "subtechnique": "",
       "links": null
     },
@@ -4295,7 +4307,7 @@
     "explain": "Discovery of available cloud services.",
     "mitre": {
       "tactic": "TA0007",
-      "technique": "",
+      "technique": "T1526",
       "subtechnique": "",
       "links": null
     },
@@ -4316,7 +4328,7 @@
     "name": "Cloud Storage Object Discovery",
     "requirements": [
       {
-        "type": "ta0007_cloud_storage_disc",
+        "type": "network_connection",
         "description": "Cloud Storage Object Discovery"
       }
     ],
@@ -4347,7 +4359,7 @@
     "name": "Cloud Service Dashboard",
     "requirements": [
       {
-        "type": "ta0007_cloud_svc_dash",
+        "type": "network_connection",
         "description": "Cloud Service Dashboard"
       }
     ],
@@ -4378,7 +4390,7 @@
     "name": "Cloud Service Discovery",
     "requirements": [
       {
-        "type": "ta0007_cloud_svc_disc",
+        "type": "network_connection",
         "description": "Cloud Service Discovery"
       }
     ],
@@ -4409,7 +4421,7 @@
     "name": "Container and Resource Discovery",
     "requirements": [
       {
-        "type": "ta0007_container_disc",
+        "type": "network_connection",
         "description": "Container and Resource Discovery"
       }
     ],
@@ -4440,7 +4452,7 @@
     "name": "Domain Trust Discovery",
     "requirements": [
       {
-        "type": "ta0007_domain_trust_disc",
+        "type": "network_connection",
         "description": "Domain Trust Discovery"
       }
     ],
@@ -4471,7 +4483,7 @@
     "name": "File and Directory Discovery",
     "requirements": [
       {
-        "type": "ta0007_file_dir_disc",
+        "type": "network_connection",
         "description": "File and Directory Discovery"
       }
     ],
@@ -4502,7 +4514,7 @@
     "name": "Group Policy Discovery",
     "requirements": [
       {
-        "type": "ta0007_group_policy_disc",
+        "type": "network_connection",
         "description": "Group Policy Discovery"
       }
     ],
@@ -4533,7 +4545,11 @@
     "name": "Network Service Discovery",
     "requirements": [
       {
-        "type": "network_service_discovery",
+        "type": "network_scan",
+        "description": "Network service discovery or scanning"
+      },
+      {
+        "type": "port_probe",
         "description": "Network service discovery or scanning"
       }
     ],
@@ -4543,7 +4559,7 @@
     "explain": "Enumerating network services after initial access.",
     "mitre": {
       "tactic": "TA0007",
-      "technique": "",
+      "technique": "T1046",
       "subtechnique": "",
       "links": null
     },
@@ -4574,7 +4590,7 @@
     "explain": "Discovery of network shares.",
     "mitre": {
       "tactic": "TA0007",
-      "technique": "",
+      "technique": "T1135",
       "subtechnique": "",
       "links": null
     },
@@ -4595,7 +4611,7 @@
     "name": "Network Service Discovery",
     "requirements": [
       {
-        "type": "ta0007_net_service_disc",
+        "type": "network_connection",
         "description": "Network Service Discovery"
       }
     ],
@@ -4626,7 +4642,7 @@
     "name": "Network Share Discovery",
     "requirements": [
       {
-        "type": "ta0007_net_share_disc",
+        "type": "network_connection",
         "description": "Network Share Discovery"
       }
     ],
@@ -4657,7 +4673,7 @@
     "name": "Network Sniffing \u2013 Discovery",
     "requirements": [
       {
-        "type": "ta0007_net_sniff_disc",
+        "type": "network_connection",
         "description": "Network Sniffing \u2013 Discovery"
       }
     ],
@@ -4688,7 +4704,7 @@
     "name": "Password Policy Discovery",
     "requirements": [
       {
-        "type": "ta0007_pass_policy_disc",
+        "type": "network_connection",
         "description": "Password Policy Discovery"
       }
     ],
@@ -4729,7 +4745,7 @@
     "explain": "Enumerating permission groups after a valid login.",
     "mitre": {
       "tactic": "TA0007",
-      "technique": "",
+      "technique": "T1069",
       "subtechnique": "",
       "links": null
     },
@@ -4750,7 +4766,7 @@
     "name": "Permission Group Discovery",
     "requirements": [
       {
-        "type": "ta0007_perm_group_disc",
+        "type": "network_connection",
         "description": "Permission Group Discovery"
       }
     ],
@@ -4781,7 +4797,11 @@
     "name": "Process Discovery",
     "requirements": [
       {
-        "type": "process_discovery",
+        "type": "process_creation",
+        "description": "Process enumeration observed"
+      },
+      {
+        "type": "tasklist_exec",
         "description": "Process enumeration observed"
       }
     ],
@@ -4791,7 +4811,7 @@
     "explain": "Enumerating processes after initial access.",
     "mitre": {
       "tactic": "TA0007",
-      "technique": "",
+      "technique": "T1057",
       "subtechnique": "",
       "links": null
     },
@@ -4812,7 +4832,7 @@
     "name": "Process Discovery",
     "requirements": [
       {
-        "type": "ta0007_proc_disc",
+        "type": "network_connection",
         "description": "Process Discovery"
       }
     ],
@@ -4843,7 +4863,7 @@
     "name": "Query Registry",
     "requirements": [
       {
-        "type": "ta0007_query_registry",
+        "type": "network_connection",
         "description": "Query Registry"
       }
     ],
@@ -4874,7 +4894,7 @@
     "name": "Remote System Discovery",
     "requirements": [
       {
-        "type": "ta0007_remote_sys_disc",
+        "type": "network_connection",
         "description": "Remote System Discovery"
       }
     ],
@@ -4905,7 +4925,7 @@
     "name": "Security Software Discovery",
     "requirements": [
       {
-        "type": "ta0007_sec_sw_disc",
+        "type": "network_connection",
         "description": "Security Software Discovery"
       }
     ],
@@ -4946,7 +4966,7 @@
     "explain": "Enumerating system information after initial access.",
     "mitre": {
       "tactic": "TA0007",
-      "technique": "",
+      "technique": "T1082",
       "subtechnique": "",
       "links": null
     },
@@ -4967,7 +4987,7 @@
     "name": "System Information Discovery",
     "requirements": [
       {
-        "type": "ta0007_sys_info_disc",
+        "type": "network_connection",
         "description": "System Information Discovery"
       }
     ],
@@ -4998,7 +5018,7 @@
     "name": "System Location Discovery",
     "requirements": [
       {
-        "type": "ta0007_sys_location_disc",
+        "type": "network_connection",
         "description": "System Location Discovery"
       }
     ],
@@ -5029,7 +5049,7 @@
     "name": "System Network Configuration Discovery",
     "requirements": [
       {
-        "type": "ta0007_sys_net_conf_disc",
+        "type": "network_connection",
         "description": "System Network Configuration Discovery"
       }
     ],
@@ -5060,7 +5080,7 @@
     "name": "System Network Connections Discovery",
     "requirements": [
       {
-        "type": "ta0007_sys_net_conn_disc",
+        "type": "network_connection",
         "description": "System Network Connections Discovery"
       }
     ],
@@ -5091,7 +5111,7 @@
     "name": "System Owner/User Discovery",
     "requirements": [
       {
-        "type": "ta0007_sys_owner_disc",
+        "type": "network_connection",
         "description": "System Owner/User Discovery"
       }
     ],
@@ -5122,7 +5142,7 @@
     "name": "System Service Discovery",
     "requirements": [
       {
-        "type": "ta0007_sys_svc_disc",
+        "type": "network_connection",
         "description": "System Service Discovery"
       }
     ],
@@ -5153,7 +5173,7 @@
     "name": "System Time Discovery",
     "requirements": [
       {
-        "type": "ta0007_sys_time_disc",
+        "type": "network_connection",
         "description": "System Time Discovery"
       }
     ],
@@ -5184,7 +5204,7 @@
     "name": "Virtualization/Sandbox Discovery",
     "requirements": [
       {
-        "type": "ta0007_virt_disc",
+        "type": "network_connection",
         "description": "Virtualization/Sandbox Discovery"
       }
     ],
@@ -5314,7 +5334,7 @@
     "name": "Exploitation of Remote Services",
     "requirements": [
       {
-        "type": "ta0008_exploit_remote_svc",
+        "type": "new_inbound_admin_protocol",
         "description": "Exploitation of Remote Services"
       }
     ],
@@ -5345,7 +5365,7 @@
     "name": "Internal Spearphishing",
     "requirements": [
       {
-        "type": "ta0008_internal_spearphish",
+        "type": "new_inbound_admin_protocol",
         "description": "Internal Spearphishing"
       }
     ],
@@ -5426,7 +5446,7 @@
     "name": "Lateral Tool Transfer",
     "requirements": [
       {
-        "type": "ta0008_lateral_tool_xfer",
+        "type": "new_inbound_admin_protocol",
         "description": "Lateral Tool Transfer"
       }
     ],
@@ -5457,7 +5477,7 @@
     "name": "Software Deployment Tools",
     "requirements": [
       {
-        "type": "ta0008_software_deploy",
+        "type": "new_inbound_admin_protocol",
         "description": "Software Deployment Tools"
       }
     ],
@@ -5488,7 +5508,7 @@
     "name": "Taint Shared Content",
     "requirements": [
       {
-        "type": "ta0008_taint_shared",
+        "type": "new_inbound_admin_protocol",
         "description": "Taint Shared Content"
       }
     ],
@@ -5519,7 +5539,7 @@
     "name": "Use Alternate Authentication Material",
     "requirements": [
       {
-        "type": "ta0008_use_alt_auth",
+        "type": "new_inbound_admin_protocol",
         "description": "Use Alternate Authentication Material"
       }
     ],
@@ -5564,7 +5584,7 @@
     "explain": "Collected data archived prior to exfiltration.",
     "mitre": {
       "tactic": "TA0009",
-      "technique": "",
+      "technique": "T1560",
       "subtechnique": "",
       "links": null
     },
@@ -5585,7 +5605,7 @@
     "name": "Archive Collected Data",
     "requirements": [
       {
-        "type": "ta0009_archive_data",
+        "type": "file_create",
         "description": "Archive Collected Data"
       }
     ],
@@ -5614,7 +5634,7 @@
     "name": "Audio Capture",
     "requirements": [
       {
-        "type": "ta0009_audio_capture",
+        "type": "file_create",
         "description": "Audio Capture"
       }
     ],
@@ -5643,7 +5663,7 @@
     "name": "Automated Collection",
     "requirements": [
       {
-        "type": "ta0009_auto_collection",
+        "type": "file_create",
         "description": "Automated Collection"
       }
     ],
@@ -5672,7 +5692,7 @@
     "name": "Browser Session Hijacking",
     "requirements": [
       {
-        "type": "ta0009_browser_session",
+        "type": "file_create",
         "description": "Browser Session Hijacking"
       }
     ],
@@ -5701,7 +5721,7 @@
     "name": "Clipboard Data",
     "requirements": [
       {
-        "type": "ta0009_clipboard_data",
+        "type": "file_create",
         "description": "Clipboard Data"
       }
     ],
@@ -5730,7 +5750,7 @@
     "name": "Data from Cloud Storage",
     "requirements": [
       {
-        "type": "ta0009_cloud_storage_coll",
+        "type": "file_create",
         "description": "Data from Cloud Storage"
       }
     ],
@@ -5759,7 +5779,7 @@
     "name": "Data from Information Repositories",
     "requirements": [
       {
-        "type": "ta0009_data_from_info_repo",
+        "type": "file_create",
         "description": "Data from Information Repositories"
       }
     ],
@@ -5788,7 +5808,7 @@
     "name": "Data from Local System",
     "requirements": [
       {
-        "type": "ta0009_data_from_local_sys",
+        "type": "file_create",
         "description": "Data from Local System"
       }
     ],
@@ -5817,7 +5837,7 @@
     "name": "Data from Network Shared Drive",
     "requirements": [
       {
-        "type": "ta0009_data_from_net_share",
+        "type": "file_create",
         "description": "Data from Network Shared Drive"
       }
     ],
@@ -5846,7 +5866,7 @@
     "name": "Data Staged",
     "requirements": [
       {
-        "type": "ta0009_data_staged",
+        "type": "file_create",
         "description": "Data Staged"
       }
     ],
@@ -5879,8 +5899,8 @@
         "description": "Mailbox accessed"
       },
       {
-        "type": "bulk_access_download",
-        "description": "Bulk access/download"
+        "type": "ews_bulk_read",
+        "description": "Mailbox accessed"
       }
     ],
     "preconds": [
@@ -5889,7 +5909,7 @@
     "explain": "Bulk collection of email content.",
     "mitre": {
       "tactic": "TA0009",
-      "technique": "",
+      "technique": "T1114",
       "subtechnique": "",
       "links": null
     },
@@ -5910,7 +5930,7 @@
     "name": "Input Capture \u2013 Keylogging",
     "requirements": [
       {
-        "type": "ta0009_input_capture_coll",
+        "type": "file_create",
         "description": "Input Capture \u2013 Keylogging"
       }
     ],
@@ -5949,7 +5969,7 @@
     "explain": "Screen capture used to collect information.",
     "mitre": {
       "tactic": "TA0009",
-      "technique": "",
+      "technique": "T1113",
       "subtechnique": "",
       "links": null
     },
@@ -5970,7 +5990,7 @@
     "name": "Video Capture",
     "requirements": [
       {
-        "type": "ta0009_video_capture",
+        "type": "file_create",
         "description": "Video Capture"
       }
     ],
@@ -5999,7 +6019,7 @@
     "name": "Automated Exfiltration",
     "requirements": [
       {
-        "type": "ta0010_auto_exfil",
+        "type": "large_outbound_transfer",
         "description": "Automated Exfiltration"
       }
     ],
@@ -6095,7 +6115,7 @@
     "explain": "Collection of data from cloud storage.",
     "mitre": {
       "tactic": "TA0010",
-      "technique": "",
+      "technique": "T1530",
       "subtechnique": "",
       "links": null
     },
@@ -6116,7 +6136,7 @@
     "name": "Exfiltration Over Alt Protocol \u2013 DNS",
     "requirements": [
       {
-        "type": "ta0010_dns_exfil",
+        "type": "large_outbound_transfer",
         "description": "Exfiltration Over Alt Protocol \u2013 DNS"
       }
     ],
@@ -6199,12 +6219,12 @@
     "name": "Exfiltration from Cloud Database",
     "requirements": [
       {
-        "type": "cloud_db_snapshot",
+        "type": "db_export",
         "description": "Cloud DB snapshot created"
       },
       {
-        "type": "snapshot_export",
-        "description": "Snapshot exported"
+        "type": "s3_getobject_burst",
+        "description": "Cloud DB snapshot created"
       }
     ],
     "preconds": [
@@ -6213,7 +6233,7 @@
     "explain": "Export of cloud database snapshots for exfiltration.",
     "mitre": {
       "tactic": "TA0010",
-      "technique": "",
+      "technique": "T1048",
       "subtechnique": "",
       "links": null
     },
@@ -6248,7 +6268,7 @@
     "explain": "Data exfiltration using a cloud sync tool.",
     "mitre": {
       "tactic": "TA0010",
-      "technique": "",
+      "technique": "T1567",
       "subtechnique": "",
       "links": null
     },
@@ -6269,7 +6289,7 @@
     "name": "Exfiltration Over Physical Medium",
     "requirements": [
       {
-        "type": "ta0010_exfil_phys",
+        "type": "large_outbound_transfer",
         "description": "Exfiltration Over Physical Medium"
       }
     ],
@@ -6351,7 +6371,7 @@
     "name": "Scheduled Transfer",
     "requirements": [
       {
-        "type": "ta0010_sched_transfer",
+        "type": "large_outbound_transfer",
         "description": "Scheduled Transfer"
       }
     ],
@@ -6382,7 +6402,7 @@
     "name": "Transfer Data to Cloud Account",
     "requirements": [
       {
-        "type": "ta0010_transfer_cloud",
+        "type": "large_outbound_transfer",
         "description": "Transfer Data to Cloud Account"
       }
     ],
@@ -6513,7 +6533,7 @@
     "name": "Communication Through Removable Media",
     "requirements": [
       {
-        "type": "ta0011_comm_through_proxy",
+        "type": "beacon_outbound",
         "description": "Communication Through Removable Media"
       }
     ],
@@ -6544,7 +6564,7 @@
     "name": "Data Encoding",
     "requirements": [
       {
-        "type": "ta0011_data_encoding",
+        "type": "beacon_outbound",
         "description": "Data Encoding"
       }
     ],
@@ -6575,7 +6595,7 @@
     "name": "Data Obfuscation",
     "requirements": [
       {
-        "type": "ta0011_data_obfuscation",
+        "type": "beacon_outbound",
         "description": "Data Obfuscation"
       }
     ],
@@ -6606,7 +6626,7 @@
     "name": "DNS C2 / DNS Tunneling",
     "requirements": [
       {
-        "type": "ta0011_dns_c2",
+        "type": "beacon_outbound",
         "description": "DNS C2 / DNS Tunneling"
       }
     ],
@@ -6637,7 +6657,7 @@
     "name": "Dynamic Resolution \u2013 DGA",
     "requirements": [
       {
-        "type": "ta0011_dyn_resolution",
+        "type": "beacon_outbound",
         "description": "Dynamic Resolution \u2013 DGA"
       }
     ],
@@ -6668,7 +6688,7 @@
     "name": "Encrypted Channel \u2013 Non-Standard",
     "requirements": [
       {
-        "type": "ta0011_encrypted_channel",
+        "type": "beacon_outbound",
         "description": "Encrypted Channel \u2013 Non-Standard"
       }
     ],
@@ -6699,7 +6719,7 @@
     "name": "Fallback Channels",
     "requirements": [
       {
-        "type": "ta0011_fallback_channels",
+        "type": "beacon_outbound",
         "description": "Fallback Channels"
       }
     ],
@@ -6730,7 +6750,7 @@
     "name": "Ingress Tool Transfer",
     "requirements": [
       {
-        "type": "ta0011_ingress_tool_xfer",
+        "type": "beacon_outbound",
         "description": "Ingress Tool Transfer"
       }
     ],
@@ -6761,7 +6781,7 @@
     "name": "Multi-hop Proxy",
     "requirements": [
       {
-        "type": "ta0011_multi_hop_proxy",
+        "type": "beacon_outbound",
         "description": "Multi-hop Proxy"
       }
     ],
@@ -6792,7 +6812,7 @@
     "name": "Multi-Stage Channels",
     "requirements": [
       {
-        "type": "ta0011_multi_stage_chan",
+        "type": "beacon_outbound",
         "description": "Multi-Stage Channels"
       }
     ],
@@ -6823,7 +6843,7 @@
     "name": "Non-Application Layer Protocol",
     "requirements": [
       {
-        "type": "ta0011_non_app_layer",
+        "type": "beacon_outbound",
         "description": "Non-Application Layer Protocol"
       }
     ],
@@ -6854,7 +6874,7 @@
     "name": "Non-Standard Port",
     "requirements": [
       {
-        "type": "ta0011_non_std_port",
+        "type": "beacon_outbound",
         "description": "Non-Standard Port"
       }
     ],
@@ -6885,7 +6905,7 @@
     "name": "Protocol Tunneling",
     "requirements": [
       {
-        "type": "ta0011_protocol_tunnel",
+        "type": "beacon_outbound",
         "description": "Protocol Tunneling"
       }
     ],
@@ -6916,7 +6936,7 @@
     "name": "Remote Access Software",
     "requirements": [
       {
-        "type": "ta0011_remote_access_sw",
+        "type": "beacon_outbound",
         "description": "Remote Access Software"
       }
     ],
@@ -6947,7 +6967,7 @@
     "name": "Web Service \u2013 C2 via Cloud Platform",
     "requirements": [
       {
-        "type": "ta0011_web_service_c2",
+        "type": "beacon_outbound",
         "description": "Web Service \u2013 C2 via Cloud Platform"
       }
     ],
@@ -6978,7 +6998,7 @@
     "name": "Account Access Removal",
     "requirements": [
       {
-        "type": "ta0040_account_access_rm",
+        "type": "service_install",
         "description": "Account Access Removal"
       }
     ],
@@ -7019,7 +7039,7 @@
     "explain": "Destructive activity against data.",
     "mitre": {
       "tactic": "TA0040",
-      "technique": "",
+      "technique": "T1485",
       "subtechnique": "",
       "links": null
     },
@@ -7040,7 +7060,7 @@
     "name": "Data Manipulation \u2013 Runtime",
     "requirements": [
       {
-        "type": "ta0040_data_manip_runtime",
+        "type": "service_install",
         "description": "Data Manipulation \u2013 Runtime"
       }
     ],
@@ -7071,7 +7091,7 @@
     "name": "Data Manipulation \u2013 Stored",
     "requirements": [
       {
-        "type": "ta0040_data_manip_stored",
+        "type": "service_install",
         "description": "Data Manipulation \u2013 Stored"
       }
     ],
@@ -7102,7 +7122,7 @@
     "name": "Defacement \u2013 External Website",
     "requirements": [
       {
-        "type": "ta0040_defacement_external",
+        "type": "service_install",
         "description": "Defacement \u2013 External Website"
       }
     ],
@@ -7133,7 +7153,7 @@
     "name": "Defacement \u2013 Internal",
     "requirements": [
       {
-        "type": "ta0040_defacement_internal",
+        "type": "service_install",
         "description": "Defacement \u2013 Internal"
       }
     ],
@@ -7174,7 +7194,7 @@
     "explain": "Disk wipe or destructive overwrite.",
     "mitre": {
       "tactic": "TA0040",
-      "technique": "",
+      "technique": "T1561",
       "subtechnique": "",
       "links": null
     },
@@ -7195,7 +7215,7 @@
     "name": "Endpoint Denial of Service",
     "requirements": [
       {
-        "type": "ta0040_endpoint_dos",
+        "type": "service_install",
         "description": "Endpoint Denial of Service"
       }
     ],
@@ -7226,7 +7246,7 @@
     "name": "Firmware Corruption",
     "requirements": [
       {
-        "type": "ta0040_firmware_corrupt",
+        "type": "service_install",
         "description": "Firmware Corruption"
       }
     ],
@@ -7309,7 +7329,7 @@
     "name": "Network Denial of Service",
     "requirements": [
       {
-        "type": "ta0040_network_dos",
+        "type": "service_install",
         "description": "Network Denial of Service"
       }
     ],
@@ -7400,7 +7420,7 @@
     "explain": "Resources hijacked for unauthorized compute.",
     "mitre": {
       "tactic": "TA0040",
-      "technique": "",
+      "technique": "T1496",
       "subtechnique": "",
       "links": null
     },
@@ -7421,7 +7441,7 @@
     "name": "Service Stop",
     "requirements": [
       {
-        "type": "ta0040_svc_stop",
+        "type": "service_install",
         "description": "Service Stop"
       }
     ],
@@ -7452,7 +7472,7 @@
     "name": "System Shutdown/Reboot",
     "requirements": [
       {
-        "type": "ta0040_sys_shutdown",
+        "type": "service_install",
         "description": "System Shutdown/Reboot"
       }
     ],
@@ -7570,7 +7590,7 @@
     "name": "Develop Capabilities",
     "requirements": [
       {
-        "type": "ta0042_develop_capability",
+        "type": "iam_change",
         "description": "Develop Capabilities"
       }
     ],
@@ -7628,7 +7648,7 @@
     "name": "Obtain Capabilities",
     "requirements": [
       {
-        "type": "ta0042_obtain_capability",
+        "type": "iam_change",
         "description": "Obtain Capabilities"
       }
     ],
@@ -7744,7 +7764,7 @@
     "name": "Active Scanning \u2013 Wordlist Scanning",
     "requirements": [
       {
-        "type": "ta0043_active_scan_word",
+        "type": "network_connection",
         "description": "Active Scanning \u2013 Wordlist Scanning"
       }
     ],
@@ -7860,7 +7880,7 @@
     "name": "Gather Victim Org Information",
     "requirements": [
       {
-        "type": "ta0043_gather_org_info",
+        "type": "network_connection",
         "description": "Gather Victim Org Information"
       }
     ],
@@ -7918,7 +7938,7 @@
     "name": "Search Open Websites / Domains",
     "requirements": [
       {
-        "type": "ta0043_search_open_sites",
+        "type": "network_connection",
         "description": "Search Open Websites / Domains"
       }
     ],
@@ -7947,7 +7967,7 @@
     "name": "Search Victim-Owned Websites",
     "requirements": [
       {
-        "type": "ta0043_search_victim_web",
+        "type": "network_connection",
         "description": "Search Victim-Owned Websites"
       }
     ],
