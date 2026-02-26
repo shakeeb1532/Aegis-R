@@ -67,6 +67,7 @@ Aman is a human-governed security reasoning system that evaluates causal feasibi
 - `docs/v2_0_experiment.md` — v2.0 positioning and validation-overlay experiment
 - `docs/production_benchmark_report.md` — production benchmark snapshot and AI overlay overhead
 - `docs/initialization_simulation_policy.md` — controlled initialization, safe attack simulation, approvals, and baseline lifecycle
+- `docs/hybrid_saas.md` — hybrid SaaS architecture and deployment notes
 
 ---
 
