@@ -7199,6 +7199,4774 @@
           "ticket_status": "in_review"
         }
       ]
+    },
+    {
+      "id": "realistic-295",
+      "description": "BITS Jobs",
+      "events": [
+        {
+          "id": "b6-0-p1",
+          "time": "2026-02-06T20:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-0-p2",
+          "time": "2026-02-06T20:01:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-0-e",
+          "time": "2026-02-06T20:02:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0003_bits_jobs",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.BITS_JOBS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0003.BITS_JOBS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-296",
+      "description": "Browser Extensions",
+      "events": [
+        {
+          "id": "b6-1-p1",
+          "time": "2026-02-06T20:02:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-1-p2",
+          "time": "2026-02-06T20:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-1-e",
+          "time": "2026-02-06T20:04:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0003_browser_ext",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.BROWSER_EXT",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0003.BROWSER_EXT",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-297",
+      "description": "Compromise Host Software Binary",
+      "events": [
+        {
+          "id": "b6-2-p1",
+          "time": "2026-02-06T20:04:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-2-p2",
+          "time": "2026-02-06T20:05:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-2-e",
+          "time": "2026-02-06T20:06:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0003_compromise_host_sw",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.COMPROMISE_HOST_SW",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0003.COMPROMISE_HOST_SW",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-298",
+      "description": "Create or Modify System Process",
+      "events": [
+        {
+          "id": "b6-3-p1",
+          "time": "2026-02-06T20:06:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-3-p2",
+          "time": "2026-02-06T20:07:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-3-e",
+          "time": "2026-02-06T20:08:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0003_create_mod_svc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.CREATE_MOD_SVC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0003.CREATE_MOD_SVC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-299",
+      "description": "Event-Triggered Execution",
+      "events": [
+        {
+          "id": "b6-4-p1",
+          "time": "2026-02-06T20:08:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-4-p2",
+          "time": "2026-02-06T20:09:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-4-e",
+          "time": "2026-02-06T20:10:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0003_event_trigger",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.EVENT_TRIGGER",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0003.EVENT_TRIGGER",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-300",
+      "description": "Hijack Execution Flow \u2013 DLL Sideload",
+      "events": [
+        {
+          "id": "b6-5-p1",
+          "time": "2026-02-06T20:10:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-5-p2",
+          "time": "2026-02-06T20:11:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-5-e",
+          "time": "2026-02-06T20:12:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0003_hijack_exec_flow",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.HIJACK_EXEC_FLOW",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0003.HIJACK_EXEC_FLOW",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-301",
+      "description": "Implant Internal Image",
+      "events": [
+        {
+          "id": "b6-6-p1",
+          "time": "2026-02-06T20:12:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-6-p2",
+          "time": "2026-02-06T20:13:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-6-e",
+          "time": "2026-02-06T20:14:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0003_implant_container",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.IMPLANT_CONTAINER",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0003.IMPLANT_CONTAINER",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-302",
+      "description": "Modify Authentication Process \u2013 Persistence",
+      "events": [
+        {
+          "id": "b6-7-p1",
+          "time": "2026-02-06T20:14:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-7-p2",
+          "time": "2026-02-06T20:15:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-7-e",
+          "time": "2026-02-06T20:16:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0003_mod_auth_persist",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.MOD_AUTH_PERSIST",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0003.MOD_AUTH_PERSIST",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-303",
+      "description": "PowerShell Profile Persistence",
+      "events": [
+        {
+          "id": "b6-8-p1",
+          "time": "2026-02-06T20:16:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-8-p2",
+          "time": "2026-02-06T20:17:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-8-e",
+          "time": "2026-02-06T20:18:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0003_pwr_shell_profile",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.PWR_SHELL_PROFILE",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0003.PWR_SHELL_PROFILE",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-304",
+      "description": "Scheduled Task \u2013 Persistence",
+      "events": [
+        {
+          "id": "b6-9-p1",
+          "time": "2026-02-06T20:18:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-9-p2",
+          "time": "2026-02-06T20:19:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-9-e",
+          "time": "2026-02-06T20:20:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0003_sched_task_persist",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.SCHED_TASK_PERSIST",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0003.SCHED_TASK_PERSIST",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-305",
+      "description": "Server Software Component \u2013 Webshell",
+      "events": [
+        {
+          "id": "b6-10-p1",
+          "time": "2026-02-06T20:20:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-10-p2",
+          "time": "2026-02-06T20:21:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-10-e",
+          "time": "2026-02-06T20:22:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0003_server_sw_comp",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.SERVER_SW_COMP",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0003.SERVER_SW_COMP",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-306",
+      "description": "SSH Authorized Keys Modification",
+      "events": [
+        {
+          "id": "b6-11-p1",
+          "time": "2026-02-06T20:22:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-11-p2",
+          "time": "2026-02-06T20:23:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-11-e",
+          "time": "2026-02-06T20:24:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0003_ssh_auth_keys",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.SSH_AUTH_KEYS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0003.SSH_AUTH_KEYS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-307",
+      "description": "Valid Accounts \u2013 Cloud Account Persistence",
+      "events": [
+        {
+          "id": "b6-12-p1",
+          "time": "2026-02-06T20:24:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-12-p2",
+          "time": "2026-02-06T20:25:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-12-e",
+          "time": "2026-02-06T20:26:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0003_valid_account_cloud",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.VALID_ACCOUNT_CLOUD",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0003.VALID_ACCOUNT_CLOUD",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-308",
+      "description": "Abuse Elevation \u2013 UAC Bypass",
+      "events": [
+        {
+          "id": "b6-13-p1",
+          "time": "2026-02-06T20:26:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-13-p2",
+          "time": "2026-02-06T20:27:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-13-e",
+          "time": "2026-02-06T20:28:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0004_abuse_elev_uac",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.ABUSE_ELEV_UAC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0004.ABUSE_ELEV_UAC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-309",
+      "description": "Abuse Elevation \u2013 Sudo/Sudoers",
+      "events": [
+        {
+          "id": "b6-14-p1",
+          "time": "2026-02-06T20:28:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-14-p2",
+          "time": "2026-02-06T20:29:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-14-e",
+          "time": "2026-02-06T20:30:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0004_abuse_elev_sudo",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.ABUSE_ELEV_SUDO",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0004.ABUSE_ELEV_SUDO",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-310",
+      "description": "Abuse Elevation \u2013 Temporary Cloud Access",
+      "events": [
+        {
+          "id": "b6-15-p1",
+          "time": "2026-02-06T20:30:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-15-p2",
+          "time": "2026-02-06T20:31:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-15-e",
+          "time": "2026-02-06T20:32:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0004_abuse_elev_cloud",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.ABUSE_ELEV_CLOUD",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0004.ABUSE_ELEV_CLOUD",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-311",
+      "description": "Access Token Manipulation",
+      "events": [
+        {
+          "id": "b6-16-p1",
+          "time": "2026-02-06T20:32:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-16-p2",
+          "time": "2026-02-06T20:33:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-16-e",
+          "time": "2026-02-06T20:34:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0004_access_token_manip",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.ACCESS_TOKEN_MANIP",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0004.ACCESS_TOKEN_MANIP",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-312",
+      "description": "Domain Policy Modification",
+      "events": [
+        {
+          "id": "b6-17-p1",
+          "time": "2026-02-06T20:34:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-17-p2",
+          "time": "2026-02-06T20:35:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-17-e",
+          "time": "2026-02-06T20:36:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0004_domain_policy_mod",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.DOMAIN_POLICY_MOD",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0004.DOMAIN_POLICY_MOD",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-313",
+      "description": "Kernel/Driver Exploit for Privesc",
+      "events": [
+        {
+          "id": "b6-18-p1",
+          "time": "2026-02-06T20:36:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-18-p2",
+          "time": "2026-02-06T20:37:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-18-e",
+          "time": "2026-02-06T20:38:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0004_exploit_privesc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.EXPLOIT_PRIVESC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0004.EXPLOIT_PRIVESC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-314",
+      "description": "Process Injection \u2013 Privilege Escalation",
+      "events": [
+        {
+          "id": "b6-19-p1",
+          "time": "2026-02-06T20:38:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-19-p2",
+          "time": "2026-02-06T20:39:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-19-e",
+          "time": "2026-02-06T20:40:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0004_proc_injection_pe",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.PROC_INJECTION_PE",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0004.PROC_INJECTION_PE",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-315",
+      "description": "SID-History Injection",
+      "events": [
+        {
+          "id": "b6-20-p1",
+          "time": "2026-02-06T20:40:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-20-p2",
+          "time": "2026-02-06T20:41:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-20-e",
+          "time": "2026-02-06T20:42:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0004_sid_history",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.SID_HISTORY",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0004.SID_HISTORY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-316",
+      "description": "Valid Accounts \u2013 Privilege Escalation",
+      "events": [
+        {
+          "id": "b6-21-p1",
+          "time": "2026-02-06T20:42:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-21-p2",
+          "time": "2026-02-06T20:43:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-21-e",
+          "time": "2026-02-06T20:44:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0004_valid_acct_privesc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.VALID_ACCT_PRIVESC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0004.VALID_ACCT_PRIVESC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-317",
+      "description": "Access Token Manipulation \u2013 Evasion",
+      "events": [
+        {
+          "id": "b6-22-p1",
+          "time": "2026-02-06T20:44:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-22-p2",
+          "time": "2026-02-06T20:45:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-22-e",
+          "time": "2026-02-06T20:46:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_access_token_ev",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.ACCESS_TOKEN_EV",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.ACCESS_TOKEN_EV",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-318",
+      "description": "BITS Jobs \u2013 Evasion",
+      "events": [
+        {
+          "id": "b6-23-p1",
+          "time": "2026-02-06T20:46:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-23-p2",
+          "time": "2026-02-06T20:47:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-23-e",
+          "time": "2026-02-06T20:48:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_bits_jobs_ev",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.BITS_JOBS_EV",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.BITS_JOBS_EV",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-319",
+      "description": "Debugger Evasion",
+      "events": [
+        {
+          "id": "b6-24-p1",
+          "time": "2026-02-06T20:48:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-24-p2",
+          "time": "2026-02-06T20:49:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-24-e",
+          "time": "2026-02-06T20:50:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_debugger_evasion",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.DEBUGGER_EVASION",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.DEBUGGER_EVASION",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-320",
+      "description": "Deobfuscate/Decode Files",
+      "events": [
+        {
+          "id": "b6-25-p1",
+          "time": "2026-02-06T20:50:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-25-p2",
+          "time": "2026-02-06T20:51:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-25-e",
+          "time": "2026-02-06T20:52:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_deobfuscate_decode",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.DEOBFUSCATE_DECODE",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.DEOBFUSCATE_DECODE",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-321",
+      "description": "Direct Volume Access",
+      "events": [
+        {
+          "id": "b6-26-p1",
+          "time": "2026-02-06T20:52:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-26-p2",
+          "time": "2026-02-06T20:53:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-26-e",
+          "time": "2026-02-06T20:54:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_direct_vol_access",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.DIRECT_VOL_ACCESS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.DIRECT_VOL_ACCESS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-322",
+      "description": "Execution Guardrails",
+      "events": [
+        {
+          "id": "b6-27-p1",
+          "time": "2026-02-06T20:54:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-27-p2",
+          "time": "2026-02-06T20:55:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-27-e",
+          "time": "2026-02-06T20:56:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_exec_guardrails",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.EXEC_GUARDRAILS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.EXEC_GUARDRAILS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-323",
+      "description": "File and Directory Permissions Modification",
+      "events": [
+        {
+          "id": "b6-28-p1",
+          "time": "2026-02-06T20:56:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-28-p2",
+          "time": "2026-02-06T20:57:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-28-e",
+          "time": "2026-02-06T20:58:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_file_dir_perm_mod",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.FILE_DIR_PERM_MOD",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.FILE_DIR_PERM_MOD",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-324",
+      "description": "Forge Web Credentials \u2013 SAML/OAuth",
+      "events": [
+        {
+          "id": "b6-29-p1",
+          "time": "2026-02-06T20:58:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-29-p2",
+          "time": "2026-02-06T20:59:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-29-e",
+          "time": "2026-02-06T21:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_forge_web_cred",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.FORGE_WEB_CRED",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.FORGE_WEB_CRED",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-325",
+      "description": "Hide Artifacts",
+      "events": [
+        {
+          "id": "b6-30-p1",
+          "time": "2026-02-06T21:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-30-p2",
+          "time": "2026-02-06T21:01:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-30-e",
+          "time": "2026-02-06T21:02:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_hide_artifacts",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.HIDE_ARTIFACTS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.HIDE_ARTIFACTS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-326",
+      "description": "Hijack Execution Flow \u2013 Evasion",
+      "events": [
+        {
+          "id": "b6-31-p1",
+          "time": "2026-02-06T21:02:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-31-p2",
+          "time": "2026-02-06T21:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-31-e",
+          "time": "2026-02-06T21:04:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_hijack_exec_ev",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.HIJACK_EXEC_EV",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.HIJACK_EXEC_EV",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-327",
+      "description": "Indirect Command Execution",
+      "events": [
+        {
+          "id": "b6-32-p1",
+          "time": "2026-02-06T21:04:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-32-p2",
+          "time": "2026-02-06T21:05:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-32-e",
+          "time": "2026-02-06T21:06:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_indirect_cmd_exec",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.INDIRECT_CMD_EXEC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.INDIRECT_CMD_EXEC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-328",
+      "description": "Modify Cloud Compute Infrastructure",
+      "events": [
+        {
+          "id": "b6-33-p1",
+          "time": "2026-02-06T21:06:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-33-p2",
+          "time": "2026-02-06T21:07:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-33-e",
+          "time": "2026-02-06T21:08:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_mod_cloud_infra",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.MOD_CLOUD_INFRA",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.MOD_CLOUD_INFRA",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-329",
+      "description": "Modify Registry",
+      "events": [
+        {
+          "id": "b6-34-p1",
+          "time": "2026-02-06T21:08:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-34-p2",
+          "time": "2026-02-06T21:09:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-34-e",
+          "time": "2026-02-06T21:10:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_mod_registry",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.MOD_REGISTRY",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.MOD_REGISTRY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-330",
+      "description": "Process Injection \u2013 Evasion",
+      "events": [
+        {
+          "id": "b6-35-p1",
+          "time": "2026-02-06T21:10:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-35-p2",
+          "time": "2026-02-06T21:11:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-35-e",
+          "time": "2026-02-06T21:12:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_proc_injection_ev",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.PROC_INJECTION_EV",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.PROC_INJECTION_EV",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-331",
+      "description": "Reflective Code Loading",
+      "events": [
+        {
+          "id": "b6-36-p1",
+          "time": "2026-02-06T21:12:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-36-p2",
+          "time": "2026-02-06T21:13:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-36-e",
+          "time": "2026-02-06T21:14:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_reflective_load",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.REFLECTIVE_LOAD",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.REFLECTIVE_LOAD",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-332",
+      "description": "Rootkit",
+      "events": [
+        {
+          "id": "b6-37-p1",
+          "time": "2026-02-06T21:14:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-37-p2",
+          "time": "2026-02-06T21:15:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-37-e",
+          "time": "2026-02-06T21:16:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_rootkit",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.ROOTKIT",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.ROOTKIT",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-333",
+      "description": "Rogue Domain Controller",
+      "events": [
+        {
+          "id": "b6-38-p1",
+          "time": "2026-02-06T21:16:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-38-p2",
+          "time": "2026-02-06T21:17:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-38-e",
+          "time": "2026-02-06T21:18:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_rogue_domain_ctrl",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.ROGUE_DOMAIN_CTRL",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.ROGUE_DOMAIN_CTRL",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-334",
+      "description": "Signed Binary Proxy \u2013 rundll32/mshta/certutil",
+      "events": [
+        {
+          "id": "b6-39-p1",
+          "time": "2026-02-06T21:18:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-39-p2",
+          "time": "2026-02-06T21:19:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-39-e",
+          "time": "2026-02-06T21:20:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_signed_binary_prox",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.SIGNED_BINARY_PROX",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.SIGNED_BINARY_PROX",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-335",
+      "description": "Subvert Trust Controls",
+      "events": [
+        {
+          "id": "b6-40-p1",
+          "time": "2026-02-06T21:20:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-40-p2",
+          "time": "2026-02-06T21:21:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-40-e",
+          "time": "2026-02-06T21:22:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_subvert_trust",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.SUBVERT_TRUST",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.SUBVERT_TRUST",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-336",
+      "description": "Template Injection",
+      "events": [
+        {
+          "id": "b6-41-p1",
+          "time": "2026-02-06T21:22:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-41-p2",
+          "time": "2026-02-06T21:23:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-41-e",
+          "time": "2026-02-06T21:24:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_template_inject",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.TEMPLATE_INJECT",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.TEMPLATE_INJECT",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-337",
+      "description": "Signed Binary \u2013 Rundll32",
+      "events": [
+        {
+          "id": "b6-42-p1",
+          "time": "2026-02-06T21:24:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-42-p2",
+          "time": "2026-02-06T21:25:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-42-e",
+          "time": "2026-02-06T21:26:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_unused_unsupported",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.UNUSED_UNSUPPORTED",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.UNUSED_UNSUPPORTED",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-338",
+      "description": "Virtualization/Sandbox Evasion",
+      "events": [
+        {
+          "id": "b6-43-p1",
+          "time": "2026-02-06T21:26:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-43-p2",
+          "time": "2026-02-06T21:27:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-43-e",
+          "time": "2026-02-06T21:28:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_virt_sandbox_evade",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.VIRT_SANDBOX_EVADE",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.VIRT_SANDBOX_EVADE",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-339",
+      "description": "Weaken Encryption",
+      "events": [
+        {
+          "id": "b6-44-p1",
+          "time": "2026-02-06T21:28:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-44-p2",
+          "time": "2026-02-06T21:29:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-44-e",
+          "time": "2026-02-06T21:30:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_weaken_encryption",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.WEAKEN_ENCRYPTION",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.WEAKEN_ENCRYPTION",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-340",
+      "description": "XSL Script Processing",
+      "events": [
+        {
+          "id": "b6-45-p1",
+          "time": "2026-02-06T21:30:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "b6-45-p2",
+          "time": "2026-02-06T21:31:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "b6-45-e",
+          "time": "2026-02-06T21:32:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_xsl_script",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.XSL_SCRIPT",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.XSL_SCRIPT",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-341",
+      "description": "Adversary-in-the-Middle (AiTM)",
+      "events": [
+        {
+          "id": "b6-46-p1",
+          "time": "2026-02-06T21:32:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-46-e",
+          "time": "2026-02-06T21:33:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0006_aitm",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.AITM",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.AITM",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-342",
+      "description": "Cloud Instance Metadata API Abuse",
+      "events": [
+        {
+          "id": "b6-47-p1",
+          "time": "2026-02-06T21:34:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-47-e",
+          "time": "2026-02-06T21:35:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0006_cloud_imds",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.CLOUD_IMDS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.CLOUD_IMDS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-343",
+      "description": "Exploitation for Credential Access",
+      "events": [
+        {
+          "id": "b6-48-p1",
+          "time": "2026-02-06T21:36:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-48-e",
+          "time": "2026-02-06T21:37:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0006_exploit_cred_access",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.EXPLOIT_CRED_ACCESS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.EXPLOIT_CRED_ACCESS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-344",
+      "description": "Forge Kerberos Tickets \u2013 Golden Ticket",
+      "events": [
+        {
+          "id": "b6-49-p1",
+          "time": "2026-02-06T21:38:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-49-e",
+          "time": "2026-02-06T21:39:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0006_forge_kerberos",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.FORGE_KERBEROS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.FORGE_KERBEROS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-345",
+      "description": "Kerberoasting \u2013 SPN Ticket Request",
+      "events": [
+        {
+          "id": "b6-50-p1",
+          "time": "2026-02-06T21:40:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-50-e",
+          "time": "2026-02-06T21:41:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0006_kerberoasting",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.KERBEROASTING",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.KERBEROASTING",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-346",
+      "description": "MFA Interception / SIM Swap",
+      "events": [
+        {
+          "id": "b6-51-p1",
+          "time": "2026-02-06T21:42:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-51-e",
+          "time": "2026-02-06T21:43:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0006_mfa_intercept",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.MFA_INTERCEPT",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.MFA_INTERCEPT",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-347",
+      "description": "MFA Request Generation / Fatigue",
+      "events": [
+        {
+          "id": "b6-52-p1",
+          "time": "2026-02-06T21:44:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-52-e",
+          "time": "2026-02-06T21:45:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0006_multi_factor_fatigue",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.MULTI_FACTOR_FATIGUE",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.MULTI_FACTOR_FATIGUE",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-348",
+      "description": "Network Sniffing",
+      "events": [
+        {
+          "id": "b6-53-p1",
+          "time": "2026-02-06T21:46:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-53-e",
+          "time": "2026-02-06T21:47:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0006_network_sniff",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.NETWORK_SNIFF",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.NETWORK_SNIFF",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-349",
+      "description": "Pass-the-Hash",
+      "events": [
+        {
+          "id": "b6-54-p1",
+          "time": "2026-02-06T21:48:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-54-e",
+          "time": "2026-02-06T21:49:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0006_pass_the_hash",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.PASS_THE_HASH",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.PASS_THE_HASH",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-350",
+      "description": "Steal Application Access Token",
+      "events": [
+        {
+          "id": "b6-55-p1",
+          "time": "2026-02-06T21:50:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-55-e",
+          "time": "2026-02-06T21:51:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0006_steal_app_token",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.STEAL_APP_TOKEN",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.STEAL_APP_TOKEN",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-351",
+      "description": "Steal Web Session Cookie",
+      "events": [
+        {
+          "id": "b6-56-p1",
+          "time": "2026-02-06T21:52:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-56-e",
+          "time": "2026-02-06T21:53:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0006_steal_web_session",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.STEAL_WEB_SESSION",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.STEAL_WEB_SESSION",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-352",
+      "description": "Unsecured Credentials \u2013 Files/Registry",
+      "events": [
+        {
+          "id": "b6-57-p1",
+          "time": "2026-02-06T21:54:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-57-e",
+          "time": "2026-02-06T21:55:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0006_unsecured_creds",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.UNSECURED_CREDS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.UNSECURED_CREDS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-353",
+      "description": "Browser Information Discovery",
+      "events": [
+        {
+          "id": "b6-58-p1",
+          "time": "2026-02-06T21:56:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-58-e",
+          "time": "2026-02-06T21:57:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_browser_info_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.BROWSER_INFO_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.BROWSER_INFO_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-354",
+      "description": "Cloud Infrastructure Discovery",
+      "events": [
+        {
+          "id": "b6-59-p1",
+          "time": "2026-02-06T21:58:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-59-e",
+          "time": "2026-02-06T21:59:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_cloud_infra_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.CLOUD_INFRA_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.CLOUD_INFRA_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-355",
+      "description": "Cloud Service Dashboard",
+      "events": [
+        {
+          "id": "b6-60-p1",
+          "time": "2026-02-06T22:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-60-e",
+          "time": "2026-02-06T22:01:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_cloud_svc_dash",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.CLOUD_SVC_DASH",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.CLOUD_SVC_DASH",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-356",
+      "description": "Cloud Service Discovery",
+      "events": [
+        {
+          "id": "b6-61-p1",
+          "time": "2026-02-06T22:02:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-61-e",
+          "time": "2026-02-06T22:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_cloud_svc_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.CLOUD_SVC_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.CLOUD_SVC_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-357",
+      "description": "Cloud Storage Object Discovery",
+      "events": [
+        {
+          "id": "b6-62-p1",
+          "time": "2026-02-06T22:04:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-62-e",
+          "time": "2026-02-06T22:05:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_cloud_storage_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.CLOUD_STORAGE_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.CLOUD_STORAGE_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-358",
+      "description": "Container and Resource Discovery",
+      "events": [
+        {
+          "id": "b6-63-p1",
+          "time": "2026-02-06T22:06:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-63-e",
+          "time": "2026-02-06T22:07:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_container_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.CONTAINER_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.CONTAINER_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-359",
+      "description": "Domain Trust Discovery",
+      "events": [
+        {
+          "id": "b6-64-p1",
+          "time": "2026-02-06T22:08:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-64-e",
+          "time": "2026-02-06T22:09:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_domain_trust_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.DOMAIN_TRUST_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.DOMAIN_TRUST_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-360",
+      "description": "File and Directory Discovery",
+      "events": [
+        {
+          "id": "b6-65-p1",
+          "time": "2026-02-06T22:10:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-65-e",
+          "time": "2026-02-06T22:11:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_file_dir_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.FILE_DIR_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.FILE_DIR_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-361",
+      "description": "Group Policy Discovery",
+      "events": [
+        {
+          "id": "b6-66-p1",
+          "time": "2026-02-06T22:12:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-66-e",
+          "time": "2026-02-06T22:13:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_group_policy_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.GROUP_POLICY_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.GROUP_POLICY_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-362",
+      "description": "Network Service Discovery",
+      "events": [
+        {
+          "id": "b6-67-p1",
+          "time": "2026-02-06T22:14:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-67-e",
+          "time": "2026-02-06T22:15:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_net_service_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.NET_SERVICE_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.NET_SERVICE_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-363",
+      "description": "Network Share Discovery",
+      "events": [
+        {
+          "id": "b6-68-p1",
+          "time": "2026-02-06T22:16:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-68-e",
+          "time": "2026-02-06T22:17:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_net_share_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.NET_SHARE_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.NET_SHARE_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-364",
+      "description": "Network Sniffing \u2013 Discovery",
+      "events": [
+        {
+          "id": "b6-69-p1",
+          "time": "2026-02-06T22:18:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-69-e",
+          "time": "2026-02-06T22:19:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_net_sniff_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.NET_SNIFF_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.NET_SNIFF_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-365",
+      "description": "Password Policy Discovery",
+      "events": [
+        {
+          "id": "b6-70-p1",
+          "time": "2026-02-06T22:20:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-70-e",
+          "time": "2026-02-06T22:21:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_pass_policy_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.PASS_POLICY_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.PASS_POLICY_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-366",
+      "description": "Permission Group Discovery",
+      "events": [
+        {
+          "id": "b6-71-p1",
+          "time": "2026-02-06T22:22:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-71-e",
+          "time": "2026-02-06T22:23:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_perm_group_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.PERM_GROUP_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.PERM_GROUP_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-367",
+      "description": "Process Discovery",
+      "events": [
+        {
+          "id": "b6-72-p1",
+          "time": "2026-02-06T22:24:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-72-e",
+          "time": "2026-02-06T22:25:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_proc_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.PROC_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.PROC_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-368",
+      "description": "Query Registry",
+      "events": [
+        {
+          "id": "b6-73-p1",
+          "time": "2026-02-06T22:26:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-73-e",
+          "time": "2026-02-06T22:27:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_query_registry",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.QUERY_REGISTRY",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.QUERY_REGISTRY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-369",
+      "description": "Remote System Discovery",
+      "events": [
+        {
+          "id": "b6-74-p1",
+          "time": "2026-02-06T22:28:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-74-e",
+          "time": "2026-02-06T22:29:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_remote_sys_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.REMOTE_SYS_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.REMOTE_SYS_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-370",
+      "description": "Security Software Discovery",
+      "events": [
+        {
+          "id": "b6-75-p1",
+          "time": "2026-02-06T22:30:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-75-e",
+          "time": "2026-02-06T22:31:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_sec_sw_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.SEC_SW_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.SEC_SW_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-371",
+      "description": "System Information Discovery",
+      "events": [
+        {
+          "id": "b6-76-p1",
+          "time": "2026-02-06T22:32:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-76-e",
+          "time": "2026-02-06T22:33:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_sys_info_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.SYS_INFO_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.SYS_INFO_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-372",
+      "description": "System Network Configuration Discovery",
+      "events": [
+        {
+          "id": "b6-77-p1",
+          "time": "2026-02-06T22:34:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-77-e",
+          "time": "2026-02-06T22:35:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_sys_net_conf_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.SYS_NET_CONF_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.SYS_NET_CONF_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-373",
+      "description": "System Network Connections Discovery",
+      "events": [
+        {
+          "id": "b6-78-p1",
+          "time": "2026-02-06T22:36:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-78-e",
+          "time": "2026-02-06T22:37:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_sys_net_conn_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.SYS_NET_CONN_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.SYS_NET_CONN_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-374",
+      "description": "System Owner/User Discovery",
+      "events": [
+        {
+          "id": "b6-79-p1",
+          "time": "2026-02-06T22:38:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-79-e",
+          "time": "2026-02-06T22:39:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_sys_owner_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.SYS_OWNER_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.SYS_OWNER_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-375",
+      "description": "System Service Discovery",
+      "events": [
+        {
+          "id": "b6-80-p1",
+          "time": "2026-02-06T22:40:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-80-e",
+          "time": "2026-02-06T22:41:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_sys_svc_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.SYS_SVC_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.SYS_SVC_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-376",
+      "description": "Virtualization/Sandbox Discovery",
+      "events": [
+        {
+          "id": "b6-81-p1",
+          "time": "2026-02-06T22:42:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b6-81-e",
+          "time": "2026-02-06T22:43:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0007_virt_disc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.VIRT_DISC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.VIRT_DISC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-377",
+      "description": "Exploitation of Remote Services",
+      "events": [
+        {
+          "id": "b6-82-p1",
+          "time": "2026-02-06T22:44:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-82-e",
+          "time": "2026-02-06T22:45:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0008_exploit_remote_svc",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.EXPLOIT_REMOTE_SVC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0008.EXPLOIT_REMOTE_SVC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-378",
+      "description": "Internal Spearphishing",
+      "events": [
+        {
+          "id": "b6-83-p1",
+          "time": "2026-02-06T22:46:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-83-e",
+          "time": "2026-02-06T22:47:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0008_internal_spearphish",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.INTERNAL_SPEARPHISH",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0008.INTERNAL_SPEARPHISH",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-379",
+      "description": "Lateral Tool Transfer",
+      "events": [
+        {
+          "id": "b6-84-p1",
+          "time": "2026-02-06T22:48:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-84-e",
+          "time": "2026-02-06T22:49:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0008_lateral_tool_xfer",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.LATERAL_TOOL_XFER",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0008.LATERAL_TOOL_XFER",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-380",
+      "description": "Taint Shared Content",
+      "events": [
+        {
+          "id": "b6-85-p1",
+          "time": "2026-02-06T22:50:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-85-e",
+          "time": "2026-02-06T22:51:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0008_taint_shared",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.TAINT_SHARED",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0008.TAINT_SHARED",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-381",
+      "description": "Use Alternate Authentication Material",
+      "events": [
+        {
+          "id": "b6-86-p1",
+          "time": "2026-02-06T22:52:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-86-e",
+          "time": "2026-02-06T22:53:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0008_use_alt_auth",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.USE_ALT_AUTH",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0008.USE_ALT_AUTH",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-382",
+      "description": "Software Deployment Tools",
+      "events": [
+        {
+          "id": "b6-87-p1",
+          "time": "2026-02-06T22:54:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-87-e",
+          "time": "2026-02-06T22:55:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0008_software_deploy",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0008.SOFTWARE_DEPLOY",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0008.SOFTWARE_DEPLOY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-383",
+      "description": "Archive Collected Data",
+      "events": [
+        {
+          "id": "b6-88-e",
+          "time": "2026-02-06T22:56:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0009_archive_data",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0009.ARCHIVE_DATA",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0009.ARCHIVE_DATA",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-384",
+      "description": "Automated Collection",
+      "events": [
+        {
+          "id": "b6-89-e",
+          "time": "2026-02-06T22:58:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0009_auto_collection",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0009.AUTO_COLLECTION",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0009.AUTO_COLLECTION",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-385",
+      "description": "Browser Session Hijacking",
+      "events": [
+        {
+          "id": "b6-90-e",
+          "time": "2026-02-06T23:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0009_browser_session",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0009.BROWSER_SESSION",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0009.BROWSER_SESSION",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-386",
+      "description": "Clipboard Data",
+      "events": [
+        {
+          "id": "b6-91-e",
+          "time": "2026-02-06T23:02:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0009_clipboard_data",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0009.CLIPBOARD_DATA",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0009.CLIPBOARD_DATA",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-387",
+      "description": "Data from Cloud Storage",
+      "events": [
+        {
+          "id": "b6-92-e",
+          "time": "2026-02-06T23:04:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0009_cloud_storage_coll",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0009.CLOUD_STORAGE_COLL",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0009.CLOUD_STORAGE_COLL",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-388",
+      "description": "Data from Information Repositories",
+      "events": [
+        {
+          "id": "b6-93-e",
+          "time": "2026-02-06T23:06:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0009_data_from_info_repo",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0009.DATA_FROM_INFO_REPO",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0009.DATA_FROM_INFO_REPO",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-389",
+      "description": "Data from Local System",
+      "events": [
+        {
+          "id": "b6-94-e",
+          "time": "2026-02-06T23:08:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0009_data_from_local_sys",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0009.DATA_FROM_LOCAL_SYS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0009.DATA_FROM_LOCAL_SYS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-390",
+      "description": "Data from Network Shared Drive",
+      "events": [
+        {
+          "id": "b6-95-e",
+          "time": "2026-02-06T23:10:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0009_data_from_net_share",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0009.DATA_FROM_NET_SHARE",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0009.DATA_FROM_NET_SHARE",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-391",
+      "description": "Data Staged",
+      "events": [
+        {
+          "id": "b6-96-e",
+          "time": "2026-02-06T23:12:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0009_data_staged",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0009.DATA_STAGED",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0009.DATA_STAGED",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-392",
+      "description": "Input Capture \u2013 Keylogging",
+      "events": [
+        {
+          "id": "b6-97-e",
+          "time": "2026-02-06T23:14:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0009_input_capture_coll",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0009.INPUT_CAPTURE_COLL",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0009.INPUT_CAPTURE_COLL",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-393",
+      "description": "Communication Through Removable Media",
+      "events": [
+        {
+          "id": "b6-98-p1",
+          "time": "2026-02-06T23:16:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-98-e",
+          "time": "2026-02-06T23:17:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0011_comm_through_proxy",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.COMM_THROUGH_PROXY",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0011.COMM_THROUGH_PROXY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-394",
+      "description": "Data Encoding",
+      "events": [
+        {
+          "id": "b6-99-p1",
+          "time": "2026-02-06T23:18:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-99-e",
+          "time": "2026-02-06T23:19:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0011_data_encoding",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.DATA_ENCODING",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0011.DATA_ENCODING",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-395",
+      "description": "Data Obfuscation",
+      "events": [
+        {
+          "id": "b6-100-p1",
+          "time": "2026-02-06T23:20:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-100-e",
+          "time": "2026-02-06T23:21:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0011_data_obfuscation",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.DATA_OBFUSCATION",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0011.DATA_OBFUSCATION",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-396",
+      "description": "DNS C2 / DNS Tunneling",
+      "events": [
+        {
+          "id": "b6-101-p1",
+          "time": "2026-02-06T23:22:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-101-e",
+          "time": "2026-02-06T23:23:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0011_dns_c2",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.DNS_C2",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0011.DNS_C2",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-397",
+      "description": "Dynamic Resolution \u2013 DGA",
+      "events": [
+        {
+          "id": "b6-102-p1",
+          "time": "2026-02-06T23:24:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-102-e",
+          "time": "2026-02-06T23:25:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0011_dyn_resolution",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.DYN_RESOLUTION",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0011.DYN_RESOLUTION",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-398",
+      "description": "Encrypted Channel \u2013 Non-Standard",
+      "events": [
+        {
+          "id": "b6-103-p1",
+          "time": "2026-02-06T23:26:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-103-e",
+          "time": "2026-02-06T23:27:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0011_encrypted_channel",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.ENCRYPTED_CHANNEL",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0011.ENCRYPTED_CHANNEL",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-399",
+      "description": "Fallback Channels",
+      "events": [
+        {
+          "id": "b6-104-p1",
+          "time": "2026-02-06T23:28:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-104-e",
+          "time": "2026-02-06T23:29:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0011_fallback_channels",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.FALLBACK_CHANNELS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0011.FALLBACK_CHANNELS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-400",
+      "description": "Ingress Tool Transfer",
+      "events": [
+        {
+          "id": "b6-105-p1",
+          "time": "2026-02-06T23:30:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-105-e",
+          "time": "2026-02-06T23:31:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0011_ingress_tool_xfer",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.INGRESS_TOOL_XFER",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0011.INGRESS_TOOL_XFER",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-401",
+      "description": "Multi-hop Proxy",
+      "events": [
+        {
+          "id": "b6-106-p1",
+          "time": "2026-02-06T23:32:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-106-e",
+          "time": "2026-02-06T23:33:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0011_multi_hop_proxy",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.MULTI_HOP_PROXY",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0011.MULTI_HOP_PROXY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-402",
+      "description": "Multi-Stage Channels",
+      "events": [
+        {
+          "id": "b6-107-p1",
+          "time": "2026-02-06T23:34:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-107-e",
+          "time": "2026-02-06T23:35:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0011_multi_stage_chan",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.MULTI_STAGE_CHAN",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0011.MULTI_STAGE_CHAN",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-403",
+      "description": "Non-Application Layer Protocol",
+      "events": [
+        {
+          "id": "b6-108-p1",
+          "time": "2026-02-06T23:36:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-108-e",
+          "time": "2026-02-06T23:37:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0011_non_app_layer",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.NON_APP_LAYER",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0011.NON_APP_LAYER",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-404",
+      "description": "Non-Standard Port",
+      "events": [
+        {
+          "id": "b6-109-p1",
+          "time": "2026-02-06T23:38:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-109-e",
+          "time": "2026-02-06T23:39:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0011_non_std_port",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.NON_STD_PORT",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0011.NON_STD_PORT",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-405",
+      "description": "Protocol Tunneling",
+      "events": [
+        {
+          "id": "b6-110-p1",
+          "time": "2026-02-06T23:40:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-110-e",
+          "time": "2026-02-06T23:41:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0011_protocol_tunnel",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.PROTOCOL_TUNNEL",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0011.PROTOCOL_TUNNEL",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-406",
+      "description": "Remote Access Software",
+      "events": [
+        {
+          "id": "b6-111-p1",
+          "time": "2026-02-06T23:42:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-111-e",
+          "time": "2026-02-06T23:43:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0011_remote_access_sw",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.REMOTE_ACCESS_SW",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0011.REMOTE_ACCESS_SW",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-407",
+      "description": "Web Service \u2013 C2 via Cloud Platform",
+      "events": [
+        {
+          "id": "b6-112-p1",
+          "time": "2026-02-06T23:44:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-112-e",
+          "time": "2026-02-06T23:45:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0011_web_service_c2",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0011.WEB_SERVICE_C2",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0011.WEB_SERVICE_C2",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-408",
+      "description": "Automated Exfiltration",
+      "events": [
+        {
+          "id": "b6-113-p1",
+          "time": "2026-02-06T23:46:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-113-e",
+          "time": "2026-02-06T23:47:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0010_auto_exfil",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.AUTO_EXFIL",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0010.AUTO_EXFIL",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-409",
+      "description": "Exfiltration Over Alt Protocol \u2013 DNS",
+      "events": [
+        {
+          "id": "b6-114-p1",
+          "time": "2026-02-06T23:48:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-114-e",
+          "time": "2026-02-06T23:49:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0010_dns_exfil",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.DNS_EXFIL",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0010.DNS_EXFIL",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-410",
+      "description": "Exfiltration Over C2 Channel",
+      "events": [
+        {
+          "id": "b6-115-p1",
+          "time": "2026-02-06T23:50:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-115-e",
+          "time": "2026-02-06T23:51:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0010_exfil_c2",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL_C2",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0010.EXFIL_C2",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-411",
+      "description": "Scheduled Transfer",
+      "events": [
+        {
+          "id": "b6-116-p1",
+          "time": "2026-02-06T23:52:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-116-e",
+          "time": "2026-02-06T23:53:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0010_sched_transfer",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.SCHED_TRANSFER",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0010.SCHED_TRANSFER",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-412",
+      "description": "Transfer Data to Cloud Account",
+      "events": [
+        {
+          "id": "b6-117-p1",
+          "time": "2026-02-06T23:54:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b6-117-e",
+          "time": "2026-02-06T23:55:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0010_transfer_cloud",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.TRANSFER_CLOUD",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0010.TRANSFER_CLOUD",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-413",
+      "description": "Account Access Removal",
+      "events": [
+        {
+          "id": "b6-118-p1",
+          "time": "2026-02-06T23:56:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "b6-118-e",
+          "time": "2026-02-06T23:57:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0040_account_access_rm",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0040.ACCOUNT_ACCESS_RM",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0040.ACCOUNT_ACCESS_RM",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-414",
+      "description": "Data Manipulation \u2013 Stored",
+      "events": [
+        {
+          "id": "b6-119-p1",
+          "time": "2026-02-06T23:58:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "b6-119-e",
+          "time": "2026-02-06T23:59:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0040_data_manip_stored",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0040.DATA_MANIP_STORED",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0040.DATA_MANIP_STORED",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-415",
+      "description": "Data Manipulation \u2013 Runtime",
+      "events": [
+        {
+          "id": "b6-120-p1",
+          "time": "2026-02-07T00:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "b6-120-e",
+          "time": "2026-02-07T00:01:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0040_data_manip_runtime",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0040.DATA_MANIP_RUNTIME",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0040.DATA_MANIP_RUNTIME",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-416",
+      "description": "Defacement \u2013 External Website",
+      "events": [
+        {
+          "id": "b6-121-p1",
+          "time": "2026-02-07T00:02:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "b6-121-e",
+          "time": "2026-02-07T00:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0040_defacement_external",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0040.DEFACEMENT_EXTERNAL",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0040.DEFACEMENT_EXTERNAL",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-417",
+      "description": "Defacement \u2013 Internal",
+      "events": [
+        {
+          "id": "b6-122-p1",
+          "time": "2026-02-07T00:04:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "b6-122-e",
+          "time": "2026-02-07T00:05:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0040_defacement_internal",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0040.DEFACEMENT_INTERNAL",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0040.DEFACEMENT_INTERNAL",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-418",
+      "description": "Endpoint Denial of Service",
+      "events": [
+        {
+          "id": "b6-123-p1",
+          "time": "2026-02-07T00:06:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "b6-123-e",
+          "time": "2026-02-07T00:07:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0040_endpoint_dos",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0040.ENDPOINT_DOS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0040.ENDPOINT_DOS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-419",
+      "description": "Firmware Corruption",
+      "events": [
+        {
+          "id": "b6-124-p1",
+          "time": "2026-02-07T00:08:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "b6-124-e",
+          "time": "2026-02-07T00:09:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0040_firmware_corrupt",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0040.FIRMWARE_CORRUPT",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0040.FIRMWARE_CORRUPT",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-420",
+      "description": "Network Denial of Service",
+      "events": [
+        {
+          "id": "b6-125-p1",
+          "time": "2026-02-07T00:10:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "b6-125-e",
+          "time": "2026-02-07T00:11:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0040_network_dos",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0040.NETWORK_DOS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0040.NETWORK_DOS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-421",
+      "description": "Service Stop",
+      "events": [
+        {
+          "id": "b6-126-p1",
+          "time": "2026-02-07T00:12:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "b6-126-e",
+          "time": "2026-02-07T00:13:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0040_svc_stop",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0040.SVC_STOP",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0040.SVC_STOP",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-422",
+      "description": "System Shutdown/Reboot",
+      "events": [
+        {
+          "id": "b6-127-p1",
+          "time": "2026-02-07T00:14:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "token_manipulation",
+          "details": {}
+        },
+        {
+          "id": "b6-127-e",
+          "time": "2026-02-07T00:15:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0040_sys_shutdown",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0040.SYS_SHUTDOWN",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0040.SYS_SHUTDOWN",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
     }
   ]
 }

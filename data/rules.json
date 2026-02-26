@@ -1325,6 +1325,68 @@
     }
   },
   {
+    "id": "TA0003.BITS_JOBS",
+    "name": "BITS Jobs",
+    "requirements": [
+      {
+        "type": "ta0003_bits_jobs",
+        "description": "BITS Jobs"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "BITS Jobs",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1197",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0003.BROWSER_EXT",
+    "name": "Browser Extensions",
+    "requirements": [
+      {
+        "type": "ta0003_browser_ext",
+        "description": "Browser Extensions"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Browser Extensions",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1176",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0003.CLOUD_IMAGE_IMPLANT",
     "name": "Implant Internal Cloud Image",
     "requirements": [
@@ -1360,6 +1422,37 @@
     }
   },
   {
+    "id": "TA0003.COMPROMISE_HOST_SW",
+    "name": "Compromise Host Software Binary",
+    "requirements": [
+      {
+        "type": "ta0003_compromise_host_sw",
+        "description": "Compromise Host Software Binary"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Compromise Host Software Binary",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1554",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0003.CONTAINER_EXECUTION",
     "name": "Container Execution",
     "requirements": [
@@ -1381,6 +1474,130 @@
       "technique": "",
       "subtechnique": "",
       "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0003.CREATE_MOD_SVC",
+    "name": "Create or Modify System Process",
+    "requirements": [
+      {
+        "type": "ta0003_create_mod_svc",
+        "description": "Create or Modify System Process"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Create or Modify System Process",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1543",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0003.EVENT_TRIGGER",
+    "name": "Event-Triggered Execution",
+    "requirements": [
+      {
+        "type": "ta0003_event_trigger",
+        "description": "Event-Triggered Execution"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Event-Triggered Execution",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1546",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0003.HIJACK_EXEC_FLOW",
+    "name": "Hijack Execution Flow \u2013 DLL Sideload",
+    "requirements": [
+      {
+        "type": "ta0003_hijack_exec_flow",
+        "description": "Hijack Execution Flow \u2013 DLL Sideload"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Hijack Execution Flow \u2013 DLL Sideload",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1574",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0003.IMPLANT_CONTAINER",
+    "name": "Implant Internal Image",
+    "requirements": [
+      {
+        "type": "ta0003_implant_container",
+        "description": "Implant Internal Image"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Implant Internal Image",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1525",
+      "subtechnique": "",
+      "links": []
     },
     "provenance": {
       "author": "",
@@ -1444,6 +1661,37 @@
     "kill_chain": [
       "Installation"
     ]
+  },
+  {
+    "id": "TA0003.MOD_AUTH_PERSIST",
+    "name": "Modify Authentication Process \u2013 Persistence",
+    "requirements": [
+      {
+        "type": "ta0003_mod_auth_persist",
+        "description": "Modify Authentication Process \u2013 Persistence"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Modify Authentication Process \u2013 Persistence",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1556",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
   },
   {
     "id": "TA0003.PERSIST",
@@ -1546,6 +1794,285 @@
     ]
   },
   {
+    "id": "TA0003.PWR_SHELL_PROFILE",
+    "name": "PowerShell Profile Persistence",
+    "requirements": [
+      {
+        "type": "ta0003_pwr_shell_profile",
+        "description": "PowerShell Profile Persistence"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "PowerShell Profile Persistence",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1504",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0003.SCHED_TASK_PERSIST",
+    "name": "Scheduled Task \u2013 Persistence",
+    "requirements": [
+      {
+        "type": "ta0003_sched_task_persist",
+        "description": "Scheduled Task \u2013 Persistence"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Scheduled Task \u2013 Persistence",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1053",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0003.SERVER_SW_COMP",
+    "name": "Server Software Component \u2013 Webshell",
+    "requirements": [
+      {
+        "type": "ta0003_server_sw_comp",
+        "description": "Server Software Component \u2013 Webshell"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Server Software Component \u2013 Webshell",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1505",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0003.SSH_AUTH_KEYS",
+    "name": "SSH Authorized Keys Modification",
+    "requirements": [
+      {
+        "type": "ta0003_ssh_auth_keys",
+        "description": "SSH Authorized Keys Modification"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "SSH Authorized Keys Modification",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1098.004",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0003.VALID_ACCOUNT_CLOUD",
+    "name": "Valid Accounts \u2013 Cloud Account Persistence",
+    "requirements": [
+      {
+        "type": "ta0003_valid_account_cloud",
+        "description": "Valid Accounts \u2013 Cloud Account Persistence"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Valid Accounts \u2013 Cloud Account Persistence",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1078.004",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0004.ABUSE_ELEV_CLOUD",
+    "name": "Abuse Elevation \u2013 Temporary Cloud Access",
+    "requirements": [
+      {
+        "type": "ta0004_abuse_elev_cloud",
+        "description": "Abuse Elevation \u2013 Temporary Cloud Access"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Abuse Elevation \u2013 Temporary Cloud Access",
+    "mitre": {
+      "tactic": "TA0004",
+      "technique": "T1548.005",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0004.ABUSE_ELEV_SUDO",
+    "name": "Abuse Elevation \u2013 Sudo/Sudoers",
+    "requirements": [
+      {
+        "type": "ta0004_abuse_elev_sudo",
+        "description": "Abuse Elevation \u2013 Sudo/Sudoers"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Abuse Elevation \u2013 Sudo/Sudoers",
+    "mitre": {
+      "tactic": "TA0004",
+      "technique": "T1548.003",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0004.ABUSE_ELEV_UAC",
+    "name": "Abuse Elevation \u2013 UAC Bypass",
+    "requirements": [
+      {
+        "type": "ta0004_abuse_elev_uac",
+        "description": "Abuse Elevation \u2013 UAC Bypass"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Abuse Elevation \u2013 UAC Bypass",
+    "mitre": {
+      "tactic": "TA0004",
+      "technique": "T1548.002",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0004.ACCESS_TOKEN_MANIP",
+    "name": "Access Token Manipulation",
+    "requirements": [
+      {
+        "type": "ta0004_access_token_manip",
+        "description": "Access Token Manipulation"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Access Token Manipulation",
+    "mitre": {
+      "tactic": "TA0004",
+      "technique": "T1134",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0004.ACCOUNT_MANIP",
     "name": "Account Manipulation",
     "requirements": [
@@ -1594,6 +2121,68 @@
     "kill_chain": [
       "Exploitation"
     ]
+  },
+  {
+    "id": "TA0004.DOMAIN_POLICY_MOD",
+    "name": "Domain Policy Modification",
+    "requirements": [
+      {
+        "type": "ta0004_domain_policy_mod",
+        "description": "Domain Policy Modification"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Domain Policy Modification",
+    "mitre": {
+      "tactic": "TA0004",
+      "technique": "T1484",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0004.EXPLOIT_PRIVESC",
+    "name": "Kernel/Driver Exploit for Privesc",
+    "requirements": [
+      {
+        "type": "ta0004_exploit_privesc",
+        "description": "Kernel/Driver Exploit for Privesc"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Kernel/Driver Exploit for Privesc",
+    "mitre": {
+      "tactic": "TA0004",
+      "technique": "T1068",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
   },
   {
     "id": "TA0004.MFA_BYPASS",
@@ -1695,6 +2284,37 @@
     ]
   },
   {
+    "id": "TA0004.PROC_INJECTION_PE",
+    "name": "Process Injection \u2013 Privilege Escalation",
+    "requirements": [
+      {
+        "type": "ta0004_proc_injection_pe",
+        "description": "Process Injection \u2013 Privilege Escalation"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Process Injection \u2013 Privilege Escalation",
+    "mitre": {
+      "tactic": "TA0004",
+      "technique": "T1055",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0004.SAAS_ADMIN",
     "name": "SaaS Admin Takeover",
     "requirements": [
@@ -1745,6 +2365,37 @@
     ]
   },
   {
+    "id": "TA0004.SID_HISTORY",
+    "name": "SID-History Injection",
+    "requirements": [
+      {
+        "type": "ta0004_sid_history",
+        "description": "SID-History Injection"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "SID-History Injection",
+    "mitre": {
+      "tactic": "TA0004",
+      "technique": "T1134.005",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0004.UAC_BYPASS",
     "name": "UAC Bypass",
     "requirements": [
@@ -1766,6 +2417,68 @@
       "technique": "",
       "subtechnique": "",
       "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0004.VALID_ACCT_PRIVESC",
+    "name": "Valid Accounts \u2013 Privilege Escalation",
+    "requirements": [
+      {
+        "type": "ta0004_valid_acct_privesc",
+        "description": "Valid Accounts \u2013 Privilege Escalation"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Valid Accounts \u2013 Privilege Escalation",
+    "mitre": {
+      "tactic": "TA0004",
+      "technique": "T1078",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.ACCESS_TOKEN_EV",
+    "name": "Access Token Manipulation \u2013 Evasion",
+    "requirements": [
+      {
+        "type": "ta0005_access_token_ev",
+        "description": "Access Token Manipulation \u2013 Evasion"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Access Token Manipulation \u2013 Evasion",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1134",
+      "subtechnique": "",
+      "links": []
     },
     "provenance": {
       "author": "",
@@ -1831,6 +2544,130 @@
     ]
   },
   {
+    "id": "TA0005.BITS_JOBS_EV",
+    "name": "BITS Jobs \u2013 Evasion",
+    "requirements": [
+      {
+        "type": "ta0005_bits_jobs_ev",
+        "description": "BITS Jobs \u2013 Evasion"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "BITS Jobs \u2013 Evasion",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1197",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.DEBUGGER_EVASION",
+    "name": "Debugger Evasion",
+    "requirements": [
+      {
+        "type": "ta0005_debugger_evasion",
+        "description": "Debugger Evasion"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Debugger Evasion",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1622",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.DEOBFUSCATE_DECODE",
+    "name": "Deobfuscate/Decode Files",
+    "requirements": [
+      {
+        "type": "ta0005_deobfuscate_decode",
+        "description": "Deobfuscate/Decode Files"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Deobfuscate/Decode Files",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1140",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.DIRECT_VOL_ACCESS",
+    "name": "Direct Volume Access",
+    "requirements": [
+      {
+        "type": "ta0005_direct_vol_access",
+        "description": "Direct Volume Access"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Direct Volume Access",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1006",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0005.EVASION_C2",
     "name": "Network Evasion via Proxy/Tunnel",
     "requirements": [
@@ -1884,6 +2721,161 @@
     "kill_chain": [
       "Actions"
     ]
+  },
+  {
+    "id": "TA0005.EXEC_GUARDRAILS",
+    "name": "Execution Guardrails",
+    "requirements": [
+      {
+        "type": "ta0005_exec_guardrails",
+        "description": "Execution Guardrails"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Execution Guardrails",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1480",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.FILE_DIR_PERM_MOD",
+    "name": "File and Directory Permissions Modification",
+    "requirements": [
+      {
+        "type": "ta0005_file_dir_perm_mod",
+        "description": "File and Directory Permissions Modification"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "File and Directory Permissions Modification",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1222",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.FORGE_WEB_CRED",
+    "name": "Forge Web Credentials \u2013 SAML/OAuth",
+    "requirements": [
+      {
+        "type": "ta0005_forge_web_cred",
+        "description": "Forge Web Credentials \u2013 SAML/OAuth"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Forge Web Credentials \u2013 SAML/OAuth",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1606",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.HIDE_ARTIFACTS",
+    "name": "Hide Artifacts",
+    "requirements": [
+      {
+        "type": "ta0005_hide_artifacts",
+        "description": "Hide Artifacts"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Hide Artifacts",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1564",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.HIJACK_EXEC_EV",
+    "name": "Hijack Execution Flow \u2013 Evasion",
+    "requirements": [
+      {
+        "type": "ta0005_hijack_exec_ev",
+        "description": "Hijack Execution Flow \u2013 Evasion"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Hijack Execution Flow \u2013 Evasion",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1574",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
   },
   {
     "id": "TA0005.IMPAIR_DEFENSES",
@@ -1956,6 +2948,37 @@
       "technique": "",
       "subtechnique": "",
       "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.INDIRECT_CMD_EXEC",
+    "name": "Indirect Command Execution",
+    "requirements": [
+      {
+        "type": "ta0005_indirect_cmd_exec",
+        "description": "Indirect Command Execution"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Indirect Command Execution",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1202",
+      "subtechnique": "",
+      "links": []
     },
     "provenance": {
       "author": "",
@@ -2052,6 +3075,68 @@
     }
   },
   {
+    "id": "TA0005.MOD_CLOUD_INFRA",
+    "name": "Modify Cloud Compute Infrastructure",
+    "requirements": [
+      {
+        "type": "ta0005_mod_cloud_infra",
+        "description": "Modify Cloud Compute Infrastructure"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Modify Cloud Compute Infrastructure",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1578",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.MOD_REGISTRY",
+    "name": "Modify Registry",
+    "requirements": [
+      {
+        "type": "ta0005_mod_registry",
+        "description": "Modify Registry"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Modify Registry",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1112",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0005.OBFUSCATED_FILES",
     "name": "Obfuscated Files or Information",
     "requirements": [
@@ -2118,6 +3203,161 @@
     }
   },
   {
+    "id": "TA0005.PROC_INJECTION_EV",
+    "name": "Process Injection \u2013 Evasion",
+    "requirements": [
+      {
+        "type": "ta0005_proc_injection_ev",
+        "description": "Process Injection \u2013 Evasion"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Process Injection \u2013 Evasion",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1055",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.REFLECTIVE_LOAD",
+    "name": "Reflective Code Loading",
+    "requirements": [
+      {
+        "type": "ta0005_reflective_load",
+        "description": "Reflective Code Loading"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Reflective Code Loading",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1620",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.ROGUE_DOMAIN_CTRL",
+    "name": "Rogue Domain Controller",
+    "requirements": [
+      {
+        "type": "ta0005_rogue_domain_ctrl",
+        "description": "Rogue Domain Controller"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Rogue Domain Controller",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1207",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.ROOTKIT",
+    "name": "Rootkit",
+    "requirements": [
+      {
+        "type": "ta0005_rootkit",
+        "description": "Rootkit"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Rootkit",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1014",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.SIGNED_BINARY_PROX",
+    "name": "Signed Binary Proxy \u2013 rundll32/mshta/certutil",
+    "requirements": [
+      {
+        "type": "ta0005_signed_binary_prox",
+        "description": "Signed Binary Proxy \u2013 rundll32/mshta/certutil"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Signed Binary Proxy \u2013 rundll32/mshta/certutil",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1218",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0005.SIGNED_BINARY_PROXY",
     "name": "Signed Binary Proxy Execution",
     "requirements": [
@@ -2170,6 +3410,223 @@
       "technique": "",
       "subtechnique": "",
       "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.SUBVERT_TRUST",
+    "name": "Subvert Trust Controls",
+    "requirements": [
+      {
+        "type": "ta0005_subvert_trust",
+        "description": "Subvert Trust Controls"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Subvert Trust Controls",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1553",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.TEMPLATE_INJECT",
+    "name": "Template Injection",
+    "requirements": [
+      {
+        "type": "ta0005_template_inject",
+        "description": "Template Injection"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Template Injection",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1221",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.UNUSED_UNSUPPORTED",
+    "name": "Signed Binary \u2013 Rundll32",
+    "requirements": [
+      {
+        "type": "ta0005_unused_unsupported",
+        "description": "Signed Binary \u2013 Rundll32"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Signed Binary \u2013 Rundll32",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1218.011",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.VIRT_SANDBOX_EVADE",
+    "name": "Virtualization/Sandbox Evasion",
+    "requirements": [
+      {
+        "type": "ta0005_virt_sandbox_evade",
+        "description": "Virtualization/Sandbox Evasion"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Virtualization/Sandbox Evasion",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1497",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.WEAKEN_ENCRYPTION",
+    "name": "Weaken Encryption",
+    "requirements": [
+      {
+        "type": "ta0005_weaken_encryption",
+        "description": "Weaken Encryption"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Weaken Encryption",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1600",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.XSL_SCRIPT",
+    "name": "XSL Script Processing",
+    "requirements": [
+      {
+        "type": "ta0005_xsl_script",
+        "description": "XSL Script Processing"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "XSL Script Processing",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1220",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0006.AITM",
+    "name": "Adversary-in-the-Middle (AiTM)",
+    "requirements": [
+      {
+        "type": "ta0006_aitm",
+        "description": "Adversary-in-the-Middle (AiTM)"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Adversary-in-the-Middle (AiTM)",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1557",
+      "subtechnique": "",
+      "links": []
     },
     "provenance": {
       "author": "",
@@ -2266,6 +3723,37 @@
     ]
   },
   {
+    "id": "TA0006.CLOUD_IMDS",
+    "name": "Cloud Instance Metadata API Abuse",
+    "requirements": [
+      {
+        "type": "ta0006_cloud_imds",
+        "description": "Cloud Instance Metadata API Abuse"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Cloud Instance Metadata API Abuse",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1552.005",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0006.CLOUD_TOKEN_ABUSE",
     "name": "Cloud Access Token Abuse",
     "requirements": [
@@ -2350,6 +3838,68 @@
     "kill_chain": [
       "Exploitation"
     ]
+  },
+  {
+    "id": "TA0006.EXPLOIT_CRED_ACCESS",
+    "name": "Exploitation for Credential Access",
+    "requirements": [
+      {
+        "type": "ta0006_exploit_cred_access",
+        "description": "Exploitation for Credential Access"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Exploitation for Credential Access",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1212",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0006.FORGE_KERBEROS",
+    "name": "Forge Kerberos Tickets \u2013 Golden Ticket",
+    "requirements": [
+      {
+        "type": "ta0006_forge_kerberos",
+        "description": "Forge Kerberos Tickets \u2013 Golden Ticket"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Forge Kerberos Tickets \u2013 Golden Ticket",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1558.001",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
   },
   {
     "id": "TA0006.IDENTITY_ANOMALY",
@@ -2522,6 +4072,37 @@
     }
   },
   {
+    "id": "TA0006.KERBEROASTING",
+    "name": "Kerberoasting \u2013 SPN Ticket Request",
+    "requirements": [
+      {
+        "type": "ta0006_kerberoasting",
+        "description": "Kerberoasting \u2013 SPN Ticket Request"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Kerberoasting \u2013 SPN Ticket Request",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1558.003",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0006.KEYLOGGING",
     "name": "Keylogging",
     "requirements": [
@@ -2543,6 +4124,130 @@
       "technique": "",
       "subtechnique": "",
       "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0006.MFA_INTERCEPT",
+    "name": "MFA Interception / SIM Swap",
+    "requirements": [
+      {
+        "type": "ta0006_mfa_intercept",
+        "description": "MFA Interception / SIM Swap"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "MFA Interception / SIM Swap",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1111",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0006.MULTI_FACTOR_FATIGUE",
+    "name": "MFA Request Generation / Fatigue",
+    "requirements": [
+      {
+        "type": "ta0006_multi_factor_fatigue",
+        "description": "MFA Request Generation / Fatigue"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "MFA Request Generation / Fatigue",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1621",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0006.NETWORK_SNIFF",
+    "name": "Network Sniffing",
+    "requirements": [
+      {
+        "type": "ta0006_network_sniff",
+        "description": "Network Sniffing"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Network Sniffing",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1040",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0006.PASS_THE_HASH",
+    "name": "Pass-the-Hash",
+    "requirements": [
+      {
+        "type": "ta0006_pass_the_hash",
+        "description": "Pass-the-Hash"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Pass-the-Hash",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1550.002",
+      "subtechnique": "",
+      "links": []
     },
     "provenance": {
       "author": "",
@@ -2592,6 +4297,68 @@
     }
   },
   {
+    "id": "TA0006.STEAL_APP_TOKEN",
+    "name": "Steal Application Access Token",
+    "requirements": [
+      {
+        "type": "ta0006_steal_app_token",
+        "description": "Steal Application Access Token"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Steal Application Access Token",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1528",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0006.STEAL_WEB_SESSION",
+    "name": "Steal Web Session Cookie",
+    "requirements": [
+      {
+        "type": "ta0006_steal_web_session",
+        "description": "Steal Web Session Cookie"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Steal Web Session Cookie",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1539",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0006.TOKEN_THEFT",
     "name": "Token Theft",
     "requirements": [
@@ -2611,6 +4378,37 @@
       "technique": "",
       "subtechnique": "",
       "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0006.UNSECURED_CREDS",
+    "name": "Unsecured Credentials \u2013 Files/Registry",
+    "requirements": [
+      {
+        "type": "ta0006_unsecured_creds",
+        "description": "Unsecured Credentials \u2013 Files/Registry"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Unsecured Credentials \u2013 Files/Registry",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1552",
+      "subtechnique": "",
+      "links": []
     },
     "provenance": {
       "author": "",
@@ -2736,6 +4534,37 @@
     }
   },
   {
+    "id": "TA0007.BROWSER_INFO_DISC",
+    "name": "Browser Information Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_browser_info_disc",
+        "description": "Browser Information Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Browser Information Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1217",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0007.CLOUD_IAM_DISCOVERY",
     "name": "Cloud IAM Discovery",
     "requirements": [
@@ -2757,6 +4586,37 @@
       "technique": "",
       "subtechnique": "",
       "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.CLOUD_INFRA_DISC",
+    "name": "Cloud Infrastructure Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_cloud_infra_disc",
+        "description": "Cloud Infrastructure Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Cloud Infrastructure Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1580",
+      "subtechnique": "",
+      "links": []
     },
     "provenance": {
       "author": "",
@@ -2837,6 +4697,223 @@
     }
   },
   {
+    "id": "TA0007.CLOUD_STORAGE_DISC",
+    "name": "Cloud Storage Object Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_cloud_storage_disc",
+        "description": "Cloud Storage Object Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Cloud Storage Object Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1619",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.CLOUD_SVC_DASH",
+    "name": "Cloud Service Dashboard",
+    "requirements": [
+      {
+        "type": "ta0007_cloud_svc_dash",
+        "description": "Cloud Service Dashboard"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Cloud Service Dashboard",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1538",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.CLOUD_SVC_DISC",
+    "name": "Cloud Service Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_cloud_svc_disc",
+        "description": "Cloud Service Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Cloud Service Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1526",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.CONTAINER_DISC",
+    "name": "Container and Resource Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_container_disc",
+        "description": "Container and Resource Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Container and Resource Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1613",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.DOMAIN_TRUST_DISC",
+    "name": "Domain Trust Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_domain_trust_disc",
+        "description": "Domain Trust Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Domain Trust Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1482",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.FILE_DIR_DISC",
+    "name": "File and Directory Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_file_dir_disc",
+        "description": "File and Directory Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "File and Directory Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1083",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.GROUP_POLICY_DISC",
+    "name": "Group Policy Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_group_policy_disc",
+        "description": "Group Policy Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Group Policy Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1615",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0007.NETWORK_SERVICE_DISCOVERY",
     "name": "Network Service Discovery",
     "requirements": [
@@ -2899,6 +4976,130 @@
     }
   },
   {
+    "id": "TA0007.NET_SERVICE_DISC",
+    "name": "Network Service Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_net_service_disc",
+        "description": "Network Service Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Network Service Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1046",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.NET_SHARE_DISC",
+    "name": "Network Share Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_net_share_disc",
+        "description": "Network Share Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Network Share Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1135",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.NET_SNIFF_DISC",
+    "name": "Network Sniffing \u2013 Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_net_sniff_disc",
+        "description": "Network Sniffing \u2013 Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Network Sniffing \u2013 Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1040",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.PASS_POLICY_DISC",
+    "name": "Password Policy Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_pass_policy_disc",
+        "description": "Password Policy Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Password Policy Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1201",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0007.PERMISSION_GROUP_DISCOVERY",
     "name": "Permission Group Discovery",
     "requirements": [
@@ -2916,6 +5117,37 @@
       "technique": "",
       "subtechnique": "",
       "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.PERM_GROUP_DISC",
+    "name": "Permission Group Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_perm_group_disc",
+        "description": "Permission Group Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Permission Group Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1069",
+      "subtechnique": "",
+      "links": []
     },
     "provenance": {
       "author": "",
@@ -2961,6 +5193,130 @@
     }
   },
   {
+    "id": "TA0007.PROC_DISC",
+    "name": "Process Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_proc_disc",
+        "description": "Process Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Process Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1057",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.QUERY_REGISTRY",
+    "name": "Query Registry",
+    "requirements": [
+      {
+        "type": "ta0007_query_registry",
+        "description": "Query Registry"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Query Registry",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1012",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.REMOTE_SYS_DISC",
+    "name": "Remote System Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_remote_sys_disc",
+        "description": "Remote System Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Remote System Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1018",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.SEC_SW_DISC",
+    "name": "Security Software Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_sec_sw_disc",
+        "description": "Security Software Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Security Software Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1518.001",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0007.SYSTEM_INFO_DISCOVERY",
     "name": "System Information Discovery",
     "requirements": [
@@ -2978,6 +5334,192 @@
       "technique": "",
       "subtechnique": "",
       "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.SYS_INFO_DISC",
+    "name": "System Information Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_sys_info_disc",
+        "description": "System Information Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "System Information Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1082",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.SYS_NET_CONF_DISC",
+    "name": "System Network Configuration Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_sys_net_conf_disc",
+        "description": "System Network Configuration Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "System Network Configuration Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1016",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.SYS_NET_CONN_DISC",
+    "name": "System Network Connections Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_sys_net_conn_disc",
+        "description": "System Network Connections Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "System Network Connections Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1049",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.SYS_OWNER_DISC",
+    "name": "System Owner/User Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_sys_owner_disc",
+        "description": "System Owner/User Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "System Owner/User Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1033",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.SYS_SVC_DISC",
+    "name": "System Service Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_sys_svc_disc",
+        "description": "System Service Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "System Service Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1007",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.VIRT_DISC",
+    "name": "Virtualization/Sandbox Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_virt_disc",
+        "description": "Virtualization/Sandbox Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Virtualization/Sandbox Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1497.001",
+      "subtechnique": "",
+      "links": []
     },
     "provenance": {
       "author": "",
@@ -3091,6 +5633,68 @@
     ]
   },
   {
+    "id": "TA0008.EXPLOIT_REMOTE_SVC",
+    "name": "Exploitation of Remote Services",
+    "requirements": [
+      {
+        "type": "ta0008_exploit_remote_svc",
+        "description": "Exploitation of Remote Services"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Exploitation of Remote Services",
+    "mitre": {
+      "tactic": "TA0008",
+      "technique": "T1210",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0008.INTERNAL_SPEARPHISH",
+    "name": "Internal Spearphishing",
+    "requirements": [
+      {
+        "type": "ta0008_internal_spearphish",
+        "description": "Internal Spearphishing"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Internal Spearphishing",
+    "mitre": {
+      "tactic": "TA0008",
+      "technique": "T1534",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0008.LATERAL",
     "name": "Lateral Movement",
     "requirements": [
@@ -3141,6 +5745,130 @@
     ]
   },
   {
+    "id": "TA0008.LATERAL_TOOL_XFER",
+    "name": "Lateral Tool Transfer",
+    "requirements": [
+      {
+        "type": "ta0008_lateral_tool_xfer",
+        "description": "Lateral Tool Transfer"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Lateral Tool Transfer",
+    "mitre": {
+      "tactic": "TA0008",
+      "technique": "T1570",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0008.SOFTWARE_DEPLOY",
+    "name": "Software Deployment Tools",
+    "requirements": [
+      {
+        "type": "ta0008_software_deploy",
+        "description": "Software Deployment Tools"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Software Deployment Tools",
+    "mitre": {
+      "tactic": "TA0008",
+      "technique": "T1072",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0008.TAINT_SHARED",
+    "name": "Taint Shared Content",
+    "requirements": [
+      {
+        "type": "ta0008_taint_shared",
+        "description": "Taint Shared Content"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Taint Shared Content",
+    "mitre": {
+      "tactic": "TA0008",
+      "technique": "T1080",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0008.USE_ALT_AUTH",
+    "name": "Use Alternate Authentication Material",
+    "requirements": [
+      {
+        "type": "ta0008_use_alt_auth",
+        "description": "Use Alternate Authentication Material"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Use Alternate Authentication Material",
+    "mitre": {
+      "tactic": "TA0008",
+      "technique": "T1550",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0009.ARCHIVE_COLLECTED_DATA",
     "name": "Archive Collected Data",
     "requirements": [
@@ -3162,6 +5890,151 @@
       "technique": "",
       "subtechnique": "",
       "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0009.ARCHIVE_DATA",
+    "name": "Archive Collected Data",
+    "requirements": [
+      {
+        "type": "ta0009_archive_data",
+        "description": "Archive Collected Data"
+      }
+    ],
+    "preconds": [],
+    "explain": "Archive Collected Data",
+    "mitre": {
+      "tactic": "TA0009",
+      "technique": "T1560",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0009.AUTO_COLLECTION",
+    "name": "Automated Collection",
+    "requirements": [
+      {
+        "type": "ta0009_auto_collection",
+        "description": "Automated Collection"
+      }
+    ],
+    "preconds": [],
+    "explain": "Automated Collection",
+    "mitre": {
+      "tactic": "TA0009",
+      "technique": "T1119",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0009.BROWSER_SESSION",
+    "name": "Browser Session Hijacking",
+    "requirements": [
+      {
+        "type": "ta0009_browser_session",
+        "description": "Browser Session Hijacking"
+      }
+    ],
+    "preconds": [],
+    "explain": "Browser Session Hijacking",
+    "mitre": {
+      "tactic": "TA0009",
+      "technique": "T1185",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0009.CLIPBOARD_DATA",
+    "name": "Clipboard Data",
+    "requirements": [
+      {
+        "type": "ta0009_clipboard_data",
+        "description": "Clipboard Data"
+      }
+    ],
+    "preconds": [],
+    "explain": "Clipboard Data",
+    "mitre": {
+      "tactic": "TA0009",
+      "technique": "T1115",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0009.CLOUD_STORAGE_COLL",
+    "name": "Data from Cloud Storage",
+    "requirements": [
+      {
+        "type": "ta0009_cloud_storage_coll",
+        "description": "Data from Cloud Storage"
+      }
+    ],
+    "preconds": [],
+    "explain": "Data from Cloud Storage",
+    "mitre": {
+      "tactic": "TA0009",
+      "technique": "T1530",
+      "subtechnique": "",
+      "links": []
     },
     "provenance": {
       "author": "",
@@ -3211,6 +6084,122 @@
     }
   },
   {
+    "id": "TA0009.DATA_FROM_INFO_REPO",
+    "name": "Data from Information Repositories",
+    "requirements": [
+      {
+        "type": "ta0009_data_from_info_repo",
+        "description": "Data from Information Repositories"
+      }
+    ],
+    "preconds": [],
+    "explain": "Data from Information Repositories",
+    "mitre": {
+      "tactic": "TA0009",
+      "technique": "T1213",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0009.DATA_FROM_LOCAL_SYS",
+    "name": "Data from Local System",
+    "requirements": [
+      {
+        "type": "ta0009_data_from_local_sys",
+        "description": "Data from Local System"
+      }
+    ],
+    "preconds": [],
+    "explain": "Data from Local System",
+    "mitre": {
+      "tactic": "TA0009",
+      "technique": "T1005",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0009.DATA_FROM_NET_SHARE",
+    "name": "Data from Network Shared Drive",
+    "requirements": [
+      {
+        "type": "ta0009_data_from_net_share",
+        "description": "Data from Network Shared Drive"
+      }
+    ],
+    "preconds": [],
+    "explain": "Data from Network Shared Drive",
+    "mitre": {
+      "tactic": "TA0009",
+      "technique": "T1039",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0009.DATA_STAGED",
+    "name": "Data Staged",
+    "requirements": [
+      {
+        "type": "ta0009_data_staged",
+        "description": "Data Staged"
+      }
+    ],
+    "preconds": [],
+    "explain": "Data Staged",
+    "mitre": {
+      "tactic": "TA0009",
+      "technique": "T1074",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0009.EMAIL_COLLECTION",
     "name": "Email Collection",
     "requirements": [
@@ -3246,6 +6235,35 @@
     }
   },
   {
+    "id": "TA0009.INPUT_CAPTURE_COLL",
+    "name": "Input Capture \u2013 Keylogging",
+    "requirements": [
+      {
+        "type": "ta0009_input_capture_coll",
+        "description": "Input Capture \u2013 Keylogging"
+      }
+    ],
+    "preconds": [],
+    "explain": "Input Capture \u2013 Keylogging",
+    "mitre": {
+      "tactic": "TA0009",
+      "technique": "T1056",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0009.SCREEN_CAPTURE",
     "name": "Screen Capture",
     "requirements": [
@@ -3263,6 +6281,37 @@
       "technique": "",
       "subtechnique": "",
       "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0010.AUTO_EXFIL",
+    "name": "Automated Exfiltration",
+    "requirements": [
+      {
+        "type": "ta0010_auto_exfil",
+        "description": "Automated Exfiltration"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Automated Exfiltration",
+    "mitre": {
+      "tactic": "TA0010",
+      "technique": "T1020",
+      "subtechnique": "",
+      "links": []
     },
     "provenance": {
       "author": "",
@@ -3363,6 +6412,37 @@
     }
   },
   {
+    "id": "TA0010.DNS_EXFIL",
+    "name": "Exfiltration Over Alt Protocol \u2013 DNS",
+    "requirements": [
+      {
+        "type": "ta0010_dns_exfil",
+        "description": "Exfiltration Over Alt Protocol \u2013 DNS"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Exfiltration Over Alt Protocol \u2013 DNS",
+    "mitre": {
+      "tactic": "TA0010",
+      "technique": "T1048.003",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0010.EXFIL",
     "name": "Exfiltration",
     "requirements": [
@@ -3413,6 +6493,37 @@
     "kill_chain": [
       "Actions"
     ]
+  },
+  {
+    "id": "TA0010.EXFIL_C2",
+    "name": "Exfiltration Over C2 Channel",
+    "requirements": [
+      {
+        "type": "ta0010_exfil_c2",
+        "description": "Exfiltration Over C2 Channel"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Exfiltration Over C2 Channel",
+    "mitre": {
+      "tactic": "TA0010",
+      "technique": "T1041",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
   },
   {
     "id": "TA0010.EXFIL_CLOUD_DB",
@@ -3571,6 +6682,68 @@
     ]
   },
   {
+    "id": "TA0010.SCHED_TRANSFER",
+    "name": "Scheduled Transfer",
+    "requirements": [
+      {
+        "type": "ta0010_sched_transfer",
+        "description": "Scheduled Transfer"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Scheduled Transfer",
+    "mitre": {
+      "tactic": "TA0010",
+      "technique": "T1029",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0010.TRANSFER_CLOUD",
+    "name": "Transfer Data to Cloud Account",
+    "requirements": [
+      {
+        "type": "ta0010_transfer_cloud",
+        "description": "Transfer Data to Cloud Account"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Transfer Data to Cloud Account",
+    "mitre": {
+      "tactic": "TA0010",
+      "technique": "T1537",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0010.TRANSFER_TO_CLOUD",
     "name": "Transfer Data to Cloud Account",
     "requirements": [
@@ -3706,6 +6879,130 @@
     ]
   },
   {
+    "id": "TA0011.COMM_THROUGH_PROXY",
+    "name": "Communication Through Removable Media",
+    "requirements": [
+      {
+        "type": "ta0011_comm_through_proxy",
+        "description": "Communication Through Removable Media"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Communication Through Removable Media",
+    "mitre": {
+      "tactic": "TA0011",
+      "technique": "T1090",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0011.DATA_ENCODING",
+    "name": "Data Encoding",
+    "requirements": [
+      {
+        "type": "ta0011_data_encoding",
+        "description": "Data Encoding"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Data Encoding",
+    "mitre": {
+      "tactic": "TA0011",
+      "technique": "T1132",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0011.DATA_OBFUSCATION",
+    "name": "Data Obfuscation",
+    "requirements": [
+      {
+        "type": "ta0011_data_obfuscation",
+        "description": "Data Obfuscation"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Data Obfuscation",
+    "mitre": {
+      "tactic": "TA0011",
+      "technique": "T1001",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0011.DNS_C2",
+    "name": "DNS C2 / DNS Tunneling",
+    "requirements": [
+      {
+        "type": "ta0011_dns_c2",
+        "description": "DNS C2 / DNS Tunneling"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "DNS C2 / DNS Tunneling",
+    "mitre": {
+      "tactic": "TA0011",
+      "technique": "T1071.004",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0011.DNS_TUNNEL",
     "name": "DNS Tunneling C2",
     "requirements": [
@@ -3727,6 +7024,223 @@
       "technique": "",
       "subtechnique": "",
       "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0011.DYN_RESOLUTION",
+    "name": "Dynamic Resolution \u2013 DGA",
+    "requirements": [
+      {
+        "type": "ta0011_dyn_resolution",
+        "description": "Dynamic Resolution \u2013 DGA"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Dynamic Resolution \u2013 DGA",
+    "mitre": {
+      "tactic": "TA0011",
+      "technique": "T1568",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0011.ENCRYPTED_CHANNEL",
+    "name": "Encrypted Channel \u2013 Non-Standard",
+    "requirements": [
+      {
+        "type": "ta0011_encrypted_channel",
+        "description": "Encrypted Channel \u2013 Non-Standard"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Encrypted Channel \u2013 Non-Standard",
+    "mitre": {
+      "tactic": "TA0011",
+      "technique": "T1573",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0011.FALLBACK_CHANNELS",
+    "name": "Fallback Channels",
+    "requirements": [
+      {
+        "type": "ta0011_fallback_channels",
+        "description": "Fallback Channels"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Fallback Channels",
+    "mitre": {
+      "tactic": "TA0011",
+      "technique": "T1008",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0011.INGRESS_TOOL_XFER",
+    "name": "Ingress Tool Transfer",
+    "requirements": [
+      {
+        "type": "ta0011_ingress_tool_xfer",
+        "description": "Ingress Tool Transfer"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Ingress Tool Transfer",
+    "mitre": {
+      "tactic": "TA0011",
+      "technique": "T1105",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0011.MULTI_HOP_PROXY",
+    "name": "Multi-hop Proxy",
+    "requirements": [
+      {
+        "type": "ta0011_multi_hop_proxy",
+        "description": "Multi-hop Proxy"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Multi-hop Proxy",
+    "mitre": {
+      "tactic": "TA0011",
+      "technique": "T1090.003",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0011.MULTI_STAGE_CHAN",
+    "name": "Multi-Stage Channels",
+    "requirements": [
+      {
+        "type": "ta0011_multi_stage_chan",
+        "description": "Multi-Stage Channels"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Multi-Stage Channels",
+    "mitre": {
+      "tactic": "TA0011",
+      "technique": "T1104",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0011.NON_APP_LAYER",
+    "name": "Non-Application Layer Protocol",
+    "requirements": [
+      {
+        "type": "ta0011_non_app_layer",
+        "description": "Non-Application Layer Protocol"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Non-Application Layer Protocol",
+    "mitre": {
+      "tactic": "TA0011",
+      "technique": "T1095",
+      "subtechnique": "",
+      "links": []
     },
     "provenance": {
       "author": "",
@@ -3772,6 +7286,161 @@
     }
   },
   {
+    "id": "TA0011.NON_STD_PORT",
+    "name": "Non-Standard Port",
+    "requirements": [
+      {
+        "type": "ta0011_non_std_port",
+        "description": "Non-Standard Port"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Non-Standard Port",
+    "mitre": {
+      "tactic": "TA0011",
+      "technique": "T1571",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0011.PROTOCOL_TUNNEL",
+    "name": "Protocol Tunneling",
+    "requirements": [
+      {
+        "type": "ta0011_protocol_tunnel",
+        "description": "Protocol Tunneling"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Protocol Tunneling",
+    "mitre": {
+      "tactic": "TA0011",
+      "technique": "T1572",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0011.REMOTE_ACCESS_SW",
+    "name": "Remote Access Software",
+    "requirements": [
+      {
+        "type": "ta0011_remote_access_sw",
+        "description": "Remote Access Software"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Remote Access Software",
+    "mitre": {
+      "tactic": "TA0011",
+      "technique": "T1219",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0011.WEB_SERVICE_C2",
+    "name": "Web Service \u2013 C2 via Cloud Platform",
+    "requirements": [
+      {
+        "type": "ta0011_web_service_c2",
+        "description": "Web Service \u2013 C2 via Cloud Platform"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Web Service \u2013 C2 via Cloud Platform",
+    "mitre": {
+      "tactic": "TA0011",
+      "technique": "T1102",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0040.ACCOUNT_ACCESS_RM",
+    "name": "Account Access Removal",
+    "requirements": [
+      {
+        "type": "ta0040_account_access_rm",
+        "description": "Account Access Removal"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Account Access Removal",
+    "mitre": {
+      "tactic": "TA0040",
+      "technique": "T1531",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0040.DATA_DESTRUCTION",
     "name": "Data Destruction",
     "requirements": [
@@ -3803,6 +7472,130 @@
     }
   },
   {
+    "id": "TA0040.DATA_MANIP_RUNTIME",
+    "name": "Data Manipulation \u2013 Runtime",
+    "requirements": [
+      {
+        "type": "ta0040_data_manip_runtime",
+        "description": "Data Manipulation \u2013 Runtime"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Data Manipulation \u2013 Runtime",
+    "mitre": {
+      "tactic": "TA0040",
+      "technique": "T1565.003",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0040.DATA_MANIP_STORED",
+    "name": "Data Manipulation \u2013 Stored",
+    "requirements": [
+      {
+        "type": "ta0040_data_manip_stored",
+        "description": "Data Manipulation \u2013 Stored"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Data Manipulation \u2013 Stored",
+    "mitre": {
+      "tactic": "TA0040",
+      "technique": "T1565.001",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0040.DEFACEMENT_EXTERNAL",
+    "name": "Defacement \u2013 External Website",
+    "requirements": [
+      {
+        "type": "ta0040_defacement_external",
+        "description": "Defacement \u2013 External Website"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Defacement \u2013 External Website",
+    "mitre": {
+      "tactic": "TA0040",
+      "technique": "T1491.002",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0040.DEFACEMENT_INTERNAL",
+    "name": "Defacement \u2013 Internal",
+    "requirements": [
+      {
+        "type": "ta0040_defacement_internal",
+        "description": "Defacement \u2013 Internal"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Defacement \u2013 Internal",
+    "mitre": {
+      "tactic": "TA0040",
+      "technique": "T1491.001",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0040.DISK_WIPE",
     "name": "Disk Wipe",
     "requirements": [
@@ -3820,6 +7613,68 @@
       "technique": "",
       "subtechnique": "",
       "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0040.ENDPOINT_DOS",
+    "name": "Endpoint Denial of Service",
+    "requirements": [
+      {
+        "type": "ta0040_endpoint_dos",
+        "description": "Endpoint Denial of Service"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Endpoint Denial of Service",
+    "mitre": {
+      "tactic": "TA0040",
+      "technique": "T1499",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0040.FIRMWARE_CORRUPT",
+    "name": "Firmware Corruption",
+    "requirements": [
+      {
+        "type": "ta0040_firmware_corrupt",
+        "description": "Firmware Corruption"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Firmware Corruption",
+    "mitre": {
+      "tactic": "TA0040",
+      "technique": "T1495",
+      "subtechnique": "",
+      "links": []
     },
     "provenance": {
       "author": "",
@@ -3884,6 +7739,37 @@
     "kill_chain": [
       "Actions"
     ]
+  },
+  {
+    "id": "TA0040.NETWORK_DOS",
+    "name": "Network Denial of Service",
+    "requirements": [
+      {
+        "type": "ta0040_network_dos",
+        "description": "Network Denial of Service"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Network Denial of Service",
+    "mitre": {
+      "tactic": "TA0040",
+      "technique": "T1498",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
   },
   {
     "id": "TA0040.RECOVERY_INHIBIT",
@@ -3984,6 +7870,68 @@
       "technique": "",
       "subtechnique": "",
       "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0040.SVC_STOP",
+    "name": "Service Stop",
+    "requirements": [
+      {
+        "type": "ta0040_svc_stop",
+        "description": "Service Stop"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Service Stop",
+    "mitre": {
+      "tactic": "TA0040",
+      "technique": "T1489",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0040.SYS_SHUTDOWN",
+    "name": "System Shutdown/Reboot",
+    "requirements": [
+      {
+        "type": "ta0040_sys_shutdown",
+        "description": "System Shutdown/Reboot"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "System Shutdown/Reboot",
+    "mitre": {
+      "tactic": "TA0040",
+      "technique": "T1529",
+      "subtechnique": "",
+      "links": []
     },
     "provenance": {
       "author": "",
