@@ -51,11 +51,12 @@ func ReasonWithEnvAndMetricsWithConfig(
 	for i, e := range events {
 		index[e.Type] = append(index[e.Type], i)
 	}
-	facts := deriveCausalFacts(events, index, cfg)
+	facts := deriveCausalFacts(events, index)
+	activeFacts := activeFactsFromCausal(facts)
 
 	hostZone := buildHostZoneMap(environment)
 	identityPriv := buildIdentityPrivMap(environment)
-	graph := env.BuildGraph(environment)
+	graph := env.BuildGraph(environment, activeFacts)
 	startZones := attackerStartZones(events, hostZone, index)
 	reachableZones := graph.ReachableFrom(startZones)
 

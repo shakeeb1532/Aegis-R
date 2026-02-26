@@ -263,7 +263,7 @@
         },
         {
           "id": "s8-2",
-          "time": "2026-02-06T13:10:10Z",
+          "time": "2026-02-06T13:09:40Z",
           "host": "db-02",
           "user": "tina",
           "type": "beacon_outbound",
@@ -271,7 +271,7 @@
         },
         {
           "id": "s8-3",
-          "time": "2026-02-06T13:10:20Z",
+          "time": "2026-02-06T13:09:50Z",
           "host": "db-02",
           "user": "tina",
           "type": "lsass_access",

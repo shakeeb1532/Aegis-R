@@ -13,16 +13,14 @@ const (
 )
 
 type ReasonerConfig struct {
-	Now                                    func() time.Time
-	AllowProcessCreationAsCredentialAccess bool
-	CausalMaxSetSize                       int
+	Now              func() time.Time
+	CausalMaxSetSize int
 }
 
 func DefaultReasonerConfig() ReasonerConfig {
 	return ReasonerConfig{
-		Now:                                    func() time.Time { return time.Now().UTC() },
-		AllowProcessCreationAsCredentialAccess: false,
-		CausalMaxSetSize:                       2,
+		Now:              func() time.Time { return time.Now().UTC() },
+		CausalMaxSetSize: 2,
 	}
 }
 

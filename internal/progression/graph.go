@@ -6,7 +6,7 @@ import (
 )
 
 func OverlayGraph(environment env.Environment, st *state.AttackState) {
-	g := env.BuildGraph(environment)
+	g := env.BuildGraph(environment, nil)
 	current := []string{}
 	for _, host := range st.Position.Assets {
 		current = append(current, "host:"+host)

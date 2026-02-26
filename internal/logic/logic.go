@@ -510,7 +510,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 	cfg := DefaultReasonerConfig()
 	cfg = sanitizeReasonerConfig(cfg)
 	now := cfg.Now()
-	facts := deriveCausalFacts(events, index, cfg)
+	facts := deriveCausalFacts(events, index)
 
 	results := make([]model.RuleResult, 0, len(rules))
 	narrative := []string{}
