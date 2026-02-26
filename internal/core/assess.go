@@ -74,7 +74,8 @@ func AssessWithMetrics(events []model.Event, rules []logic.Rule, environment env
 		}
 	}
 
-	graph := env.BuildGraph(environment)
+	activeFacts := logic.ActiveFacts(events)
+	graph := env.BuildGraph(environment, activeFacts)
 	startZones := zonesFromReachable(st.ReachableHosts, zoneOf)
 	reachableZones := graph.ReachableFrom(startZones)
 	for z := range reachableZones {

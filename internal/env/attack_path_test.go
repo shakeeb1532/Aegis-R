@@ -10,7 +10,7 @@ func TestAttackPathRegression(t *testing.T) {
 			{ID: "tb2", From: "b", To: "c", Mode: "allow"},
 		},
 	}
-	g := BuildGraph(env)
+	g := BuildGraph(env, nil)
 	reach := g.ReachableFrom([]string{"zone:a"})
 	if !reach["zone:c"] {
 		t.Fatalf("expected zone c reachable")

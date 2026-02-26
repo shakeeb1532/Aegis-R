@@ -9,6 +9,10 @@ var legacyContradictions = map[string][]string{
 	"TA0010.EXFIL":          {"access_denied", "egress_blocked"},
 	"TA0008.LATERAL":        {"network_logon_failure", "admin_protocol_denied"},
 	"TA0004.PRIVESCA":       {"privilege_escalation_blocked", "admin_action_denied"},
+	"TA0002.LOLBIN_CHAIN":   {"process_blocked", "application_whitelisted"},
+	"TA0011.C2":             {"firewall_block_outbound", "dns_sinkholed"},
+	"TA0003.PERSIST":        {"registry_write_blocked", "applocker_block"},
+	"TA0005.LOG_TAMPER":     {"logging_verified_intact"},
 }
 
 var legacyContextByRule = map[string]string{

@@ -41,12 +41,12 @@
     "name": "Credential Dumping",
     "requirements": [
       {
-        "type": "process_creation",
+        "type": "credential_dumping",
         "description": "Credential dumping tool execution"
       },
       {
         "type": "lsass_access",
-        "description": "Access to LSASS"
+        "description": "Direct LSASS access observed"
       }
     ],
     "preconds": [

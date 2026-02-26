@@ -9,12 +9,15 @@ type Graph struct {
 	DenyEdges    map[string]map[string]bool
 }
 
-func BuildGraph(e Environment) Graph {
+func BuildGraph(e Environment, activeFacts map[string]bool) Graph {
 	g := Graph{
 		Nodes:        map[string]bool{},
 		Edges:        map[string][]string{},
 		ReverseEdges: map[string][]string{},
 		DenyEdges:    map[string]map[string]bool{},
+	}
+	if activeFacts == nil {
+		activeFacts = map[string]bool{}
 	}
 	for _, h := range e.Hosts {
 		g.Nodes[fmt.Sprintf("host:%s", h.ID)] = true
@@ -35,13 +38,29 @@ func BuildGraph(e Environment) Graph {
 			g.DenyEdges[from][to] = true
 			continue
 		}
-		if tb.Mode != "allow" {
+		if tb.Mode == "conditional" {
+			if !factsSatisfied(activeFacts, tb.Requires) {
+				continue
+			}
+		} else if tb.Mode != "allow" {
 			continue
 		}
 		g.Edges[from] = append(g.Edges[from], to)
 		g.ReverseEdges[to] = append(g.ReverseEdges[to], from)
 	}
 	return g
+}
+
+func factsSatisfied(activeFacts map[string]bool, requires []string) bool {
+	if len(requires) == 0 {
+		return false
+	}
+	for _, req := range requires {
+		if !activeFacts[req] {
+			return false
+		}
+	}
+	return true
 }
 
 func (g Graph) ReachableFrom(start []string) map[string]bool {

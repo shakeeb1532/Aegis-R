@@ -75,7 +75,7 @@ func TestReasonWithEnv_LateralAllowedWhenReachable(t *testing.T) {
 func TestReasonWithEnv_PrivilegeGate(t *testing.T) {
 	events := []model.Event{
 		{ID: "p1", Time: time.Date(2026, 2, 1, 10, 0, 0, 0, time.UTC), Host: "h1", User: "alice", Type: "token_manipulation"},
-		{ID: "e1", Time: time.Date(2026, 2, 1, 10, 1, 0, 0, time.UTC), Host: "h1", User: "alice", Type: "process_creation"},
+		{ID: "e1", Time: time.Date(2026, 2, 1, 10, 1, 0, 0, time.UTC), Host: "h1", User: "alice", Type: "credential_dumping"},
 		{ID: "e2", Time: time.Date(2026, 2, 1, 10, 2, 0, 0, time.UTC), Host: "h1", User: "alice", Type: "lsass_access"},
 	}
 	rules := rulesWithIDOrFallback("TA0006.CREDDUMP")

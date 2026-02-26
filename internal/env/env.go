@@ -23,11 +23,12 @@ type Identity struct {
 }
 
 type TrustBoundary struct {
-	ID    string `json:"id"`
-	From  string `json:"from"`
-	To    string `json:"to"`
-	Mode  string `json:"mode"` // allow, deny, conditional
-	Notes string `json:"notes"`
+	ID       string   `json:"id"`
+	From     string   `json:"from"`
+	To       string   `json:"to"`
+	Mode     string   `json:"mode"` // allow, deny, conditional
+	Requires []string `json:"requires,omitempty"`
+	Notes    string   `json:"notes"`
 }
 
 type Environment struct {
@@ -53,5 +54,26 @@ func Load(path string) (Environment, error) {
 	if err := json.Unmarshal(data, &e); err != nil {
 		return e, err
 	}
+	if err := Validate(e); err != nil {
+		return e, err
+	}
 	return e, nil
+}
+
+func Validate(e Environment) error {
+	for _, tb := range e.TrustBoundaries {
+		switch tb.Mode {
+		case "allow", "deny":
+			continue
+		case "conditional":
+			if len(tb.Requires) == 0 {
+				return fmt.Errorf("trust boundary %s is conditional but has no requires", tb.ID)
+			}
+		case "":
+			return fmt.Errorf("trust boundary %s has empty mode", tb.ID)
+		default:
+			return fmt.Errorf("trust boundary %s has unknown mode %s", tb.ID, tb.Mode)
+		}
+	}
+	return nil
 }

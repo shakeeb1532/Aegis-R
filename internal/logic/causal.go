@@ -11,7 +11,16 @@ type causalFact struct {
 	At       time.Time
 }
 
-func deriveCausalFacts(events []model.Event, index map[string][]int, cfg ReasonerConfig) map[string]causalFact {
+func ActiveFacts(events []model.Event) map[string]bool {
+	index := make(map[string][]int, 64)
+	for i, e := range events {
+		index[e.Type] = append(index[e.Type], i)
+	}
+	facts := deriveCausalFacts(events, index)
+	return activeFactsFromCausal(facts)
+}
+
+func deriveCausalFacts(events []model.Event, index map[string][]int) map[string]causalFact {
 	facts := map[string]causalFact{}
 	emailAt, hasEmail := earliestEventTime(events, index["email_attachment_open"])
 	macroAt, hasMacro := earliestEventTime(events, index["macro_execution"])
@@ -29,12 +38,14 @@ func deriveCausalFacts(events []model.Event, index map[string][]int, cfg Reasone
 		facts["privilege_escalation"] = causalFact{Observed: true, At: adminAt}
 	}
 
-	lsassAt, hasLsass := earliestEventTime(events, index["lsass_access"])
-	procAt, hasProc := earliestEventTime(events, index["process_creation"])
-	if hasLsass {
-		facts["credential_access"] = causalFact{Observed: true, At: lsassAt}
-	} else if cfg.AllowProcessCreationAsCredentialAccess && hasProc {
-		facts["credential_access"] = causalFact{Observed: true, At: procAt}
+	if t, ok := earliestAnyEventTime(events, index,
+		"lsass_access",
+		"ntds_dit_access",
+		"credential_dumping",
+		"sam_database_access",
+		"keychain_access",
+	); ok {
+		facts["credential_access"] = causalFact{Observed: true, At: t}
 	}
 
 	beaconAt, hasBeacon := earliestEventTime(events, index["beacon_outbound"])
@@ -65,6 +76,16 @@ func deriveCausalFacts(events []model.Event, index map[string][]int, cfg Reasone
 	}
 
 	return facts
+}
+
+func activeFactsFromCausal(facts map[string]causalFact) map[string]bool {
+	active := map[string]bool{}
+	for name, fact := range facts {
+		if fact.Observed {
+			active[name] = true
+		}
+	}
+	return active
 }
 
 func preconditionGaps(
@@ -99,9 +120,7 @@ func earliestRequirementTime(events []model.Event, index map[string][]int, rule 
 	for _, req := range rule.Requirements {
 		t, ok := earliestEventTime(events, index[req.Type])
 		if !ok {
-			// Require complete requirement visibility before enforcing
-			// temporal precondition ordering.
-			return time.Time{}, false
+			continue
 		}
 		if !found || t.Before(out) {
 			out = t
