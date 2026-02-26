@@ -1708,5 +1708,640 @@
     "kill_chain": [
       "Delivery"
     ]
+  },
+  {
+    "id": "TA0007.ACCOUNT_DISCOVERY",
+    "name": "Account Discovery",
+    "requirements": [
+      {
+        "type": "account_discovery",
+        "description": "Account enumeration observed"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Enumerating accounts after a valid login.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.NETWORK_SERVICE_DISCOVERY",
+    "name": "Network Service Discovery",
+    "requirements": [
+      {
+        "type": "network_service_discovery",
+        "description": "Network service discovery or scanning"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Enumerating network services after initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.PROCESS_DISCOVERY",
+    "name": "Process Discovery",
+    "requirements": [
+      {
+        "type": "process_discovery",
+        "description": "Process enumeration observed"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Enumerating processes after initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.SYSTEM_INFO_DISCOVERY",
+    "name": "System Information Discovery",
+    "requirements": [
+      {
+        "type": "system_info_discovery",
+        "description": "System information discovery"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Enumerating system information after initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.PERMISSION_GROUP_DISCOVERY",
+    "name": "Permission Group Discovery",
+    "requirements": [
+      {
+        "type": "group_membership_enum",
+        "description": "Group membership enumeration"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Enumerating permission groups after a valid login.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0002.POWERSHELL",
+    "name": "PowerShell Execution",
+    "requirements": [
+      {
+        "type": "powershell_execution",
+        "description": "PowerShell execution"
+      },
+      {
+        "type": "script_block_log",
+        "description": "Script block logging evidence"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "PowerShell execution following initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0002.BASH",
+    "name": "Bash Execution",
+    "requirements": [
+      {
+        "type": "bash_execution",
+        "description": "Bash execution"
+      },
+      {
+        "type": "suspicious_command",
+        "description": "Suspicious command observed"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Bash execution with suspicious commands after initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0002.PYTHON",
+    "name": "Python Execution",
+    "requirements": [
+      {
+        "type": "python_execution",
+        "description": "Python execution"
+      },
+      {
+        "type": "suspicious_command",
+        "description": "Suspicious command observed"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Python execution with suspicious commands after initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0002.WMI",
+    "name": "WMI Execution",
+    "requirements": [
+      {
+        "type": "wmi_execution",
+        "description": "WMI execution"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "WMI execution after initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0002.USER_EXECUTION",
+    "name": "User Execution",
+    "requirements": [
+      {
+        "type": "user_execution",
+        "description": "User executed a file"
+      },
+      {
+        "type": "downloaded_file_opened",
+        "description": "Downloaded file opened"
+      }
+    ],
+    "preconds": [],
+    "explain": "User executed a downloaded file.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0006.AITM_TOKEN_THEFT",
+    "name": "Adversary-in-the-Middle Token Theft",
+    "requirements": [
+      {
+        "type": "mfa_intercept",
+        "description": "MFA intercept observed"
+      },
+      {
+        "type": "token_theft",
+        "description": "Token theft observed"
+      }
+    ],
+    "preconds": [],
+    "explain": "Token theft via adversary-in-the-middle activity.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0006.KERBEROAST",
+    "name": "Kerberoasting",
+    "requirements": [
+      {
+        "type": "kerberoast_request",
+        "description": "Kerberoast request observed"
+      },
+      {
+        "type": "tgs_hash_observed",
+        "description": "TGS hash observed"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Kerberoasting requires a valid account session.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0006.PASS_THE_TICKET",
+    "name": "Pass the Ticket",
+    "requirements": [
+      {
+        "type": "kerberos_ticket",
+        "description": "Kerberos ticket used"
+      },
+      {
+        "type": "ticket_reuse",
+        "description": "Ticket reuse detected"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Kerberos ticket reuse following a valid login.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0006.TOKEN_THEFT",
+    "name": "Token Theft",
+    "requirements": [
+      {
+        "type": "oauth_token_theft",
+        "description": "OAuth token theft"
+      },
+      {
+        "type": "token_exfiltration",
+        "description": "Token exfiltration observed"
+      }
+    ],
+    "preconds": [],
+    "explain": "Token theft and exfiltration observed.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0006.KEYLOGGING",
+    "name": "Keylogging",
+    "requirements": [
+      {
+        "type": "keylogger_installed",
+        "description": "Keylogger installed"
+      },
+      {
+        "type": "keystroke_capture",
+        "description": "Keystroke capture observed"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Keylogger activity after initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0004.UAC_BYPASS",
+    "name": "UAC Bypass",
+    "requirements": [
+      {
+        "type": "uac_bypass",
+        "description": "UAC bypass technique observed"
+      },
+      {
+        "type": "elevated_process",
+        "description": "Elevated process spawned"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Elevation control bypass after initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.SIGNED_BINARY_PROXY",
+    "name": "Signed Binary Proxy Execution",
+    "requirements": [
+      {
+        "type": "signed_binary_proxy_execution",
+        "description": "Signed binary proxy execution"
+      },
+      {
+        "type": "suspicious_command",
+        "description": "Suspicious command observed"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Living-off-the-land proxy execution after initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.PROCESS_INJECTION",
+    "name": "Process Injection",
+    "requirements": [
+      {
+        "type": "process_injection",
+        "description": "Process injection observed"
+      },
+      {
+        "type": "suspicious_thread",
+        "description": "Suspicious thread injection"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Process injection following initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0010.EXFIL_DNS",
+    "name": "Exfiltration Over DNS",
+    "requirements": [
+      {
+        "type": "dns_tunneling",
+        "description": "DNS tunneling patterns"
+      },
+      {
+        "type": "data_staging",
+        "description": "Data staged for exfil"
+      }
+    ],
+    "preconds": [
+      "c2_established"
+    ],
+    "explain": "DNS-based exfiltration following C2 establishment.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
   }
 ]

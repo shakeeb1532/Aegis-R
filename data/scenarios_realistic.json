@@ -3934,6 +3934,855 @@
           "outcome": "incomplete"
         }
       ]
+    },
+    {
+      "id": "realistic-201",
+      "description": "Account discovery",
+      "events": [
+        {
+          "id": "ad-1",
+          "time": "2026-02-06T15:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "ad-2",
+          "time": "2026-02-06T15:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "account_discovery",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.ACCOUNT_DISCOVERY",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.ACCOUNT_DISCOVERY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-202",
+      "description": "Network service discovery",
+      "events": [
+        {
+          "id": "nsd-1",
+          "time": "2026-02-06T15:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "nsd-2",
+          "time": "2026-02-06T15:01:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "nsd-3",
+          "time": "2026-02-06T15:04:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "network_service_discovery",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.NETWORK_SERVICE_DISCOVERY",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.NETWORK_SERVICE_DISCOVERY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-203",
+      "description": "Process discovery",
+      "events": [
+        {
+          "id": "pd-1",
+          "time": "2026-02-06T15:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "pd-2",
+          "time": "2026-02-06T15:01:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "pd-3",
+          "time": "2026-02-06T15:04:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "process_discovery",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.PROCESS_DISCOVERY",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.PROCESS_DISCOVERY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-204",
+      "description": "System info discovery",
+      "events": [
+        {
+          "id": "sid-1",
+          "time": "2026-02-06T15:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "sid-2",
+          "time": "2026-02-06T15:01:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "sid-3",
+          "time": "2026-02-06T15:04:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "system_info_discovery",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.SYSTEM_INFO_DISCOVERY",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.SYSTEM_INFO_DISCOVERY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-205",
+      "description": "Permission group discovery",
+      "events": [
+        {
+          "id": "pgd-1",
+          "time": "2026-02-06T15:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "pgd-2",
+          "time": "2026-02-06T15:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "group_membership_enum",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.PERMISSION_GROUP_DISCOVERY",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.PERMISSION_GROUP_DISCOVERY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-206",
+      "description": "PowerShell execution",
+      "events": [
+        {
+          "id": "ps-1",
+          "time": "2026-02-06T15:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "ps-2",
+          "time": "2026-02-06T15:01:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "ps-3",
+          "time": "2026-02-06T15:04:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "powershell_execution",
+          "details": {}
+        },
+        {
+          "id": "ps-4",
+          "time": "2026-02-06T15:05:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "script_block_log",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.POWERSHELL",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.POWERSHELL",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-207",
+      "description": "Bash execution",
+      "events": [
+        {
+          "id": "bash-1",
+          "time": "2026-02-06T15:00:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "bash-2",
+          "time": "2026-02-06T15:01:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "bash-3",
+          "time": "2026-02-06T15:04:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "bash_execution",
+          "details": {}
+        },
+        {
+          "id": "bash-4",
+          "time": "2026-02-06T15:05:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "suspicious_command",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.BASH",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.BASH",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-208",
+      "description": "Python execution",
+      "events": [
+        {
+          "id": "py-1",
+          "time": "2026-02-06T15:00:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "py-2",
+          "time": "2026-02-06T15:01:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "py-3",
+          "time": "2026-02-06T15:04:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "python_execution",
+          "details": {}
+        },
+        {
+          "id": "py-4",
+          "time": "2026-02-06T15:05:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "suspicious_command",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.PYTHON",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.PYTHON",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-209",
+      "description": "WMI execution",
+      "events": [
+        {
+          "id": "wmi-1",
+          "time": "2026-02-06T15:00:00Z",
+          "host": "host-3",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "wmi-2",
+          "time": "2026-02-06T15:01:00Z",
+          "host": "host-3",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "wmi-3",
+          "time": "2026-02-06T15:04:00Z",
+          "host": "host-3",
+          "user": "alice",
+          "type": "wmi_execution",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.WMI",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.WMI",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-210",
+      "description": "User execution",
+      "events": [
+        {
+          "id": "ue-1",
+          "time": "2026-02-06T15:02:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "downloaded_file_opened",
+          "details": {}
+        },
+        {
+          "id": "ue-2",
+          "time": "2026-02-06T15:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "user_execution",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.USER_EXECUTION",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.USER_EXECUTION",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-211",
+      "description": "AiTM token theft",
+      "events": [
+        {
+          "id": "aitm-1",
+          "time": "2026-02-06T15:02:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "mfa_intercept",
+          "details": {}
+        },
+        {
+          "id": "aitm-2",
+          "time": "2026-02-06T15:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "token_theft",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.AITM_TOKEN_THEFT",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.AITM_TOKEN_THEFT",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-212",
+      "description": "Kerberoast",
+      "events": [
+        {
+          "id": "kerb-1",
+          "time": "2026-02-06T15:01:00Z",
+          "host": "host-3",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "kerb-2",
+          "time": "2026-02-06T15:03:00Z",
+          "host": "host-3",
+          "user": "alice",
+          "type": "kerberoast_request",
+          "details": {}
+        },
+        {
+          "id": "kerb-3",
+          "time": "2026-02-06T15:04:00Z",
+          "host": "host-3",
+          "user": "alice",
+          "type": "tgs_hash_observed",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.KERBEROAST",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.KERBEROAST",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-213",
+      "description": "Pass the Ticket",
+      "events": [
+        {
+          "id": "ptt-1",
+          "time": "2026-02-06T15:01:00Z",
+          "host": "host-3",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "ptt-2",
+          "time": "2026-02-06T15:03:00Z",
+          "host": "host-3",
+          "user": "alice",
+          "type": "kerberos_ticket",
+          "details": {}
+        },
+        {
+          "id": "ptt-3",
+          "time": "2026-02-06T15:04:00Z",
+          "host": "host-3",
+          "user": "alice",
+          "type": "ticket_reuse",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.PASS_THE_TICKET",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.PASS_THE_TICKET",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-214",
+      "description": "Token theft",
+      "events": [
+        {
+          "id": "tok-1",
+          "time": "2026-02-06T15:02:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "oauth_token_theft",
+          "details": {}
+        },
+        {
+          "id": "tok-2",
+          "time": "2026-02-06T15:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "token_exfiltration",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.TOKEN_THEFT",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.TOKEN_THEFT",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-215",
+      "description": "Keylogging",
+      "events": [
+        {
+          "id": "key-1",
+          "time": "2026-02-06T15:00:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "key-2",
+          "time": "2026-02-06T15:01:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "key-3",
+          "time": "2026-02-06T15:04:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "keylogger_installed",
+          "details": {}
+        },
+        {
+          "id": "key-4",
+          "time": "2026-02-06T15:05:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "keystroke_capture",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.KEYLOGGING",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.KEYLOGGING",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-216",
+      "description": "UAC bypass",
+      "events": [
+        {
+          "id": "uac-1",
+          "time": "2026-02-06T15:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "uac-2",
+          "time": "2026-02-06T15:01:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "uac-3",
+          "time": "2026-02-06T15:04:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "uac_bypass",
+          "details": {}
+        },
+        {
+          "id": "uac-4",
+          "time": "2026-02-06T15:05:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "elevated_process",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.UAC_BYPASS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0004.UAC_BYPASS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-217",
+      "description": "Signed binary proxy execution",
+      "events": [
+        {
+          "id": "sbp-1",
+          "time": "2026-02-06T15:00:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "sbp-2",
+          "time": "2026-02-06T15:01:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "sbp-3",
+          "time": "2026-02-06T15:04:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "signed_binary_proxy_execution",
+          "details": {}
+        },
+        {
+          "id": "sbp-4",
+          "time": "2026-02-06T15:05:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "suspicious_command",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.SIGNED_BINARY_PROXY",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.SIGNED_BINARY_PROXY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-218",
+      "description": "Process injection",
+      "events": [
+        {
+          "id": "pi-1",
+          "time": "2026-02-06T15:00:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "pi-2",
+          "time": "2026-02-06T15:01:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "pi-3",
+          "time": "2026-02-06T15:04:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "process_injection",
+          "details": {}
+        },
+        {
+          "id": "pi-4",
+          "time": "2026-02-06T15:05:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "suspicious_thread",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.PROCESS_INJECTION",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0005.PROCESS_INJECTION",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-219",
+      "description": "DNS exfiltration",
+      "events": [
+        {
+          "id": "c2-1",
+          "time": "2026-02-06T15:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "c2-2",
+          "time": "2026-02-06T15:01:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
+        },
+        {
+          "id": "c2-3",
+          "time": "2026-02-06T15:02:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "beacon_outbound",
+          "details": {}
+        },
+        {
+          "id": "c2-4",
+          "time": "2026-02-06T15:04:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "data_staging",
+          "details": {}
+        },
+        {
+          "id": "c2-5",
+          "time": "2026-02-06T15:05:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "dns_tunneling",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL_DNS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0010.EXFIL_DNS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
     }
   ]
 }

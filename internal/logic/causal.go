@@ -51,7 +51,7 @@ func deriveCausalFacts(events []model.Event, index map[string][]int) map[string]
 	beaconAt, hasBeacon := earliestEventTime(events, index["beacon_outbound"])
 	dnsAt, hasDNS := earliestEventTime(events, index["dns_tunneling"])
 	if hasBeacon && hasDNS {
-		facts["c2_established"] = causalFact{Observed: true, At: maxTime(beaconAt, dnsAt)}
+		facts["c2_established"] = causalFact{Observed: true, At: minTime(beaconAt, dnsAt)}
 	} else if hasBeacon {
 		facts["c2_established"] = causalFact{Observed: true, At: beaconAt}
 	} else if hasDNS {
@@ -160,6 +160,20 @@ func earliestAnyEventTime(events []model.Event, index map[string][]int, types ..
 		}
 	}
 	return out, found
+}
+
+
+func minTime(a time.Time, b time.Time) time.Time {
+	if a.IsZero() {
+		return b
+	}
+	if b.IsZero() {
+		return a
+	}
+	if a.Before(b) {
+		return a
+	}
+	return b
 }
 
 func maxTime(a, b time.Time) time.Time {
