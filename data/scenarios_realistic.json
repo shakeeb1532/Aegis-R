@@ -5982,6 +5982,303 @@
           "ticket_status": "in_review"
         }
       ]
+    },
+    {
+      "id": "realistic-260",
+      "description": "Active scan IP",
+      "events": [
+        {
+          "id": "b4-0-0",
+          "time": "2026-02-06T18:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "active_scan_ip",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0043.ACTIVE_SCAN_IP",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0043.ACTIVE_SCAN_IP",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-261",
+      "description": "Active scan vuln",
+      "events": [
+        {
+          "id": "b4-1-0",
+          "time": "2026-02-06T18:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "active_scan_vuln",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0043.ACTIVE_SCAN_VULN",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0043.ACTIVE_SCAN_VULN",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-262",
+      "description": "Phish for info",
+      "events": [
+        {
+          "id": "b4-2-0",
+          "time": "2026-02-06T18:06:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "phish_info",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0043.PHISH_INFO",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0043.PHISH_INFO",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-263",
+      "description": "Gather net info",
+      "events": [
+        {
+          "id": "b4-3-0",
+          "time": "2026-02-06T18:09:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "gather_net_info",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0043.GATHER_NET_INFO",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0043.GATHER_NET_INFO",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-264",
+      "description": "Gather host info",
+      "events": [
+        {
+          "id": "b4-4-0",
+          "time": "2026-02-06T18:12:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "gather_host_info",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0043.GATHER_HOST_INFO",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0043.GATHER_HOST_INFO",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-265",
+      "description": "Gather id info",
+      "events": [
+        {
+          "id": "b4-5-0",
+          "time": "2026-02-06T18:15:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "gather_id_info",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0043.GATHER_ID_INFO",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0043.GATHER_ID_INFO",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-266",
+      "description": "Acquire access",
+      "events": [
+        {
+          "id": "b4-6-0",
+          "time": "2026-02-06T18:18:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "acquire_access",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0042.ACQUIRE_ACCESS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0042.ACQUIRE_ACCESS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-267",
+      "description": "Acquire infra",
+      "events": [
+        {
+          "id": "b4-7-0",
+          "time": "2026-02-06T18:21:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "acquire_infra",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0042.ACQUIRE_INFRA",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0042.ACQUIRE_INFRA",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-268",
+      "description": "Compromise infra",
+      "events": [
+        {
+          "id": "b4-8-0",
+          "time": "2026-02-06T18:24:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "compromise_infra",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0042.COMPROMISE_INFRA",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0042.COMPROMISE_INFRA",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-269",
+      "description": "Stage capability",
+      "events": [
+        {
+          "id": "b4-9-0",
+          "time": "2026-02-06T18:27:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "stage_capability",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0042.STAGE_CAPABILITY",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0042.STAGE_CAPABILITY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-270",
+      "description": "Establish accounts",
+      "events": [
+        {
+          "id": "b4-10-0",
+          "time": "2026-02-06T18:30:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "establish_accounts",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0042.ESTABLISH_ACCOUNTS",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0042.ESTABLISH_ACCOUNTS",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
     }
   ]
 }

@@ -3268,6 +3268,325 @@
     }
   },
   {
+    "id": "TA0042.ACQUIRE_ACCESS",
+    "name": "Acquire Access",
+    "requirements": [
+      {
+        "type": "acquire_access",
+        "description": "Access broker or credentials acquisition"
+      }
+    ],
+    "preconds": [],
+    "explain": "Acquisition of access by adversary.",
+    "mitre": {
+      "tactic": "TA0042",
+      "technique": "T1650",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0042.ACQUIRE_INFRA",
+    "name": "Acquire Infrastructure",
+    "requirements": [
+      {
+        "type": "acquire_infra",
+        "description": "Infrastructure acquisition"
+      }
+    ],
+    "preconds": [],
+    "explain": "Acquisition of infrastructure resources.",
+    "mitre": {
+      "tactic": "TA0042",
+      "technique": "T1583",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0042.COMPROMISE_INFRA",
+    "name": "Compromise Infrastructure",
+    "requirements": [
+      {
+        "type": "compromise_infra",
+        "description": "Infrastructure compromise"
+      }
+    ],
+    "preconds": [],
+    "explain": "Compromise of third-party infrastructure.",
+    "mitre": {
+      "tactic": "TA0042",
+      "technique": "T1584",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0042.ESTABLISH_ACCOUNTS",
+    "name": "Establish Accounts",
+    "requirements": [
+      {
+        "type": "establish_accounts",
+        "description": "Establish accounts"
+      }
+    ],
+    "preconds": [],
+    "explain": "Establishing accounts for future use.",
+    "mitre": {
+      "tactic": "TA0042",
+      "technique": "T1585",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0042.STAGE_CAPABILITY",
+    "name": "Stage Capabilities",
+    "requirements": [
+      {
+        "type": "stage_capability",
+        "description": "Staging capabilities"
+      }
+    ],
+    "preconds": [],
+    "explain": "Staging malicious capabilities.",
+    "mitre": {
+      "tactic": "TA0042",
+      "technique": "T1608",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0043.ACTIVE_SCAN_IP",
+    "name": "Active Scanning \u2013 IP Block Scan",
+    "requirements": [
+      {
+        "type": "active_scan_ip",
+        "description": "IP block scan activity"
+      }
+    ],
+    "preconds": [],
+    "explain": "Reconnaissance scanning of IP blocks.",
+    "mitre": {
+      "tactic": "TA0043",
+      "technique": "T1595.001",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0043.ACTIVE_SCAN_VULN",
+    "name": "Active Scanning \u2013 Vulnerability Scanning",
+    "requirements": [
+      {
+        "type": "active_scan_vuln",
+        "description": "Vulnerability scanning activity"
+      }
+    ],
+    "preconds": [],
+    "explain": "Reconnaissance vulnerability scanning.",
+    "mitre": {
+      "tactic": "TA0043",
+      "technique": "T1595.002",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0043.GATHER_HOST_INFO",
+    "name": "Gather Victim Host Information",
+    "requirements": [
+      {
+        "type": "gather_host_info",
+        "description": "Host information gathering"
+      }
+    ],
+    "preconds": [],
+    "explain": "Reconnaissance of victim host information.",
+    "mitre": {
+      "tactic": "TA0043",
+      "technique": "T1592",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0043.GATHER_ID_INFO",
+    "name": "Gather Victim Identity Information",
+    "requirements": [
+      {
+        "type": "gather_id_info",
+        "description": "Identity information gathering"
+      }
+    ],
+    "preconds": [],
+    "explain": "Reconnaissance of victim identity information.",
+    "mitre": {
+      "tactic": "TA0043",
+      "technique": "T1589",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0043.GATHER_NET_INFO",
+    "name": "Gather Victim Network Information",
+    "requirements": [
+      {
+        "type": "gather_net_info",
+        "description": "Network information gathering"
+      }
+    ],
+    "preconds": [],
+    "explain": "Reconnaissance of victim network information.",
+    "mitre": {
+      "tactic": "TA0043",
+      "technique": "T1590",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0043.PHISH_INFO",
+    "name": "Phishing for Information",
+    "requirements": [
+      {
+        "type": "phish_info",
+        "description": "Phishing for information"
+      }
+    ],
+    "preconds": [],
+    "explain": "Pretexting phishing to gather information.",
+    "mitre": {
+      "tactic": "TA0043",
+      "technique": "T1598",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0043.SUPPLY_CHAIN",
     "name": "Supply Chain Compromise",
     "requirements": [
