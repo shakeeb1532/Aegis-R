@@ -2124,6 +2124,26 @@ func dedupeStrings(in []string) []string {
 	return out
 }
 
+func bundleReadmeText() string {
+	return strings.TrimSpace(`
+Aman Evidence Bundle
+
+Files:
+- decision.json: Decision summary, hashes, and audit chain pointers.
+- why_chain.json: Causal reasoning chain per rule (verdicts + explanations).
+- counterfactuals.json: "what-if" analysis and next likely actions.
+- controls.json: Framework control mappings + policy/audit lifecycle metadata.
+- oversight.json: Human approvals and dual-control status.
+- summary.json: Human-friendly summary of the bundle contents.
+- rule_catalog_version.json: Rule catalog count and source.
+- manifest.json: Bundle manifest with file hashes.
+
+Verification:
+- Use: aman audit bundle-verify --bundle <bundle.zip>
+- The manifest digest + optional signature provide integrity.
+`)
+}
+
 func approvalSummaryForDecision(approvals []DualApprovalSummary, decisionID string) DualApprovalSummary {
 	for _, a := range approvals {
 		if a.DecisionID == decisionID {
@@ -2447,6 +2467,7 @@ func handleAudit(args []string) {
 			}
 			inline["summary.json"] = summaryBytes
 		}
+		inline["README.txt"] = []byte(bundleReadmeText())
 		inline["rule_catalog_version.json"], err = json.MarshalIndent(map[string]any{
 			"generated_at": packageTimestamp(*reproducible, artifact.CreatedAt).Format(time.RFC3339),
 			"rule_count":   len(rules),
