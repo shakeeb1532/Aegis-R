@@ -198,6 +198,35 @@
     }
   },
   {
+    "id": "TA0001.HARDWARE_ADD",
+    "name": "Hardware Additions",
+    "requirements": [
+      {
+        "type": "ta0001_hardware_add",
+        "description": "Hardware Additions"
+      }
+    ],
+    "preconds": [],
+    "explain": "Hardware Additions",
+    "mitre": {
+      "tactic": "TA0001",
+      "technique": "T1200",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0001.OAUTH_CONSENT_PHISH",
     "name": "OAuth Consent Phishing",
     "requirements": [
@@ -1356,6 +1385,37 @@
     }
   },
   {
+    "id": "TA0003.BOOT_PREOB",
+    "name": "Pre-OS Boot \u2013 Bootkit/UEFI",
+    "requirements": [
+      {
+        "type": "ta0003_boot_preob",
+        "description": "Pre-OS Boot \u2013 Bootkit/UEFI"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Pre-OS Boot \u2013 Bootkit/UEFI",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1542",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0003.BROWSER_EXT",
     "name": "Browser Extensions",
     "requirements": [
@@ -1902,6 +1962,37 @@
     "mitre": {
       "tactic": "TA0003",
       "technique": "T1098.004",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0003.TRAFFIC_SIGNAL",
+    "name": "Traffic Signaling \u2013 Port Knocking",
+    "requirements": [
+      {
+        "type": "ta0003_traffic_signal",
+        "description": "Traffic Signaling \u2013 Port Knocking"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Traffic Signaling \u2013 Port Knocking",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1205",
       "subtechnique": "",
       "links": []
     },
@@ -3486,6 +3577,37 @@
     }
   },
   {
+    "id": "TA0005.TRAFFIC_SIGNAL_EV",
+    "name": "Traffic Signaling \u2013 Evasion",
+    "requirements": [
+      {
+        "type": "ta0005_traffic_signal_ev",
+        "description": "Traffic Signaling \u2013 Evasion"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Traffic Signaling \u2013 Evasion",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1205",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0005.UNUSED_UNSUPPORTED",
     "name": "Signed Binary \u2013 Rundll32",
     "requirements": [
@@ -4534,6 +4656,37 @@
     }
   },
   {
+    "id": "TA0007.APP_WIN_DISC",
+    "name": "Application Window Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_app_win_disc",
+        "description": "Application Window Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Application Window Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1010",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0007.BROWSER_INFO_DISC",
     "name": "Browser Information Discovery",
     "requirements": [
@@ -5379,6 +5532,37 @@
     }
   },
   {
+    "id": "TA0007.SYS_LOCATION_DISC",
+    "name": "System Location Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_sys_location_disc",
+        "description": "System Location Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "System Location Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1614",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0007.SYS_NET_CONF_DISC",
     "name": "System Network Configuration Discovery",
     "requirements": [
@@ -5487,6 +5671,37 @@
     "mitre": {
       "tactic": "TA0007",
       "technique": "T1007",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.SYS_TIME_DISC",
+    "name": "System Time Discovery",
+    "requirements": [
+      {
+        "type": "ta0007_sys_time_disc",
+        "description": "System Time Discovery"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "System Time Discovery",
+    "mitre": {
+      "tactic": "TA0007",
+      "technique": "T1124",
       "subtechnique": "",
       "links": []
     },
@@ -5933,6 +6148,35 @@
     }
   },
   {
+    "id": "TA0009.AUDIO_CAPTURE",
+    "name": "Audio Capture",
+    "requirements": [
+      {
+        "type": "ta0009_audio_capture",
+        "description": "Audio Capture"
+      }
+    ],
+    "preconds": [],
+    "explain": "Audio Capture",
+    "mitre": {
+      "tactic": "TA0009",
+      "technique": "T1123",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0009.AUTO_COLLECTION",
     "name": "Automated Collection",
     "requirements": [
@@ -6295,6 +6539,35 @@
     }
   },
   {
+    "id": "TA0009.VIDEO_CAPTURE",
+    "name": "Video Capture",
+    "requirements": [
+      {
+        "type": "ta0009_video_capture",
+        "description": "Video Capture"
+      }
+    ],
+    "preconds": [],
+    "explain": "Video Capture",
+    "mitre": {
+      "tactic": "TA0009",
+      "technique": "T1125",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0010.AUTO_EXFIL",
     "name": "Automated Exfiltration",
     "requirements": [
@@ -6617,6 +6890,37 @@
       "technique": "",
       "subtechnique": "",
       "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0010.EXFIL_PHYS",
+    "name": "Exfiltration Over Physical Medium",
+    "requirements": [
+      {
+        "type": "ta0010_exfil_phys",
+        "description": "Exfiltration Over Physical Medium"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Exfiltration Over Physical Medium",
+    "mitre": {
+      "tactic": "TA0010",
+      "technique": "T1052",
+      "subtechnique": "",
+      "links": []
     },
     "provenance": {
       "author": "",
@@ -8033,6 +8337,35 @@
     }
   },
   {
+    "id": "TA0042.DEVELOP_CAPABILITY",
+    "name": "Develop Capabilities",
+    "requirements": [
+      {
+        "type": "ta0042_develop_capability",
+        "description": "Develop Capabilities"
+      }
+    ],
+    "preconds": [],
+    "explain": "Develop Capabilities",
+    "mitre": {
+      "tactic": "TA0042",
+      "technique": "T1587",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0042.ESTABLISH_ACCOUNTS",
     "name": "Establish Accounts",
     "requirements": [
@@ -8046,6 +8379,35 @@
     "mitre": {
       "tactic": "TA0042",
       "technique": "T1585",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0042.OBTAIN_CAPABILITY",
+    "name": "Obtain Capabilities",
+    "requirements": [
+      {
+        "type": "ta0042_obtain_capability",
+        "description": "Obtain Capabilities"
+      }
+    ],
+    "preconds": [],
+    "explain": "Obtain Capabilities",
+    "mitre": {
+      "tactic": "TA0042",
+      "technique": "T1588",
       "subtechnique": "",
       "links": []
     },
@@ -8149,6 +8511,35 @@
     }
   },
   {
+    "id": "TA0043.ACTIVE_SCAN_WORD",
+    "name": "Active Scanning \u2013 Wordlist Scanning",
+    "requirements": [
+      {
+        "type": "ta0043_active_scan_word",
+        "description": "Active Scanning \u2013 Wordlist Scanning"
+      }
+    ],
+    "preconds": [],
+    "explain": "Active Scanning \u2013 Wordlist Scanning",
+    "mitre": {
+      "tactic": "TA0043",
+      "technique": "T1595.003",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0043.GATHER_HOST_INFO",
     "name": "Gather Victim Host Information",
     "requirements": [
@@ -8236,6 +8627,35 @@
     }
   },
   {
+    "id": "TA0043.GATHER_ORG_INFO",
+    "name": "Gather Victim Org Information",
+    "requirements": [
+      {
+        "type": "ta0043_gather_org_info",
+        "description": "Gather Victim Org Information"
+      }
+    ],
+    "preconds": [],
+    "explain": "Gather Victim Org Information",
+    "mitre": {
+      "tactic": "TA0043",
+      "technique": "T1591",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0043.PHISH_INFO",
     "name": "Phishing for Information",
     "requirements": [
@@ -8249,6 +8669,64 @@
     "mitre": {
       "tactic": "TA0043",
       "technique": "T1598",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0043.SEARCH_OPEN_SITES",
+    "name": "Search Open Websites / Domains",
+    "requirements": [
+      {
+        "type": "ta0043_search_open_sites",
+        "description": "Search Open Websites / Domains"
+      }
+    ],
+    "preconds": [],
+    "explain": "Search Open Websites / Domains",
+    "mitre": {
+      "tactic": "TA0043",
+      "technique": "T1593",
+      "subtechnique": "",
+      "links": []
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0043.SEARCH_VICTIM_WEB",
+    "name": "Search Victim-Owned Websites",
+    "requirements": [
+      {
+        "type": "ta0043_search_victim_web",
+        "description": "Search Victim-Owned Websites"
+      }
+    ],
+    "preconds": [],
+    "explain": "Search Victim-Owned Websites",
+    "mitre": {
+      "tactic": "TA0043",
+      "technique": "T1594",
       "subtechnique": "",
       "links": []
     },
