@@ -4169,17 +4169,25 @@
           "user": "alice",
           "type": "script_block_log",
           "details": {}
+        },
+        {
+          "id": "fix-TA0002.CMD_SCRIPT_PS-ta0002_cmd_script_ps",
+          "time": "2026-02-06T15:05:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_cmd_script_ps",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0002.POWERSHELL",
+          "rule_id": "TA0002.CMD_SCRIPT_PS",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0002.POWERSHELL",
+          "rule_id": "TA0002.CMD_SCRIPT_PS",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -4220,17 +4228,25 @@
           "user": "alice",
           "type": "suspicious_command",
           "details": {}
+        },
+        {
+          "id": "fix-TA0002.CMD_SCRIPT_BASH-ta0002_cmd_script_bash",
+          "time": "2026-02-06T15:05:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "ta0002_cmd_script_bash",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0002.BASH",
+          "rule_id": "TA0002.CMD_SCRIPT_BASH",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0002.BASH",
+          "rule_id": "TA0002.CMD_SCRIPT_BASH",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -4271,17 +4287,25 @@
           "user": "alice",
           "type": "suspicious_command",
           "details": {}
+        },
+        {
+          "id": "fix-TA0002.CMD_SCRIPT_PYTHON-ta0002_cmd_script_python",
+          "time": "2026-02-06T15:05:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "ta0002_cmd_script_python",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0002.PYTHON",
+          "rule_id": "TA0002.CMD_SCRIPT_PYTHON",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0002.PYTHON",
+          "rule_id": "TA0002.CMD_SCRIPT_PYTHON",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -4314,17 +4338,25 @@
           "user": "alice",
           "type": "wmi_execution",
           "details": {}
+        },
+        {
+          "id": "fix-TA0002.WMI_EXEC-ta0002_wmi_exec",
+          "time": "2026-02-06T15:04:00Z",
+          "host": "host-3",
+          "user": "alice",
+          "type": "ta0002_wmi_exec",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0002.WMI",
+          "rule_id": "TA0002.WMI_EXEC",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0002.WMI",
+          "rule_id": "TA0002.WMI_EXEC",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -4349,17 +4381,41 @@
           "user": "alice",
           "type": "user_execution",
           "details": {}
+        },
+        {
+          "id": "fix-TA0002.USER_EXEC_FILE-ta0002_user_exec_file",
+          "time": "2026-02-06T15:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_user_exec_file",
+          "details": {}
+        },
+        {
+          "id": "fix-precond-email_attachment_open",
+          "time": "2026-02-06T15:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "fix-precond-macro_execution",
+          "time": "2026-02-06T15:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0002.USER_EXECUTION",
+          "rule_id": "TA0002.USER_EXEC_FILE",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0002.USER_EXECUTION",
+          "rule_id": "TA0002.USER_EXEC_FILE",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -4384,17 +4440,33 @@
           "user": "alice",
           "type": "token_theft",
           "details": {}
+        },
+        {
+          "id": "fix-TA0006.AITM-ta0006_aitm",
+          "time": "2026-02-06T15:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0006_aitm",
+          "details": {}
+        },
+        {
+          "id": "fix-precond-lsass_access",
+          "time": "2026-02-06T15:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0006.AITM_TOKEN_THEFT",
+          "rule_id": "TA0006.AITM",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0006.AITM_TOKEN_THEFT",
+          "rule_id": "TA0006.AITM",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -4427,17 +4499,33 @@
           "user": "alice",
           "type": "tgs_hash_observed",
           "details": {}
+        },
+        {
+          "id": "fix-TA0006.KERBEROASTING-ta0006_kerberoasting",
+          "time": "2026-02-06T15:04:00Z",
+          "host": "host-3",
+          "user": "alice",
+          "type": "ta0006_kerberoasting",
+          "details": {}
+        },
+        {
+          "id": "fix-precond-lsass_access",
+          "time": "2026-02-06T15:04:00Z",
+          "host": "host-3",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0006.KERBEROAST",
+          "rule_id": "TA0006.KERBEROASTING",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0006.KERBEROAST",
+          "rule_id": "TA0006.KERBEROASTING",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -4505,17 +4593,41 @@
           "user": "alice",
           "type": "token_exfiltration",
           "details": {}
+        },
+        {
+          "id": "fix-TA0006.PASS_THE_TICKET-kerberos_ticket",
+          "time": "2026-02-06T15:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "kerberos_ticket",
+          "details": {}
+        },
+        {
+          "id": "fix-TA0006.PASS_THE_TICKET-ticket_reuse",
+          "time": "2026-02-06T15:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ticket_reuse",
+          "details": {}
+        },
+        {
+          "id": "fix-precond-valid_account_login",
+          "time": "2026-02-06T15:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0006.TOKEN_THEFT",
+          "rule_id": "TA0006.PASS_THE_TICKET",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0006.TOKEN_THEFT",
+          "rule_id": "TA0006.PASS_THE_TICKET",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -4607,17 +4719,25 @@
           "user": "alice",
           "type": "elevated_process",
           "details": {}
+        },
+        {
+          "id": "fix-TA0004.ABUSE_ELEV_UAC-ta0004_abuse_elev_uac",
+          "time": "2026-02-06T15:05:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0004_abuse_elev_uac",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0004.UAC_BYPASS",
+          "rule_id": "TA0004.ABUSE_ELEV_UAC",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0004.UAC_BYPASS",
+          "rule_id": "TA0004.ABUSE_ELEV_UAC",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -4658,17 +4778,25 @@
           "user": "alice",
           "type": "suspicious_command",
           "details": {}
+        },
+        {
+          "id": "fix-TA0005.SIGNED_BINARY_PROX-ta0005_signed_binary_prox",
+          "time": "2026-02-06T15:05:00Z",
+          "host": "host-2",
+          "user": "alice",
+          "type": "ta0005_signed_binary_prox",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0005.SIGNED_BINARY_PROXY",
+          "rule_id": "TA0005.SIGNED_BINARY_PROX",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0005.SIGNED_BINARY_PROXY",
+          "rule_id": "TA0005.SIGNED_BINARY_PROX",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -4768,17 +4896,33 @@
           "user": "alice",
           "type": "dns_tunneling",
           "details": {}
+        },
+        {
+          "id": "fix-TA0010.DNS_EXFIL-ta0010_dns_exfil",
+          "time": "2026-02-06T15:05:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0010_dns_exfil",
+          "details": {}
+        },
+        {
+          "id": "fix-precond-lsass_access",
+          "time": "2026-02-06T15:05:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0010.EXFIL_DNS",
+          "rule_id": "TA0010.DNS_EXFIL",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0010.EXFIL_DNS",
+          "rule_id": "TA0010.DNS_EXFIL",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -4889,17 +5033,25 @@
           "user": "alice",
           "type": "imds_credential_access",
           "details": {}
+        },
+        {
+          "id": "fix-TA0006.CLOUD_IMDS-ta0006_cloud_imds",
+          "time": "2026-02-06T16:14:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0006_cloud_imds",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0006.IMDS_ABUSE",
+          "rule_id": "TA0006.CLOUD_IMDS",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0006.IMDS_ABUSE",
+          "rule_id": "TA0006.CLOUD_IMDS",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -4975,17 +5127,41 @@
           "user": "alice",
           "type": "serverless_invoke",
           "details": {}
+        },
+        {
+          "id": "fix-TA0002.SERVERLESS_EXEC-ta0002_serverless_exec",
+          "time": "2026-02-06T16:26:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0002_serverless_exec",
+          "details": {}
+        },
+        {
+          "id": "fix-precond-email_attachment_open",
+          "time": "2026-02-06T16:26:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "fix-precond-macro_execution",
+          "time": "2026-02-06T16:26:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0002.SERVERLESS_EXECUTION",
+          "rule_id": "TA0002.SERVERLESS_EXEC",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0002.SERVERLESS_EXECUTION",
+          "rule_id": "TA0002.SERVERLESS_EXEC",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -5018,17 +5194,33 @@
           "user": "alice",
           "type": "large_outbound_transfer",
           "details": {}
+        },
+        {
+          "id": "fix-TA0010.TRANSFER_CLOUD-ta0010_transfer_cloud",
+          "time": "2026-02-06T16:32:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0010_transfer_cloud",
+          "details": {}
+        },
+        {
+          "id": "fix-precond-lsass_access",
+          "time": "2026-02-06T16:32:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0010.TRANSFER_TO_CLOUD",
+          "rule_id": "TA0010.TRANSFER_CLOUD",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0010.TRANSFER_TO_CLOUD",
+          "rule_id": "TA0010.TRANSFER_CLOUD",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -5147,17 +5339,41 @@
           "user": "alice",
           "type": "cloud_image_publish",
           "details": {}
+        },
+        {
+          "id": "fix-TA0003.IMPLANT_CONTAINER-ta0003_implant_container",
+          "time": "2026-02-06T16:50:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0003_implant_container",
+          "details": {}
+        },
+        {
+          "id": "fix-precond-email_attachment_open",
+          "time": "2026-02-06T16:50:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "email_attachment_open",
+          "details": {}
+        },
+        {
+          "id": "fix-precond-macro_execution",
+          "time": "2026-02-06T16:50:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "macro_execution",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0003.CLOUD_IMAGE_IMPLANT",
+          "rule_id": "TA0003.IMPLANT_CONTAINER",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0003.CLOUD_IMAGE_IMPLANT",
+          "rule_id": "TA0003.IMPLANT_CONTAINER",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -5405,17 +5621,25 @@
           "user": "alice",
           "type": "bulk_access_download",
           "details": {}
+        },
+        {
+          "id": "fix-TA0009.CLOUD_STORAGE_COLL-ta0009_cloud_storage_coll",
+          "time": "2026-02-06T17:12:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0009_cloud_storage_coll",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0009.CLOUD_STORAGE_COLLECTION",
+          "rule_id": "TA0009.CLOUD_STORAGE_COLL",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0009.CLOUD_STORAGE_COLLECTION",
+          "rule_id": "TA0009.CLOUD_STORAGE_COLL",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -5510,17 +5734,25 @@
           "user": "alice",
           "type": "service_stop",
           "details": {}
+        },
+        {
+          "id": "fix-TA0040.SVC_STOP-ta0040_svc_stop",
+          "time": "2026-02-06T17:26:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0040_svc_stop",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0040.SERVICE_STOP",
+          "rule_id": "TA0040.SVC_STOP",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0040.SERVICE_STOP",
+          "rule_id": "TA0040.SVC_STOP",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -5760,17 +5992,25 @@
           "user": "alice",
           "type": "signed_binary_proxy",
           "details": {}
+        },
+        {
+          "id": "fix-TA0005.SIGNED_BINARY_PROX-ta0005_signed_binary_prox",
+          "time": "2026-02-06T17:57:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_signed_binary_prox",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0005.SIGNED_BINARY_PROXY_EXEC",
+          "rule_id": "TA0005.SIGNED_BINARY_PROX",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0005.SIGNED_BINARY_PROXY_EXEC",
+          "rule_id": "TA0005.SIGNED_BINARY_PROX",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -5811,17 +6051,33 @@
           "user": "alice",
           "type": "beacon_outbound",
           "details": {}
+        },
+        {
+          "id": "fix-TA0011.DNS_C2-ta0011_dns_c2",
+          "time": "2026-02-06T18:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0011_dns_c2",
+          "details": {}
+        },
+        {
+          "id": "fix-precond-lsass_access",
+          "time": "2026-02-06T18:03:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0011.DNS_TUNNEL",
+          "rule_id": "TA0011.DNS_C2",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0011.DNS_TUNNEL",
+          "rule_id": "TA0011.DNS_C2",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -5854,17 +6110,33 @@
           "user": "alice",
           "type": "c2_nonstandard_port",
           "details": {}
+        },
+        {
+          "id": "fix-TA0011.NON_STD_PORT-ta0011_non_std_port",
+          "time": "2026-02-06T18:07:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0011_non_std_port",
+          "details": {}
+        },
+        {
+          "id": "fix-precond-lsass_access",
+          "time": "2026-02-06T18:07:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0011.NON_STANDARD_PORT",
+          "rule_id": "TA0011.NON_STD_PORT",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0011.NON_STANDARD_PORT",
+          "rule_id": "TA0011.NON_STD_PORT",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -9033,17 +9305,25 @@
           "user": "alice",
           "type": "ta0005_unused_unsupported",
           "details": {}
+        },
+        {
+          "id": "fix-TA0005.SIGNED_BINARY_PROX-ta0005_signed_binary_prox",
+          "time": "2026-02-06T21:26:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "ta0005_signed_binary_prox",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0005.UNUSED_UNSUPPORTED",
+          "rule_id": "TA0005.SIGNED_BINARY_PROX",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0005.UNUSED_UNSUPPORTED",
+          "rule_id": "TA0005.SIGNED_BINARY_PROX",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -9652,17 +9932,33 @@
           "user": "alice",
           "type": "ta0007_cloud_infra_disc",
           "details": {}
+        },
+        {
+          "id": "fix-TA0007.CLOUD_INFRA_DISCOVERY-cloud_service_discovery",
+          "time": "2026-02-06T21:59:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "cloud_service_discovery",
+          "details": {}
+        },
+        {
+          "id": "fix-TA0007.CLOUD_INFRA_DISCOVERY-list_cloud_resources",
+          "time": "2026-02-06T21:59:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "list_cloud_resources",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0007.CLOUD_INFRA_DISC",
+          "rule_id": "TA0007.CLOUD_INFRA_DISCOVERY",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0007.CLOUD_INFRA_DISC",
+          "rule_id": "TA0007.CLOUD_INFRA_DISCOVERY",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }
@@ -11532,17 +11828,41 @@
           "user": "alice",
           "type": "ta0010_exfil_c2",
           "details": {}
+        },
+        {
+          "id": "fix-TA0010.EXFIL-data_staging",
+          "time": "2026-02-06T23:51:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "data_staging",
+          "details": {}
+        },
+        {
+          "id": "fix-TA0010.EXFIL-large_outbound_transfer",
+          "time": "2026-02-06T23:51:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "large_outbound_transfer",
+          "details": {}
+        },
+        {
+          "id": "fix-precond-beacon_outbound",
+          "time": "2026-02-06T23:51:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "beacon_outbound",
+          "details": {}
         }
       ],
       "labels": [
         {
-          "rule_id": "TA0010.EXFIL_C2",
+          "rule_id": "TA0010.EXFIL",
           "outcome": "feasible"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0010.EXFIL_C2",
+          "rule_id": "TA0010.EXFIL",
           "decision_label": "escalate",
           "ticket_status": "in_review"
         }

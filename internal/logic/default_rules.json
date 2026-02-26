@@ -17,11 +17,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -56,7 +56,7 @@
       "version": "1.0",
       "sources": [],
       "reviewed_by": [],
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0.0,
@@ -97,7 +97,7 @@
       "version": "1.0",
       "sources": [],
       "reviewed_by": [],
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0.0,
@@ -128,11 +128,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -157,11 +157,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -186,11 +186,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -215,11 +215,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -255,7 +255,7 @@
       "version": "1.0",
       "sources": [],
       "reviewed_by": [],
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0.0,
@@ -386,11 +386,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -423,7 +423,7 @@
       "version": "1.0",
       "sources": [],
       "reviewed_by": [],
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0.0,
@@ -466,7 +466,7 @@
       "version": "1.0",
       "sources": [],
       "reviewed_by": [],
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0.0,
@@ -497,11 +497,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -526,46 +526,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0002.BASH",
-    "name": "Bash Execution",
-    "requirements": [
-      {
-        "type": "bash_execution",
-        "description": "Bash execution"
-      },
-      {
-        "type": "suspicious_command",
-        "description": "Suspicious command observed"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "Bash execution with suspicious commands after initial access.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -592,11 +557,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -623,11 +588,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -654,11 +619,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -685,11 +650,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -716,11 +681,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -747,11 +712,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -778,11 +743,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -809,11 +774,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -840,11 +805,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -871,11 +836,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -952,81 +917,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0002.POWERSHELL",
-    "name": "PowerShell Execution",
-    "requirements": [
-      {
-        "type": "powershell_execution",
-        "description": "PowerShell execution"
-      },
-      {
-        "type": "script_block_log",
-        "description": "Script block logging evidence"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "PowerShell execution following initial access.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0002.PYTHON",
-    "name": "Python Execution",
-    "requirements": [
-      {
-        "type": "python_execution",
-        "description": "Python execution"
-      },
-      {
-        "type": "suspicious_command",
-        "description": "Suspicious command observed"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "Python execution with suspicious commands after initial access.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1053,11 +948,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1084,46 +979,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0002.SERVERLESS_EXECUTION",
-    "name": "Serverless Execution",
-    "requirements": [
-      {
-        "type": "serverless_invoke",
-        "description": "Serverless function invoked"
-      },
-      {
-        "type": "serverless_role_assume",
-        "description": "Serverless role assumed"
-      }
-    ],
-    "preconds": [
-      "valid_account_login"
-    ],
-    "explain": "Execution in serverless environment using assumed role.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1150,44 +1010,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0002.USER_EXECUTION",
-    "name": "User Execution",
-    "requirements": [
-      {
-        "type": "user_execution",
-        "description": "User executed a file"
-      },
-      {
-        "type": "downloaded_file_opened",
-        "description": "Downloaded file opened"
-      }
-    ],
-    "preconds": [],
-    "explain": "User executed a downloaded file.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1214,11 +1041,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1245,42 +1072,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0002.WMI",
-    "name": "WMI Execution",
-    "requirements": [
-      {
-        "type": "wmi_execution",
-        "description": "WMI execution"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "WMI execution after initial access.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1307,11 +1103,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1336,17 +1132,17 @@
     ],
     "explain": "Account creation for persistence.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0003",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1373,11 +1169,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1404,11 +1200,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1435,46 +1231,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0003.CLOUD_IMAGE_IMPLANT",
-    "name": "Implant Internal Cloud Image",
-    "requirements": [
-      {
-        "type": "cloud_image_create",
-        "description": "Cloud image created"
-      },
-      {
-        "type": "cloud_image_publish",
-        "description": "Cloud image published"
-      }
-    ],
-    "preconds": [
-      "valid_account_login"
-    ],
-    "explain": "Creation and publishing of a cloud image implant.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1501,11 +1262,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1530,17 +1291,17 @@
     ],
     "explain": "Execution in a container environment.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0003",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1567,11 +1328,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1598,11 +1359,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1629,11 +1390,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1660,11 +1421,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1742,11 +1503,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1873,11 +1634,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1904,11 +1665,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1935,11 +1696,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1966,11 +1727,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -1997,11 +1758,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2028,11 +1789,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2059,11 +1820,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2090,11 +1851,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2121,11 +1882,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2152,11 +1913,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2233,11 +1994,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2264,11 +2025,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2394,11 +2155,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2475,46 +2236,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0004.UAC_BYPASS",
-    "name": "UAC Bypass",
-    "requirements": [
-      {
-        "type": "uac_bypass",
-        "description": "UAC bypass technique observed"
-      },
-      {
-        "type": "elevated_process",
-        "description": "Elevated process spawned"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "Elevation control bypass after initial access.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2541,11 +2267,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2572,11 +2298,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2654,11 +2380,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2685,11 +2411,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2716,11 +2442,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2747,11 +2473,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2833,11 +2559,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2864,11 +2590,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2895,11 +2621,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2926,11 +2652,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -2957,11 +2683,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3035,17 +2761,17 @@
     ],
     "explain": "Indicators removed to evade detection.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0005",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3072,11 +2798,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3148,17 +2874,17 @@
     ],
     "explain": "Masquerading to evade detection.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0005",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3185,11 +2911,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3216,11 +2942,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3241,17 +2967,17 @@
     ],
     "explain": "Obfuscation used to evade defenses.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0005",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3276,17 +3002,17 @@
     ],
     "explain": "Process injection following initial access.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0005",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3313,11 +3039,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3344,11 +3070,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3375,11 +3101,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3406,11 +3132,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3437,77 +3163,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0005.SIGNED_BINARY_PROXY",
-    "name": "Signed Binary Proxy Execution",
-    "requirements": [
-      {
-        "type": "signed_binary_proxy_execution",
-        "description": "Signed binary proxy execution"
-      },
-      {
-        "type": "suspicious_command",
-        "description": "Suspicious command observed"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "Living-off-the-land proxy execution after initial access.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0005.SIGNED_BINARY_PROXY_EXEC",
-    "name": "Signed Binary Proxy Execution",
-    "requirements": [
-      {
-        "type": "signed_binary_proxy",
-        "description": "Signed binary proxy execution"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "Abuse of signed binaries to proxy execution.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3534,11 +3194,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3565,11 +3225,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3596,42 +3256,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0005.UNUSED_UNSUPPORTED",
-    "name": "Signed Binary \u2013 Rundll32",
-    "requirements": [
-      {
-        "type": "ta0005_unused_unsupported",
-        "description": "Signed Binary \u2013 Rundll32"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "Signed Binary \u2013 Rundll32",
-    "mitre": {
-      "tactic": "TA0005",
-      "technique": "T1218.011",
-      "subtechnique": "",
-      "links": []
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3658,11 +3287,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3689,11 +3318,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3720,11 +3349,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3751,44 +3380,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0006.AITM_TOKEN_THEFT",
-    "name": "Adversary-in-the-Middle Token Theft",
-    "requirements": [
-      {
-        "type": "mfa_intercept",
-        "description": "MFA intercept observed"
-      },
-      {
-        "type": "token_theft",
-        "description": "Token theft observed"
-      }
-    ],
-    "preconds": [],
-    "explain": "Token theft via adversary-in-the-middle activity.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3864,11 +3460,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3893,17 +3489,17 @@
     ],
     "explain": "Abuse of cloud access tokens following identity compromise.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0006",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -3981,11 +3577,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4012,11 +3608,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4073,41 +3669,6 @@
     ]
   },
   {
-    "id": "TA0006.IMDS_ABUSE",
-    "name": "IMDS Credential Abuse",
-    "requirements": [
-      {
-        "type": "imds_token_request",
-        "description": "Instance metadata token request"
-      },
-      {
-        "type": "imds_credential_access",
-        "description": "Instance metadata credential retrieval"
-      }
-    ],
-    "preconds": [
-      "credential_access"
-    ],
-    "explain": "Cloud instance metadata service abused to obtain credentials.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
     "id": "TA0006.INSIDER_EXFIL",
     "name": "Insider Data Exfiltration",
     "requirements": [
@@ -4159,41 +3720,6 @@
     ]
   },
   {
-    "id": "TA0006.KERBEROAST",
-    "name": "Kerberoasting",
-    "requirements": [
-      {
-        "type": "kerberoast_request",
-        "description": "Kerberoast request observed"
-      },
-      {
-        "type": "tgs_hash_observed",
-        "description": "TGS hash observed"
-      }
-    ],
-    "preconds": [
-      "valid_account_login"
-    ],
-    "explain": "Kerberoasting requires a valid account session.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
     "id": "TA0006.KERBEROASTING",
     "name": "Kerberoasting \u2013 SPN Ticket Request",
     "requirements": [
@@ -4213,11 +3739,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4242,17 +3768,17 @@
     ],
     "explain": "Keylogger activity after initial access.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0006",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4279,11 +3805,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4310,11 +3836,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4341,11 +3867,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4372,11 +3898,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4401,17 +3927,17 @@
     ],
     "explain": "Kerberos ticket reuse following a valid login.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0006",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4438,11 +3964,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4469,44 +3995,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0006.TOKEN_THEFT",
-    "name": "Token Theft",
-    "requirements": [
-      {
-        "type": "oauth_token_theft",
-        "description": "OAuth token theft"
-      },
-      {
-        "type": "token_exfiltration",
-        "description": "Token exfiltration observed"
-      }
-    ],
-    "preconds": [],
-    "explain": "Token theft and exfiltration observed.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4533,11 +4026,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4607,17 +4100,17 @@
     ],
     "explain": "Enumerating accounts after a valid login.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0007",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4638,17 +4131,17 @@
     ],
     "explain": "Discovery of account password policies.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0007",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4675,11 +4168,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4706,11 +4199,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4735,48 +4228,17 @@
     ],
     "explain": "Discovery of IAM roles and policies.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0007",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0007.CLOUD_INFRA_DISC",
-    "name": "Cloud Infrastructure Discovery",
-    "requirements": [
-      {
-        "type": "ta0007_cloud_infra_disc",
-        "description": "Cloud Infrastructure Discovery"
-      }
-    ],
-    "preconds": [
-      "valid_account_login"
-    ],
-    "explain": "Cloud Infrastructure Discovery",
-    "mitre": {
-      "tactic": "TA0007",
-      "technique": "T1580",
-      "subtechnique": "",
-      "links": []
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4801,17 +4263,17 @@
     ],
     "explain": "Discovery of cloud infrastructure and services.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0007",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4832,17 +4294,17 @@
     ],
     "explain": "Discovery of available cloud services.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0007",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4869,11 +4331,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4900,11 +4362,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4931,11 +4393,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4962,11 +4424,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -4993,11 +4455,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5024,11 +4486,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5055,11 +4517,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5080,17 +4542,17 @@
     ],
     "explain": "Enumerating network services after initial access.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0007",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5111,17 +4573,17 @@
     ],
     "explain": "Discovery of network shares.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0007",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5148,11 +4610,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5179,11 +4641,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5210,11 +4672,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5241,11 +4703,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5266,17 +4728,17 @@
     ],
     "explain": "Enumerating permission groups after a valid login.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0007",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5303,11 +4765,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5328,17 +4790,17 @@
     ],
     "explain": "Enumerating processes after initial access.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0007",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5365,11 +4827,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5396,11 +4858,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5427,11 +4889,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5458,11 +4920,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5483,17 +4945,17 @@
     ],
     "explain": "Enumerating system information after initial access.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0007",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5520,11 +4982,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5551,11 +5013,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5582,11 +5044,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5613,11 +5075,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5644,11 +5106,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5675,11 +5137,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5706,11 +5168,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5737,11 +5199,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5867,11 +5329,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5898,11 +5360,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -5979,11 +5441,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6010,11 +5472,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6041,11 +5503,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6072,11 +5534,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6101,17 +5563,17 @@
     ],
     "explain": "Collected data archived prior to exfiltration.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0009",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6136,11 +5598,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6165,11 +5627,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6194,11 +5656,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6223,11 +5685,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6252,11 +5714,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6281,46 +5743,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0009.CLOUD_STORAGE_COLLECTION",
-    "name": "Cloud Storage Collection (Alt)",
-    "requirements": [
-      {
-        "type": "cloud_storage_read",
-        "description": "Read from cloud storage"
-      },
-      {
-        "type": "bulk_access_download",
-        "description": "Bulk access/download"
-      }
-    ],
-    "preconds": [
-      "valid_account_login"
-    ],
-    "explain": "Collection of data from cloud storage.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6345,11 +5772,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6374,11 +5801,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6403,11 +5830,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6432,11 +5859,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6461,17 +5888,17 @@
     ],
     "explain": "Bulk collection of email content.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0009",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6496,11 +5923,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6521,17 +5948,17 @@
     ],
     "explain": "Screen capture used to collect information.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0009",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6556,11 +5983,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6587,11 +6014,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6667,17 +6094,17 @@
     ],
     "explain": "Collection of data from cloud storage.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0010",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6704,11 +6131,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6768,37 +6195,6 @@
     ]
   },
   {
-    "id": "TA0010.EXFIL_C2",
-    "name": "Exfiltration Over C2 Channel",
-    "requirements": [
-      {
-        "type": "ta0010_exfil_c2",
-        "description": "Exfiltration Over C2 Channel"
-      }
-    ],
-    "preconds": [
-      "credential_access"
-    ],
-    "explain": "Exfiltration Over C2 Channel",
-    "mitre": {
-      "tactic": "TA0010",
-      "technique": "T1041",
-      "subtechnique": "",
-      "links": []
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
     "id": "TA0010.EXFIL_CLOUD_DB",
     "name": "Exfiltration from Cloud Database",
     "requirements": [
@@ -6816,17 +6212,17 @@
     ],
     "explain": "Export of cloud database snapshots for exfiltration.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0010",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6851,52 +6247,17 @@
     ],
     "explain": "Data exfiltration using a cloud sync tool.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0010",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0010.EXFIL_DNS",
-    "name": "Exfiltration Over DNS",
-    "requirements": [
-      {
-        "type": "dns_tunneling",
-        "description": "DNS tunneling patterns"
-      },
-      {
-        "type": "data_staging",
-        "description": "Data staged for exfil"
-      }
-    ],
-    "preconds": [
-      "c2_established"
-    ],
-    "explain": "DNS-based exfiltration following C2 establishment.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -6923,11 +6284,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7005,11 +6366,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7036,46 +6397,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0010.TRANSFER_TO_CLOUD",
-    "name": "Transfer Data to Cloud Account",
-    "requirements": [
-      {
-        "type": "cloud_storage_write",
-        "description": "Write to cloud storage"
-      },
-      {
-        "type": "large_outbound_transfer",
-        "description": "Large outbound transfer"
-      }
-    ],
-    "preconds": [
-      "c2_established"
-    ],
-    "explain": "Data transferred to a cloud storage account.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7202,11 +6528,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7233,11 +6559,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7264,11 +6590,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7295,46 +6621,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0011.DNS_TUNNEL",
-    "name": "DNS Tunneling C2",
-    "requirements": [
-      {
-        "type": "dns_tunneling",
-        "description": "DNS tunneling"
-      },
-      {
-        "type": "beacon_outbound",
-        "description": "Beacon outbound"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "Command and control via DNS tunneling.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7361,11 +6652,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7392,11 +6683,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7423,11 +6714,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7454,11 +6745,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7485,11 +6776,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7516,11 +6807,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7547,42 +6838,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0011.NON_STANDARD_PORT",
-    "name": "Non-Standard Port C2",
-    "requirements": [
-      {
-        "type": "c2_nonstandard_port",
-        "description": "C2 on non-standard port"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "C2 traffic on non-standard ports.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7609,11 +6869,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7640,11 +6900,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7671,11 +6931,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7702,11 +6962,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7733,11 +6993,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7758,17 +7018,17 @@
     ],
     "explain": "Destructive activity against data.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0040",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7795,11 +7055,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7826,11 +7086,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7857,11 +7117,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7888,11 +7148,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7913,17 +7173,17 @@
     ],
     "explain": "Disk wipe or destructive overwrite.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0040",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7950,11 +7210,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -7981,11 +7241,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8064,11 +7324,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8139,48 +7399,17 @@
     ],
     "explain": "Resources hijacked for unauthorized compute.",
     "mitre": {
-      "tactic": "",
+      "tactic": "TA0040",
       "technique": "",
       "subtechnique": "",
       "links": null
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0040.SERVICE_STOP",
-    "name": "Service Stop",
-    "requirements": [
-      {
-        "type": "service_stop",
-        "description": "Service stopped"
-      }
-    ],
-    "preconds": [
-      "privilege_escalation"
-    ],
-    "explain": "Service interruption for impact.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8207,11 +7436,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8238,11 +7467,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8267,11 +7496,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8296,11 +7525,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8325,11 +7554,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8354,11 +7583,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8383,11 +7612,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8412,11 +7641,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8441,11 +7670,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8470,11 +7699,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8499,11 +7728,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8528,11 +7757,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8557,11 +7786,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8586,11 +7815,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8615,11 +7844,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8644,11 +7873,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8673,11 +7902,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8702,11 +7931,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
@@ -8731,11 +7960,11 @@
       "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
+      "author": "Aman",
+      "version": "1.0",
       "sources": null,
       "reviewed_by": null,
-      "approved_at": ""
+      "approved_at": "2026-02-26"
     },
     "constraints": {
       "min_confidence": 0,
