@@ -4783,6 +4783,514 @@
           "ticket_status": "in_review"
         }
       ]
+    },
+    {
+      "id": "realistic-220",
+      "description": "Cloud infra discovery",
+      "events": [
+        {
+          "id": "b2-0-0",
+          "time": "2026-02-06T16:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b2-0-1",
+          "time": "2026-02-06T16:01:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "cloud_service_discovery",
+          "details": {}
+        },
+        {
+          "id": "b2-0-2",
+          "time": "2026-02-06T16:02:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "list_cloud_resources",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.CLOUD_INFRA_DISCOVERY",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.CLOUD_INFRA_DISCOVERY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-221",
+      "description": "Cloud service discovery",
+      "events": [
+        {
+          "id": "b2-1-0",
+          "time": "2026-02-06T16:06:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b2-1-1",
+          "time": "2026-02-06T16:07:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "cloud_service_discovery",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.CLOUD_SERVICE_DISCOVERY",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.CLOUD_SERVICE_DISCOVERY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-222",
+      "description": "IMDS credential abuse",
+      "events": [
+        {
+          "id": "b2-2-0",
+          "time": "2026-02-06T16:12:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "lsass_access",
+          "details": {}
+        },
+        {
+          "id": "b2-2-1",
+          "time": "2026-02-06T16:13:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "imds_token_request",
+          "details": {}
+        },
+        {
+          "id": "b2-2-2",
+          "time": "2026-02-06T16:14:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "imds_credential_access",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IMDS_ABUSE",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.IMDS_ABUSE",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-223",
+      "description": "Cloud token abuse",
+      "events": [
+        {
+          "id": "b2-3-0",
+          "time": "2026-02-06T16:18:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "impossible_travel",
+          "details": {}
+        },
+        {
+          "id": "b2-3-1",
+          "time": "2026-02-06T16:19:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "access_token_use",
+          "details": {}
+        },
+        {
+          "id": "b2-3-2",
+          "time": "2026-02-06T16:20:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "token_anomaly",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.CLOUD_TOKEN_ABUSE",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0006.CLOUD_TOKEN_ABUSE",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-224",
+      "description": "Serverless execution",
+      "events": [
+        {
+          "id": "b2-4-0",
+          "time": "2026-02-06T16:24:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b2-4-1",
+          "time": "2026-02-06T16:25:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "serverless_role_assume",
+          "details": {}
+        },
+        {
+          "id": "b2-4-2",
+          "time": "2026-02-06T16:26:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "serverless_invoke",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.SERVERLESS_EXECUTION",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0002.SERVERLESS_EXECUTION",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-225",
+      "description": "Transfer data to cloud",
+      "events": [
+        {
+          "id": "b2-5-0",
+          "time": "2026-02-06T16:30:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "beacon_outbound",
+          "details": {}
+        },
+        {
+          "id": "b2-5-1",
+          "time": "2026-02-06T16:31:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "cloud_storage_write",
+          "details": {}
+        },
+        {
+          "id": "b2-5-2",
+          "time": "2026-02-06T16:32:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "large_outbound_transfer",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.TRANSFER_TO_CLOUD",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0010.TRANSFER_TO_CLOUD",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-226",
+      "description": "Cloud storage collection",
+      "events": [
+        {
+          "id": "b2-6-0",
+          "time": "2026-02-06T16:36:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b2-6-1",
+          "time": "2026-02-06T16:37:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "cloud_storage_read",
+          "details": {}
+        },
+        {
+          "id": "b2-6-2",
+          "time": "2026-02-06T16:38:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "bulk_access_download",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.CLOUD_STORAGE_COLLECTION",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0010.CLOUD_STORAGE_COLLECTION",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-227",
+      "description": "Container execution",
+      "events": [
+        {
+          "id": "b2-7-0",
+          "time": "2026-02-06T16:42:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b2-7-1",
+          "time": "2026-02-06T16:43:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "container_start",
+          "details": {}
+        },
+        {
+          "id": "b2-7-2",
+          "time": "2026-02-06T16:44:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "container_exec",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.CONTAINER_EXECUTION",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0003.CONTAINER_EXECUTION",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-228",
+      "description": "Cloud image implant",
+      "events": [
+        {
+          "id": "b2-8-0",
+          "time": "2026-02-06T16:48:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b2-8-1",
+          "time": "2026-02-06T16:49:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "cloud_image_create",
+          "details": {}
+        },
+        {
+          "id": "b2-8-2",
+          "time": "2026-02-06T16:50:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "cloud_image_publish",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.CLOUD_IMAGE_IMPLANT",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0003.CLOUD_IMAGE_IMPLANT",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-229",
+      "description": "Exfil via cloud sync",
+      "events": [
+        {
+          "id": "b2-9-0",
+          "time": "2026-02-06T16:54:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "beacon_outbound",
+          "details": {}
+        },
+        {
+          "id": "b2-9-1",
+          "time": "2026-02-06T16:55:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "cloud_sync_tool",
+          "details": {}
+        },
+        {
+          "id": "b2-9-2",
+          "time": "2026-02-06T16:56:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "large_outbound_transfer",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL_CLOUD_SYNC",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0010.EXFIL_CLOUD_SYNC",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-230",
+      "description": "Cloud IAM discovery",
+      "events": [
+        {
+          "id": "b2-10-0",
+          "time": "2026-02-06T17:00:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b2-10-1",
+          "time": "2026-02-06T17:01:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "iam_list_roles",
+          "details": {}
+        },
+        {
+          "id": "b2-10-2",
+          "time": "2026-02-06T17:02:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "iam_list_policies",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0007.CLOUD_IAM_DISCOVERY",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0007.CLOUD_IAM_DISCOVERY",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
+    },
+    {
+      "id": "realistic-231",
+      "description": "Exfil cloud DB snapshot",
+      "events": [
+        {
+          "id": "b2-11-0",
+          "time": "2026-02-06T17:06:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "valid_account_login",
+          "details": {}
+        },
+        {
+          "id": "b2-11-1",
+          "time": "2026-02-06T17:07:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "cloud_db_snapshot",
+          "details": {}
+        },
+        {
+          "id": "b2-11-2",
+          "time": "2026-02-06T17:08:00Z",
+          "host": "host-1",
+          "user": "alice",
+          "type": "snapshot_export",
+          "details": {}
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL_CLOUD_DB",
+          "outcome": "feasible"
+        }
+      ],
+      "expectations": [
+        {
+          "rule_id": "TA0010.EXFIL_CLOUD_DB",
+          "decision_label": "escalate",
+          "ticket_status": "in_review"
+        }
+      ]
     }
   ]
 }

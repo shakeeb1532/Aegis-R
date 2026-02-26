@@ -1,5 +1,129 @@
 [
   {
+    "id": "TA0001.DEVICE_CODE_PHISH",
+    "name": "Device Code Phishing",
+    "requirements": [
+      {
+        "type": "device_code_flow_start",
+        "description": "Device code flow initiated"
+      },
+      {
+        "type": "device_code_flow_success",
+        "description": "Device code flow completed"
+      }
+    ],
+    "preconds": [],
+    "explain": "Abuse of device code authentication flow indicates likely credential theft.",
+    "mitre": {
+      "tactic": "Initial Access",
+      "technique": "Phishing",
+      "subtechnique": "Device Code",
+      "links": [
+        "identity_provider"
+      ]
+    },
+    "provenance": {
+      "author": "aman",
+      "version": "1.0",
+      "sources": [],
+      "reviewed_by": [],
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0.0,
+      "applies_to": []
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Delivery"
+    ]
+  },
+  {
+    "id": "TA0001.DEVICE_JOIN_PHISH",
+    "name": "Device Join Phishing",
+    "requirements": [
+      {
+        "type": "device_join_request",
+        "description": "Device join request initiated"
+      },
+      {
+        "type": "device_join_complete",
+        "description": "Device successfully joined/registered"
+      }
+    ],
+    "preconds": [],
+    "explain": "Phishing to register attacker-controlled device to tenant.",
+    "mitre": {
+      "tactic": "Initial Access",
+      "technique": "Phishing",
+      "subtechnique": "Device Join",
+      "links": [
+        "identity_provider"
+      ]
+    },
+    "provenance": {
+      "author": "aman",
+      "version": "1.0",
+      "sources": [],
+      "reviewed_by": [],
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0.0,
+      "applies_to": []
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Delivery"
+    ]
+  },
+  {
+    "id": "TA0001.OAUTH_CONSENT_PHISH",
+    "name": "OAuth Consent Phishing",
+    "requirements": [
+      {
+        "type": "oauth_consent",
+        "description": "OAuth consent granted"
+      },
+      {
+        "type": "new_app_grant",
+        "description": "New app grant with elevated scopes"
+      }
+    ],
+    "preconds": [],
+    "explain": "Malicious app consent grants attacker access tokens and persistent access.",
+    "mitre": {
+      "tactic": "Initial Access",
+      "technique": "Phishing",
+      "subtechnique": "OAuth Consent",
+      "links": [
+        "identity_provider",
+        "office_suite"
+      ]
+    },
+    "provenance": {
+      "author": "aman",
+      "version": "1.0",
+      "sources": [],
+      "reviewed_by": [],
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0.0,
+      "applies_to": []
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Delivery"
+    ]
+  },
+  {
     "id": "TA0001.PHISHING",
     "name": "Initial Access via Phishing",
     "requirements": [
@@ -19,239 +143,136 @@
     "preconds": [],
     "explain": "User interaction and macro execution leading to outbound beaconing.",
     "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
+      "tactic": "TA0001",
+      "technique": "T1566",
+      "subtechnique": "T1566.001",
+      "links": [
+        "https://attack.mitre.org/techniques/T1566/"
+      ]
     },
     "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "author": "Aman",
+      "version": "1.0",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-05"
     },
     "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
+      "min_confidence": 0.6,
+      "applies_to": [
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Delivery"
+    ]
   },
   {
-    "id": "TA0006.CREDDUMP",
-    "name": "Credential Dumping",
+    "id": "TA0001.PHISH_LINK",
+    "name": "Phishing via Link and OAuth Consent",
     "requirements": [
       {
-        "type": "credential_dumping",
-        "description": "Credential dumping tool execution"
+        "type": "phish_link_click",
+        "description": "User clicked phishing link"
       },
       {
-        "type": "lsass_access",
-        "description": "Direct LSASS access observed"
-      }
-    ],
-    "preconds": [
-      "privilege_escalation"
-    ],
-    "explain": "Requires elevated privileges to access credential stores.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0008.LATERAL",
-    "name": "Lateral Movement",
-    "requirements": [
-      {
-        "type": "remote_service_creation",
-        "description": "Remote service created"
-      },
-      {
-        "type": "network_logon",
-        "description": "Successful network logon"
-      }
-    ],
-    "preconds": [
-      "credential_access"
-    ],
-    "explain": "Requires valid credentials before remote execution.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0004.PRIVESCA",
-    "name": "Privilege Escalation",
-    "requirements": [
-      {
-        "type": "token_manipulation",
-        "description": "Token manipulation activity"
-      },
-      {
-        "type": "admin_group_change",
-        "description": "User added to admin group"
+        "type": "oauth_consent",
+        "description": "OAuth consent granted to suspicious app"
       }
     ],
     "preconds": [],
-    "explain": "Evidence of elevating access beyond initial privileges.",
+    "explain": "Link phishing followed by OAuth consent indicates account compromise.",
     "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
+      "tactic": "TA0001",
+      "technique": "T1566",
+      "subtechnique": "T1566.002",
+      "links": [
+        "https://attack.mitre.org/techniques/T1566/002/"
+      ]
     },
     "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "author": "Aman",
+      "version": "1.2",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
     },
     "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
+      "min_confidence": 0.6,
+      "applies_to": [
+        "identity",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Delivery"
+    ]
   },
   {
-    "id": "TA0003.PERSIST",
-    "name": "Persistence",
+    "id": "TA0001.STOLEN_CREDS",
+    "name": "Stolen Credentials Initial Access",
     "requirements": [
       {
-        "type": "registry_run_key",
-        "description": "Registry run key set"
+        "type": "valid_account_login",
+        "description": "Login using valid credentials"
       },
       {
-        "type": "scheduled_task",
-        "description": "Scheduled task created"
+        "type": "token_reuse",
+        "description": "Token reuse or session replay"
       }
     ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "Persistence established after initial access.",
+    "preconds": [],
+    "explain": "Stolen credentials used for initial access, often detected by token reuse.",
     "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
+      "tactic": "Initial Access",
+      "technique": "Valid Accounts",
+      "subtechnique": "Stolen Credentials",
+      "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
+      "author": "aman",
+      "version": "1.0",
+      "sources": [],
+      "reviewed_by": [],
       "approved_at": ""
     },
     "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
+      "min_confidence": 0.0,
+      "applies_to": []
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Delivery"
+    ]
   },
   {
-    "id": "TA0011.C2",
-    "name": "Command and Control",
+    "id": "TA0001.STOLEN_CREDS_ANOMALY",
+    "name": "Stolen Credentials with Anomalous Access",
     "requirements": [
       {
-        "type": "beacon_outbound",
-        "description": "Outbound beacon to known C2"
+        "type": "valid_account_login",
+        "description": "Login using valid credentials"
       },
       {
-        "type": "dns_tunneling",
-        "description": "DNS tunneling patterns"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "C2 established after initial access.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0010.EXFIL",
-    "name": "Exfiltration",
-    "requirements": [
-      {
-        "type": "data_staging",
-        "description": "Data staged in archive"
-      },
-      {
-        "type": "large_outbound_transfer",
-        "description": "Large outbound data transfer"
-      }
-    ],
-    "preconds": [
-      "c2_established",
-      "credential_access"
-    ],
-    "explain": "Exfiltration typically follows C2 and credential access.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0006.IDENTITY_ANOMALY",
-    "name": "Identity Anomaly (Impossible Travel / New Device)",
-    "requirements": [
-      {
-        "type": "impossible_travel",
-        "description": "Login from distant geographies"
+        "type": "token_reuse",
+        "description": "Token reuse or session replay"
       },
       {
         "type": "new_device_login",
@@ -259,42 +280,48 @@
       }
     ],
     "preconds": [],
-    "explain": "Identity anomalies indicate possible account compromise.",
+    "explain": "Stolen credentials with anomalous device access indicate initial compromise.",
     "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
+      "tactic": "Initial Access",
+      "technique": "Valid Accounts",
+      "subtechnique": "Stolen Credentials",
+      "links": []
     },
     "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
+      "author": "aman",
+      "version": "1.0",
+      "sources": [],
+      "reviewed_by": [],
       "approved_at": ""
     },
     "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
+      "min_confidence": 0.0,
+      "applies_to": []
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Delivery"
+    ]
   },
   {
-    "id": "TA0004.MFA_BYPASS",
-    "name": "MFA Disable or Bypass",
+    "id": "TA0002.BASH",
+    "name": "Bash Execution",
     "requirements": [
       {
-        "type": "mfa_disabled",
-        "description": "MFA disabled or reset"
+        "type": "bash_execution",
+        "description": "Bash execution"
       },
       {
-        "type": "token_refresh_anomaly",
-        "description": "Unusual token refresh or replay"
+        "type": "suspicious_command",
+        "description": "Suspicious command observed"
       }
     ],
     "preconds": [
-      "identity_compromise"
+      "initial_access"
     ],
-    "explain": "MFA changes combined with token anomalies indicate bypass.",
+    "explain": "Bash execution with suspicious commands after initial access.",
     "mitre": {
       "tactic": "",
       "technique": "",
@@ -331,1032 +358,37 @@
     ],
     "explain": "LOLBin execution following initial access suggests hands-on-keyboard activity.",
     "mitre": {
-      "tactic": "",
-      "technique": "",
+      "tactic": "TA0002",
+      "technique": "T1059",
       "subtechnique": "",
-      "links": null
+      "links": [
+        "https://attack.mitre.org/tactics/TA0002/"
+      ]
     },
     "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
     },
     "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0003.PERSIST_EXTENDED",
-    "name": "Extended Persistence Mechanisms",
-    "requirements": [
-      {
-        "type": "registry_run_key",
-        "description": "Registry run key set"
-      },
-      {
-        "type": "service_install",
-        "description": "Service installed for persistence"
-      }
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
     ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "Persistence via registry and services after initial access.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0006.VALID_ACCOUNTS",
-    "name": "Valid Accounts Abuse",
-    "requirements": [
-      {
-        "type": "valid_account_login",
-        "description": "Login using valid credentials in unusual context"
-      },
-      {
-        "type": "new_device_login",
-        "description": "New device or unknown client"
-      }
-    ],
-    "preconds": [],
-    "explain": "Compromised valid accounts enable access without malware.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0006.BRUTE_FORCE",
-    "name": "Brute Force / Credential Stuffing",
-    "requirements": [
-      {
-        "type": "password_spray",
-        "description": "Password spraying pattern detected"
-      },
-      {
-        "type": "credential_stuffing",
-        "description": "Credential stuffing pattern detected"
-      }
-    ],
-    "preconds": [],
-    "explain": "High-volume authentication failures followed by access attempts.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0004.ACCOUNT_MANIP",
-    "name": "Account Manipulation",
-    "requirements": [
-      {
-        "type": "account_manipulation",
-        "description": "Account permissions or credentials modified"
-      },
-      {
-        "type": "admin_group_change",
-        "description": "User added to privileged group"
-      }
-    ],
-    "preconds": [
-      "identity_compromise"
-    ],
-    "explain": "Account changes used to persist or elevate access.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0005.AUTH_PROCESS_MOD",
-    "name": "Modify Authentication Process",
-    "requirements": [
-      {
-        "type": "auth_process_modify",
-        "description": "Authentication process modified"
-      },
-      {
-        "type": "mfa_disabled",
-        "description": "MFA disabled or bypassed"
-      }
-    ],
-    "preconds": [
-      "identity_compromise"
-    ],
-    "explain": "Authentication controls were altered to bypass access checks.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0011.APP_LAYER_C2",
-    "name": "Application Layer Protocol C2",
-    "requirements": [
-      {
-        "type": "app_layer_c2",
-        "description": "C2 over web/mail/DNS protocols"
-      },
-      {
-        "type": "beacon_outbound",
-        "description": "Outbound beaconing to known C2"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "C2 over common application protocols for stealth.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0005.IMPAIR_DEFENSES",
-    "name": "Impair Defenses",
-    "requirements": [
-      {
-        "type": "disable_logging",
-        "description": "Security logging disabled or altered"
-      },
-      {
-        "type": "cloud_firewall_change",
-        "description": "Cloud firewall or security group opened"
-      }
-    ],
-    "preconds": [],
-    "explain": "Defensive controls weakened to evade detection.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0010.EXFIL_WEB",
-    "name": "Exfiltration Over Web Service",
-    "requirements": [
-      {
-        "type": "exfil_web_service",
-        "description": "Data exfil via web service"
-      },
-      {
-        "type": "large_outbound_transfer",
-        "description": "Large outbound data transfer"
-      }
-    ],
-    "preconds": [
-      "c2_established"
-    ],
-    "explain": "Exfiltration using legitimate web services.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0001.PHISH_LINK",
-    "name": "Phishing via Link and OAuth Consent",
-    "requirements": [
-      {
-        "type": "phish_link_click",
-        "description": "User clicked phishing link"
-      },
-      {
-        "type": "oauth_consent",
-        "description": "OAuth consent granted to suspicious app"
-      }
-    ],
-    "preconds": [],
-    "explain": "Link phishing followed by OAuth consent indicates account compromise.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0003.MAILBOX_PERSIST",
-    "name": "Mailbox Rule Persistence",
-    "requirements": [
-      {
-        "type": "mailbox_rule_create",
-        "description": "Mailbox rule created"
-      },
-      {
-        "type": "forwarding_rule_set",
-        "description": "Auto-forwarding rule set"
-      }
-    ],
-    "preconds": [
-      "valid_account_login"
-    ],
-    "explain": "Persistence through mailbox rules and forwarding.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0040.IMPACT_ENCRYPT",
-    "name": "Data Encrypted for Impact",
-    "requirements": [
-      {
-        "type": "mass_file_rename",
-        "description": "Mass file renaming"
-      },
-      {
-        "type": "encrypt_activity",
-        "description": "High-rate encryption activity"
-      }
-    ],
-    "preconds": [
-      "privilege_escalation"
-    ],
-    "explain": "Encryption activity at scale indicates ransomware impact.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0040.RECOVERY_INHIBIT",
-    "name": "Inhibit System Recovery",
-    "requirements": [
-      {
-        "type": "shadow_copy_delete",
-        "description": "Shadow copies deleted"
-      }
-    ],
-    "preconds": [],
-    "explain": "Recovery features disabled to prevent restoration.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0006.INSIDER_EXFIL",
-    "name": "Insider Data Exfiltration",
-    "requirements": [
-      {
-        "type": "bulk_download",
-        "description": "Bulk download or data access"
-      },
-      {
-        "type": "unusual_access_scope",
-        "description": "Unusual access scope"
-      }
-    ],
-    "preconds": [
-      "valid_account_login"
-    ],
-    "explain": "Large-scale access without compromise signals suggests insider misuse.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0043.SUPPLY_CHAIN",
-    "name": "Supply Chain Compromise",
-    "requirements": [
-      {
-        "type": "ci_runner_compromise",
-        "description": "CI runner compromise"
-      },
-      {
-        "type": "artifact_tamper",
-        "description": "Build artifact tampering"
-      }
-    ],
-    "preconds": [],
-    "explain": "Build pipeline compromise with artifact tampering.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0008.CLOUD_PIVOT",
-    "name": "Cloud Lateral Movement",
-    "requirements": [
-      {
-        "type": "role_assume",
-        "description": "Role assumed"
-      },
-      {
-        "type": "trust_policy_change",
-        "description": "Trust policy modified"
-      }
-    ],
-    "preconds": [],
-    "explain": "Cross-account pivot using trust policy changes.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0004.SAAS_ADMIN",
-    "name": "SaaS Admin Takeover",
-    "requirements": [
-      {
-        "type": "new_admin_role",
-        "description": "Admin role granted"
-      },
-      {
-        "type": "oauth_app_grant",
-        "description": "High-privilege OAuth grant"
-      }
-    ],
-    "preconds": [
-      "identity_compromise"
-    ],
-    "explain": "Admin access gained through OAuth grants and role changes.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0005.EVASION_C2",
-    "name": "Network Evasion via Proxy/Tunnel",
-    "requirements": [
-      {
-        "type": "domain_fronting",
-        "description": "Domain fronting detected"
-      },
-      {
-        "type": "tor_exit",
-        "description": "TOR exit node traffic"
-      },
-      {
-        "type": "dns_tunnel",
-        "description": "DNS tunnel detected"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "Evasive networking used to hide C2 channels.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0005.LOG_TAMPER",
-    "name": "Disable or Modify Security Logging",
-    "requirements": [
-      {
-        "type": "disable_logging",
-        "description": "Security logging disabled"
-      },
-      {
-        "type": "policy_bypass",
-        "description": "Control policy bypassed"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "Disabling logging to hide attacker activity.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0010.BULK_EXFIL",
-    "name": "Bulk Data Exfiltration",
-    "requirements": [
-      {
-        "type": "bulk_download",
-        "description": "Bulk data access or download"
-      },
-      {
-        "type": "large_outbound_transfer",
-        "description": "Large outbound data transfer"
-      }
-    ],
-    "preconds": [
-      "credential_access"
-    ],
-    "explain": "Bulk data access followed by outbound transfer.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0008.ADMIN_PROTOCOL_LATERAL",
-    "name": "Admin Protocol Lateral Movement",
-    "requirements": [
-      {
-        "type": "new_inbound_admin_protocol",
-        "description": "New inbound admin protocol used"
-      },
-      {
-        "type": "network_logon",
-        "description": "Successful network logon"
-      }
-    ],
-    "preconds": [
-      "credential_access"
-    ],
-    "explain": "Lateral movement over admin protocols with valid credentials.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0001.DEVICE_CODE_PHISH",
-    "name": "Device Code Phishing",
-    "requirements": [
-      {
-        "type": "device_code_flow_start",
-        "description": "Device code flow initiated"
-      },
-      {
-        "type": "device_code_flow_success",
-        "description": "Device code flow completed"
-      }
-    ],
-    "preconds": [],
-    "explain": "Abuse of device code authentication flow indicates likely credential theft.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0001.OAUTH_CONSENT_PHISH",
-    "name": "OAuth Consent Phishing",
-    "requirements": [
-      {
-        "type": "oauth_consent",
-        "description": "OAuth consent granted"
-      },
-      {
-        "type": "new_app_grant",
-        "description": "New app grant with elevated scopes"
-      }
-    ],
-    "preconds": [],
-    "explain": "Malicious app consent grants attacker access tokens and persistent access.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0001.DEVICE_JOIN_PHISH",
-    "name": "Device Join Phishing",
-    "requirements": [
-      {
-        "type": "device_join_request",
-        "description": "Device join request initiated"
-      },
-      {
-        "type": "device_join_complete",
-        "description": "Device successfully joined/registered"
-      }
-    ],
-    "preconds": [],
-    "explain": "Phishing to register attacker-controlled device to tenant.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0001.STOLEN_CREDS",
-    "name": "Stolen Credentials Initial Access",
-    "requirements": [
-      {
-        "type": "valid_account_login",
-        "description": "Login using valid credentials"
-      },
-      {
-        "type": "token_reuse",
-        "description": "Token reuse or session replay"
-      }
-    ],
-    "preconds": [],
-    "explain": "Stolen credentials used for initial access, often detected by token reuse.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0001.STOLEN_CREDS_ANOMALY",
-    "name": "Stolen Credentials with Anomalous Access",
-    "requirements": [
-      {
-        "type": "valid_account_login",
-        "description": "Login using valid credentials"
-      },
-      {
-        "type": "token_reuse",
-        "description": "Token reuse or session replay"
-      },
-      {
-        "type": "new_device_login",
-        "description": "New device or unknown client"
-      }
-    ],
-    "preconds": [],
-    "explain": "Stolen credentials with anomalous device access indicate initial compromise.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0007.ACCOUNT_DISCOVERY",
-    "name": "Account Discovery",
-    "requirements": [
-      {
-        "type": "account_discovery",
-        "description": "Account enumeration observed"
-      }
-    ],
-    "preconds": [
-      "valid_account_login"
-    ],
-    "explain": "Enumerating accounts after a valid login.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0007.NETWORK_SERVICE_DISCOVERY",
-    "name": "Network Service Discovery",
-    "requirements": [
-      {
-        "type": "network_service_discovery",
-        "description": "Network service discovery or scanning"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "Enumerating network services after initial access.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0007.PROCESS_DISCOVERY",
-    "name": "Process Discovery",
-    "requirements": [
-      {
-        "type": "process_discovery",
-        "description": "Process enumeration observed"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "Enumerating processes after initial access.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0007.SYSTEM_INFO_DISCOVERY",
-    "name": "System Information Discovery",
-    "requirements": [
-      {
-        "type": "system_info_discovery",
-        "description": "System information discovery"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "Enumerating system information after initial access.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0007.PERMISSION_GROUP_DISCOVERY",
-    "name": "Permission Group Discovery",
-    "requirements": [
-      {
-        "type": "group_membership_enum",
-        "description": "Group membership enumeration"
-      }
-    ],
-    "preconds": [
-      "valid_account_login"
-    ],
-    "explain": "Enumerating permission groups after a valid login.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
+    "kill_chain": [
+      "Exploitation"
+    ]
   },
   {
     "id": "TA0002.POWERSHELL",
@@ -1375,41 +407,6 @@
       "initial_access"
     ],
     "explain": "PowerShell execution following initial access.",
-    "mitre": {
-      "tactic": "",
-      "technique": "",
-      "subtechnique": "",
-      "links": null
-    },
-    "provenance": {
-      "author": "",
-      "version": "",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": ""
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0002.BASH",
-    "name": "Bash Execution",
-    "requirements": [
-      {
-        "type": "bash_execution",
-        "description": "Bash execution"
-      },
-      {
-        "type": "suspicious_command",
-        "description": "Suspicious command observed"
-      }
-    ],
-    "preconds": [
-      "initial_access"
-    ],
-    "explain": "Bash execution with suspicious commands after initial access.",
     "mitre": {
       "tactic": "",
       "technique": "",
@@ -1464,18 +461,22 @@
     }
   },
   {
-    "id": "TA0002.WMI",
-    "name": "WMI Execution",
+    "id": "TA0002.SERVERLESS_EXECUTION",
+    "name": "Serverless Execution",
     "requirements": [
       {
-        "type": "wmi_execution",
-        "description": "WMI execution"
+        "type": "serverless_invoke",
+        "description": "Serverless function invoked"
+      },
+      {
+        "type": "serverless_role_assume",
+        "description": "Serverless role assumed"
       }
     ],
     "preconds": [
-      "initial_access"
+      "valid_account_login"
     ],
-    "explain": "WMI execution after initial access.",
+    "explain": "Execution in serverless environment using assumed role.",
     "mitre": {
       "tactic": "",
       "technique": "",
@@ -1528,6 +529,768 @@
     }
   },
   {
+    "id": "TA0002.WMI",
+    "name": "WMI Execution",
+    "requirements": [
+      {
+        "type": "wmi_execution",
+        "description": "WMI execution"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "WMI execution after initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0003.CLOUD_IMAGE_IMPLANT",
+    "name": "Implant Internal Cloud Image",
+    "requirements": [
+      {
+        "type": "cloud_image_create",
+        "description": "Cloud image created"
+      },
+      {
+        "type": "cloud_image_publish",
+        "description": "Cloud image published"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Creation and publishing of a cloud image implant.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0003.CONTAINER_EXECUTION",
+    "name": "Container Execution",
+    "requirements": [
+      {
+        "type": "container_start",
+        "description": "Container started"
+      },
+      {
+        "type": "container_exec",
+        "description": "Execution inside container"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Execution in a container environment.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0003.MAILBOX_PERSIST",
+    "name": "Mailbox Rule Persistence",
+    "requirements": [
+      {
+        "type": "mailbox_rule_create",
+        "description": "Mailbox rule created"
+      },
+      {
+        "type": "forwarding_rule_set",
+        "description": "Auto-forwarding rule set"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Persistence through mailbox rules and forwarding.",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1098",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1098/",
+        "office_suite"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.2",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "identity",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Installation"
+    ]
+  },
+  {
+    "id": "TA0003.PERSIST",
+    "name": "Persistence",
+    "requirements": [
+      {
+        "type": "registry_run_key",
+        "description": "Registry run key set"
+      },
+      {
+        "type": "scheduled_task",
+        "description": "Scheduled task created"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Persistence established after initial access.",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1060",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/tactics/TA0003/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-05"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Installation"
+    ]
+  },
+  {
+    "id": "TA0003.PERSIST_EXTENDED",
+    "name": "Extended Persistence Mechanisms",
+    "requirements": [
+      {
+        "type": "registry_run_key",
+        "description": "Registry run key set"
+      },
+      {
+        "type": "service_install",
+        "description": "Service installed for persistence"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Persistence via registry and services after initial access.",
+    "mitre": {
+      "tactic": "TA0003",
+      "technique": "T1543",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1543/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Installation"
+    ]
+  },
+  {
+    "id": "TA0004.ACCOUNT_MANIP",
+    "name": "Account Manipulation",
+    "requirements": [
+      {
+        "type": "account_manipulation",
+        "description": "Account permissions or credentials modified"
+      },
+      {
+        "type": "admin_group_change",
+        "description": "User added to privileged group"
+      }
+    ],
+    "preconds": [
+      "identity_compromise"
+    ],
+    "explain": "Account changes used to persist or elevate access.",
+    "mitre": {
+      "tactic": "TA0004",
+      "technique": "T1098",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1098"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "identity",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
+  },
+  {
+    "id": "TA0004.MFA_BYPASS",
+    "name": "MFA Disable or Bypass",
+    "requirements": [
+      {
+        "type": "mfa_disabled",
+        "description": "MFA disabled or reset"
+      },
+      {
+        "type": "token_refresh_anomaly",
+        "description": "Unusual token refresh or replay"
+      }
+    ],
+    "preconds": [
+      "identity_compromise"
+    ],
+    "explain": "MFA changes combined with token anomalies indicate bypass.",
+    "mitre": {
+      "tactic": "TA0004",
+      "technique": "T1556",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1556/",
+        "identity_provider"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "identity",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
+  },
+  {
+    "id": "TA0004.PRIVESCA",
+    "name": "Privilege Escalation",
+    "requirements": [
+      {
+        "type": "token_manipulation",
+        "description": "Token manipulation activity"
+      },
+      {
+        "type": "admin_group_change",
+        "description": "User added to admin group"
+      }
+    ],
+    "preconds": [],
+    "explain": "Evidence of elevating access beyond initial privileges.",
+    "mitre": {
+      "tactic": "TA0004",
+      "technique": "T1068",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/tactics/TA0004/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-05"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
+  },
+  {
+    "id": "TA0004.SAAS_ADMIN",
+    "name": "SaaS Admin Takeover",
+    "requirements": [
+      {
+        "type": "new_admin_role",
+        "description": "Admin role granted"
+      },
+      {
+        "type": "oauth_app_grant",
+        "description": "High-privilege OAuth grant"
+      }
+    ],
+    "preconds": [
+      "identity_compromise"
+    ],
+    "explain": "Admin access gained through OAuth grants and role changes.",
+    "mitre": {
+      "tactic": "TA0004",
+      "technique": "T1098",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1098/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.2",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "saas",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
+  },
+  {
+    "id": "TA0004.UAC_BYPASS",
+    "name": "UAC Bypass",
+    "requirements": [
+      {
+        "type": "uac_bypass",
+        "description": "UAC bypass technique observed"
+      },
+      {
+        "type": "elevated_process",
+        "description": "Elevated process spawned"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Elevation control bypass after initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.AUTH_PROCESS_MOD",
+    "name": "Modify Authentication Process",
+    "requirements": [
+      {
+        "type": "auth_process_modify",
+        "description": "Authentication process modified"
+      },
+      {
+        "type": "mfa_disabled",
+        "description": "MFA disabled or bypassed"
+      }
+    ],
+    "preconds": [
+      "identity_compromise"
+    ],
+    "explain": "Authentication controls were altered to bypass access checks.",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1556",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1556"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "identity",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Protect",
+      "Detect"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
+  },
+  {
+    "id": "TA0005.EVASION_C2",
+    "name": "Network Evasion via Proxy/Tunnel",
+    "requirements": [
+      {
+        "type": "domain_fronting",
+        "description": "Domain fronting detected"
+      },
+      {
+        "type": "tor_exit",
+        "description": "TOR exit node traffic"
+      },
+      {
+        "type": "dns_tunnel",
+        "description": "DNS tunnel detected"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Evasive networking used to hide C2 channels.",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1090",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1090/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.2",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "network",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Protect",
+      "Detect"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
+  },
+  {
+    "id": "TA0005.IMPAIR_DEFENSES",
+    "name": "Impair Defenses",
+    "requirements": [
+      {
+        "type": "disable_logging",
+        "description": "Security logging disabled or altered"
+      },
+      {
+        "type": "cloud_firewall_change",
+        "description": "Cloud firewall or security group opened"
+      }
+    ],
+    "preconds": [],
+    "explain": "Defensive controls weakened to evade detection.",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1562",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1562/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "cloud",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Protect",
+      "Detect"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
+  },
+  {
+    "id": "TA0005.LOG_TAMPER",
+    "name": "Disable or Modify Security Logging",
+    "requirements": [
+      {
+        "type": "disable_logging",
+        "description": "Security logging disabled"
+      },
+      {
+        "type": "policy_bypass",
+        "description": "Control policy bypassed"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Disabling logging to hide attacker activity.",
+    "mitre": {
+      "tactic": "TA0005",
+      "technique": "T1562",
+      "subtechnique": "T1562.001",
+      "links": [
+        "https://attack.mitre.org/techniques/T1562/001/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.3",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-07"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Protect",
+      "Detect"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
+  },
+  {
+    "id": "TA0005.PROCESS_INJECTION",
+    "name": "Process Injection",
+    "requirements": [
+      {
+        "type": "process_injection",
+        "description": "Process injection observed"
+      },
+      {
+        "type": "suspicious_thread",
+        "description": "Suspicious thread injection"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Process injection following initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0005.SIGNED_BINARY_PROXY",
+    "name": "Signed Binary Proxy Execution",
+    "requirements": [
+      {
+        "type": "signed_binary_proxy_execution",
+        "description": "Signed binary proxy execution"
+      },
+      {
+        "type": "suspicious_command",
+        "description": "Suspicious command observed"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Living-off-the-land proxy execution after initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
     "id": "TA0006.AITM_TOKEN_THEFT",
     "name": "Adversary-in-the-Middle Token Theft",
     "requirements": [
@@ -1561,6 +1324,276 @@
     }
   },
   {
+    "id": "TA0006.BRUTE_FORCE",
+    "name": "Brute Force / Credential Stuffing",
+    "requirements": [
+      {
+        "type": "password_spray",
+        "description": "Password spraying pattern detected"
+      },
+      {
+        "type": "credential_stuffing",
+        "description": "Credential stuffing pattern detected"
+      }
+    ],
+    "preconds": [],
+    "explain": "High-volume authentication failures followed by access attempts.",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1110",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1110/",
+        "identity_provider"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "identity",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
+  },
+  {
+    "id": "TA0006.CLOUD_TOKEN_ABUSE",
+    "name": "Cloud Access Token Abuse",
+    "requirements": [
+      {
+        "type": "access_token_use",
+        "description": "Cloud access token used"
+      },
+      {
+        "type": "token_anomaly",
+        "description": "Token anomaly observed"
+      }
+    ],
+    "preconds": [
+      "identity_compromise"
+    ],
+    "explain": "Abuse of cloud access tokens following identity compromise.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0006.CREDDUMP",
+    "name": "Credential Dumping",
+    "requirements": [
+      {
+        "type": "credential_dumping",
+        "description": "Credential dumping tool execution"
+      },
+      {
+        "type": "lsass_access",
+        "description": "Direct LSASS access observed"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Requires elevated privileges to access credential stores.",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1003",
+      "subtechnique": "T1003.001",
+      "links": [
+        "https://attack.mitre.org/techniques/T1003/",
+        "identity_provider"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-05"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
+  },
+  {
+    "id": "TA0006.IDENTITY_ANOMALY",
+    "name": "Identity Anomaly (Impossible Travel / New Device)",
+    "requirements": [
+      {
+        "type": "impossible_travel",
+        "description": "Login from distant geographies"
+      },
+      {
+        "type": "new_device_login",
+        "description": "New device or unknown client"
+      }
+    ],
+    "preconds": [],
+    "explain": "Identity anomalies indicate possible account compromise.",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1078",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1078/",
+        "identity_provider"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "identity",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
+  },
+  {
+    "id": "TA0006.IMDS_ABUSE",
+    "name": "IMDS Credential Abuse",
+    "requirements": [
+      {
+        "type": "imds_token_request",
+        "description": "Instance metadata token request"
+      },
+      {
+        "type": "imds_credential_access",
+        "description": "Instance metadata credential retrieval"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Cloud instance metadata service abused to obtain credentials.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0006.INSIDER_EXFIL",
+    "name": "Insider Data Exfiltration",
+    "requirements": [
+      {
+        "type": "bulk_download",
+        "description": "Bulk download or data access"
+      },
+      {
+        "type": "unusual_access_scope",
+        "description": "Unusual access scope"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Large-scale access without compromise signals suggests insider misuse.",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1530",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1530/",
+        "identity_provider"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.2",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "identity",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
+  },
+  {
     "id": "TA0006.KERBEROAST",
     "name": "Kerberoasting",
     "requirements": [
@@ -1577,6 +1610,41 @@
       "valid_account_login"
     ],
     "explain": "Kerberoasting requires a valid account session.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0006.KEYLOGGING",
+    "name": "Keylogging",
+    "requirements": [
+      {
+        "type": "keylogger_installed",
+        "description": "Keylogger installed"
+      },
+      {
+        "type": "keystroke_capture",
+        "description": "Keystroke capture observed"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Keylogger activity after initial access.",
     "mitre": {
       "tactic": "",
       "technique": "",
@@ -1664,22 +1732,67 @@
     }
   },
   {
-    "id": "TA0006.KEYLOGGING",
-    "name": "Keylogging",
+    "id": "TA0006.VALID_ACCOUNTS",
+    "name": "Valid Accounts Abuse",
     "requirements": [
       {
-        "type": "keylogger_installed",
-        "description": "Keylogger installed"
+        "type": "valid_account_login",
+        "description": "Login using valid credentials in unusual context"
       },
       {
-        "type": "keystroke_capture",
-        "description": "Keystroke capture observed"
+        "type": "new_device_login",
+        "description": "New device or unknown client"
+      }
+    ],
+    "preconds": [],
+    "explain": "Compromised valid accounts enable access without malware.",
+    "mitre": {
+      "tactic": "TA0006",
+      "technique": "T1078",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1078/",
+        "identity_provider"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "identity",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
+  },
+  {
+    "id": "TA0007.ACCOUNT_DISCOVERY",
+    "name": "Account Discovery",
+    "requirements": [
+      {
+        "type": "account_discovery",
+        "description": "Account enumeration observed"
       }
     ],
     "preconds": [
-      "initial_access"
+      "valid_account_login"
     ],
-    "explain": "Keylogger activity after initial access.",
+    "explain": "Enumerating accounts after a valid login.",
     "mitre": {
       "tactic": "",
       "technique": "",
@@ -1699,22 +1812,22 @@
     }
   },
   {
-    "id": "TA0004.UAC_BYPASS",
-    "name": "UAC Bypass",
+    "id": "TA0007.CLOUD_IAM_DISCOVERY",
+    "name": "Cloud IAM Discovery",
     "requirements": [
       {
-        "type": "uac_bypass",
-        "description": "UAC bypass technique observed"
+        "type": "iam_list_roles",
+        "description": "IAM roles enumerated"
       },
       {
-        "type": "elevated_process",
-        "description": "Elevated process spawned"
+        "type": "iam_list_policies",
+        "description": "IAM policies enumerated"
       }
     ],
     "preconds": [
-      "initial_access"
+      "valid_account_login"
     ],
-    "explain": "Elevation control bypass after initial access.",
+    "explain": "Discovery of IAM roles and policies.",
     "mitre": {
       "tactic": "",
       "technique": "",
@@ -1734,22 +1847,22 @@
     }
   },
   {
-    "id": "TA0005.SIGNED_BINARY_PROXY",
-    "name": "Signed Binary Proxy Execution",
+    "id": "TA0007.CLOUD_INFRA_DISCOVERY",
+    "name": "Cloud Infrastructure Discovery",
     "requirements": [
       {
-        "type": "signed_binary_proxy_execution",
-        "description": "Signed binary proxy execution"
+        "type": "cloud_service_discovery",
+        "description": "Discovery of cloud services/resources"
       },
       {
-        "type": "suspicious_command",
-        "description": "Suspicious command observed"
+        "type": "list_cloud_resources",
+        "description": "Listing cloud resources or APIs"
       }
     ],
     "preconds": [
-      "initial_access"
+      "valid_account_login"
     ],
-    "explain": "Living-off-the-land proxy execution after initial access.",
+    "explain": "Discovery of cloud infrastructure and services.",
     "mitre": {
       "tactic": "",
       "technique": "",
@@ -1769,22 +1882,499 @@
     }
   },
   {
-    "id": "TA0005.PROCESS_INJECTION",
-    "name": "Process Injection",
+    "id": "TA0007.CLOUD_SERVICE_DISCOVERY",
+    "name": "Cloud Service Discovery",
     "requirements": [
       {
-        "type": "process_injection",
-        "description": "Process injection observed"
-      },
+        "type": "cloud_service_discovery",
+        "description": "Discovery of cloud services"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Discovery of available cloud services.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.NETWORK_SERVICE_DISCOVERY",
+    "name": "Network Service Discovery",
+    "requirements": [
       {
-        "type": "suspicious_thread",
-        "description": "Suspicious thread injection"
+        "type": "network_service_discovery",
+        "description": "Network service discovery or scanning"
       }
     ],
     "preconds": [
       "initial_access"
     ],
-    "explain": "Process injection following initial access.",
+    "explain": "Enumerating network services after initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.PERMISSION_GROUP_DISCOVERY",
+    "name": "Permission Group Discovery",
+    "requirements": [
+      {
+        "type": "group_membership_enum",
+        "description": "Group membership enumeration"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Enumerating permission groups after a valid login.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.PROCESS_DISCOVERY",
+    "name": "Process Discovery",
+    "requirements": [
+      {
+        "type": "process_discovery",
+        "description": "Process enumeration observed"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Enumerating processes after initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0007.SYSTEM_INFO_DISCOVERY",
+    "name": "System Information Discovery",
+    "requirements": [
+      {
+        "type": "system_info_discovery",
+        "description": "System information discovery"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "Enumerating system information after initial access.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0008.ADMIN_PROTOCOL_LATERAL",
+    "name": "Admin Protocol Lateral Movement",
+    "requirements": [
+      {
+        "type": "new_inbound_admin_protocol",
+        "description": "New inbound admin protocol used"
+      },
+      {
+        "type": "network_logon",
+        "description": "Successful network logon"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Lateral movement over admin protocols with valid credentials.",
+    "mitre": {
+      "tactic": "TA0008",
+      "technique": "T1021",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1021/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.3",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-07"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "network",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
+  },
+  {
+    "id": "TA0008.CLOUD_PIVOT",
+    "name": "Cloud Lateral Movement",
+    "requirements": [
+      {
+        "type": "role_assume",
+        "description": "Role assumed"
+      },
+      {
+        "type": "trust_policy_change",
+        "description": "Trust policy modified"
+      }
+    ],
+    "preconds": [],
+    "explain": "Cross-account pivot using trust policy changes.",
+    "mitre": {
+      "tactic": "TA0008",
+      "technique": "T1078",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1078/",
+        "cloud"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.2",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "cloud",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
+  },
+  {
+    "id": "TA0008.LATERAL",
+    "name": "Lateral Movement",
+    "requirements": [
+      {
+        "type": "remote_service_creation",
+        "description": "Remote service created"
+      },
+      {
+        "type": "network_logon",
+        "description": "Successful network logon"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Requires valid credentials before remote execution.",
+    "mitre": {
+      "tactic": "TA0008",
+      "technique": "T1021",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/tactics/TA0008/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-05"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Exploitation"
+    ]
+  },
+  {
+    "id": "TA0010.BULK_EXFIL",
+    "name": "Bulk Data Exfiltration",
+    "requirements": [
+      {
+        "type": "bulk_download",
+        "description": "Bulk data access or download"
+      },
+      {
+        "type": "large_outbound_transfer",
+        "description": "Large outbound data transfer"
+      }
+    ],
+    "preconds": [
+      "credential_access"
+    ],
+    "explain": "Bulk data access followed by outbound transfer.",
+    "mitre": {
+      "tactic": "TA0010",
+      "technique": "T1020",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1020/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.3",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-07"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "cloud",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect",
+      "Respond"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
+  },
+  {
+    "id": "TA0010.CLOUD_STORAGE_COLLECTION",
+    "name": "Cloud Storage Collection",
+    "requirements": [
+      {
+        "type": "cloud_storage_read",
+        "description": "Read from cloud storage"
+      },
+      {
+        "type": "bulk_access_download",
+        "description": "Bulk access/download"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Collection of data from cloud storage.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0010.EXFIL",
+    "name": "Exfiltration",
+    "requirements": [
+      {
+        "type": "data_staging",
+        "description": "Data staged in archive"
+      },
+      {
+        "type": "large_outbound_transfer",
+        "description": "Large outbound data transfer"
+      }
+    ],
+    "preconds": [
+      "c2_established",
+      "credential_access"
+    ],
+    "explain": "Exfiltration typically follows C2 and credential access.",
+    "mitre": {
+      "tactic": "TA0010",
+      "technique": "T1041",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/tactics/TA0010/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-05"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect",
+      "Respond"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
+  },
+  {
+    "id": "TA0010.EXFIL_CLOUD_DB",
+    "name": "Exfiltration from Cloud Database",
+    "requirements": [
+      {
+        "type": "cloud_db_snapshot",
+        "description": "Cloud DB snapshot created"
+      },
+      {
+        "type": "snapshot_export",
+        "description": "Snapshot exported"
+      }
+    ],
+    "preconds": [
+      "valid_account_login"
+    ],
+    "explain": "Export of cloud database snapshots for exfiltration.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0010.EXFIL_CLOUD_SYNC",
+    "name": "Exfiltration via Cloud Sync",
+    "requirements": [
+      {
+        "type": "cloud_sync_tool",
+        "description": "Cloud sync tool used"
+      },
+      {
+        "type": "large_outbound_transfer",
+        "description": "Large outbound transfer"
+      }
+    ],
+    "preconds": [
+      "c2_established"
+    ],
+    "explain": "Data exfiltration using a cloud sync tool.",
     "mitre": {
       "tactic": "",
       "technique": "",
@@ -1837,5 +2427,337 @@
       "min_confidence": 0,
       "applies_to": null
     }
+  },
+  {
+    "id": "TA0010.EXFIL_WEB",
+    "name": "Exfiltration Over Web Service",
+    "requirements": [
+      {
+        "type": "exfil_web_service",
+        "description": "Data exfil via web service"
+      },
+      {
+        "type": "large_outbound_transfer",
+        "description": "Large outbound data transfer"
+      }
+    ],
+    "preconds": [
+      "c2_established"
+    ],
+    "explain": "Exfiltration using legitimate web services.",
+    "mitre": {
+      "tactic": "TA0010",
+      "technique": "T1567",
+      "subtechnique": "T1567.002",
+      "links": [
+        "https://attack.mitre.org/techniques/T1567/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "cloud",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect",
+      "Respond"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
+  },
+  {
+    "id": "TA0010.TRANSFER_TO_CLOUD",
+    "name": "Transfer Data to Cloud Account",
+    "requirements": [
+      {
+        "type": "cloud_storage_write",
+        "description": "Write to cloud storage"
+      },
+      {
+        "type": "large_outbound_transfer",
+        "description": "Large outbound transfer"
+      }
+    ],
+    "preconds": [
+      "c2_established"
+    ],
+    "explain": "Data transferred to a cloud storage account.",
+    "mitre": {
+      "tactic": "",
+      "technique": "",
+      "subtechnique": "",
+      "links": null
+    },
+    "provenance": {
+      "author": "",
+      "version": "",
+      "sources": null,
+      "reviewed_by": null,
+      "approved_at": ""
+    },
+    "constraints": {
+      "min_confidence": 0,
+      "applies_to": null
+    }
+  },
+  {
+    "id": "TA0011.APP_LAYER_C2",
+    "name": "Application Layer Protocol C2",
+    "requirements": [
+      {
+        "type": "app_layer_c2",
+        "description": "C2 over web/mail/DNS protocols"
+      },
+      {
+        "type": "beacon_outbound",
+        "description": "Outbound beaconing to known C2"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "C2 over common application protocols for stealth.",
+    "mitre": {
+      "tactic": "TA0011",
+      "technique": "T1071",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1071/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.1",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "network",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "C2"
+    ]
+  },
+  {
+    "id": "TA0011.C2",
+    "name": "Command and Control",
+    "requirements": [
+      {
+        "type": "beacon_outbound",
+        "description": "Outbound beacon to known C2"
+      },
+      {
+        "type": "dns_tunneling",
+        "description": "DNS tunneling patterns"
+      }
+    ],
+    "preconds": [
+      "initial_access"
+    ],
+    "explain": "C2 established after initial access.",
+    "mitre": {
+      "tactic": "TA0011",
+      "technique": "T1071",
+      "subtechnique": "T1071.004",
+      "links": [
+        "https://attack.mitre.org/tactics/TA0011/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-05"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "windows",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "C2"
+    ]
+  },
+  {
+    "id": "TA0040.IMPACT_ENCRYPT",
+    "name": "Data Encrypted for Impact",
+    "requirements": [
+      {
+        "type": "mass_file_rename",
+        "description": "Mass file renaming"
+      },
+      {
+        "type": "encrypt_activity",
+        "description": "High-rate encryption activity"
+      }
+    ],
+    "preconds": [
+      "privilege_escalation"
+    ],
+    "explain": "Encryption activity at scale indicates ransomware impact.",
+    "mitre": {
+      "tactic": "TA0040",
+      "technique": "T1486",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1486/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.2",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect",
+      "Respond",
+      "Recover"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
+  },
+  {
+    "id": "TA0040.RECOVERY_INHIBIT",
+    "name": "Inhibit System Recovery",
+    "requirements": [
+      {
+        "type": "shadow_copy_delete",
+        "description": "Shadow copies deleted"
+      }
+    ],
+    "preconds": [],
+    "explain": "Recovery features disabled to prevent restoration.",
+    "mitre": {
+      "tactic": "TA0040",
+      "technique": "T1490",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1490/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.2",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "endpoint",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect",
+      "Respond",
+      "Recover"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
+  },
+  {
+    "id": "TA0043.SUPPLY_CHAIN",
+    "name": "Supply Chain Compromise",
+    "requirements": [
+      {
+        "type": "ci_runner_compromise",
+        "description": "CI runner compromise"
+      },
+      {
+        "type": "artifact_tamper",
+        "description": "Build artifact tampering"
+      }
+    ],
+    "preconds": [],
+    "explain": "Build pipeline compromise with artifact tampering.",
+    "mitre": {
+      "tactic": "TA0043",
+      "technique": "T1195",
+      "subtechnique": "",
+      "links": [
+        "https://attack.mitre.org/techniques/T1195/"
+      ]
+    },
+    "provenance": {
+      "author": "Aman",
+      "version": "1.2",
+      "sources": [
+        "internal"
+      ],
+      "reviewed_by": [
+        "soc-lead"
+      ],
+      "approved_at": "2026-02-06"
+    },
+    "constraints": {
+      "min_confidence": 0.6,
+      "applies_to": [
+        "ci",
+        "corp"
+      ]
+    },
+    "nist_csf": [
+      "Detect"
+    ],
+    "kill_chain": [
+      "Actions"
+    ]
   }
 ]

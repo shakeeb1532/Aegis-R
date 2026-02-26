@@ -303,6 +303,9 @@ func scoreConfidence(
 	coverage := present / total
 	recency := recencyScore(supporting, now)
 	extra := float64(len(supporting)) - present
+	if extra < 0 {
+		extra = 0
+	}
 	corroboration := math.Min(extra/5.0, 1.0) * confidenceCorroborW
 	raw := coverage*confidenceCoverageW + recency*confidenceRecencyW + corroboration
 	return math.Max(confidenceFloor, math.Min(confidenceCeiling, raw))
