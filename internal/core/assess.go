@@ -17,6 +17,7 @@ import (
 type Output struct {
 	GeneratedAt  time.Time             `json:"generated_at"`
 	Summary      string                `json:"summary"`
+	Notices      []string              `json:"notices,omitempty"`
 	Reasoning    model.ReasoningReport `json:"reasoning"`
 	State        state.AttackState     `json:"state"`
 	NextMoves    []string              `json:"next_moves"`

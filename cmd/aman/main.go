@@ -1189,7 +1189,7 @@ func handleReasonV2(args []string) {
 		if err != nil {
 			fatal(err)
 		}
-		rules, placeholders := applyGatedRules(rules, *adminApproval)
+		rules, placeholders, _ := applyGatedRules(rules, *adminApproval)
 		rep := logic.ReasonWithMetrics(events, rules, nil, *includeEvents)
 		if len(placeholders) > 0 {
 			rep.Results = append(rep.Results, placeholders...)
@@ -1315,7 +1315,7 @@ func handleReasonV2(args []string) {
 		if err != nil {
 			fatal(err)
 		}
-		rules, placeholders := applyGatedRules(rules, *adminApproval)
+		rules, placeholders, _ := applyGatedRules(rules, *adminApproval)
 		rep := logic.ReasonWithMetrics(filtered, rules, nil, *includeEvents)
 		if len(placeholders) > 0 {
 			rep.Results = append(rep.Results, placeholders...)
@@ -2135,6 +2135,7 @@ Files:
 - controls.json: Framework control mappings + policy/audit lifecycle metadata.
 - oversight.json: Human approvals and dual-control status.
 - summary.json: Human-friendly summary of the bundle contents.
+- report.html: Human-readable view (open in a browser).
 - rule_catalog_version.json: Rule catalog count and source.
 - manifest.json: Bundle manifest with file hashes.
 
@@ -2142,6 +2143,89 @@ Verification:
 - Use: aman audit bundle-verify --bundle <bundle.zip>
 - The manifest digest + optional signature provide integrity.
 `)
+}
+
+func buildHumanReportHTML(summary BundleSummary, matched []model.RuleResult, approvals DualApprovalSummary) string {
+	type row struct {
+		RuleID         string
+		Verdict        string
+		ReasonCode     string
+		PreconditionOK string
+		Explanation    string
+	}
+	rows := make([]row, 0, len(matched))
+	for _, r := range matched {
+		rows = append(rows, row{
+			RuleID:         r.RuleID,
+			Verdict:        verdictLabel(r),
+			ReasonCode:     r.ReasonCode,
+			PreconditionOK: strconv.FormatBool(r.PrecondOK),
+			Explanation:    r.Explanation,
+		})
+	}
+	builder := strings.Builder{}
+	builder.WriteString("<!doctype html><html><head><meta charset=\"utf-8\">")
+	builder.WriteString("<title>Aman Evidence Report</title>")
+	builder.WriteString("<style>body{font-family:Arial,Helvetica,sans-serif;margin:24px;color:#111}h1,h2{margin:0 0 12px}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ddd;padding:8px;font-size:14px}th{background:#f4f6f8;text-align:left}section{margin-bottom:24px}code{background:#f4f6f8;padding:2px 4px;border-radius:4px}</style>")
+	builder.WriteString("</head><body>")
+	builder.WriteString("<h1>Aman Evidence Report</h1>")
+	builder.WriteString("<section><h2>Summary</h2>")
+	builder.WriteString(fmt.Sprintf("<p><strong>Decision:</strong> %s</p>", summary.DecisionID))
+	builder.WriteString(fmt.Sprintf("<p><strong>Generated:</strong> %s</p>", summary.GeneratedAt))
+	builder.WriteString(fmt.Sprintf("<p><strong>Bundle verified:</strong> %t</p>", summary.BundleVerified))
+	builder.WriteString(fmt.Sprintf("<p><strong>Dual approval:</strong> %t (required=%t)</p>", summary.DualApproved, summary.DualApprovalRequired))
+	builder.WriteString(fmt.Sprintf("<p><strong>Controls linked:</strong> %d</p>", summary.ControlsLinked))
+	if len(summary.KeyFindings) > 0 {
+		builder.WriteString("<p><strong>Key findings:</strong></p><ul>")
+		for _, f := range summary.KeyFindings {
+			builder.WriteString("<li>" + htmlEscape(f) + "</li>")
+		}
+		builder.WriteString("</ul>")
+	}
+	if len(summary.EvidenceGaps) > 0 {
+		builder.WriteString("<p><strong>Evidence gaps:</strong></p><ul>")
+		for _, g := range summary.EvidenceGaps {
+			builder.WriteString("<li>" + htmlEscape(g) + "</li>")
+		}
+		builder.WriteString("</ul>")
+	}
+	builder.WriteString("</section>")
+
+	builder.WriteString("<section><h2>Why Chain</h2>")
+	builder.WriteString("<table><thead><tr><th>Rule</th><th>Verdict</th><th>Reason</th><th>Precondition OK</th><th>Explanation</th></tr></thead><tbody>")
+	for _, r := range rows {
+		builder.WriteString("<tr>")
+		builder.WriteString("<td><code>" + htmlEscape(r.RuleID) + "</code></td>")
+		builder.WriteString("<td>" + htmlEscape(r.Verdict) + "</td>")
+		builder.WriteString("<td>" + htmlEscape(r.ReasonCode) + "</td>")
+		builder.WriteString("<td>" + htmlEscape(r.PreconditionOK) + "</td>")
+		builder.WriteString("<td>" + htmlEscape(r.Explanation) + "</td>")
+		builder.WriteString("</tr>")
+	}
+	builder.WriteString("</tbody></table></section>")
+
+	builder.WriteString("<section><h2>Oversight</h2>")
+	builder.WriteString(fmt.Sprintf("<p><strong>Required signers:</strong> %d</p>", approvals.Required))
+	builder.WriteString(fmt.Sprintf("<p><strong>Valid signers:</strong> %d</p>", approvals.ValidSigners))
+	builder.WriteString(fmt.Sprintf("<p><strong>Dual approved:</strong> %t</p>", approvals.DualApproved))
+	if len(approvals.SignerIDs) > 0 {
+		builder.WriteString("<p><strong>Signers:</strong> " + htmlEscape(strings.Join(approvals.SignerIDs, ", ")) + "</p>")
+	}
+	builder.WriteString("</section>")
+
+	builder.WriteString("</body></html>")
+	return builder.String()
+}
+
+func htmlEscape(s string) string {
+	replacer := strings.NewReplacer(
+		"&", "&amp;",
+		"<", "&lt;",
+		">", "&gt;",
+		"\"", "&quot;",
+		"'", "&#39;",
+	)
+	return replacer.Replace(s)
 }
 
 func approvalSummaryForDecision(approvals []DualApprovalSummary, decisionID string) DualApprovalSummary {
@@ -2414,6 +2498,7 @@ func handleAudit(args []string) {
 			fatal(errors.New("dual approval required but not satisfied for decision"))
 		}
 		inline := map[string][]byte{}
+		decisionDir := fmt.Sprintf("decision_%s", artifact.ID)
 		decisionPayload := DecisionPackage{
 			DecisionID: artifact.ID,
 			Summary:    artifact.Summary,
@@ -2427,7 +2512,7 @@ func handleAudit(args []string) {
 		if err != nil {
 			fatal(err)
 		}
-		inline["decision.json"] = decisionBytes
+		inline[filepath.ToSlash(filepath.Join(decisionDir, "decision.json"))] = decisionBytes
 
 		matched := matchRuleResultsForDecision(artifact, rep.Reasoning.Results)
 		if *includeWhy {
@@ -2436,7 +2521,7 @@ func handleAudit(args []string) {
 			if err != nil {
 				fatal(err)
 			}
-			inline["why_chain.json"] = whyBytes
+			inline[filepath.ToSlash(filepath.Join(decisionDir, "why_chain.json"))] = whyBytes
 		}
 		if *includeCounterfactuals {
 			counterfactuals := buildCounterfactuals(matched, rep.NextMoves)
@@ -2444,7 +2529,7 @@ func handleAudit(args []string) {
 			if err != nil {
 				fatal(err)
 			}
-			inline["counterfactuals.json"] = cfBytes
+			inline[filepath.ToSlash(filepath.Join(decisionDir, "counterfactuals.json"))] = cfBytes
 		}
 		if *includeControls {
 			filtered := filterControlsForDecision(controlsExport, *decisionID)
@@ -2452,23 +2537,24 @@ func handleAudit(args []string) {
 			if err != nil {
 				fatal(err)
 			}
-			inline["controls.json"] = controlsBytes
+			inline[filepath.ToSlash(filepath.Join(decisionDir, "controls.json"))] = controlsBytes
 		}
 		oversightBytes, err := json.MarshalIndent(decisionApprovals, "", "  ")
 		if err != nil {
 			fatal(err)
 		}
-		inline["oversight.json"] = oversightBytes
+		inline[filepath.ToSlash(filepath.Join(decisionDir, "oversight.json"))] = oversightBytes
 		if *includeControls {
 			summary := buildBundleSummary(artifact, matched, decisionApprovals, controlsExport)
 			summaryBytes, err := json.MarshalIndent(summary, "", "  ")
 			if err != nil {
 				fatal(err)
 			}
-			inline["summary.json"] = summaryBytes
+			inline[filepath.ToSlash(filepath.Join(decisionDir, "summary.json"))] = summaryBytes
+			inline[filepath.ToSlash(filepath.Join(decisionDir, "report.html"))] = []byte(buildHumanReportHTML(summary, matched, decisionApprovals))
 		}
-		inline["README.txt"] = []byte(bundleReadmeText())
-		inline["rule_catalog_version.json"], err = json.MarshalIndent(map[string]any{
+		inline[filepath.ToSlash(filepath.Join(decisionDir, "README.txt"))] = []byte(bundleReadmeText())
+		inline[filepath.ToSlash(filepath.Join(decisionDir, "rule_catalog_version.json"))], err = json.MarshalIndent(map[string]any{
 			"generated_at": packageTimestamp(*reproducible, artifact.CreatedAt).Format(time.RFC3339),
 			"rule_count":   len(rules),
 			"rules_file":   *rulesPath,
@@ -2478,9 +2564,9 @@ func handleAudit(args []string) {
 		}
 
 		inputs := map[string]string{
-			"audit":     *auditPath,
-			"approvals": *approvalsPath,
-			"report":    *reportPath,
+			filepath.ToSlash(filepath.Join(decisionDir, "audit")):     *auditPath,
+			filepath.ToSlash(filepath.Join(decisionDir, "approvals")): *approvalsPath,
+			filepath.ToSlash(filepath.Join(decisionDir, "report")):    *reportPath,
 		}
 		opts := audit.BundleOptions{
 			OutputPath:   *out,
@@ -2946,10 +3032,10 @@ var gatedRuleIDs = map[string]bool{
 	"TA0005.EVASION_C2":     true,
 }
 
-func applyGatedRules(rules []logic.Rule, approvalPath string) ([]logic.Rule, []model.RuleResult) {
+func applyGatedRules(rules []logic.Rule, approvalPath string) ([]logic.Rule, []model.RuleResult, []string) {
 	if approvalPath != "" {
 		if err := verifyAdminOverride(approvalPath); err == nil {
-			return rules, nil
+			return rules, nil, nil
 		}
 	}
 	disabled := []string{}
@@ -2973,12 +3059,15 @@ func applyGatedRules(rules []logic.Rule, approvalPath string) ([]logic.Rule, []m
 		}
 		out = append(out, r)
 	}
-	if len(disabled) > 0 && !gFlags.Quiet {
+	if len(disabled) > 0 {
 		sort.Strings(disabled)
-		outln("Gated rules disabled: " + strings.Join(disabled, ", "))
-		outln("Admin approval required at install time to enable these packs.")
+		notices := []string{
+			"Gated rules disabled: " + strings.Join(disabled, ", "),
+			"Admin approval required at install time to enable these packs.",
+		}
+		return out, placeholders, notices
 	}
-	return out, placeholders
+	return out, placeholders, nil
 }
 
 func handleGenerate(args []string) {
@@ -3022,7 +3111,7 @@ func handleReason(args []string) {
 	if err != nil {
 		fatal(err)
 	}
-	rules, placeholders := applyGatedRules(rules, *adminApproval)
+	rules, placeholders, _ := applyGatedRules(rules, *adminApproval)
 	rep := logic.ReasonWithMetrics(events, rules, nil, *includeEvents)
 	if len(placeholders) > 0 {
 		rep.Results = append(rep.Results, placeholders...)
@@ -3104,7 +3193,7 @@ func handleAssess(args []string) {
 	if err != nil {
 		fatal(err)
 	}
-	rules, placeholders := applyGatedRules(rules, *adminApproval)
+	rules, placeholders, gatedNotices := applyGatedRules(rules, *adminApproval)
 	if err := validate.Rules(rules); err != nil {
 		fatal(validate.Must(err))
 	}
@@ -3131,6 +3220,9 @@ func handleAssess(args []string) {
 	out := core.AssessWithMetrics(events, rules, environment, st, metrics, includeEvidence)
 	if len(placeholders) > 0 {
 		out.Reasoning.Results = append(out.Reasoning.Results, placeholders...)
+	}
+	if len(gatedNotices) > 0 {
+		out.Notices = append(out.Notices, gatedNotices...)
 	}
 	if *explainOn {
 		if err := applyExplanation(&out.Reasoning, *explainEndpoint, *explainTimeout); err != nil {
