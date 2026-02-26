@@ -225,6 +225,19 @@ type DecisionPackage struct {
 	PrevHash   string   `json:"prev_hash"`
 }
 
+type BundleSummary struct {
+	DecisionID           string   `json:"decision_id"`
+	GeneratedAt          string   `json:"generated_at"`
+	Verdicts             []string `json:"verdicts"`
+	KeyFindings          []string `json:"key_findings"`
+	EvidenceGaps         []string `json:"evidence_gaps"`
+	ControlsLinked       int      `json:"controls_linked"`
+	DualApprovalRequired bool     `json:"dual_approval_required"`
+	DualApproved         bool     `json:"dual_approved"`
+	BundleVerified       bool     `json:"bundle_verified"`
+	Notes                []string `json:"notes"`
+}
+
 type WhyChainItem struct {
 	RuleID           string   `json:"rule_id"`
 	RuleName         string   `json:"rule_name"`
@@ -2042,6 +2055,75 @@ func filterControlsForDecision(export ControlsExport, decisionID string) Control
 	return filtered
 }
 
+func buildBundleSummary(artifact audit.Artifact, matched []model.RuleResult, approvals DualApprovalSummary, controls ControlsExport) BundleSummary {
+	verdicts := []string{}
+	keyFindings := []string{}
+	evidenceGaps := []string{}
+	for _, r := range matched {
+		verdicts = append(verdicts, fmt.Sprintf("%s: %s", r.RuleID, verdictLabel(r)))
+		if r.Feasible {
+			keyFindings = append(keyFindings, fmt.Sprintf("%s feasible (%.2f)", r.RuleID, r.Confidence))
+		}
+		if len(r.MissingEvidence) > 0 {
+			for _, miss := range r.MissingEvidence {
+				evidenceGaps = append(evidenceGaps, fmt.Sprintf("%s missing %s", r.RuleID, miss.Type))
+			}
+		}
+	}
+	controlsLinked := 0
+	for _, d := range controls.DecisionControls {
+		if d.DecisionID == artifact.ID {
+			controlsLinked++
+		}
+	}
+	notes := []string{
+		"summary is derived from structured reasoning output",
+		"bundle integrity is verified via manifest digest + optional signature",
+	}
+	return BundleSummary{
+		DecisionID:           artifact.ID,
+		GeneratedAt:          time.Now().UTC().Format(time.RFC3339),
+		Verdicts:             dedupeStrings(verdicts),
+		KeyFindings:          dedupeStrings(keyFindings),
+		EvidenceGaps:         dedupeStrings(evidenceGaps),
+		ControlsLinked:       controlsLinked,
+		DualApprovalRequired: approvals.Required > 0,
+		DualApproved:         approvals.DualApproved,
+		BundleVerified:       controls.AuditChainVerified,
+		Notes:                notes,
+	}
+}
+
+func verdictLabel(r model.RuleResult) string {
+	if r.PolicyImpossible {
+		return "policy_impossible"
+	}
+	if r.Conflicted {
+		return "conflicted"
+	}
+	if r.Feasible {
+		return "feasible"
+	}
+	if len(r.MissingEvidence) > 0 {
+		return "incomplete"
+	}
+	return "unknown"
+}
+
+func dedupeStrings(in []string) []string {
+	seen := map[string]bool{}
+	out := make([]string, 0, len(in))
+	for _, v := range in {
+		if v == "" || seen[v] {
+			continue
+		}
+		seen[v] = true
+		out = append(out, v)
+	}
+	sort.Strings(out)
+	return out
+}
+
 func approvalSummaryForDecision(approvals []DualApprovalSummary, decisionID string) DualApprovalSummary {
 	for _, a := range approvals {
 		if a.DecisionID == decisionID {
@@ -2357,6 +2439,14 @@ func handleAudit(args []string) {
 			fatal(err)
 		}
 		inline["oversight.json"] = oversightBytes
+		if *includeControls {
+			summary := buildBundleSummary(artifact, matched, decisionApprovals, controlsExport)
+			summaryBytes, err := json.MarshalIndent(summary, "", "  ")
+			if err != nil {
+				fatal(err)
+			}
+			inline["summary.json"] = summaryBytes
+		}
 		inline["rule_catalog_version.json"], err = json.MarshalIndent(map[string]any{
 			"generated_at": packageTimestamp(*reproducible, artifact.CreatedAt).Format(time.RFC3339),
 			"rule_count":   len(rules),
