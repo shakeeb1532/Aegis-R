@@ -549,9 +549,6 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		if contextReq != "" && !hasContext(events, index, contextReq) {
 			missingContext = true
 		}
-		if contradiction {
-			precondOK = false
-		}
 		missing = append(missing, missingPreconds...)
 		if missingContext {
 			missing = append(missing, model.EvidenceRequirement{
@@ -590,7 +587,9 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 			})
 		}
 		name := rule.Name
-		if !precondOK {
+		if contradiction {
+			name = name + " (conflicted)"
+		} else if !precondOK {
 			name = name + " (preconditions unmet)"
 		}
 		reason := rule.Explain
@@ -657,7 +656,7 @@ func reasonCode(precondOK bool, missing []model.EvidenceRequirement, eventCount 
 	case len(missing) > 0:
 		return "evidence_gap"
 	default:
-		return ""
+		return "supported"
 	}
 }
 

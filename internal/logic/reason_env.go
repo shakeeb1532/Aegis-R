@@ -97,9 +97,6 @@ func ReasonWithEnvAndMetricsWithConfig(
 		contradiction := hasContradiction(rule, index)
 		contextReq := contextForRule(rule)
 		missingContext := contextReq != "" && !hasContext(events, index, contextReq)
-		if contradiction || missingContext {
-			precondOK = false
-		}
 		if missingContext {
 			missing = append(missing, model.EvidenceRequirement{
 				Type:        "environment_context",
@@ -111,18 +108,12 @@ func ReasonWithEnvAndMetricsWithConfig(
 		envUnknown := false
 		if precondOK && !contradiction && !missingContext {
 			envUnreachable, envUnknown = checkEnvUnreachable(rule, events, index, hostZone, reachableZones)
-			if envUnreachable || envUnknown {
-				precondOK = false
-			}
 		}
 
 		insufficientPriv := false
 		unknownPriv := false
 		if precondOK && !contradiction && !missingContext {
 			insufficientPriv, unknownPriv = checkInsufficientPriv(rule, events, identityPriv)
-			if insufficientPriv || unknownPriv {
-				precondOK = false
-			}
 		}
 
 		causalFeasible, causalBlockers, necessaryCauses, necessaryCauseSets, causalErr := evaluateRuleCausally(
@@ -160,7 +151,9 @@ func ReasonWithEnvAndMetricsWithConfig(
 		reason := rule.Explain
 		gapNarrative := ""
 		reasonCode := envReasonCode(precondOK, missing, len(events), contradiction, missingContext, envUnreachable, envUnknown, insufficientPriv, unknownPriv)
-		if !precondOK {
+		if contradiction {
+			name += " (conflicted)"
+		} else if !precondOK {
 			name += " (preconditions unmet)"
 		}
 		switch {
@@ -382,7 +375,7 @@ func envReasonCode(
 	case len(missing) > 0:
 		return "evidence_gap"
 	default:
-		return ""
+		return "supported"
 	}
 }
 
