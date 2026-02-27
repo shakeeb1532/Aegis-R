@@ -2,16 +2,22 @@
 
 License: Apache-2.0
 
-Aman is a human-governed security reasoning system that evaluates causal feasibility, maintains attack progression state, and produces audit-ready, tamper-evident explanations. It is designed to sit on top of SIEM/EDR/XDR and AI detections to reduce false positives by eliminating impossible attack paths while preserving human authority and compliance.
+Aman is a human-governed security reasoning system that evaluates causal feasibility, maintains attack progression state, and produces audit-ready, tamper-evident explanations. It sits on top of SIEM/EDR/XDR and AI detections to reduce false positives by eliminating impossible attack paths while preserving human authority and compliance.
 
-## v1 vs v2 (Positioning)
-| Dimension | v1 (Original) | v2.0 (Current Direction) |
-| --- | --- | --- |
-| Market message | "Causal validation over noisy detection" | "AI-first discovery + causal validation gate" |
-| Detection flow | Rule/event-first reasoning | High-recall AI candidates, then deterministic validation |
-| Analyst queue effect | Fewer impossible alerts | Keep recall while reducing non-actionable AI noise |
-| Attack visibility | Progression state and feasibility | Progression + explicit attack-path output for SOC review |
-| Buyer narrative | Accuracy and governance | Return on AI investment: speed + precision + explainability |
+## Current Scope (What Exists Today)
+- Deterministic causal feasibility engine with explicit preconditions, contradictions, and environment reachability checks.
+- Progression state to link related events into threads and attack paths.
+- Audit trail with hash chaining and signed artifacts.
+- Governance workflow with approvals, dual-approval, and constraints.
+- Evidence bundles (`summary.json`, `why_chain.json`, `controls.json`, `oversight.json`, `manifest.json`) plus HTML report for human review.
+- Ingest adapters for common schemas (ECS/OCSF/CIM/Splunk/CloudTrail/Okta/MDE/CrowdStrike).
+
+## Pilot Scope (What We Are Testing)
+- Audit + governance use case only (no auto-remediation).
+- Deterministic decisions with verifiable signatures and tamper detection.
+- Dual-control enforced and logged for high-risk decisions.
+- Control mappings included in evidence bundles for audit review.
+- Self-serve pilot on a single EC2 instance with API + UI + evidence export.
 
 ## What It Does
 - Determines whether a security event is logically possible in your environment.
