@@ -1,4 +1,5 @@
 import { useOverview } from "../hooks/useApiData";
+import { IngestStatusPanel } from "../components/IngestStatusPanel";
 
 function metricTone(label: string) {
   const l = label.toLowerCase();
@@ -12,6 +13,7 @@ export function Overview() {
 
   return (
     <div className="space-y-5">
+      <IngestStatusPanel />
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {data.kpis.map((kpi) => (
           <article key={kpi.label} className="rounded-2xl border border-border bg-panel p-5">

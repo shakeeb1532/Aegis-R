@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import JSZip from "jszip";
 
 const emptySummary = {
   report_id: "",
@@ -52,6 +53,36 @@ export function EvidenceBundleViewer() {
     reader.readAsText(file);
   };
 
+  const handleZipUpload = async (file?: File | null) => {
+    if (!file) return;
+    try {
+      const zip = await JSZip.loadAsync(file);
+      let summaryText = "";
+      let htmlText = "";
+      for (const name of Object.keys(zip.files)) {
+        if (name.endsWith("summary.json")) {
+          summaryText = await zip.files[name].async("string");
+        } else if (name.endsWith("report.html")) {
+          htmlText = await zip.files[name].async("string");
+        }
+      }
+      if (summaryText) {
+        const parsed = JSON.parse(summaryText);
+        setSummary({ ...emptySummary, ...parsed });
+      }
+      if (htmlText) {
+        setHtml(htmlText);
+      }
+      if (!summaryText && !htmlText) {
+        setError("Bundle missing summary.json or report.html.");
+      } else {
+        setError("");
+      }
+    } catch (err) {
+      setError("Unable to read the bundle. Ensure it's a valid evidence zip.");
+    }
+  };
+
   return (
     <section className="card space-y-6">
       <div>
@@ -68,7 +99,17 @@ export function EvidenceBundleViewer() {
         </div>
       ) : null}
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
+        <label className="flex flex-col gap-3 rounded-2xl border border-border bg-panelElev px-4 py-4">
+          <span className="text-xs uppercase tracking-[0.2em] text-muted">Evidence Bundle (ZIP)</span>
+          <input
+            type="file"
+            accept=".zip,application/zip"
+            onChange={(e) => void handleZipUpload(e.target.files?.[0])}
+            className="text-sm text-muted file:mr-4 file:rounded-full file:border file:border-border file:bg-panel file:px-3 file:py-1 file:text-xs file:uppercase file:tracking-[0.2em]"
+          />
+          <span className="text-xs text-muted">evidence.zip</span>
+        </label>
         <label className="flex flex-col gap-3 rounded-2xl border border-border bg-panelElev px-4 py-4">
           <span className="text-xs uppercase tracking-[0.2em] text-muted">Summary JSON</span>
           <input
