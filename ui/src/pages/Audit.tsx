@@ -1,10 +1,12 @@
 import { SectionHeader } from "../components/SectionHeader";
+import { EvidenceBundleViewer } from "../components/EvidenceBundleViewer";
 import { useAudit } from "../hooks/useApiData";
 
 export function Audit() {
   const data = useAudit();
   return (
     <div className="space-y-6">
+      <EvidenceBundleViewer />
       <section className="card">
         <SectionHeader title="Audit & Evidence" subtitle="Replayable reasoning chain" />
         <div className="mt-6 space-y-4">
