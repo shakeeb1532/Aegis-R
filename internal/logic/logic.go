@@ -581,7 +581,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 				Description: "Causal model evaluation failed",
 			})
 		}
-		confidence := scoreConfidence(rule, supporting, missing, precondOK, now)
+		confidence, confidenceFactors := scoreConfidence(rule, supporting, missing, precondOK, now)
 		if feasible && rule.Constraints.MinConfidence > 0 && confidence < rule.Constraints.MinConfidence {
 			feasible = false
 			missing = append(missing, model.EvidenceRequirement{
@@ -622,6 +622,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 			Conflicted:         contradiction,
 			PrecondOK:          precondOK,
 			Confidence:         confidence,
+			ConfidenceFactors:  &confidenceFactors,
 			MissingEvidence:    missing,
 			SupportingEvents:   supporting,
 			SupportingEventIDs: supportingIDs,

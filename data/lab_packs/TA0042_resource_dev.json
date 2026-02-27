@@ -1,0 +1,10 @@
+[
+  {
+    "id": "rd-1",
+    "time": "2026-02-27T11:00:00Z",
+    "host": "host-1",
+    "user": "alice",
+    "type": "acquire_access",
+    "details": {}
+  }
+]

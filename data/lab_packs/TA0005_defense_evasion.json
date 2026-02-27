@@ -1,0 +1,18 @@
+[
+  {
+    "id": "de-1",
+    "time": "2026-02-27T10:20:00Z",
+    "host": "host-3",
+    "user": "svc-admin",
+    "type": "disable_logging",
+    "details": {}
+  },
+  {
+    "id": "de-2",
+    "time": "2026-02-27T10:20:15Z",
+    "host": "host-3",
+    "user": "svc-admin",
+    "type": "cloud_firewall_change",
+    "details": {}
+  }
+]

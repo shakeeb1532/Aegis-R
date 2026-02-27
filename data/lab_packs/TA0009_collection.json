@@ -1,0 +1,18 @@
+[
+  {
+    "id": "co-1",
+    "time": "2026-02-27T10:40:00Z",
+    "host": "host-2",
+    "user": "alice",
+    "type": "smb_mass_file_read",
+    "details": {}
+  },
+  {
+    "id": "co-2",
+    "time": "2026-02-27T10:40:10Z",
+    "host": "host-2",
+    "user": "alice",
+    "type": "mapped_drive_enum_copy",
+    "details": {}
+  }
+]

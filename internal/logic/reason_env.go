@@ -147,7 +147,7 @@ func ReasonWithEnvAndMetricsWithConfig(
 				Description: "Causal model evaluation failed",
 			})
 		}
-		confidence := scoreConfidence(rule, supporting, missing, precondOK, now)
+		confidence, confidenceFactors := scoreConfidence(rule, supporting, missing, precondOK, now)
 		if feasible && rule.Constraints.MinConfidence > 0 && confidence < rule.Constraints.MinConfidence {
 			feasible = false
 			missing = append(missing, model.EvidenceRequirement{
@@ -199,6 +199,7 @@ func ReasonWithEnvAndMetricsWithConfig(
 			Conflicted:         contradiction,
 			PrecondOK:          precondOK,
 			Confidence:         confidence,
+			ConfidenceFactors:  &confidenceFactors,
 			MissingEvidence:    missing,
 			SupportingEvents:   supporting,
 			SupportingEventIDs: supportingIDs,
@@ -288,27 +289,40 @@ func scoreConfidence(
 	missing []model.EvidenceRequirement,
 	precondOK bool,
 	now time.Time,
-) float64 {
-	if !precondOK {
-		return confidenceFloor
+) (float64, model.ConfidenceFactors) {
+	factors := model.ConfidenceFactors{
+		EvidenceTotal:       len(rule.Requirements),
+		MissingEvidence:     len(missing),
+		SupportingEvents:    len(supporting),
+		CoverageWeight:      confidenceCoverageW,
+		RecencyWeight:       confidenceRecencyW,
+		CorroborationWeight: confidenceCorroborW,
+		Floor:               confidenceFloor,
+		Ceiling:             confidenceCeiling,
+	}
+	if !precondOK || len(rule.Requirements) == 0 {
+		factors.RawScore = confidenceFloor
+		return confidenceFloor, factors
 	}
 	total := float64(len(rule.Requirements))
-	if total == 0 {
-		return confidenceFloor
-	}
 	present := total - float64(len(missing))
 	if present < 0 {
 		present = 0
 	}
+	factors.EvidencePresent = int(present)
 	coverage := present / total
 	recency := recencyScore(supporting, now)
 	extra := float64(len(supporting)) - present
 	if extra < 0 {
 		extra = 0
 	}
-	corroboration := math.Min(extra/5.0, 1.0) * confidenceCorroborW
-	raw := coverage*confidenceCoverageW + recency*confidenceRecencyW + corroboration
-	return math.Max(confidenceFloor, math.Min(confidenceCeiling, raw))
+	corroboration := math.Min(extra/5.0, 1.0)
+	raw := coverage*confidenceCoverageW + recency*confidenceRecencyW + corroboration*confidenceCorroborW
+	factors.Coverage = coverage
+	factors.Recency = recency
+	factors.Corroboration = corroboration
+	factors.RawScore = raw
+	return math.Max(confidenceFloor, math.Min(confidenceCeiling, raw)), factors
 }
 
 func recencyScore(events []model.Event, now time.Time) float64 {

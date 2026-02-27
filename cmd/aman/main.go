@@ -3,8 +3,8 @@ package main
 import (
 	"bufio"
 	"bytes"
-	"crypto/sha256"
 	"crypto/rand"
+	"crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
@@ -175,16 +175,16 @@ type ControlsExport struct {
 }
 
 type AuditLifecycleMetadata struct {
-	AuditLog          string    `json:"audit_log"`
-	AuditEntries      int       `json:"audit_entries"`
-	FirstEntryAt      time.Time `json:"first_entry_at"`
-	LastEntryAt       time.Time `json:"last_entry_at"`
-	LastHash          string    `json:"last_hash,omitempty"`
-	SignedAuditLog    string    `json:"signed_audit_log,omitempty"`
-	SignedEntries     int       `json:"signed_entries"`
-	SignedLastAt      time.Time `json:"signed_last_at"`
-	SignedSignerIDs   []string  `json:"signed_signer_ids,omitempty"`
-	SignedAuditError  string    `json:"signed_audit_error,omitempty"`
+	AuditLog         string    `json:"audit_log"`
+	AuditEntries     int       `json:"audit_entries"`
+	FirstEntryAt     time.Time `json:"first_entry_at"`
+	LastEntryAt      time.Time `json:"last_entry_at"`
+	LastHash         string    `json:"last_hash,omitempty"`
+	SignedAuditLog   string    `json:"signed_audit_log,omitempty"`
+	SignedEntries    int       `json:"signed_entries"`
+	SignedLastAt     time.Time `json:"signed_last_at"`
+	SignedSignerIDs  []string  `json:"signed_signer_ids,omitempty"`
+	SignedAuditError string    `json:"signed_audit_error,omitempty"`
 }
 
 type PolicyLifecycleMetadata struct {
@@ -2153,7 +2153,15 @@ func buildHumanReportHTML(summary BundleSummary, matched []model.RuleResult, app
 		PreconditionOK string
 		Explanation    string
 	}
+	type confRow struct {
+		RuleID        string
+		Coverage      string
+		Recency       string
+		Corroboration string
+		SupportEvents string
+	}
 	rows := make([]row, 0, len(matched))
+	confRows := make([]confRow, 0, len(matched))
 	for _, r := range matched {
 		rows = append(rows, row{
 			RuleID:         r.RuleID,
@@ -2162,6 +2170,15 @@ func buildHumanReportHTML(summary BundleSummary, matched []model.RuleResult, app
 			PreconditionOK: strconv.FormatBool(r.PrecondOK),
 			Explanation:    r.Explanation,
 		})
+		if r.ConfidenceFactors != nil {
+			confRows = append(confRows, confRow{
+				RuleID:        r.RuleID,
+				Coverage:      fmt.Sprintf("%d / %d", r.ConfidenceFactors.EvidencePresent, r.ConfidenceFactors.EvidenceTotal),
+				Recency:       confidenceBandLabel(r.ConfidenceFactors.Recency),
+				Corroboration: confidenceBandLabel(r.ConfidenceFactors.Corroboration),
+				SupportEvents: fmt.Sprintf("%d", r.ConfidenceFactors.SupportingEvents),
+			})
+		}
 	}
 	builder := strings.Builder{}
 	builder.WriteString("<!doctype html><html><head><meta charset=\"utf-8\">")
@@ -2204,6 +2221,22 @@ func buildHumanReportHTML(summary BundleSummary, matched []model.RuleResult, app
 	}
 	builder.WriteString("</tbody></table></section>")
 
+	if len(confRows) > 0 {
+		builder.WriteString("<section><h2>Confidence Rationale</h2>")
+		builder.WriteString("<p>Confidence is a support score derived from evidence coverage, recency, and corroboration. It is not a probability.</p>")
+		builder.WriteString("<table><thead><tr><th>Rule</th><th>Coverage</th><th>Recency</th><th>Corroboration</th><th>Supporting Events</th></tr></thead><tbody>")
+		for _, r := range confRows {
+			builder.WriteString("<tr>")
+			builder.WriteString("<td><code>" + htmlEscape(r.RuleID) + "</code></td>")
+			builder.WriteString("<td>" + htmlEscape(r.Coverage) + "</td>")
+			builder.WriteString("<td>" + htmlEscape(r.Recency) + "</td>")
+			builder.WriteString("<td>" + htmlEscape(r.Corroboration) + "</td>")
+			builder.WriteString("<td>" + htmlEscape(r.SupportEvents) + "</td>")
+			builder.WriteString("</tr>")
+		}
+		builder.WriteString("</tbody></table></section>")
+	}
+
 	builder.WriteString("<section><h2>Oversight</h2>")
 	builder.WriteString(fmt.Sprintf("<p><strong>Required signers:</strong> %d</p>", approvals.Required))
 	builder.WriteString(fmt.Sprintf("<p><strong>Valid signers:</strong> %d</p>", approvals.ValidSigners))
@@ -2226,6 +2259,17 @@ func htmlEscape(s string) string {
 		"'", "&#39;",
 	)
 	return replacer.Replace(s)
+}
+
+func confidenceBandLabel(value float64) string {
+	switch {
+	case value >= 0.8:
+		return "High"
+	case value >= 0.6:
+		return "Moderate"
+	default:
+		return "Low"
+	}
 }
 
 func approvalSummaryForDecision(approvals []DualApprovalSummary, decisionID string) DualApprovalSummary {

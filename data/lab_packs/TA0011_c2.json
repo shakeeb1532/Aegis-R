@@ -1,0 +1,18 @@
+[
+  {
+    "id": "c2-1",
+    "time": "2026-02-27T10:50:00Z",
+    "host": "host-3",
+    "user": "svc-admin",
+    "type": "lsass_access",
+    "details": {}
+  },
+  {
+    "id": "c2-2",
+    "time": "2026-02-27T10:50:15Z",
+    "host": "host-3",
+    "user": "svc-admin",
+    "type": "beacon_outbound",
+    "details": {}
+  }
+]

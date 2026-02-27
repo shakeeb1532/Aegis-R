@@ -8,6 +8,12 @@ function metricTone(label: string) {
   return "text-teal";
 }
 
+function confidenceBand(value: number) {
+  if (value >= 0.8) return { label: "High", tone: "text-teal" };
+  if (value >= 0.6) return { label: "Moderate", tone: "text-amber" };
+  return { label: "Low", tone: "text-red" };
+}
+
 export function Overview() {
   const data = useOverview();
 
@@ -38,8 +44,10 @@ export function Overview() {
           <p className="mt-4 text-sm text-muted">{data.headline.summary}</p>
           <div className="mt-4 grid gap-3 md:grid-cols-2">
             <div className="rounded-xl border border-border bg-panelElev p-3">
-              <p className="text-xs uppercase tracking-wide text-muted">Confidence</p>
-              <p className="mt-1 text-2xl font-semibold text-text">{Math.round(data.headline.confidence * 100)}%</p>
+              <p className="text-xs uppercase tracking-wide text-muted">Confidence Band</p>
+              <p className={`mt-1 text-2xl font-semibold ${confidenceBand(data.headline.confidence).tone}`}>
+                {confidenceBand(data.headline.confidence).label}
+              </p>
             </div>
             <div className="rounded-xl border border-border bg-panelElev p-3">
               <p className="text-xs uppercase tracking-wide text-muted">Updated</p>

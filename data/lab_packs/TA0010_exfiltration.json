@@ -1,0 +1,18 @@
+[
+  {
+    "id": "exf-1",
+    "time": "2026-02-27T10:45:00Z",
+    "host": "host-4",
+    "user": "svc-admin",
+    "type": "lsass_access",
+    "details": {}
+  },
+  {
+    "id": "exf-2",
+    "time": "2026-02-27T10:45:30Z",
+    "host": "host-4",
+    "user": "svc-admin",
+    "type": "large_outbound_transfer",
+    "details": {}
+  }
+]

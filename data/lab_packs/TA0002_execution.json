@@ -1,0 +1,36 @@
+[
+  {
+    "id": "ex-1",
+    "time": "2026-02-27T10:05:00Z",
+    "host": "host-1",
+    "user": "alice",
+    "type": "email_attachment_open",
+    "details": {}
+  },
+  {
+    "id": "ex-2",
+    "time": "2026-02-27T10:05:10Z",
+    "host": "host-1",
+    "user": "alice",
+    "type": "macro_execution",
+    "details": {}
+  },
+  {
+    "id": "ex-3",
+    "time": "2026-02-27T10:05:30Z",
+    "host": "host-1",
+    "user": "alice",
+    "type": "process_creation",
+    "details": {
+      "command_line": "mshta"
+    }
+  },
+  {
+    "id": "ex-4",
+    "time": "2026-02-27T10:05:40Z",
+    "host": "host-1",
+    "user": "alice",
+    "type": "lolbin_execution",
+    "details": {}
+  }
+]

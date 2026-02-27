@@ -15,15 +15,32 @@ type KpiItem struct {
 }
 
 type ReasoningItem struct {
-	ID         string   `json:"id"`
-	Title      string   `json:"title"`
-	Verdict    string   `json:"verdict"`
-	Confidence float64  `json:"confidence"`
-	Summary    string   `json:"summary"`
-	Evidence   []string `json:"evidence"`
-	Gaps       []string `json:"gaps"`
-	NextMoves  []string `json:"next_moves"`
-	Updated    string   `json:"updated"`
+	ID                string             `json:"id"`
+	Title             string             `json:"title"`
+	Verdict           string             `json:"verdict"`
+	Confidence        float64            `json:"confidence"`
+	ConfidenceFactors *ConfidenceFactors `json:"confidence_factors,omitempty"`
+	Summary           string             `json:"summary"`
+	Evidence          []string           `json:"evidence"`
+	Gaps              []string           `json:"gaps"`
+	NextMoves         []string           `json:"next_moves"`
+	Updated           string             `json:"updated"`
+}
+
+type ConfidenceFactors struct {
+	Coverage            float64 `json:"coverage"`
+	Recency             float64 `json:"recency"`
+	Corroboration       float64 `json:"corroboration"`
+	EvidencePresent     int     `json:"evidence_present"`
+	EvidenceTotal       int     `json:"evidence_total"`
+	SupportingEvents    int     `json:"supporting_events"`
+	MissingEvidence     int     `json:"missing_evidence"`
+	CoverageWeight      float64 `json:"coverage_weight"`
+	RecencyWeight       float64 `json:"recency_weight"`
+	CorroborationWeight float64 `json:"corroboration_weight"`
+	RawScore            float64 `json:"raw_score"`
+	Floor               float64 `json:"floor"`
+	Ceiling             float64 `json:"ceiling"`
 }
 
 type QueueItem struct {

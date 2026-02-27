@@ -1,0 +1,18 @@
+[
+  {
+    "id": "ia-1",
+    "time": "2026-02-27T10:00:00Z",
+    "host": "host-1",
+    "user": "alice",
+    "type": "device_code_flow_start",
+    "details": {}
+  },
+  {
+    "id": "ia-2",
+    "time": "2026-02-27T10:00:30Z",
+    "host": "host-1",
+    "user": "alice",
+    "type": "device_code_flow_success",
+    "details": {}
+  }
+]

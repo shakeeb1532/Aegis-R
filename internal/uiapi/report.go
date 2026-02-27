@@ -46,11 +46,26 @@ type reportFile struct {
 }
 
 type reportFileReasoningResult struct {
-	RuleID          string  `json:"rule_id"`
-	Name            string  `json:"name"`
-	Feasible        bool    `json:"feasible"`
-	PrecondOK       bool    `json:"precond_ok"`
-	Confidence      float64 `json:"confidence"`
+	RuleID            string  `json:"rule_id"`
+	Name              string  `json:"name"`
+	Feasible          bool    `json:"feasible"`
+	PrecondOK         bool    `json:"precond_ok"`
+	Confidence        float64 `json:"confidence"`
+	ConfidenceFactors *struct {
+		Coverage            float64 `json:"coverage"`
+		Recency             float64 `json:"recency"`
+		Corroboration       float64 `json:"corroboration"`
+		EvidencePresent     int     `json:"evidence_present"`
+		EvidenceTotal       int     `json:"evidence_total"`
+		SupportingEvents    int     `json:"supporting_events"`
+		MissingEvidence     int     `json:"missing_evidence"`
+		CoverageWeight      float64 `json:"coverage_weight"`
+		RecencyWeight       float64 `json:"recency_weight"`
+		CorroborationWeight float64 `json:"corroboration_weight"`
+		RawScore            float64 `json:"raw_score"`
+		Floor               float64 `json:"floor"`
+		Ceiling             float64 `json:"ceiling"`
+	} `json:"confidence_factors,omitempty"`
 	MissingEvidence []struct {
 		Type        string `json:"type"`
 		Description string `json:"description"`
@@ -163,15 +178,16 @@ func buildOverview(r *reportFile) OverviewResponse {
 		if res.Confidence > maxConf {
 			maxConf = res.Confidence
 			headline = ReasoningItem{
-				ID:         res.RuleID,
-				Title:      res.Name,
-				Verdict:    verdictFromResult(res.Feasible, res.PrecondOK),
-				Confidence: res.Confidence,
-				Summary:    res.Explanation,
-				Evidence:   summarizeEvidence(res.SupportingEventIDs),
-				Gaps:       summarizeGaps(res.MissingEvidence),
-				NextMoves:  r.NextMoves,
-				Updated:    latestTimestamp(r.GeneratedAt),
+				ID:                res.RuleID,
+				Title:             res.Name,
+				Verdict:           verdictFromResult(res.Feasible, res.PrecondOK),
+				Confidence:        res.Confidence,
+				ConfidenceFactors: mapConfidenceFactors(res.ConfidenceFactors),
+				Summary:           res.Explanation,
+				Evidence:          summarizeEvidence(res.SupportingEventIDs),
+				Gaps:              summarizeGaps(res.MissingEvidence),
+				NextMoves:         r.NextMoves,
+				Updated:           latestTimestamp(r.GeneratedAt),
 			}
 		}
 	}
@@ -214,18 +230,54 @@ func buildReasoningItems(r *reportFile) []ReasoningItem {
 	items := make([]ReasoningItem, 0, len(r.Reasoning.Results))
 	for _, res := range r.Reasoning.Results {
 		items = append(items, ReasoningItem{
-			ID:         res.RuleID,
-			Title:      res.Name,
-			Verdict:    verdictFromResult(res.Feasible, res.PrecondOK),
-			Confidence: res.Confidence,
-			Summary:    res.Explanation,
-			Evidence:   summarizeEvidence(res.SupportingEventIDs),
-			Gaps:       summarizeGaps(res.MissingEvidence),
-			NextMoves:  r.NextMoves,
-			Updated:    latestTimestamp(r.GeneratedAt),
+			ID:                res.RuleID,
+			Title:             res.Name,
+			Verdict:           verdictFromResult(res.Feasible, res.PrecondOK),
+			Confidence:        res.Confidence,
+			ConfidenceFactors: mapConfidenceFactors(res.ConfidenceFactors),
+			Summary:           res.Explanation,
+			Evidence:          summarizeEvidence(res.SupportingEventIDs),
+			Gaps:              summarizeGaps(res.MissingEvidence),
+			NextMoves:         r.NextMoves,
+			Updated:           latestTimestamp(r.GeneratedAt),
 		})
 	}
 	return items
+}
+
+func mapConfidenceFactors(in *struct {
+	Coverage            float64 `json:"coverage"`
+	Recency             float64 `json:"recency"`
+	Corroboration       float64 `json:"corroboration"`
+	EvidencePresent     int     `json:"evidence_present"`
+	EvidenceTotal       int     `json:"evidence_total"`
+	SupportingEvents    int     `json:"supporting_events"`
+	MissingEvidence     int     `json:"missing_evidence"`
+	CoverageWeight      float64 `json:"coverage_weight"`
+	RecencyWeight       float64 `json:"recency_weight"`
+	CorroborationWeight float64 `json:"corroboration_weight"`
+	RawScore            float64 `json:"raw_score"`
+	Floor               float64 `json:"floor"`
+	Ceiling             float64 `json:"ceiling"`
+}) *ConfidenceFactors {
+	if in == nil {
+		return nil
+	}
+	return &ConfidenceFactors{
+		Coverage:            in.Coverage,
+		Recency:             in.Recency,
+		Corroboration:       in.Corroboration,
+		EvidencePresent:     in.EvidencePresent,
+		EvidenceTotal:       in.EvidenceTotal,
+		SupportingEvents:    in.SupportingEvents,
+		MissingEvidence:     in.MissingEvidence,
+		CoverageWeight:      in.CoverageWeight,
+		RecencyWeight:       in.RecencyWeight,
+		CorroborationWeight: in.CorroborationWeight,
+		RawScore:            in.RawScore,
+		Floor:               in.Floor,
+		Ceiling:             in.Ceiling,
+	}
 }
 
 func buildQueueItems(r *reportFile) []QueueItem {

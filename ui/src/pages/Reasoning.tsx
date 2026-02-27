@@ -1,7 +1,18 @@
 import { SectionHeader } from "../components/SectionHeader";
 import { VerdictPill } from "../components/VerdictPill";
-import { ConfidenceMeter } from "../components/ConfidenceMeter";
 import { useReasoning } from "../hooks/useApiData";
+
+function confidenceBand(value: number) {
+  if (value >= 0.8) return { label: "High", tone: "text-teal" };
+  if (value >= 0.6) return { label: "Moderate", tone: "text-amber" };
+  return { label: "Low", tone: "text-red" };
+}
+
+function factorBand(value: number) {
+  if (value >= 0.8) return "High";
+  if (value >= 0.6) return "Moderate";
+  return "Low";
+}
 
 export function Reasoning() {
   const data = useReasoning();
@@ -67,11 +78,37 @@ export function Reasoning() {
             <div className="space-y-3">
               <SectionHeader title="Confidence + Decay" />
               <div className="rounded-xl border border-border bg-panel p-4">
-                <p className="text-xs uppercase tracking-wide text-muted">Confidence</p>
-                <p className="mt-2 text-2xl font-semibold">{Math.round(item.confidence * 100)}%</p>
-                <ConfidenceMeter value={item.confidence} />
+                <p className="text-xs uppercase tracking-wide text-muted">Confidence Band</p>
+                <p className={`mt-2 text-2xl font-semibold ${confidenceBand(item.confidence).tone}`}>
+                  {confidenceBand(item.confidence).label}
+                </p>
                 <p className="mt-3 text-xs text-muted">Decay timer: 1h 32m</p>
               </div>
+              {item.confidence_factors && (
+                <div className="rounded-xl border border-border bg-panel p-4 text-sm text-muted">
+                  <SectionHeader title="Confidence Rationale" />
+                  <div className="mt-3 space-y-2">
+                    <p>
+                      Evidence coverage:{" "}
+                      <span className="text-text">
+                        {item.confidence_factors.evidence_present} of {item.confidence_factors.evidence_total}
+                      </span>
+                    </p>
+                    <p>
+                      Recency: <span className="text-text">{factorBand(item.confidence_factors.recency)}</span>
+                    </p>
+                    <p>
+                      Corroboration:{" "}
+                      <span className="text-text">
+                        {item.confidence_factors.supporting_events} supporting events
+                      </span>
+                    </p>
+                    <p className="text-xs text-muted">
+                      Score derived from coverage + recency + corroboration. Not a probability.
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </section>

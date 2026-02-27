@@ -1,0 +1,10 @@
+[
+  {
+    "id": "im-1",
+    "time": "2026-02-27T10:55:00Z",
+    "host": "host-4",
+    "user": "svc-admin",
+    "type": "shadow_copy_delete",
+    "details": {}
+  }
+]

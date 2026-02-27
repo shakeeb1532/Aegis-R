@@ -5,6 +5,21 @@ export type ReasoningItem = {
   title: string;
   verdict: Verdict;
   confidence: number;
+  confidence_factors?: {
+    coverage: number;
+    recency: number;
+    corroboration: number;
+    evidence_present: number;
+    evidence_total: number;
+    supporting_events: number;
+    missing_evidence: number;
+    coverage_weight: number;
+    recency_weight: number;
+    corroboration_weight: number;
+    raw_score: number;
+    floor: number;
+    ceiling: number;
+  };
   summary: string;
   evidence: string[];
   gaps: string[];

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "lm-1",
+    "time": "2026-02-27T10:35:00Z",
+    "host": "host-3",
+    "user": "svc-admin",
+    "type": "role_assume",
+    "details": {}
+  },
+  {
+    "id": "lm-2",
+    "time": "2026-02-27T10:35:10Z",
+    "host": "host-3",
+    "user": "svc-admin",
+    "type": "trust_policy_change",
+    "details": {}
+  }
+]

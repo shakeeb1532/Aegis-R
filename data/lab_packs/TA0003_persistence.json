@@ -1,0 +1,26 @@
+[
+  {
+    "id": "pe-1",
+    "time": "2026-02-27T10:10:00Z",
+    "host": "host-3",
+    "user": "svc-admin",
+    "type": "token_manipulation",
+    "details": {}
+  },
+  {
+    "id": "pe-2",
+    "time": "2026-02-27T10:10:30Z",
+    "host": "host-3",
+    "user": "svc-admin",
+    "type": "account_create",
+    "details": {}
+  },
+  {
+    "id": "pe-3",
+    "time": "2026-02-27T10:10:40Z",
+    "host": "host-3",
+    "user": "svc-admin",
+    "type": "account_privilege_change",
+    "details": {}
+  }
+]

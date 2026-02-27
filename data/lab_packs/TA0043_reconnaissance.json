@@ -1,0 +1,10 @@
+[
+  {
+    "id": "rc-1",
+    "time": "2026-02-27T11:05:00Z",
+    "host": "host-1",
+    "user": "alice",
+    "type": "active_scan_ip",
+    "details": {}
+  }
+]
