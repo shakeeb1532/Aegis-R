@@ -4101,7 +4101,7 @@
         {
           "rule_id": "TA0007.ACCOUNT_DISCOVERY",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -5321,7 +5321,7 @@
         {
           "rule_id": "TA0002.SERVERLESS_EXEC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -5537,7 +5537,7 @@
         {
           "rule_id": "TA0003.IMPLANT_CONTAINER",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -5669,7 +5669,7 @@
         {
           "rule_id": "TA0010.EXFIL_CLOUD_DB",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -5757,7 +5757,7 @@
         {
           "rule_id": "TA0009.EMAIL_COLLECTION",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10185,7 +10185,7 @@
         {
           "rule_id": "TA0007.BROWSER_INFO_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10273,7 +10273,7 @@
         {
           "rule_id": "TA0007.CLOUD_SVC_DASH",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10301,15 +10301,15 @@
       ],
       "labels": [
         {
-          "rule_id": "TA0007.CLOUD_SVC_DISC",
+          "rule_id": "TA0007.CLOUD_SERVICE_DISCOVERY",
           "outcome": "incomplete"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0007.CLOUD_SVC_DISC",
+          "rule_id": "TA0007.CLOUD_SERVICE_DISCOVERY",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10345,7 +10345,7 @@
         {
           "rule_id": "TA0007.CLOUD_STORAGE_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10381,7 +10381,7 @@
         {
           "rule_id": "TA0007.CONTAINER_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10417,7 +10417,7 @@
         {
           "rule_id": "TA0007.DOMAIN_TRUST_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10453,7 +10453,7 @@
         {
           "rule_id": "TA0007.FILE_DIR_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10489,7 +10489,7 @@
         {
           "rule_id": "TA0007.GROUP_POLICY_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10517,15 +10517,15 @@
       ],
       "labels": [
         {
-          "rule_id": "TA0007.NET_SERVICE_DISC",
+          "rule_id": "TA0007.NETWORK_SERVICE_DISCOVERY",
           "outcome": "incomplete"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0007.NET_SERVICE_DISC",
-          "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "rule_id": "TA0007.NETWORK_SERVICE_DISCOVERY",
+          "decision_label": "keep",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10553,15 +10553,15 @@
       ],
       "labels": [
         {
-          "rule_id": "TA0007.NET_SHARE_DISC",
+          "rule_id": "TA0007.NETWORK_SHARE_DISCOVERY",
           "outcome": "incomplete"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0007.NET_SHARE_DISC",
+          "rule_id": "TA0007.NETWORK_SHARE_DISCOVERY",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10597,7 +10597,7 @@
         {
           "rule_id": "TA0007.NET_SNIFF_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10633,7 +10633,7 @@
         {
           "rule_id": "TA0007.PASS_POLICY_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10661,15 +10661,15 @@
       ],
       "labels": [
         {
-          "rule_id": "TA0007.PERM_GROUP_DISC",
+          "rule_id": "TA0007.PERMISSION_GROUP_DISCOVERY",
           "outcome": "incomplete"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0007.PERM_GROUP_DISC",
+          "rule_id": "TA0007.PERMISSION_GROUP_DISCOVERY",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10697,15 +10697,15 @@
       ],
       "labels": [
         {
-          "rule_id": "TA0007.PROC_DISC",
+          "rule_id": "TA0007.PROCESS_DISCOVERY",
           "outcome": "incomplete"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0007.PROC_DISC",
-          "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "rule_id": "TA0007.PROCESS_DISCOVERY",
+          "decision_label": "keep",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10741,7 +10741,7 @@
         {
           "rule_id": "TA0007.QUERY_REGISTRY",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10777,7 +10777,7 @@
         {
           "rule_id": "TA0007.REMOTE_SYS_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10813,7 +10813,7 @@
         {
           "rule_id": "TA0007.SEC_SW_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10841,15 +10841,15 @@
       ],
       "labels": [
         {
-          "rule_id": "TA0007.SYS_INFO_DISC",
+          "rule_id": "TA0007.SYSTEM_INFO_DISCOVERY",
           "outcome": "incomplete"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0007.SYS_INFO_DISC",
-          "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "rule_id": "TA0007.SYSTEM_INFO_DISCOVERY",
+          "decision_label": "keep",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10885,7 +10885,7 @@
         {
           "rule_id": "TA0007.SYS_NET_CONF_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10921,7 +10921,7 @@
         {
           "rule_id": "TA0007.SYS_NET_CONN_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10957,7 +10957,7 @@
         {
           "rule_id": "TA0007.SYS_OWNER_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -10993,7 +10993,7 @@
         {
           "rule_id": "TA0007.SYS_SVC_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -11029,7 +11029,7 @@
         {
           "rule_id": "TA0007.VIRT_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -11265,14 +11265,14 @@
       ],
       "labels": [
         {
-          "rule_id": "TA0009.ARCHIVE_DATA",
+          "rule_id": "TA0009.ARCHIVE_COLLECTED_DATA",
           "outcome": "incomplete"
         }
       ],
       "expectations": [
         {
-          "rule_id": "TA0009.ARCHIVE_DATA",
-          "decision_label": "deprioritize",
+          "rule_id": "TA0009.ARCHIVE_COLLECTED_DATA",
+          "decision_label": "keep",
           "ticket_status": "open",
           "reason_code": ""
         }
@@ -12993,7 +12993,7 @@
         {
           "rule_id": "TA0007.APP_WIN_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -13029,7 +13029,7 @@
         {
           "rule_id": "TA0007.SYS_LOCATION_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]
@@ -13065,7 +13065,7 @@
         {
           "rule_id": "TA0007.SYS_TIME_DISC",
           "decision_label": "deprioritize",
-          "ticket_status": "in_review",
+          "ticket_status": "open",
           "reason_code": ""
         }
       ]

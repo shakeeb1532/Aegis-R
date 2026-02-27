@@ -4,7 +4,15 @@
     "name": "Content Injection",
     "requirements": [
       {
-        "type": "valid_account_login",
+        "type": "network_connection",
+        "description": "Content Injection"
+      },
+      {
+        "type": "http_response_modify",
+        "description": "Content Injection"
+      },
+      {
+        "type": "script_injection",
         "description": "Content Injection"
       }
     ],
@@ -115,7 +123,15 @@
     "name": "Drive-by Compromise",
     "requirements": [
       {
-        "type": "valid_account_login",
+        "type": "browser_process_spawn",
+        "description": "Drive-by Compromise"
+      },
+      {
+        "type": "exploit_kit_hit",
+        "description": "Drive-by Compromise"
+      },
+      {
+        "type": "drive_by_download",
         "description": "Drive-by Compromise"
       }
     ],
@@ -144,7 +160,15 @@
     "name": "Exploit Public-Facing Application",
     "requirements": [
       {
-        "type": "valid_account_login",
+        "type": "web_exploit_hit",
+        "description": "Exploit Public-Facing Application"
+      },
+      {
+        "type": "waf_alert",
+        "description": "Exploit Public-Facing Application"
+      },
+      {
+        "type": "unexpected_process_from_web_server",
         "description": "Exploit Public-Facing Application"
       }
     ],
@@ -173,7 +197,19 @@
     "name": "External Remote Services",
     "requirements": [
       {
-        "type": "valid_account_login",
+        "type": "vpn_auth",
+        "description": "External Remote Services"
+      },
+      {
+        "type": "rdp_auth",
+        "description": "External Remote Services"
+      },
+      {
+        "type": "citrix_auth",
+        "description": "External Remote Services"
+      },
+      {
+        "type": "off_hours_remote_login",
         "description": "External Remote Services"
       }
     ],
@@ -202,7 +238,15 @@
     "name": "Hardware Additions",
     "requirements": [
       {
-        "type": "valid_account_login",
+        "type": "usb_device_insert",
+        "description": "Hardware Additions"
+      },
+      {
+        "type": "new_network_device",
+        "description": "Hardware Additions"
+      },
+      {
+        "type": "unauthorized_hardware",
         "description": "Hardware Additions"
       }
     ],
@@ -373,7 +417,15 @@
     "name": "Replication Through Removable Media",
     "requirements": [
       {
-        "type": "valid_account_login",
+        "type": "usb_device_insert",
+        "description": "Replication Through Removable Media"
+      },
+      {
+        "type": "autorun_event",
+        "description": "Replication Through Removable Media"
+      },
+      {
+        "type": "file_copy_from_removable",
         "description": "Replication Through Removable Media"
       }
     ],
@@ -484,7 +536,15 @@
     "name": "Trusted Relationship",
     "requirements": [
       {
-        "type": "valid_account_login",
+        "type": "third_party_account_auth",
+        "description": "Trusted Relationship"
+      },
+      {
+        "type": "msp_tool_access",
+        "description": "Trusted Relationship"
+      },
+      {
+        "type": "vendor_vpn_login",
         "description": "Trusted Relationship"
       }
     ],
@@ -515,6 +575,14 @@
       {
         "type": "valid_account_login",
         "description": "Valid Accounts \u2013 External"
+      },
+      {
+        "type": "impossible_travel",
+        "description": "Valid Accounts \u2013 External"
+      },
+      {
+        "type": "known_bad_ip_auth",
+        "description": "Valid Accounts \u2013 External"
       }
     ],
     "preconds": [],
@@ -543,6 +611,14 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "Command & Scripting \u2013 Bash/Shell"
+      },
+      {
+        "type": "suspicious_shell_cmd",
+        "description": "Command & Scripting \u2013 Bash/Shell"
+      },
+      {
+        "type": "curl_pipe_bash",
         "description": "Command & Scripting \u2013 Bash/Shell"
       }
     ],
@@ -575,6 +651,14 @@
       {
         "type": "process_creation",
         "description": "Command & Scripting \u2013 Cloud API"
+      },
+      {
+        "type": "cloud_api_call",
+        "description": "Command & Scripting \u2013 Cloud API"
+      },
+      {
+        "type": "cli_unusual_action",
+        "description": "Command & Scripting \u2013 Cloud API"
       }
     ],
     "preconds": [
@@ -605,6 +689,18 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "Command & Scripting \u2013 JavaScript/JScript"
+      },
+      {
+        "type": "wscript_exec",
+        "description": "Command & Scripting \u2013 JavaScript/JScript"
+      },
+      {
+        "type": "cscript_exec",
+        "description": "Command & Scripting \u2013 JavaScript/JScript"
+      },
+      {
+        "type": "jscript_child_proc",
         "description": "Command & Scripting \u2013 JavaScript/JScript"
       }
     ],
@@ -637,6 +733,14 @@
       {
         "type": "process_creation",
         "description": "Command & Scripting \u2013 PowerShell"
+      },
+      {
+        "type": "encoded_command",
+        "description": "Command & Scripting \u2013 PowerShell"
+      },
+      {
+        "type": "powershell_download_cradle",
+        "description": "Command & Scripting \u2013 PowerShell"
       }
     ],
     "preconds": [
@@ -667,6 +771,14 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "Command & Scripting \u2013 Python"
+      },
+      {
+        "type": "python_exec_decode",
+        "description": "Command & Scripting \u2013 Python"
+      },
+      {
+        "type": "python_subprocess_shell",
         "description": "Command & Scripting \u2013 Python"
       }
     ],
@@ -699,6 +811,14 @@
       {
         "type": "process_creation",
         "description": "Command & Scripting \u2013 Visual Basic/VBA"
+      },
+      {
+        "type": "macro_execution",
+        "description": "Command & Scripting \u2013 Visual Basic/VBA"
+      },
+      {
+        "type": "office_child_proc",
+        "description": "Command & Scripting \u2013 Visual Basic/VBA"
       }
     ],
     "preconds": [
@@ -729,6 +849,14 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "Container Administration Command"
+      },
+      {
+        "type": "kubectl_exec",
+        "description": "Container Administration Command"
+      },
+      {
+        "type": "docker_exec_prod",
         "description": "Container Administration Command"
       }
     ],
@@ -761,6 +889,14 @@
       {
         "type": "process_creation",
         "description": "Deploy Container"
+      },
+      {
+        "type": "container_start",
+        "description": "Deploy Container"
+      },
+      {
+        "type": "privileged_container_create",
+        "description": "Deploy Container"
       }
     ],
     "preconds": [
@@ -792,6 +928,14 @@
       {
         "type": "process_creation",
         "description": "Exploitation for Client Execution"
+      },
+      {
+        "type": "browser_child_proc",
+        "description": "Exploitation for Client Execution"
+      },
+      {
+        "type": "renderer_spawn_cmd",
+        "description": "Exploitation for Client Execution"
       }
     ],
     "preconds": [
@@ -822,6 +966,14 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "Inter-Process Communication (COM/DCOM)"
+      },
+      {
+        "type": "dcom_lateral_exec",
+        "description": "Inter-Process Communication (COM/DCOM)"
+      },
+      {
+        "type": "com_object_hijack",
         "description": "Inter-Process Communication (COM/DCOM)"
       }
     ],
@@ -904,6 +1056,14 @@
       {
         "type": "process_creation",
         "description": "Native API Abuse"
+      },
+      {
+        "type": "direct_syscall",
+        "description": "Native API Abuse"
+      },
+      {
+        "type": "ntdll_direct_invoke",
+        "description": "Native API Abuse"
       }
     ],
     "preconds": [
@@ -934,6 +1094,14 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "Scheduled Task/Job \u2013 Execution"
+      },
+      {
+        "type": "schtasks_create",
+        "description": "Scheduled Task/Job \u2013 Execution"
+      },
+      {
+        "type": "at_exec_trigger",
         "description": "Scheduled Task/Job \u2013 Execution"
       }
     ],
@@ -966,6 +1134,14 @@
       {
         "type": "process_creation",
         "description": "Serverless Execution"
+      },
+      {
+        "type": "lambda_invoke_anomaly",
+        "description": "Serverless Execution"
+      },
+      {
+        "type": "function_unusual_trigger",
+        "description": "Serverless Execution"
       }
     ],
     "preconds": [
@@ -996,6 +1172,18 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "System Services \u2013 Service Execution"
+      },
+      {
+        "type": "sc_exec",
+        "description": "System Services \u2013 Service Execution"
+      },
+      {
+        "type": "psexec_svc",
+        "description": "System Services \u2013 Service Execution"
+      },
+      {
+        "type": "smb_service_create",
         "description": "System Services \u2013 Service Execution"
       }
     ],
@@ -1028,6 +1216,14 @@
       {
         "type": "process_creation",
         "description": "User Execution \u2013 Malicious File"
+      },
+      {
+        "type": "user_open_attachment",
+        "description": "User Execution \u2013 Malicious File"
+      },
+      {
+        "type": "child_proc_from_office",
+        "description": "User Execution \u2013 Malicious File"
       }
     ],
     "preconds": [
@@ -1059,6 +1255,14 @@
       {
         "type": "process_creation",
         "description": "User Execution \u2013 Malicious Link"
+      },
+      {
+        "type": "browser_spawn_from_mail",
+        "description": "User Execution \u2013 Malicious Link"
+      },
+      {
+        "type": "oauth_redirect_abuse",
+        "description": "User Execution \u2013 Malicious Link"
       }
     ],
     "preconds": [
@@ -1089,6 +1293,14 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "Windows Management Instrumentation"
+      },
+      {
+        "type": "wmic_process_create",
+        "description": "Windows Management Instrumentation"
+      },
+      {
+        "type": "wmi_subscription_trigger",
         "description": "Windows Management Instrumentation"
       }
     ],
@@ -1154,7 +1366,15 @@
     "name": "BITS Jobs",
     "requirements": [
       {
-        "type": "registry_run_key",
+        "type": "bitsadmin_job_create",
+        "description": "BITS Jobs"
+      },
+      {
+        "type": "bits_network_transfer",
+        "description": "BITS Jobs"
+      },
+      {
+        "type": "bits_persistence",
         "description": "BITS Jobs"
       }
     ],
@@ -1185,7 +1405,15 @@
     "name": "Pre-OS Boot \u2013 Bootkit/UEFI",
     "requirements": [
       {
-        "type": "registry_run_key",
+        "type": "firmware_alert",
+        "description": "Pre-OS Boot \u2013 Bootkit/UEFI"
+      },
+      {
+        "type": "secure_boot_bypass",
+        "description": "Pre-OS Boot \u2013 Bootkit/UEFI"
+      },
+      {
+        "type": "uefi_write_attempt",
         "description": "Pre-OS Boot \u2013 Bootkit/UEFI"
       }
     ],
@@ -1216,7 +1444,11 @@
     "name": "Browser Extensions",
     "requirements": [
       {
-        "type": "registry_run_key",
+        "type": "browser_extension_install",
+        "description": "Browser Extensions"
+      },
+      {
+        "type": "ext_excessive_permissions",
         "description": "Browser Extensions"
       }
     ],
@@ -1247,7 +1479,15 @@
     "name": "Compromise Host Software Binary",
     "requirements": [
       {
-        "type": "registry_run_key",
+        "type": "binary_hash_mismatch",
+        "description": "Compromise Host Software Binary"
+      },
+      {
+        "type": "system_binary_tamper",
+        "description": "Compromise Host Software Binary"
+      },
+      {
+        "type": "file_integrity_alert",
         "description": "Compromise Host Software Binary"
       }
     ],
@@ -1313,7 +1553,15 @@
     "name": "Create or Modify System Process",
     "requirements": [
       {
-        "type": "registry_run_key",
+        "type": "service_install",
+        "description": "Create or Modify System Process"
+      },
+      {
+        "type": "launchd_unit_add",
+        "description": "Create or Modify System Process"
+      },
+      {
+        "type": "systemd_unit_create",
         "description": "Create or Modify System Process"
       }
     ],
@@ -1344,7 +1592,15 @@
     "name": "Event-Triggered Execution",
     "requirements": [
       {
-        "type": "registry_run_key",
+        "type": "wmi_event_subscription",
+        "description": "Event-Triggered Execution"
+      },
+      {
+        "type": "accessibility_feature_hijack",
+        "description": "Event-Triggered Execution"
+      },
+      {
+        "type": "at_trigger",
         "description": "Event-Triggered Execution"
       }
     ],
@@ -1375,7 +1631,15 @@
     "name": "Hijack Execution Flow \u2013 DLL Sideload",
     "requirements": [
       {
-        "type": "registry_run_key",
+        "type": "dll_sideload_detect",
+        "description": "Hijack Execution Flow \u2013 DLL Sideload"
+      },
+      {
+        "type": "search_order_hijack",
+        "description": "Hijack Execution Flow \u2013 DLL Sideload"
+      },
+      {
+        "type": "dll_in_app_dir",
         "description": "Hijack Execution Flow \u2013 DLL Sideload"
       }
     ],
@@ -1406,7 +1670,15 @@
     "name": "Implant Internal Image",
     "requirements": [
       {
-        "type": "registry_run_key",
+        "type": "image_push_to_registry",
+        "description": "Implant Internal Image"
+      },
+      {
+        "type": "image_hash_mismatch",
+        "description": "Implant Internal Image"
+      },
+      {
+        "type": "backdoor_image_scan",
         "description": "Implant Internal Image"
       }
     ],
@@ -1488,7 +1760,15 @@
     "name": "Modify Authentication Process \u2013 Persistence",
     "requirements": [
       {
-        "type": "registry_run_key",
+        "type": "pam_module_add",
+        "description": "Modify Authentication Process \u2013 Persistence"
+      },
+      {
+        "type": "sso_handler_modify",
+        "description": "Modify Authentication Process \u2013 Persistence"
+      },
+      {
+        "type": "auth_config_change",
         "description": "Modify Authentication Process \u2013 Persistence"
       }
     ],
@@ -1619,7 +1899,15 @@
     "name": "PowerShell Profile Persistence",
     "requirements": [
       {
-        "type": "registry_run_key",
+        "type": "ps_profile_modify",
+        "description": "PowerShell Profile Persistence"
+      },
+      {
+        "type": "ps_profile_execution",
+        "description": "PowerShell Profile Persistence"
+      },
+      {
+        "type": "profile_path_change",
         "description": "PowerShell Profile Persistence"
       }
     ],
@@ -1650,7 +1938,15 @@
     "name": "Scheduled Task \u2013 Persistence",
     "requirements": [
       {
-        "type": "registry_run_key",
+        "type": "schtasks_create",
+        "description": "Scheduled Task \u2013 Persistence"
+      },
+      {
+        "type": "task_nonstandard_path",
+        "description": "Scheduled Task \u2013 Persistence"
+      },
+      {
+        "type": "task_created_by_nonadmin",
         "description": "Scheduled Task \u2013 Persistence"
       }
     ],
@@ -1681,7 +1977,15 @@
     "name": "Server Software Component \u2013 Webshell",
     "requirements": [
       {
-        "type": "registry_run_key",
+        "type": "webshell_detect",
+        "description": "Server Software Component \u2013 Webshell"
+      },
+      {
+        "type": "web_root_file_create",
+        "description": "Server Software Component \u2013 Webshell"
+      },
+      {
+        "type": "web_server_spawn_shell",
         "description": "Server Software Component \u2013 Webshell"
       }
     ],
@@ -1712,7 +2016,11 @@
     "name": "SSH Authorized Keys Modification",
     "requirements": [
       {
-        "type": "registry_run_key",
+        "type": "authorized_keys_modify",
+        "description": "SSH Authorized Keys Modification"
+      },
+      {
+        "type": "ssh_key_add_outside_provisioning",
         "description": "SSH Authorized Keys Modification"
       }
     ],
@@ -1743,7 +2051,15 @@
     "name": "Traffic Signaling \u2013 Port Knocking",
     "requirements": [
       {
-        "type": "registry_run_key",
+        "type": "port_knock_sequence",
+        "description": "Traffic Signaling \u2013 Port Knocking"
+      },
+      {
+        "type": "sequenced_port_connect",
+        "description": "Traffic Signaling \u2013 Port Knocking"
+      },
+      {
+        "type": "hidden_svc_trigger",
         "description": "Traffic Signaling \u2013 Port Knocking"
       }
     ],
@@ -1774,7 +2090,11 @@
     "name": "Valid Accounts \u2013 Cloud Account Persistence",
     "requirements": [
       {
-        "type": "registry_run_key",
+        "type": "unused_svc_account_reactivate",
+        "description": "Valid Accounts \u2013 Cloud Account Persistence"
+      },
+      {
+        "type": "iam_account_kept_post_compromise",
         "description": "Valid Accounts \u2013 Cloud Account Persistence"
       }
     ],
@@ -2285,6 +2605,14 @@
       {
         "type": "process_creation",
         "description": "Access Token Manipulation \u2013 Evasion"
+      },
+      {
+        "type": "token_impersonation",
+        "description": "Access Token Manipulation \u2013 Evasion"
+      },
+      {
+        "type": "seimpersonate_abuse",
+        "description": "Access Token Manipulation \u2013 Evasion"
       }
     ],
     "preconds": [
@@ -2367,6 +2695,14 @@
       {
         "type": "process_creation",
         "description": "BITS Jobs \u2013 Evasion"
+      },
+      {
+        "type": "bitsadmin_download",
+        "description": "BITS Jobs \u2013 Evasion"
+      },
+      {
+        "type": "bits_blend_windows_update",
+        "description": "BITS Jobs \u2013 Evasion"
       }
     ],
     "preconds": [
@@ -2397,6 +2733,14 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "Debugger Evasion"
+      },
+      {
+        "type": "anti_debug_check",
+        "description": "Debugger Evasion"
+      },
+      {
+        "type": "timing_attack_detect",
         "description": "Debugger Evasion"
       }
     ],
@@ -2429,6 +2773,14 @@
       {
         "type": "process_creation",
         "description": "Deobfuscate/Decode Files"
+      },
+      {
+        "type": "certutil_decode",
+        "description": "Deobfuscate/Decode Files"
+      },
+      {
+        "type": "base64_xor_decode_runtime",
+        "description": "Deobfuscate/Decode Files"
       }
     ],
     "preconds": [
@@ -2459,6 +2811,14 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "Direct Volume Access"
+      },
+      {
+        "type": "raw_disk_access",
+        "description": "Direct Volume Access"
+      },
+      {
+        "type": "volume_shadow_manipulation",
         "description": "Direct Volume Access"
       }
     ],
@@ -2546,6 +2906,18 @@
       {
         "type": "process_creation",
         "description": "Execution Guardrails"
+      },
+      {
+        "type": "vm_check",
+        "description": "Execution Guardrails"
+      },
+      {
+        "type": "sandbox_detect",
+        "description": "Execution Guardrails"
+      },
+      {
+        "type": "env_keyed_payload",
+        "description": "Execution Guardrails"
       }
     ],
     "preconds": [
@@ -2576,6 +2948,18 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "File and Directory Permissions Modification"
+      },
+      {
+        "type": "icacls_exec",
+        "description": "File and Directory Permissions Modification"
+      },
+      {
+        "type": "dacl_modification",
+        "description": "File and Directory Permissions Modification"
+      },
+      {
+        "type": "chmod_security",
         "description": "File and Directory Permissions Modification"
       }
     ],
@@ -2608,6 +2992,18 @@
       {
         "type": "process_creation",
         "description": "Forge Web Credentials \u2013 SAML/OAuth"
+      },
+      {
+        "type": "golden_saml_detect",
+        "description": "Forge Web Credentials \u2013 SAML/OAuth"
+      },
+      {
+        "type": "jwt_manipulation",
+        "description": "Forge Web Credentials \u2013 SAML/OAuth"
+      },
+      {
+        "type": "token_forge",
+        "description": "Forge Web Credentials \u2013 SAML/OAuth"
       }
     ],
     "preconds": [
@@ -2639,6 +3035,18 @@
       {
         "type": "process_creation",
         "description": "Hide Artifacts"
+      },
+      {
+        "type": "ads_stream_create",
+        "description": "Hide Artifacts"
+      },
+      {
+        "type": "hidden_file_create",
+        "description": "Hide Artifacts"
+      },
+      {
+        "type": "process_hide",
+        "description": "Hide Artifacts"
       }
     ],
     "preconds": [
@@ -2669,6 +3077,14 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "Hijack Execution Flow \u2013 Evasion"
+      },
+      {
+        "type": "dll_hijack_allowlist_bypass",
+        "description": "Hijack Execution Flow \u2013 Evasion"
+      },
+      {
+        "type": "lolbin_load_hijack",
         "description": "Hijack Execution Flow \u2013 Evasion"
       }
     ],
@@ -2784,6 +3200,18 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "Indirect Command Execution"
+      },
+      {
+        "type": "forfiles_exec",
+        "description": "Indirect Command Execution"
+      },
+      {
+        "type": "pcalua_exec",
+        "description": "Indirect Command Execution"
+      },
+      {
+        "type": "msiexec_cmd",
         "description": "Indirect Command Execution"
       }
     ],
@@ -2902,6 +3330,14 @@
       {
         "type": "process_creation",
         "description": "Modify Cloud Compute Infrastructure"
+      },
+      {
+        "type": "snapshot_create_before_delete",
+        "description": "Modify Cloud Compute Infrastructure"
+      },
+      {
+        "type": "ami_create_anomaly",
+        "description": "Modify Cloud Compute Infrastructure"
       }
     ],
     "preconds": [
@@ -2932,6 +3368,14 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "Modify Registry"
+      },
+      {
+        "type": "registry_modification",
+        "description": "Modify Registry"
+      },
+      {
+        "type": "security_tool_disable_key",
         "description": "Modify Registry"
       }
     ],
@@ -3034,6 +3478,14 @@
       {
         "type": "process_creation",
         "description": "Process Injection \u2013 Evasion"
+      },
+      {
+        "type": "code_inject_legit_proc",
+        "description": "Process Injection \u2013 Evasion"
+      },
+      {
+        "type": "hollowing_detect",
+        "description": "Process Injection \u2013 Evasion"
       }
     ],
     "preconds": [
@@ -3064,6 +3516,14 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "Reflective Code Loading"
+      },
+      {
+        "type": "reflective_dll_inject",
+        "description": "Reflective Code Loading"
+      },
+      {
+        "type": "in_memory_dotnet_load",
         "description": "Reflective Code Loading"
       }
     ],
@@ -3096,6 +3556,14 @@
       {
         "type": "process_creation",
         "description": "Rogue Domain Controller"
+      },
+      {
+        "type": "dcshadow_detect",
+        "description": "Rogue Domain Controller"
+      },
+      {
+        "type": "unauthorized_dc_replicate",
+        "description": "Rogue Domain Controller"
       }
     ],
     "preconds": [
@@ -3126,6 +3594,18 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "Rootkit"
+      },
+      {
+        "type": "dkom_detect",
+        "description": "Rootkit"
+      },
+      {
+        "type": "kernel_hook_alert",
+        "description": "Rootkit"
+      },
+      {
+        "type": "bookit_detect",
         "description": "Rootkit"
       }
     ],
@@ -3158,6 +3638,18 @@
       {
         "type": "process_creation",
         "description": "Signed Binary Proxy \u2013 rundll32/mshta/certutil"
+      },
+      {
+        "type": "rundll32_network_dll",
+        "description": "Signed Binary Proxy \u2013 rundll32/mshta/certutil"
+      },
+      {
+        "type": "mshta_remote_hta",
+        "description": "Signed Binary Proxy \u2013 rundll32/mshta/certutil"
+      },
+      {
+        "type": "certutil_download",
+        "description": "Signed Binary Proxy \u2013 rundll32/mshta/certutil"
       }
     ],
     "preconds": [
@@ -3188,6 +3680,18 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "Subvert Trust Controls"
+      },
+      {
+        "type": "code_sign_cert_theft",
+        "description": "Subvert Trust Controls"
+      },
+      {
+        "type": "root_ca_abuse",
+        "description": "Subvert Trust Controls"
+      },
+      {
+        "type": "sip_hijack",
         "description": "Subvert Trust Controls"
       }
     ],
@@ -3220,6 +3724,14 @@
       {
         "type": "process_creation",
         "description": "Template Injection"
+      },
+      {
+        "type": "remote_template_load",
+        "description": "Template Injection"
+      },
+      {
+        "type": "macro_via_template",
+        "description": "Template Injection"
       }
     ],
     "preconds": [
@@ -3250,6 +3762,14 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "Traffic Signaling \u2013 Evasion"
+      },
+      {
+        "type": "passive_backdoor_trigger",
+        "description": "Traffic Signaling \u2013 Evasion"
+      },
+      {
+        "type": "port_knock_activate",
         "description": "Traffic Signaling \u2013 Evasion"
       }
     ],
@@ -3282,6 +3802,18 @@
       {
         "type": "process_creation",
         "description": "Virtualization/Sandbox Evasion"
+      },
+      {
+        "type": "vm_artifact_check",
+        "description": "Virtualization/Sandbox Evasion"
+      },
+      {
+        "type": "cpuid_check",
+        "description": "Virtualization/Sandbox Evasion"
+      },
+      {
+        "type": "sleep_timing_evade",
+        "description": "Virtualization/Sandbox Evasion"
       }
     ],
     "preconds": [
@@ -3313,6 +3845,14 @@
       {
         "type": "process_creation",
         "description": "Weaken Encryption"
+      },
+      {
+        "type": "tls_downgrade",
+        "description": "Weaken Encryption"
+      },
+      {
+        "type": "storage_encryption_disable",
+        "description": "Weaken Encryption"
       }
     ],
     "preconds": [
@@ -3343,6 +3883,14 @@
     "requirements": [
       {
         "type": "process_creation",
+        "description": "XSL Script Processing"
+      },
+      {
+        "type": "msxsl_exec",
+        "description": "XSL Script Processing"
+      },
+      {
+        "type": "wmic_xsl_format",
         "description": "XSL Script Processing"
       }
     ],
@@ -4165,7 +4713,15 @@
     "name": "Application Window Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "process_creation",
+        "description": "Application Window Discovery"
+      },
+      {
+        "type": "window_enum_call",
+        "description": "Application Window Discovery"
+      },
+      {
+        "type": "spy_hook_detect",
         "description": "Application Window Discovery"
       }
     ],
@@ -4196,7 +4752,11 @@
     "name": "Browser Information Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "browser_history_access",
+        "description": "Browser Information Discovery"
+      },
+      {
+        "type": "browser_credential_store_read",
         "description": "Browser Information Discovery"
       }
     ],
@@ -4328,7 +4888,15 @@
     "name": "Cloud Storage Object Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "s3_list_objects",
+        "description": "Cloud Storage Object Discovery"
+      },
+      {
+        "type": "gcs_ls",
+        "description": "Cloud Storage Object Discovery"
+      },
+      {
+        "type": "blob_list_outside_app",
         "description": "Cloud Storage Object Discovery"
       }
     ],
@@ -4359,7 +4927,11 @@
     "name": "Cloud Service Dashboard",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "console_access",
+        "description": "Cloud Service Dashboard"
+      },
+      {
+        "type": "read_only_role_cloud_browse",
         "description": "Cloud Service Dashboard"
       }
     ],
@@ -4386,42 +4958,19 @@
     }
   },
   {
-    "id": "TA0007.CLOUD_SVC_DISC",
-    "name": "Cloud Service Discovery",
-    "requirements": [
-      {
-        "type": "network_connection",
-        "description": "Cloud Service Discovery"
-      }
-    ],
-    "preconds": [
-      "valid_account_login"
-    ],
-    "explain": "Cloud Service Discovery",
-    "mitre": {
-      "tactic": "TA0007",
-      "technique": "T1526",
-      "subtechnique": "",
-      "links": []
-    },
-    "provenance": {
-      "author": "Aman",
-      "version": "1.0",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": "2026-02-26"
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
     "id": "TA0007.CONTAINER_DISC",
     "name": "Container and Resource Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "kubectl_get_pods",
+        "description": "Container and Resource Discovery"
+      },
+      {
+        "type": "kubectl_get_secrets",
+        "description": "Container and Resource Discovery"
+      },
+      {
+        "type": "docker_ps_prod",
         "description": "Container and Resource Discovery"
       }
     ],
@@ -4452,7 +5001,15 @@
     "name": "Domain Trust Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "nltest_domain_trusts",
+        "description": "Domain Trust Discovery"
+      },
+      {
+        "type": "bloodhound_ad_enum",
+        "description": "Domain Trust Discovery"
+      },
+      {
+        "type": "ldap_trust_query",
         "description": "Domain Trust Discovery"
       }
     ],
@@ -4483,7 +5040,15 @@
     "name": "File and Directory Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "dir_recursive_enum",
+        "description": "File and Directory Discovery"
+      },
+      {
+        "type": "find_sensitive_paths",
+        "description": "File and Directory Discovery"
+      },
+      {
+        "type": "ls_etc_scan",
         "description": "File and Directory Discovery"
       }
     ],
@@ -4514,7 +5079,15 @@
     "name": "Group Policy Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "gpresult_exec",
+        "description": "Group Policy Discovery"
+      },
+      {
+        "type": "get_gpo_call",
+        "description": "Group Policy Discovery"
+      },
+      {
+        "type": "ad_policy_enum",
         "description": "Group Policy Discovery"
       }
     ],
@@ -4607,73 +5180,19 @@
     }
   },
   {
-    "id": "TA0007.NET_SERVICE_DISC",
-    "name": "Network Service Discovery",
-    "requirements": [
-      {
-        "type": "network_connection",
-        "description": "Network Service Discovery"
-      }
-    ],
-    "preconds": [
-      "valid_account_login"
-    ],
-    "explain": "Network Service Discovery",
-    "mitre": {
-      "tactic": "TA0007",
-      "technique": "T1046",
-      "subtechnique": "",
-      "links": []
-    },
-    "provenance": {
-      "author": "Aman",
-      "version": "1.0",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": "2026-02-26"
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
-    "id": "TA0007.NET_SHARE_DISC",
-    "name": "Network Share Discovery",
-    "requirements": [
-      {
-        "type": "network_connection",
-        "description": "Network Share Discovery"
-      }
-    ],
-    "preconds": [
-      "valid_account_login"
-    ],
-    "explain": "Network Share Discovery",
-    "mitre": {
-      "tactic": "TA0007",
-      "technique": "T1135",
-      "subtechnique": "",
-      "links": []
-    },
-    "provenance": {
-      "author": "Aman",
-      "version": "1.0",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": "2026-02-26"
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
     "id": "TA0007.NET_SNIFF_DISC",
     "name": "Network Sniffing \u2013 Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "tcpdump_exec",
+        "description": "Network Sniffing \u2013 Discovery"
+      },
+      {
+        "type": "wireshark_prod_host",
+        "description": "Network Sniffing \u2013 Discovery"
+      },
+      {
+        "type": "promiscuous_mode_nic",
         "description": "Network Sniffing \u2013 Discovery"
       }
     ],
@@ -4704,7 +5223,15 @@
     "name": "Password Policy Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "net_accounts_exec",
+        "description": "Password Policy Discovery"
+      },
+      {
+        "type": "ldap_pwpolicy_query",
+        "description": "Password Policy Discovery"
+      },
+      {
+        "type": "domain_password_policy",
         "description": "Password Policy Discovery"
       }
     ],
@@ -4762,37 +5289,6 @@
     }
   },
   {
-    "id": "TA0007.PERM_GROUP_DISC",
-    "name": "Permission Group Discovery",
-    "requirements": [
-      {
-        "type": "network_connection",
-        "description": "Permission Group Discovery"
-      }
-    ],
-    "preconds": [
-      "valid_account_login"
-    ],
-    "explain": "Permission Group Discovery",
-    "mitre": {
-      "tactic": "TA0007",
-      "technique": "T1069",
-      "subtechnique": "",
-      "links": []
-    },
-    "provenance": {
-      "author": "Aman",
-      "version": "1.0",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": "2026-02-26"
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
     "id": "TA0007.PROCESS_DISCOVERY",
     "name": "Process Discovery",
     "requirements": [
@@ -4828,42 +5324,19 @@
     }
   },
   {
-    "id": "TA0007.PROC_DISC",
-    "name": "Process Discovery",
-    "requirements": [
-      {
-        "type": "network_connection",
-        "description": "Process Discovery"
-      }
-    ],
-    "preconds": [
-      "valid_account_login"
-    ],
-    "explain": "Process Discovery",
-    "mitre": {
-      "tactic": "TA0007",
-      "technique": "T1057",
-      "subtechnique": "",
-      "links": []
-    },
-    "provenance": {
-      "author": "Aman",
-      "version": "1.0",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": "2026-02-26"
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
     "id": "TA0007.QUERY_REGISTRY",
     "name": "Query Registry",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "reg_query_exec",
+        "description": "Query Registry"
+      },
+      {
+        "type": "security_hive_access",
+        "description": "Query Registry"
+      },
+      {
+        "type": "sam_hive_access",
         "description": "Query Registry"
       }
     ],
@@ -4894,7 +5367,15 @@
     "name": "Remote System Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "ping_sweep",
+        "description": "Remote System Discovery"
+      },
+      {
+        "type": "arp_scan",
+        "description": "Remote System Discovery"
+      },
+      {
+        "type": "ad_computer_enum",
         "description": "Remote System Discovery"
       }
     ],
@@ -4925,7 +5406,15 @@
     "name": "Security Software Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "tasklist_findstr_sectools",
+        "description": "Security Software Discovery"
+      },
+      {
+        "type": "av_edr_product_enum",
+        "description": "Security Software Discovery"
+      },
+      {
+        "type": "security_sw_query",
         "description": "Security Software Discovery"
       }
     ],
@@ -4983,42 +5472,19 @@
     }
   },
   {
-    "id": "TA0007.SYS_INFO_DISC",
-    "name": "System Information Discovery",
-    "requirements": [
-      {
-        "type": "network_connection",
-        "description": "System Information Discovery"
-      }
-    ],
-    "preconds": [
-      "valid_account_login"
-    ],
-    "explain": "System Information Discovery",
-    "mitre": {
-      "tactic": "TA0007",
-      "technique": "T1082",
-      "subtechnique": "",
-      "links": []
-    },
-    "provenance": {
-      "author": "Aman",
-      "version": "1.0",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": "2026-02-26"
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
     "id": "TA0007.SYS_LOCATION_DISC",
     "name": "System Location Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "timezone_query",
+        "description": "System Location Discovery"
+      },
+      {
+        "type": "locale_query",
+        "description": "System Location Discovery"
+      },
+      {
+        "type": "language_check",
         "description": "System Location Discovery"
       }
     ],
@@ -5049,7 +5515,19 @@
     "name": "System Network Configuration Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "ipconfig_exec",
+        "description": "System Network Configuration Discovery"
+      },
+      {
+        "type": "ifconfig_exec",
+        "description": "System Network Configuration Discovery"
+      },
+      {
+        "type": "route_print",
+        "description": "System Network Configuration Discovery"
+      },
+      {
+        "type": "dns_config_enum",
         "description": "System Network Configuration Discovery"
       }
     ],
@@ -5080,7 +5558,11 @@
     "name": "System Network Connections Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "netstat_exec",
+        "description": "System Network Connections Discovery"
+      },
+      {
+        "type": "active_conn_enum_suspicious_proc",
         "description": "System Network Connections Discovery"
       }
     ],
@@ -5111,7 +5593,15 @@
     "name": "System Owner/User Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "whoami_all",
+        "description": "System Owner/User Discovery"
+      },
+      {
+        "type": "id_exec",
+        "description": "System Owner/User Discovery"
+      },
+      {
+        "type": "get_local_user",
         "description": "System Owner/User Discovery"
       }
     ],
@@ -5142,7 +5632,15 @@
     "name": "System Service Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "sc_query",
+        "description": "System Service Discovery"
+      },
+      {
+        "type": "systemctl_list",
+        "description": "System Service Discovery"
+      },
+      {
+        "type": "service_enum",
         "description": "System Service Discovery"
       }
     ],
@@ -5173,7 +5671,15 @@
     "name": "System Time Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "w32tm_query",
+        "description": "System Time Discovery"
+      },
+      {
+        "type": "time_check_sandbox",
+        "description": "System Time Discovery"
+      },
+      {
+        "type": "time_api_call",
         "description": "System Time Discovery"
       }
     ],
@@ -5204,7 +5710,15 @@
     "name": "Virtualization/Sandbox Discovery",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "vmware_registry_check",
+        "description": "Virtualization/Sandbox Discovery"
+      },
+      {
+        "type": "cpuid_vm_detect",
+        "description": "Virtualization/Sandbox Discovery"
+      },
+      {
+        "type": "screen_res_check",
         "description": "Virtualization/Sandbox Discovery"
       }
     ],
@@ -5601,40 +6115,19 @@
     }
   },
   {
-    "id": "TA0009.ARCHIVE_DATA",
-    "name": "Archive Collected Data",
-    "requirements": [
-      {
-        "type": "file_create",
-        "description": "Archive Collected Data"
-      }
-    ],
-    "preconds": [],
-    "explain": "Archive Collected Data",
-    "mitre": {
-      "tactic": "TA0009",
-      "technique": "T1560",
-      "subtechnique": "",
-      "links": []
-    },
-    "provenance": {
-      "author": "Aman",
-      "version": "1.0",
-      "sources": null,
-      "reviewed_by": null,
-      "approved_at": "2026-02-26"
-    },
-    "constraints": {
-      "min_confidence": 0,
-      "applies_to": null
-    }
-  },
-  {
     "id": "TA0009.AUDIO_CAPTURE",
     "name": "Audio Capture",
     "requirements": [
       {
-        "type": "file_create",
+        "type": "microphone_access",
+        "description": "Audio Capture"
+      },
+      {
+        "type": "audio_record_process",
+        "description": "Audio Capture"
+      },
+      {
+        "type": "non_conf_app_mic",
         "description": "Audio Capture"
       }
     ],
@@ -5665,6 +6158,14 @@
       {
         "type": "file_create",
         "description": "Automated Collection"
+      },
+      {
+        "type": "script_file_harvest",
+        "description": "Automated Collection"
+      },
+      {
+        "type": "pattern_match_bulk_copy",
+        "description": "Automated Collection"
       }
     ],
     "preconds": [],
@@ -5692,7 +6193,15 @@
     "name": "Browser Session Hijacking",
     "requirements": [
       {
-        "type": "file_create",
+        "type": "cookie_theft_js",
+        "description": "Browser Session Hijacking"
+      },
+      {
+        "type": "browser_proc_mem_access",
+        "description": "Browser Session Hijacking"
+      },
+      {
+        "type": "session_hijack_detect",
         "description": "Browser Session Hijacking"
       }
     ],
@@ -5721,7 +6230,15 @@
     "name": "Clipboard Data",
     "requirements": [
       {
-        "type": "file_create",
+        "type": "clipboard_monitor_proc",
+        "description": "Clipboard Data"
+      },
+      {
+        "type": "setwindowshookex_keyboard",
+        "description": "Clipboard Data"
+      },
+      {
+        "type": "pwmgr_clipboard",
         "description": "Clipboard Data"
       }
     ],
@@ -5750,7 +6267,15 @@
     "name": "Data from Cloud Storage",
     "requirements": [
       {
-        "type": "file_create",
+        "type": "s3_getobject_burst",
+        "description": "Data from Cloud Storage"
+      },
+      {
+        "type": "blob_mass_download",
+        "description": "Data from Cloud Storage"
+      },
+      {
+        "type": "gcs_bulk_read",
         "description": "Data from Cloud Storage"
       }
     ],
@@ -5779,7 +6304,15 @@
     "name": "Data from Information Repositories",
     "requirements": [
       {
-        "type": "file_create",
+        "type": "sharepoint_mass_download",
+        "description": "Data from Information Repositories"
+      },
+      {
+        "type": "confluence_bulk_export",
+        "description": "Data from Information Repositories"
+      },
+      {
+        "type": "jira_bulk_export",
         "description": "Data from Information Repositories"
       }
     ],
@@ -5810,6 +6343,14 @@
       {
         "type": "file_create",
         "description": "Data from Local System"
+      },
+      {
+        "type": "sensitive_file_access",
+        "description": "Data from Local System"
+      },
+      {
+        "type": "dlp_trigger",
+        "description": "Data from Local System"
       }
     ],
     "preconds": [],
@@ -5837,7 +6378,11 @@
     "name": "Data from Network Shared Drive",
     "requirements": [
       {
-        "type": "file_create",
+        "type": "smb_mass_file_read",
+        "description": "Data from Network Shared Drive"
+      },
+      {
+        "type": "mapped_drive_enum_copy",
         "description": "Data from Network Shared Drive"
       }
     ],
@@ -5867,6 +6412,14 @@
     "requirements": [
       {
         "type": "file_create",
+        "description": "Data Staged"
+      },
+      {
+        "type": "large_temp_dir_accumulate",
+        "description": "Data Staged"
+      },
+      {
+        "type": "staging_before_exfil",
         "description": "Data Staged"
       }
     ],
@@ -5930,7 +6483,15 @@
     "name": "Input Capture \u2013 Keylogging",
     "requirements": [
       {
-        "type": "file_create",
+        "type": "keylogger_proc",
+        "description": "Input Capture \u2013 Keylogging"
+      },
+      {
+        "type": "setwindowshookex_keyboard",
+        "description": "Input Capture \u2013 Keylogging"
+      },
+      {
+        "type": "keystroke_log_file",
         "description": "Input Capture \u2013 Keylogging"
       }
     ],
@@ -5990,7 +6551,15 @@
     "name": "Video Capture",
     "requirements": [
       {
-        "type": "file_create",
+        "type": "webcam_access_non_conf",
+        "description": "Video Capture"
+      },
+      {
+        "type": "directshow_access",
+        "description": "Video Capture"
+      },
+      {
+        "type": "video_record_proc",
         "description": "Video Capture"
       }
     ],
@@ -6998,7 +7567,15 @@
     "name": "Account Access Removal",
     "requirements": [
       {
-        "type": "service_install",
+        "type": "mass_account_lockout",
+        "description": "Account Access Removal"
+      },
+      {
+        "type": "admin_password_reset_all",
+        "description": "Account Access Removal"
+      },
+      {
+        "type": "account_delete_bulk",
         "description": "Account Access Removal"
       }
     ],
@@ -7060,7 +7637,15 @@
     "name": "Data Manipulation \u2013 Runtime",
     "requirements": [
       {
-        "type": "service_install",
+        "type": "process_memory_patch",
+        "description": "Data Manipulation \u2013 Runtime"
+      },
+      {
+        "type": "in_memory_data_alter",
+        "description": "Data Manipulation \u2013 Runtime"
+      },
+      {
+        "type": "runtime_data_tamper",
         "description": "Data Manipulation \u2013 Runtime"
       }
     ],
@@ -7091,7 +7676,15 @@
     "name": "Data Manipulation \u2013 Stored",
     "requirements": [
       {
-        "type": "service_install",
+        "type": "db_record_tamper",
+        "description": "Data Manipulation \u2013 Stored"
+      },
+      {
+        "type": "financial_data_alter",
+        "description": "Data Manipulation \u2013 Stored"
+      },
+      {
+        "type": "integrity_attack_detect",
         "description": "Data Manipulation \u2013 Stored"
       }
     ],
@@ -7122,7 +7715,15 @@
     "name": "Defacement \u2013 External Website",
     "requirements": [
       {
-        "type": "service_install",
+        "type": "web_root_modify",
+        "description": "Defacement \u2013 External Website"
+      },
+      {
+        "type": "defacement_content_waf",
+        "description": "Defacement \u2013 External Website"
+      },
+      {
+        "type": "file_integrity_webroot",
         "description": "Defacement \u2013 External Website"
       }
     ],
@@ -7153,7 +7754,11 @@
     "name": "Defacement \u2013 Internal",
     "requirements": [
       {
-        "type": "service_install",
+        "type": "intranet_content_modify",
+        "description": "Defacement \u2013 Internal"
+      },
+      {
+        "type": "internal_defacement_detect",
         "description": "Defacement \u2013 Internal"
       }
     ],
@@ -7215,7 +7820,15 @@
     "name": "Endpoint Denial of Service",
     "requirements": [
       {
-        "type": "service_install",
+        "type": "cpu_exhaustion_proc",
+        "description": "Endpoint Denial of Service"
+      },
+      {
+        "type": "fork_bomb_detect",
+        "description": "Endpoint Denial of Service"
+      },
+      {
+        "type": "resource_depletion_alert",
         "description": "Endpoint Denial of Service"
       }
     ],
@@ -7246,7 +7859,15 @@
     "name": "Firmware Corruption",
     "requirements": [
       {
-        "type": "service_install",
+        "type": "bios_flash_attempt",
+        "description": "Firmware Corruption"
+      },
+      {
+        "type": "firmware_update_unsigned",
+        "description": "Firmware Corruption"
+      },
+      {
+        "type": "uefi_write_attempt",
         "description": "Firmware Corruption"
       }
     ],
@@ -7329,7 +7950,15 @@
     "name": "Network Denial of Service",
     "requirements": [
       {
-        "type": "service_install",
+        "type": "volumetric_attack_internal",
+        "description": "Network Denial of Service"
+      },
+      {
+        "type": "ddos_participation",
+        "description": "Network Denial of Service"
+      },
+      {
+        "type": "flood_from_host",
         "description": "Network Denial of Service"
       }
     ],
@@ -7441,7 +8070,15 @@
     "name": "Service Stop",
     "requirements": [
       {
-        "type": "service_install",
+        "type": "sc_stop_security_svc",
+        "description": "Service Stop"
+      },
+      {
+        "type": "critical_svc_stopped",
+        "description": "Service Stop"
+      },
+      {
+        "type": "av_backup_svc_kill",
         "description": "Service Stop"
       }
     ],
@@ -7472,7 +8109,15 @@
     "name": "System Shutdown/Reboot",
     "requirements": [
       {
-        "type": "service_install",
+        "type": "unexpected_shutdown_cmd",
+        "description": "System Shutdown/Reboot"
+      },
+      {
+        "type": "initiate_shutdown_exec",
+        "description": "System Shutdown/Reboot"
+      },
+      {
+        "type": "reboot_flood",
         "description": "System Shutdown/Reboot"
       }
     ],
@@ -7764,7 +8409,15 @@
     "name": "Active Scanning \u2013 Wordlist Scanning",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "web_404_burst",
+        "description": "Active Scanning \u2013 Wordlist Scanning"
+      },
+      {
+        "type": "directory_brute_force",
+        "description": "Active Scanning \u2013 Wordlist Scanning"
+      },
+      {
+        "type": "wordlist_scan_detect",
         "description": "Active Scanning \u2013 Wordlist Scanning"
       }
     ],
@@ -7880,7 +8533,15 @@
     "name": "Gather Victim Org Information",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "linkedin_scrape",
+        "description": "Gather Victim Org Information"
+      },
+      {
+        "type": "job_posting_analysis",
+        "description": "Gather Victim Org Information"
+      },
+      {
+        "type": "osint_feed_signal",
         "description": "Gather Victim Org Information"
       }
     ],
@@ -7938,7 +8599,15 @@
     "name": "Search Open Websites / Domains",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "osint_correlation",
+        "description": "Search Open Websites / Domains"
+      },
+      {
+        "type": "shodan_query",
+        "description": "Search Open Websites / Domains"
+      },
+      {
+        "type": "passive_recon_signal",
         "description": "Search Open Websites / Domains"
       }
     ],
@@ -7967,7 +8636,15 @@
     "name": "Search Victim-Owned Websites",
     "requirements": [
       {
-        "type": "network_connection",
+        "type": "crawler_activity",
+        "description": "Search Victim-Owned Websites"
+      },
+      {
+        "type": "scraper_against_org_web",
+        "description": "Search Victim-Owned Websites"
+      },
+      {
+        "type": "excessive_crawl_rate",
         "description": "Search Victim-Owned Websites"
       }
     ],
