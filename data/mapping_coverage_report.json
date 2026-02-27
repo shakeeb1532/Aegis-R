@@ -1,0 +1,15 @@
+{
+  "total_rules": 232,
+  "mapped_rules": 229,
+  "partial_rules": 3,
+  "unmapped_rules": 0,
+  "mapped_percent": 98.71,
+  "partial_percent": 1.29,
+  "unmapped_percent": 0.0,
+  "unmapped_rule_ids": [],
+  "partial_rule_ids": [
+    "TA0003.SCHED_TASK_PERSIST",
+    "TA0007.PROCESS_DISCOVERY",
+    "TA0007.SEC_SW_DISC"
+  ]
+}

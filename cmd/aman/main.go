@@ -3617,6 +3617,7 @@ func handleIngestHTTP(args []string) {
 
 	http.HandleFunc("/ingest", integration.IngestHandler)
 	http.HandleFunc("/healthz", integration.HealthHandler)
+	http.HandleFunc("/metrics", integration.MetricsHandler)
 	if *secureKeyring != "" {
 		ring, err := secureingest.LoadKeyring(*secureKeyring)
 		if err != nil {
