@@ -624,7 +624,8 @@ go run ./cmd/aman approve2 \
 aman pilot identity-entra \
   --start 2026-02-27T06:00:00Z \
   --end 2026-02-27T06:15:00Z \
-  --outdir out/pilot/entra
+  --outdir out/pilot/entra \
+  --rules data/rules_identity_wedge.json
 ```
 
 ## Integration Schemas

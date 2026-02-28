@@ -83,6 +83,15 @@ aman ingest entra-normalize \
   --out data/normalized_events.json
 ```
 
+### 2b) Use the minimal identity wedge rule pack (recommended)
+```bash
+aman pilot identity-entra \
+  --start 2026-02-27T06:00:00Z \
+  --end 2026-02-27T06:15:00Z \
+  --outdir out/pilot/entra \
+  --rules data/rules_identity_wedge.json
+```
+
 ### 3) Ingest normalized events
 ```bash
 curl -X POST "http://localhost:8080/ingest?schema=native" \

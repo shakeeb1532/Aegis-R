@@ -1,0 +1,239 @@
+[
+  {
+    "id": "TA0006.SIGNIN_ATTEMPT",
+    "name": "Identity sign-in attempt",
+    "requirements": [
+      {"type": "signin_attempt", "description": "Sign-in attempt observed"}
+    ],
+    "preconds": [],
+    "explain": "A sign-in attempt was observed in Entra sign-in logs.",
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0, "applies_to": ["identity"]}
+  },
+  {
+    "id": "TA0006.SIGNIN_SUCCESS",
+    "name": "Identity sign-in success",
+    "requirements": [
+      {"type": "signin_success", "description": "Sign-in completed successfully"}
+    ],
+    "preconds": [],
+    "explain": "A successful sign-in was recorded in Entra.",
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0.2, "applies_to": ["identity"]}
+  },
+  {
+    "id": "TA0006.SIGNIN_DENIED_POLICY",
+    "name": "Sign-in blocked by policy",
+    "requirements": [
+      {"type": "signin_denied_policy", "description": "Conditional Access policy blocked the sign-in"}
+    ],
+    "preconds": [],
+    "explain": "Conditional Access or policy enforcement blocked the sign-in attempt.",
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0.2, "applies_to": ["identity"]}
+  },
+  {
+    "id": "TA0006.SIGNIN_FAILED_AUTH",
+    "name": "Sign-in failed authentication",
+    "requirements": [
+      {"type": "signin_failed_auth", "description": "Sign-in failed due to invalid credentials"}
+    ],
+    "preconds": [],
+    "explain": "Authentication failed for the sign-in attempt (invalid credentials).",
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0.2, "applies_to": ["identity"]}
+  },
+  {
+    "id": "TA0006.SIGNIN_DENIED_ACCOUNT_STATE",
+    "name": "Sign-in denied by account state",
+    "requirements": [
+      {"type": "signin_denied_account_state", "description": "Account disabled/locked prevented sign-in"}
+    ],
+    "preconds": [],
+    "explain": "The account state (disabled/locked) blocked the sign-in attempt.",
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0.2, "applies_to": ["identity"]}
+  },
+  {
+    "id": "TA0006.NEW_DEVICE_LOGIN",
+    "name": "New device sign-in attempt",
+    "requirements": [
+      {"type": "signin_attempt", "description": "Sign-in attempt observed"},
+      {"type": "new_device_login", "description": "Device is new or unmanaged"}
+    ],
+    "preconds": [],
+    "explain": "A sign-in attempt originated from a new or unmanaged device.",
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0.35, "applies_to": ["identity"]}
+  },
+  {
+    "id": "TA0006.NEW_DEVICE_LOGIN_SUCCESS",
+    "name": "New device sign-in success",
+    "requirements": [
+      {"type": "signin_success", "description": "Sign-in completed successfully"},
+      {"type": "new_device_login", "description": "Device is new or unmanaged"}
+    ],
+    "preconds": [],
+    "explain": "A successful sign-in occurred from a new or unmanaged device.",
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0.45, "applies_to": ["identity"]}
+  },
+  {
+    "id": "TA0006.MFA_CHALLENGE_FAILED",
+    "name": "MFA challenge failed",
+    "requirements": [
+      {"type": "signin_attempt", "description": "Sign-in attempt observed"},
+      {"type": "mfa_challenge_failed", "description": "MFA challenge failed"}
+    ],
+    "preconds": [],
+    "explain": "MFA challenge failed during the sign-in attempt.",
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0.35, "applies_to": ["identity"]}
+  },
+  {
+    "id": "TA0006.MFA_NOT_REQUIRED",
+    "name": "MFA not required",
+    "requirements": [
+      {"type": "signin_attempt", "description": "Sign-in attempt observed"},
+      {"type": "mfa_not_required", "description": "MFA was not required"}
+    ],
+    "preconds": [],
+    "explain": "The sign-in completed without an MFA requirement.",
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0.3, "applies_to": ["identity"]}
+  },
+  {
+    "id": "TA0006.NEW_DEVICE_MFA_NOT_REQUIRED",
+    "name": "New device sign-in without MFA",
+    "requirements": [
+      {"type": "signin_attempt", "description": "Sign-in attempt observed"},
+      {"type": "new_device_login", "description": "Device is new or unmanaged"},
+      {"type": "mfa_not_required", "description": "MFA was not required"}
+    ],
+    "preconds": [],
+    "explain": "A new or unmanaged device signed in without MFA enforcement.",
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0.45, "applies_to": ["identity"]}
+  },
+  {
+    "id": "TA0006.NEW_DEVICE_MFA_FAILED",
+    "name": "New device MFA challenge failed",
+    "requirements": [
+      {"type": "signin_attempt", "description": "Sign-in attempt observed"},
+      {"type": "new_device_login", "description": "Device is new or unmanaged"},
+      {"type": "mfa_challenge_failed", "description": "MFA challenge failed"}
+    ],
+    "preconds": [],
+    "explain": "A new device triggered an MFA challenge that failed.",
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0.45, "applies_to": ["identity"]}
+  },
+  {
+    "id": "TA0006.SIGNIN_SUCCESS_NO_MFA",
+    "name": "Successful sign-in without MFA",
+    "requirements": [
+      {"type": "signin_success", "description": "Sign-in completed successfully"},
+      {"type": "mfa_not_required", "description": "MFA was not required"}
+    ],
+    "preconds": [],
+    "explain": "A successful sign-in occurred without MFA enforcement.",
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0.4, "applies_to": ["identity"]}
+  }
+]
