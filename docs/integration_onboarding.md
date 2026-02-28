@@ -69,6 +69,13 @@ aman ingest entra-pull \
   --out data/raw/entra/signins/raw_signins.json
 ```
 
+Prefer env vars for secrets:
+```
+export ENTRA_TENANT_ID=...
+export ENTRA_CLIENT_ID=...
+export ENTRA_CLIENT_SECRET=...
+```
+
 ### 2) Normalize into Aman atomic events
 ```bash
 aman ingest entra-normalize \
@@ -83,7 +90,7 @@ curl -X POST "http://localhost:8080/ingest?schema=native" \
   -d @data/normalized_events.json
 ```
 
-Or ingest raw sign-ins directly:
+Or ingest raw sign-ins directly (same normalization logic as `entra-normalize`):
 ```bash
 curl -X POST "http://localhost:8080/ingest?schema=entra_signins_graph" \
   -H "Content-Type: application/json" \

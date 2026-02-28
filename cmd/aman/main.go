@@ -341,6 +341,8 @@ func main() {
 		handleAudit(args[1:])
 	case "system":
 		handleSystem(args[1:])
+	case "pilot":
+		handlePilot(args[1:])
 	case "generate":
 		handleGenerate(args[1:])
 	case "assess":
@@ -412,6 +414,7 @@ func usage() {
 	fmt.Println("  aman govern <verb> [flags]")
 	fmt.Println("  aman audit <verb> [flags]")
 	fmt.Println("  aman system <verb> [flags]")
+	fmt.Println("  aman pilot <verb> [flags]")
 	fmt.Println("  generate -out events.json -count 60 -seed 42")
 	fmt.Println("  reason -in events.json [-approval approval.json] [-require-okta] [-rules rules.json] [-rules-extra rules_expansion.json] [-include-events] [-format cli|json] [--explain --explain-ack I_ACKNOWLEDGE_LLM_RISK] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n] [--ai-overlay] [--ai-threshold 0.20]")
 	fmt.Println("  assess -in events.json -env env.json -state state.json -audit audit.log [-rules rules.json] [-rules-extra rules_expansion.json] [-approval approval.json] [-policy policy.json] [-constraints data/constraints.json] [-config ops.json] [-format cli|json] [-out report.json|report.json.lz4] [-baseline data/zero_trust_baseline.json] [--explain --explain-ack I_ACKNOWLEDGE_LLM_RISK] [--explain-endpoint URL] [--ml-assist] [--ml-history file] [--ml-categories list] [--ml-similar-limit n] [--ai-overlay] [--ai-threshold 0.20]")
@@ -452,6 +455,7 @@ func usage() {
 	fmt.Println("  graph killchain|blast-radius|controls|identity-pivots|timelapse|evidence-confidence -state data/state.json [-env data/env.json] [-format text|mermaid]")
 	fmt.Println("  system nist -rules data/rules.json [-out nist.json]")
 	fmt.Println("  system killchain -rules data/rules.json [-out killchain.json]")
+	fmt.Println("  pilot identity-entra --start <RFC3339> --end <RFC3339> [--outdir out/pilot/entra]")
 	fmt.Println("  init-scan -baseline data/zero_trust_baseline.json")
 	fmt.Println("  scan -baseline data/zero_trust_baseline.json [-override-approval admin_approval.json]")
 	fmt.Println("  profile-add -file data/analyst_profiles.json -id a1 -name \"Analyst\" -specialty \"cloud\"")
@@ -3403,6 +3407,271 @@ WantedBy=multi-user.target
 	}
 }
 
+func handlePilot(args []string) {
+	if len(args) == 0 {
+		fatal(errors.New("pilot requires a subcommand: identity-entra"))
+	}
+	switch args[0] {
+	case "identity-entra":
+		handlePilotIdentityEntra(args[1:])
+	default:
+		fatal(errors.New("unknown pilot subcommand"))
+	}
+}
+
+type datasetManifest struct {
+	Start            string    `json:"start"`
+	End              string    `json:"end"`
+	RawPath          string    `json:"raw_path"`
+	RawSHA256        string    `json:"raw_sha256"`
+	RawCount         int       `json:"raw_count"`
+	NormalizedPath   string    `json:"normalized_path"`
+	NormalizedSHA256 string    `json:"normalized_sha256"`
+	NormalizedCount  int       `json:"normalized_count"`
+	GeneratedAt      time.Time `json:"generated_at"`
+	PullerVersion    string    `json:"puller_version"`
+	ClientRequestID  string    `json:"client_request_id"`
+	RequestID        string    `json:"request_id,omitempty"`
+}
+
+func handlePilotIdentityEntra(args []string) {
+	fs := flag.NewFlagSet("pilot identity-entra", flag.ExitOnError)
+	tenant := fs.String("tenant", "", "entra tenant id")
+	clientID := fs.String("client-id", "", "entra client id")
+	clientSecret := fs.String("client-secret", "", "entra client secret")
+	start := fs.String("start", "", "RFC3339 start time")
+	end := fs.String("end", "", "RFC3339 end time")
+	outDir := fs.String("outdir", "out/pilot/entra", "output base directory")
+	envPath := fs.String("env", "data/env.json", "environment json")
+	rulesPath := fs.String("rules", "data/rules.json", "rules json")
+	rulesExtra := fs.String("rules-extra", "", "optional extra rules json")
+	statePath := fs.String("state", "", "state json (optional)")
+	policyPath := fs.String("policy", "", "governance policy json (optional)")
+	constraintsPath := fs.String("constraints", "", "constraints json (optional)")
+	configPath := fs.String("config", "data/ops.json", "ops config json (optional)")
+	historyPath := fs.String("history", "data/incident_history.json", "history json for pilot metrics")
+	approvalsPath := fs.String("approvals", "", "approvals log (optional)")
+	keyPath := fs.String("key", "", "bundle signing keypair json (optional)")
+	signer := fs.String("signer", "", "bundle signer id (optional)")
+	top := fs.Int("top", 1000, "page size")
+	maxPages := fs.Int("max-pages", 50, "max pages to pull")
+	timeout := fs.Duration("timeout", 30*time.Second, "http timeout")
+	if err := fs.Parse(args); err != nil {
+		fatal(err)
+	}
+	if *start == "" || *end == "" {
+		fatal(errors.New("pilot identity-entra requires --start and --end"))
+	}
+	startTime, err := time.Parse(time.RFC3339, *start)
+	if err != nil {
+		fatal(err)
+	}
+	endTime, err := time.Parse(time.RFC3339, *end)
+	if err != nil {
+		fatal(err)
+	}
+	if !startTime.Before(endTime) {
+		fatal(errors.New("start must be before end"))
+	}
+	if *tenant == "" {
+		*tenant = os.Getenv("ENTRA_TENANT_ID")
+	}
+	if *clientID == "" {
+		*clientID = os.Getenv("ENTRA_CLIENT_ID")
+	}
+	if *clientSecret == "" {
+		*clientSecret = os.Getenv("ENTRA_CLIENT_SECRET")
+	}
+	if *tenant == "" || *clientID == "" || *clientSecret == "" {
+		fatal(errors.New("missing Entra credentials (use env vars or flags)"))
+	}
+	if !ops.IsSafePath(*outDir) {
+		fatal(os.ErrInvalid)
+	}
+	runDir := filepath.Join(*outDir, formatWindowSlug(startTime, endTime))
+	if !ops.IsSafePath(runDir) {
+		fatal(os.ErrInvalid)
+	}
+	if err := os.MkdirAll(runDir, 0755); err != nil {
+		fatal(err)
+	}
+
+	rawPath := filepath.Join(runDir, "raw_signins.json")
+	rawManifestPath := filepath.Join(runDir, "raw_signins_manifest.json")
+	normalizedPath := filepath.Join(runDir, "normalized_events.json")
+	reportPath := filepath.Join(runDir, "report.json")
+	whyPath := filepath.Join(runDir, "why_chain.json")
+	auditPath := filepath.Join(runDir, "audit.log")
+	stateOut := filepath.Join(runDir, "state.json")
+	if *statePath != "" {
+		stateOut = *statePath
+	}
+	datasetPath := filepath.Join(runDir, "dataset_manifest.json")
+	metricsPath := filepath.Join(runDir, "pilot_metrics.json")
+	bundlePath := filepath.Join(runDir, "evidence.zip")
+
+	rawBytes, manifest, err := pullEntraSignIns(entraPullConfig{
+		Tenant:       *tenant,
+		ClientID:     *clientID,
+		ClientSecret: *clientSecret,
+		Start:        startTime,
+		End:          endTime,
+		Top:          *top,
+		MaxPages:     *maxPages,
+		Timeout:      *timeout,
+	})
+	if err != nil {
+		fatal(err)
+	}
+	if err := os.WriteFile(rawPath, rawBytes, 0600); err != nil {
+		fatal(err)
+	}
+	manifest.RawPath = rawPath
+	writeJSON(rawManifestPath, manifest)
+
+	events, err := integration.NormalizeEntraSignIns(rawBytes)
+	if err != nil {
+		fatal(err)
+	}
+	writeJSON(normalizedPath, events)
+
+	rawHash := sha256.Sum256(rawBytes)
+	normalizedBytes, _ := json.Marshal(events)
+	normHash := sha256.Sum256(normalizedBytes)
+	ds := datasetManifest{
+		Start:            startTime.Format(time.RFC3339),
+		End:              endTime.Format(time.RFC3339),
+		RawPath:          rawPath,
+		RawSHA256:        hex.EncodeToString(rawHash[:]),
+		RawCount:         manifest.Count,
+		NormalizedPath:   normalizedPath,
+		NormalizedSHA256: hex.EncodeToString(normHash[:]),
+		NormalizedCount:  len(events),
+		GeneratedAt:      time.Now().UTC(),
+		PullerVersion:    manifest.PullerVersion,
+		ClientRequestID:  manifest.ClientRequestID,
+		RequestID:        manifest.RequestID,
+	}
+	writeJSON(datasetPath, ds)
+
+	rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
+	if err != nil {
+		fatal(err)
+	}
+	if err := validate.Rules(rules); err != nil {
+		fatal(validate.Must(err))
+	}
+	environment, err := env.Load(*envPath)
+	if err != nil {
+		fatal(err)
+	}
+	if err := validate.Environment(environment); err != nil {
+		fatal(validate.Must(err))
+	}
+	st, err := state.Load(stateOut)
+	if err != nil && !errors.Is(err, os.ErrNotExist) {
+		fatal(err)
+	}
+	cfg, err := ops.LoadConfig(*configPath)
+	if err != nil {
+		fatal(err)
+	}
+	metrics := &ops.Metrics{}
+	out := core.AssessWithMetrics(events, rules, environment, st, metrics, cfg.StrictMode)
+	if *constraintsPath != "" {
+		cons, err := governance.LoadConstraints(*constraintsPath)
+		if err != nil {
+			fatal(err)
+		}
+		logic.ApplyConstraints(&out.Reasoning, cons)
+	}
+	writeJSON(reportPath, out)
+
+	why := buildWhyChain(out.Reasoning.Results)
+	whyBytes, err := json.MarshalIndent(why, "", "  ")
+	if err != nil {
+		fatal(err)
+	}
+	if err := os.WriteFile(whyPath, whyBytes, 0600); err != nil {
+		fatal(err)
+	}
+
+	artifact := audit.Artifact{
+		ID:        fmt.Sprintf("artifact-%d", time.Now().UTC().UnixNano()),
+		CreatedAt: time.Now().UTC(),
+		Summary:   out.Summary,
+		Findings:  out.Findings,
+		Reasoning: out.State.ReasoningChain,
+		Metadata: map[string]string{
+			"rules_source": *rulesPath,
+			"env_source":   *envPath,
+			"raw_signins":  rawPath,
+		},
+	}
+	prev, err := audit.LoadLastHash(auditPath)
+	if err != nil {
+		fatal(err)
+	}
+	artifact.PrevHash = prev
+	artifact.Hash, err = audit.HashArtifact(artifact)
+	if err != nil {
+		fatal(err)
+	}
+	if err := audit.AppendLog(auditPath, artifact); err != nil {
+		fatal(err)
+	}
+
+	controlsExport, err := buildControlsExport(auditPath, "", *approvalsPath, *rulesPath, *rulesExtra, *policyPath, false)
+	if err != nil {
+		fatal(err)
+	}
+	decisionApprovals := approvalSummaryForDecision(controlsExport.DualApprovals, artifact.ID)
+	whyInline := map[string][]byte{
+		"why_chain.json":        whyBytes,
+		"dataset_manifest.json": mustJSON(ds),
+	}
+	opts := audit.BundleOptions{
+		OutputPath: bundlePath,
+		Inputs: map[string]string{
+			"report": reportPath,
+			"audit":  auditPath,
+		},
+		Inline:       whyInline,
+		Reproducible: false,
+		Signer:       strings.TrimSpace(*signer),
+	}
+	if *approvalsPath != "" {
+		opts.Inputs["approvals"] = *approvalsPath
+	}
+	if strings.TrimSpace(*keyPath) != "" {
+		var kp KeypairFile
+		readJSON(*keyPath, &kp)
+		opts.PublicKey = kp.PublicKey
+		opts.PrivateKey = kp.PrivateKey
+	}
+	if _, err := audit.CreateEvidenceBundle(opts); err != nil {
+		fatal(err)
+	}
+
+	history, err := assist.LoadHistory(*historyPath)
+	if err != nil && !errors.Is(err, os.ErrNotExist) {
+		fatal(err)
+	}
+	pilot := computePilotMetrics(out.Reasoning, history, reportPath, *historyPath)
+	writeJSON(metricsPath, pilot)
+
+	outln("Pilot run complete: " + runDir)
+	outln("Report: " + reportPath)
+	outln("Why chain: " + whyPath)
+	outln("Audit log: " + auditPath)
+	outln("Evidence bundle: " + bundlePath)
+	outln("Pilot metrics: " + metricsPath)
+	outln("Dataset manifest: " + datasetPath)
+	outln(fmt.Sprintf("Decision: %s", artifact.ID))
+	outln(fmt.Sprintf("Controls linked: %d", len(controlsExport.RuleControlMappings)))
+	outln(fmt.Sprintf("Approvals: %t", decisionApprovals.DualApproved))
+}
+
 var gatedRuleIDs = map[string]bool{
 	"TA0040.IMPACT_ENCRYPT": true,
 	"TA0005.EVASION_C2":     true,
@@ -4033,6 +4302,17 @@ type entraPullManifest struct {
 	PulledAt        time.Time `json:"pulled_at"`
 }
 
+type entraPullConfig struct {
+	Tenant       string
+	ClientID     string
+	ClientSecret string
+	Start        time.Time
+	End          time.Time
+	Top          int
+	MaxPages     int
+	Timeout      time.Duration
+}
+
 func handleEntraPull(args []string) {
 	fs := flag.NewFlagSet("ingest entra-pull", flag.ExitOnError)
 	tenant := fs.String("tenant", "", "entra tenant id")
@@ -4041,7 +4321,7 @@ func handleEntraPull(args []string) {
 	start := fs.String("start", "", "RFC3339 start time")
 	end := fs.String("end", "", "RFC3339 end time")
 	out := fs.String("out", "data/raw/entra/signins/raw_signins.json", "output raw JSON")
-	manifest := fs.String("manifest", "", "manifest output (optional)")
+	manifestPathFlag := fs.String("manifest", "", "manifest output (optional)")
 	top := fs.Int("top", 1000, "page size")
 	maxPages := fs.Int("max-pages", 50, "max pages to pull")
 	timeout := fs.Duration("timeout", 30*time.Second, "http timeout")
@@ -4080,86 +4360,30 @@ func handleEntraPull(args []string) {
 	if err := os.MkdirAll(filepath.Dir(*out), 0755); err != nil {
 		fatal(err)
 	}
-	token, err := fetchGraphToken(*tenant, *clientID, *clientSecret, *timeout)
-	if err != nil {
-		fatal(err)
-	}
-	client := &http.Client{Timeout: *timeout}
-	reqURL := buildEntraSignInURL(*top, startTime, endTime)
-	clientRequestID := newClientRequestID()
-	pages := make([]json.RawMessage, 0, 4)
-	total := 0
-	requestID := ""
-	for i := 0; i < *maxPages && reqURL != ""; i++ {
-		req, err := http.NewRequest(http.MethodGet, reqURL, nil)
-		if err != nil {
-			fatal(err)
-		}
-		req.Header.Set("Authorization", "Bearer "+token)
-		req.Header.Set("Accept", "application/json")
-		req.Header.Set("client-request-id", clientRequestID)
-		req.Header.Set("return-client-request-id", "true")
-		resp, err := client.Do(req)
-		if err != nil {
-			fatal(err)
-		}
-		body, err := io.ReadAll(resp.Body)
-		_ = resp.Body.Close()
-		if err != nil {
-			fatal(err)
-		}
-		if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-			fatal(fmt.Errorf("graph pull failed: %s", string(body)))
-		}
-		if requestID == "" {
-			requestID = resp.Header.Get("request-id")
-		}
-		pages = append(pages, json.RawMessage(body))
-		var page struct {
-			Value    []json.RawMessage `json:"value"`
-			NextLink string            `json:"@odata.nextLink"`
-		}
-		if err := json.Unmarshal(body, &page); err != nil {
-			fatal(err)
-		}
-		total += len(page.Value)
-		reqURL = page.NextLink
-	}
-	payload := map[string]interface{}{
-		"source":            "microsoft_graph",
-		"api":               "/auditLogs/signIns",
-		"start":             startTime.Format(time.RFC3339),
-		"end":               endTime.Format(time.RFC3339),
-		"client_request_id": clientRequestID,
-		"request_id":        requestID,
-		"pages":             pages,
-	}
-	rawBytes, err := json.MarshalIndent(payload, "", "  ")
+	rawBytes, manifest, err := pullEntraSignIns(entraPullConfig{
+		Tenant:       *tenant,
+		ClientID:     *clientID,
+		ClientSecret: *clientSecret,
+		Start:        startTime,
+		End:          endTime,
+		Top:          *top,
+		MaxPages:     *maxPages,
+		Timeout:      *timeout,
+	})
 	if err != nil {
 		fatal(err)
 	}
 	if err := os.WriteFile(*out, rawBytes, 0600); err != nil {
 		fatal(err)
 	}
-	sum := sha256.Sum256(rawBytes)
-	manifestPath := *manifest
+	manifestPath := *manifestPathFlag
 	if manifestPath == "" {
 		manifestPath = strings.TrimSuffix(*out, filepath.Ext(*out)) + "_manifest.json"
 	}
-	m := entraPullManifest{
-		Start:           startTime.Format(time.RFC3339),
-		End:             endTime.Format(time.RFC3339),
-		Count:           total,
-		RawPath:         *out,
-		RawSHA256:       hex.EncodeToString(sum[:]),
-		PullerVersion:   "aman-entra-pull/1.0",
-		ClientRequestID: clientRequestID,
-		RequestID:       requestID,
-		PulledAt:        time.Now().UTC(),
-	}
-	writeJSON(manifestPath, m)
+	manifest.RawPath = *out
+	writeJSON(manifestPath, manifest)
 	outln("Raw sign-ins written: " + *out)
-	outln(fmt.Sprintf("Count: %d", total))
+	outln(fmt.Sprintf("Count: %d", manifest.Count))
 	outln("Manifest: " + manifestPath)
 }
 
@@ -4243,6 +4467,101 @@ func newClientRequestID() string {
 		return fmt.Sprintf("aman-%d", time.Now().UTC().UnixNano())
 	}
 	return fmt.Sprintf("%x-%x-%x-%x-%x", b[0:4], b[4:6], b[6:8], b[8:10], b[10:16])
+}
+
+func pullEntraSignIns(cfg entraPullConfig) ([]byte, entraPullManifest, error) {
+	if cfg.Top <= 0 {
+		cfg.Top = 1000
+	}
+	if cfg.MaxPages <= 0 {
+		cfg.MaxPages = 50
+	}
+	if cfg.Timeout == 0 {
+		cfg.Timeout = 30 * time.Second
+	}
+	token, err := fetchGraphToken(cfg.Tenant, cfg.ClientID, cfg.ClientSecret, cfg.Timeout)
+	if err != nil {
+		return nil, entraPullManifest{}, err
+	}
+	client := &http.Client{Timeout: cfg.Timeout}
+	reqURL := buildEntraSignInURL(cfg.Top, cfg.Start, cfg.End)
+	clientRequestID := newClientRequestID()
+	pages := make([]json.RawMessage, 0, 4)
+	total := 0
+	requestID := ""
+	for i := 0; i < cfg.MaxPages && reqURL != ""; i++ {
+		req, err := http.NewRequest(http.MethodGet, reqURL, nil)
+		if err != nil {
+			return nil, entraPullManifest{}, err
+		}
+		req.Header.Set("Authorization", "Bearer "+token)
+		req.Header.Set("Accept", "application/json")
+		req.Header.Set("client-request-id", clientRequestID)
+		req.Header.Set("return-client-request-id", "true")
+		resp, err := client.Do(req)
+		if err != nil {
+			return nil, entraPullManifest{}, err
+		}
+		body, err := io.ReadAll(resp.Body)
+		_ = resp.Body.Close()
+		if err != nil {
+			return nil, entraPullManifest{}, err
+		}
+		if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+			return nil, entraPullManifest{}, fmt.Errorf("graph pull failed: %s", string(body))
+		}
+		if requestID == "" {
+			requestID = resp.Header.Get("request-id")
+		}
+		pages = append(pages, json.RawMessage(body))
+		var page struct {
+			Value    []json.RawMessage `json:"value"`
+			NextLink string            `json:"@odata.nextLink"`
+		}
+		if err := json.Unmarshal(body, &page); err != nil {
+			return nil, entraPullManifest{}, err
+		}
+		total += len(page.Value)
+		reqURL = page.NextLink
+	}
+	payload := map[string]interface{}{
+		"source":            "microsoft_graph",
+		"api":               "/auditLogs/signIns",
+		"start":             cfg.Start.Format(time.RFC3339),
+		"end":               cfg.End.Format(time.RFC3339),
+		"client_request_id": clientRequestID,
+		"request_id":        requestID,
+		"pages":             pages,
+	}
+	rawBytes, err := json.MarshalIndent(payload, "", "  ")
+	if err != nil {
+		return nil, entraPullManifest{}, err
+	}
+	sum := sha256.Sum256(rawBytes)
+	manifest := entraPullManifest{
+		Start:           cfg.Start.Format(time.RFC3339),
+		End:             cfg.End.Format(time.RFC3339),
+		Count:           total,
+		RawPath:         "",
+		RawSHA256:       hex.EncodeToString(sum[:]),
+		PullerVersion:   "aman-entra-pull/1.0",
+		ClientRequestID: clientRequestID,
+		RequestID:       requestID,
+		PulledAt:        time.Now().UTC(),
+	}
+	return rawBytes, manifest, nil
+}
+
+func formatWindowSlug(start, end time.Time) string {
+	return strings.ReplaceAll(start.UTC().Format("2006-01-02T15-04Z"), ":", "-") + "_" + strings.ReplaceAll(end.UTC().Format("2006-01-02T15-04Z"), ":", "-")
+}
+
+func mustJSON(v any) []byte {
+	data, err := json.MarshalIndent(v, "", "  ")
+	if err != nil {
+		return []byte("{}")
+	}
+	return data
 }
 
 func handleIngestInventory(args []string) {

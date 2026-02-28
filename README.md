@@ -619,6 +619,14 @@ go run ./cmd/aman approve2 \
 
 ---
 
+## Identity Wedge Pilot (Entra Graph)
+```bash
+aman pilot identity-entra \
+  --start 2026-02-27T06:00:00Z \
+  --end 2026-02-27T06:15:00Z \
+  --outdir out/pilot/entra
+```
+
 ## Integration Schemas
 
 Supported `schema` values for ingestion:
