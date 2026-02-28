@@ -11,8 +11,10 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"math/big"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -424,12 +426,14 @@ func usage() {
 	fmt.Println("  audit-sign -audit audit.log -out signed_audit.log -signer soc-admin")
 	fmt.Println("  generate-scenarios -out scenarios.json [-rules rules.json] [-rules-extra rules_expansion.json] [-multiplier 1] [-noise]")
 	fmt.Println("  evaluate -scenarios scenarios.json [-rules rules.json] [-format cli|json|md] [-out report.md]")
-	fmt.Println("  ingest-http -addr :8080 [-secure-keyring data/ingest_keys.json] (schema: ecs|elastic_ecs|ocsf|cim|splunk_cim_auth|splunk_cim_net|mde)")
+	fmt.Println("  ingest-http -addr :8080 [-secure-keyring data/ingest_keys.json] (schema: ecs|elastic_ecs|ocsf|cim|splunk_cim_auth|splunk_cim_net|mde|entra_signins_graph)")
 	fmt.Println("  ingest secure-pack -in events.json -out events.aman --keyring data/ingest_keys.json [-compress auto|none|lz4] [-policy adaptive] [-risk medium]")
 	fmt.Println("  ingest secure-unpack -in events.aman -out events.json --keyring data/ingest_keys.json")
 	fmt.Println("  ingest secure-keygen -out keys.json")
 	fmt.Println("  ingest secure-init -out data/ingest_keys.json")
 	fmt.Println("  ingest secure-rotate -in data/ingest_keys.json [-out data/ingest_keys.json]")
+	fmt.Println("  ingest entra-pull --tenant <id> --client-id <id> --client-secret <secret> --start <RFC3339> --end <RFC3339> --out raw_signins.json")
+	fmt.Println("  ingest entra-normalize --in raw_signins.json --out normalized_events.json")
 	fmt.Println("  ingest-inventory -in data/inventory -out data/env.json")
 	fmt.Println("  inventory-drift -base data/env.json -in data/inventory -out drift.json")
 	fmt.Println("  inventory-adapter -provider aws|okta|azure|gcp -config data/inventory/config.json -out data/env.json")
@@ -754,7 +758,7 @@ func renderRuleLintMarkdown(report RuleLintReport) string {
 
 func handleIngest(args []string) {
 	if len(args) == 0 {
-		fatal(errors.New("ingest requires a subcommand: file|http|sample|secure-pack|secure-unpack|secure-keygen|secure-init|secure-rotate"))
+		fatal(errors.New("ingest requires a subcommand: file|http|sample|secure-pack|secure-unpack|secure-keygen|secure-init|secure-rotate|entra-pull|entra-normalize"))
 	}
 	switch args[0] {
 	case "file":
@@ -998,6 +1002,10 @@ func handleIngest(args []string) {
 			fatal(err)
 		}
 		outln("Keyring rotated: " + target)
+	case "entra-pull":
+		handleEntraPull(args[1:])
+	case "entra-normalize":
+		handleEntraNormalize(args[1:])
 	default:
 		fatal(errors.New("unknown ingest subcommand"))
 	}
@@ -4011,6 +4019,230 @@ func handleIngestHTTP(args []string) {
 	if err := srv.ListenAndServe(); err != nil {
 		fatal(err)
 	}
+}
+
+type entraPullManifest struct {
+	Start           string    `json:"start"`
+	End             string    `json:"end"`
+	Count           int       `json:"count"`
+	RawPath         string    `json:"raw_path"`
+	RawSHA256       string    `json:"raw_sha256"`
+	PullerVersion   string    `json:"puller_version"`
+	ClientRequestID string    `json:"client_request_id"`
+	RequestID       string    `json:"request_id,omitempty"`
+	PulledAt        time.Time `json:"pulled_at"`
+}
+
+func handleEntraPull(args []string) {
+	fs := flag.NewFlagSet("ingest entra-pull", flag.ExitOnError)
+	tenant := fs.String("tenant", "", "entra tenant id")
+	clientID := fs.String("client-id", "", "entra client id")
+	clientSecret := fs.String("client-secret", "", "entra client secret")
+	start := fs.String("start", "", "RFC3339 start time")
+	end := fs.String("end", "", "RFC3339 end time")
+	out := fs.String("out", "data/raw/entra/signins/raw_signins.json", "output raw JSON")
+	manifest := fs.String("manifest", "", "manifest output (optional)")
+	top := fs.Int("top", 1000, "page size")
+	maxPages := fs.Int("max-pages", 50, "max pages to pull")
+	timeout := fs.Duration("timeout", 30*time.Second, "http timeout")
+	if err := fs.Parse(args); err != nil {
+		fatal(err)
+	}
+	if *tenant == "" {
+		*tenant = os.Getenv("ENTRA_TENANT_ID")
+	}
+	if *clientID == "" {
+		*clientID = os.Getenv("ENTRA_CLIENT_ID")
+	}
+	if *clientSecret == "" {
+		*clientSecret = os.Getenv("ENTRA_CLIENT_SECRET")
+	}
+	if *tenant == "" || *clientID == "" || *clientSecret == "" {
+		fatal(errors.New("entra-pull requires --tenant, --client-id, --client-secret (or ENTRA_* env vars)"))
+	}
+	if *start == "" || *end == "" {
+		fatal(errors.New("entra-pull requires --start and --end RFC3339"))
+	}
+	startTime, err := time.Parse(time.RFC3339, *start)
+	if err != nil {
+		fatal(err)
+	}
+	endTime, err := time.Parse(time.RFC3339, *end)
+	if err != nil {
+		fatal(err)
+	}
+	if !startTime.Before(endTime) {
+		fatal(errors.New("start must be before end"))
+	}
+	if !ops.IsSafePath(*out) {
+		fatal(os.ErrInvalid)
+	}
+	if err := os.MkdirAll(filepath.Dir(*out), 0755); err != nil {
+		fatal(err)
+	}
+	token, err := fetchGraphToken(*tenant, *clientID, *clientSecret, *timeout)
+	if err != nil {
+		fatal(err)
+	}
+	client := &http.Client{Timeout: *timeout}
+	reqURL := buildEntraSignInURL(*top, startTime, endTime)
+	clientRequestID := newClientRequestID()
+	pages := make([]json.RawMessage, 0, 4)
+	total := 0
+	requestID := ""
+	for i := 0; i < *maxPages && reqURL != ""; i++ {
+		req, err := http.NewRequest(http.MethodGet, reqURL, nil)
+		if err != nil {
+			fatal(err)
+		}
+		req.Header.Set("Authorization", "Bearer "+token)
+		req.Header.Set("Accept", "application/json")
+		req.Header.Set("client-request-id", clientRequestID)
+		req.Header.Set("return-client-request-id", "true")
+		resp, err := client.Do(req)
+		if err != nil {
+			fatal(err)
+		}
+		body, err := io.ReadAll(resp.Body)
+		_ = resp.Body.Close()
+		if err != nil {
+			fatal(err)
+		}
+		if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+			fatal(fmt.Errorf("graph pull failed: %s", string(body)))
+		}
+		if requestID == "" {
+			requestID = resp.Header.Get("request-id")
+		}
+		pages = append(pages, json.RawMessage(body))
+		var page struct {
+			Value    []json.RawMessage `json:"value"`
+			NextLink string            `json:"@odata.nextLink"`
+		}
+		if err := json.Unmarshal(body, &page); err != nil {
+			fatal(err)
+		}
+		total += len(page.Value)
+		reqURL = page.NextLink
+	}
+	payload := map[string]interface{}{
+		"source":            "microsoft_graph",
+		"api":               "/auditLogs/signIns",
+		"start":             startTime.Format(time.RFC3339),
+		"end":               endTime.Format(time.RFC3339),
+		"client_request_id": clientRequestID,
+		"request_id":        requestID,
+		"pages":             pages,
+	}
+	rawBytes, err := json.MarshalIndent(payload, "", "  ")
+	if err != nil {
+		fatal(err)
+	}
+	if err := os.WriteFile(*out, rawBytes, 0600); err != nil {
+		fatal(err)
+	}
+	sum := sha256.Sum256(rawBytes)
+	manifestPath := *manifest
+	if manifestPath == "" {
+		manifestPath = strings.TrimSuffix(*out, filepath.Ext(*out)) + "_manifest.json"
+	}
+	m := entraPullManifest{
+		Start:           startTime.Format(time.RFC3339),
+		End:             endTime.Format(time.RFC3339),
+		Count:           total,
+		RawPath:         *out,
+		RawSHA256:       hex.EncodeToString(sum[:]),
+		PullerVersion:   "aman-entra-pull/1.0",
+		ClientRequestID: clientRequestID,
+		RequestID:       requestID,
+		PulledAt:        time.Now().UTC(),
+	}
+	writeJSON(manifestPath, m)
+	outln("Raw sign-ins written: " + *out)
+	outln(fmt.Sprintf("Count: %d", total))
+	outln("Manifest: " + manifestPath)
+}
+
+func handleEntraNormalize(args []string) {
+	fs := flag.NewFlagSet("ingest entra-normalize", flag.ExitOnError)
+	in := fs.String("in", "", "raw sign-ins json")
+	out := fs.String("out", "data/normalized_events.json", "normalized events output")
+	if err := fs.Parse(args); err != nil {
+		fatal(err)
+	}
+	if *in == "" {
+		fatal(errors.New("entra-normalize requires --in"))
+	}
+	if !ops.IsSafePath(*in) || !ops.IsSafePath(*out) {
+		fatal(os.ErrInvalid)
+	}
+	raw, err := os.ReadFile(*in)
+	if err != nil {
+		fatal(err)
+	}
+	events, err := integration.NormalizeEntraSignIns(raw)
+	if err != nil {
+		fatal(err)
+	}
+	writeJSON(*out, events)
+	outln(fmt.Sprintf("Normalized %d events", len(events)))
+	outln("Output: " + *out)
+}
+
+func fetchGraphToken(tenant, clientID, clientSecret string, timeout time.Duration) (string, error) {
+	form := url.Values{}
+	form.Set("client_id", clientID)
+	form.Set("client_secret", clientSecret)
+	form.Set("scope", "https://graph.microsoft.com/.default")
+	form.Set("grant_type", "client_credentials")
+	req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("https://login.microsoftonline.com/%s/oauth2/v2.0/token", tenant), strings.NewReader(form.Encode()))
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	client := &http.Client{Timeout: timeout}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer func() { _ = resp.Body.Close() }()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return "", fmt.Errorf("token request failed: %s", string(body))
+	}
+	var parsed struct {
+		AccessToken      string `json:"access_token"`
+		TokenType        string `json:"token_type"`
+		ExpiresIn        int    `json:"expires_in"`
+		Error            string `json:"error"`
+		ErrorDescription string `json:"error_description"`
+	}
+	if err := json.Unmarshal(body, &parsed); err != nil {
+		return "", err
+	}
+	if parsed.AccessToken == "" {
+		return "", errors.New("token response missing access_token")
+	}
+	return parsed.AccessToken, nil
+}
+
+func buildEntraSignInURL(top int, start, end time.Time) string {
+	values := url.Values{}
+	values.Set("$top", strconv.Itoa(top))
+	filter := fmt.Sprintf("createdDateTime ge %s and createdDateTime lt %s", start.Format(time.RFC3339), end.Format(time.RFC3339))
+	values.Set("$filter", filter)
+	return "https://graph.microsoft.com/v1.0/auditLogs/signIns?" + values.Encode()
+}
+
+func newClientRequestID() string {
+	b := make([]byte, 16)
+	if _, err := rand.Read(b); err != nil {
+		return fmt.Sprintf("aman-%d", time.Now().UTC().UnixNano())
+	}
+	return fmt.Sprintf("%x-%x-%x-%x-%x", b[0:4], b[4:6], b[6:8], b[8:10], b[10:16])
 }
 
 func handleIngestInventory(args []string) {

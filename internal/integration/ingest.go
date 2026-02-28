@@ -26,6 +26,7 @@ const (
 	SchemaCloudTrail  Schema = "aws_cloudtrail"
 	SchemaSentinelCSL Schema = "sentinel_csl"
 	SchemaCrowdStrike Schema = "crowdstrike_fdr"
+	SchemaEntraGraph  Schema = "entra_signins_graph"
 )
 
 type IngestOptions struct {
@@ -64,6 +65,8 @@ func IngestEvents(raw []byte, opts IngestOptions) ([]model.Event, error) {
 		return mapSentinelCSL(raw)
 	case SchemaCrowdStrike:
 		return mapCrowdStrike(raw)
+	case SchemaEntraGraph:
+		return NormalizeEntraSignIns(raw)
 	default:
 		return nil, errors.New("unsupported schema")
 	}

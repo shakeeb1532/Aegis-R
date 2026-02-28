@@ -633,6 +633,7 @@ Supported `schema` values for ingestion:
 - `aws_cloudtrail`
 - `sentinel_csl`
 - `crowdstrike_fdr`
+- `entra_signins_graph`
 
 Example:
 ```bash
