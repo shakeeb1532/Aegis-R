@@ -26,6 +26,7 @@
     ],
     "preconds": [],
     "explain": "A successful sign-in was recorded in Entra.",
+    "contradictions": ["signin_denied_policy", "signin_failed_auth", "signin_denied_account_state"],
     "requires_context": "identity",
     "mitre": {"tactic": "TA0006", "technique": "T1078"},
     "provenance": {
@@ -45,6 +46,7 @@
     ],
     "preconds": [],
     "explain": "Conditional Access or policy enforcement blocked the sign-in attempt.",
+    "contradictions": ["signin_success"],
     "requires_context": "identity",
     "mitre": {"tactic": "TA0006", "technique": "T1078"},
     "provenance": {
@@ -64,6 +66,7 @@
     ],
     "preconds": [],
     "explain": "Authentication failed for the sign-in attempt (invalid credentials).",
+    "contradictions": ["signin_success"],
     "requires_context": "identity",
     "mitre": {"tactic": "TA0006", "technique": "T1078"},
     "provenance": {
@@ -83,6 +86,7 @@
     ],
     "preconds": [],
     "explain": "The account state (disabled/locked) blocked the sign-in attempt.",
+    "contradictions": ["signin_success"],
     "requires_context": "identity",
     "mitre": {"tactic": "TA0006", "technique": "T1078"},
     "provenance": {
@@ -123,6 +127,7 @@
     ],
     "preconds": [],
     "explain": "A successful sign-in occurred from a new or unmanaged device.",
+    "contradictions": ["signin_denied_policy", "signin_failed_auth", "signin_denied_account_state"],
     "requires_context": "identity",
     "mitre": {"tactic": "TA0006", "technique": "T1078"},
     "provenance": {
@@ -143,6 +148,7 @@
     ],
     "preconds": [],
     "explain": "MFA challenge failed during the sign-in attempt.",
+    "contradictions": ["mfa_not_required"],
     "requires_context": "identity",
     "mitre": {"tactic": "TA0006", "technique": "T1078"},
     "provenance": {
@@ -163,6 +169,7 @@
     ],
     "preconds": [],
     "explain": "The sign-in completed without an MFA requirement.",
+    "contradictions": ["mfa_challenge_failed"],
     "requires_context": "identity",
     "mitre": {"tactic": "TA0006", "technique": "T1078"},
     "provenance": {
@@ -184,6 +191,7 @@
     ],
     "preconds": [],
     "explain": "A new or unmanaged device signed in without MFA enforcement.",
+    "contradictions": ["mfa_challenge_failed"],
     "requires_context": "identity",
     "mitre": {"tactic": "TA0006", "technique": "T1078"},
     "provenance": {
@@ -205,6 +213,7 @@
     ],
     "preconds": [],
     "explain": "A new device triggered an MFA challenge that failed.",
+    "contradictions": ["mfa_not_required"],
     "requires_context": "identity",
     "mitre": {"tactic": "TA0006", "technique": "T1078"},
     "provenance": {
@@ -225,6 +234,7 @@
     ],
     "preconds": [],
     "explain": "A successful sign-in occurred without MFA enforcement.",
+    "contradictions": ["signin_denied_policy", "signin_failed_auth", "signin_denied_account_state", "mfa_challenge_failed"],
     "requires_context": "identity",
     "mitre": {"tactic": "TA0006", "technique": "T1078"},
     "provenance": {

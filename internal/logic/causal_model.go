@@ -180,10 +180,10 @@ func reqPresence(index map[string][]int, rule Rule) map[string]bool {
 	return out
 }
 
-func precondStatusMap(rule Rule, facts map[string]causalFact, requirementAt time.Time, hasRequirementTime bool) map[string]bool {
+func precondStatusMap(rule Rule, facts map[string]causalFact, requirementAt time.Time, hasRequirementTime bool, orderingJitter time.Duration) map[string]bool {
 	out := map[string]bool{}
 	for _, p := range allPrecondNames(rule) {
-		ok, _ := precondSatisfied(p, facts, requirementAt, hasRequirementTime)
+		ok, _ := precondSatisfied(p, facts, requirementAt, hasRequirementTime, orderingJitter)
 		out[p] = ok
 	}
 	return out

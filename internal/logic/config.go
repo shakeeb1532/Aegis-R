@@ -16,12 +16,14 @@ const (
 type ReasonerConfig struct {
 	Now              func() time.Time
 	CausalMaxSetSize int
+	OrderingJitter   time.Duration
 }
 
 func DefaultReasonerConfig() ReasonerConfig {
 	return ReasonerConfig{
 		Now:              func() time.Time { return time.Now().UTC() },
 		CausalMaxSetSize: 2,
+		OrderingJitter:   90 * time.Second,
 	}
 }
 
@@ -34,6 +36,9 @@ func sanitizeReasonerConfig(cfg ReasonerConfig) ReasonerConfig {
 	}
 	if cfg.CausalMaxSetSize > 3 {
 		cfg.CausalMaxSetSize = 3
+	}
+	if cfg.OrderingJitter < 0 {
+		cfg.OrderingJitter = 0
 	}
 	return cfg
 }

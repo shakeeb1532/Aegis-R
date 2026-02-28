@@ -88,7 +88,8 @@ func ReasonWithEnvAndMetricsWithConfig(
 
 		precondOK := true
 		requirementAt, hasReqTime := earliestRequirementTime(events, index, rule)
-		missingPreconds := preconditionGaps(rule, facts, requirementAt, hasReqTime)
+		missingPreconds := preconditionGaps(rule, facts, requirementAt, hasReqTime, cfg.OrderingJitter)
+		orderAmbiguous := hasOrderAmbiguousPreconds(missingPreconds)
 		if len(missingPreconds) > 0 {
 			precondOK = false
 		}
@@ -96,7 +97,7 @@ func ReasonWithEnvAndMetricsWithConfig(
 		telemetryGap := len(missingPreconds) > 0 && highSignal
 		missing = append(missing, missingPreconds...)
 
-		contradiction := hasContradiction(rule, index)
+		contradiction := hasContradiction(rule, events, index)
 		contextReq := contextForRule(rule)
 		missingContext := contextReq != "" && !hasContext(events, index, contextReq)
 		if missingContext {
@@ -108,22 +109,22 @@ func ReasonWithEnvAndMetricsWithConfig(
 
 		envUnreachable := false
 		envUnknown := false
-		if (precondOK || telemetryGap) && !contradiction && !missingContext {
+		if (precondOK || telemetryGap) && !missingContext {
 			envUnreachable, envUnknown = checkEnvUnreachable(rule, events, index, hostZone, reachableZones)
 		}
 
 		insufficientPriv := false
 		unknownPriv := false
-		if (precondOK || telemetryGap) && !contradiction && !missingContext {
+		if (precondOK || telemetryGap) && !missingContext {
 			insufficientPriv, unknownPriv = checkInsufficientPriv(rule, events, identityPriv)
 		}
 
 		causalFeasible, causalBlockers, necessaryCauses, necessaryCauseSets, causalErr := evaluateRuleCausally(
 			rule,
 			reqPresence(index, rule),
-			precondStatusMap(rule, facts, requirementAt, hasReqTime),
+			precondStatusMap(rule, facts, requirementAt, hasReqTime, cfg.OrderingJitter),
 			map[string]bool{
-				"no_contradiction": !contradiction,
+				"no_contradiction": true,
 				"context_ok":       !missingContext,
 				"env_reachable":    !envUnreachable && !envUnknown,
 				"identity_priv_ok": !insufficientPriv && !unknownPriv,
@@ -152,11 +153,13 @@ func ReasonWithEnvAndMetricsWithConfig(
 		name := rule.Name
 		reason := rule.Explain
 		gapNarrative := ""
-		reasonCode := envReasonCode(precondOK, missing, len(events), contradiction, missingContext, envUnreachable, envUnknown, insufficientPriv, unknownPriv, telemetryGap)
+		reasonCode := envReasonCode(precondOK, missing, len(events), contradiction, missingContext, envUnreachable, envUnknown, insufficientPriv, unknownPriv, telemetryGap, orderAmbiguous)
 		if contradiction {
 			name += " (conflicted)"
 		} else if telemetryGap {
 			name += " (telemetry gap)"
+		} else if orderAmbiguous {
+			name += " (ordering ambiguous)"
 		} else if !precondOK {
 			name += " (preconditions unmet)"
 		}
@@ -168,6 +171,9 @@ func ReasonWithEnvAndMetricsWithConfig(
 		case telemetryGap:
 			reason += " High-signal defensive impairment suggests a telemetry gap."
 			gapNarrative = "High-signal defensive impairment suggests missing telemetry; treat as incomplete pending evidence."
+		case orderAmbiguous:
+			reason += " Ordering is ambiguous within the configured jitter window."
+			gapNarrative = "Event ordering is ambiguous within the jitter window; treat as incomplete until ordering is confirmed."
 		case missingContext:
 			reason += " Required context missing."
 			gapNarrative = "Required context is missing to evaluate this rule; treat as incomplete until context is provided."
@@ -365,6 +371,7 @@ func envReasonCode(
 	insufficientPriv bool,
 	unknownPriv bool,
 	telemetryGap bool,
+	orderAmbiguous bool,
 ) string {
 	switch {
 	case contradiction:
@@ -373,6 +380,8 @@ func envReasonCode(
 		return "environment_unknown"
 	case telemetryGap:
 		return "telemetry_gap_high_signal"
+	case orderAmbiguous:
+		return "precond_order_ambiguous"
 	case envUnreachable:
 		return "env_unreachable"
 	case envUnknown:

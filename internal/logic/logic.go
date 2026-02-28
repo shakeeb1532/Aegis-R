@@ -540,13 +540,14 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		}
 		precondOK := true
 		requirementAt, hasReqTime := earliestRequirementTime(events, index, rule)
-		missingPreconds := preconditionGaps(rule, facts, requirementAt, hasReqTime)
+		missingPreconds := preconditionGaps(rule, facts, requirementAt, hasReqTime, cfg.OrderingJitter)
+		orderAmbiguous := hasOrderAmbiguousPreconds(missingPreconds)
 		if len(missingPreconds) > 0 {
 			precondOK = false
 		}
 		highSignal := hasHighSignalEvidence(index)
 		telemetryGap := len(missingPreconds) > 0 && highSignal
-		contradiction := hasContradiction(rule, index)
+		contradiction := hasContradiction(rule, events, index)
 		contextReq := contextForRule(rule)
 		missingContext := false
 		if contextReq != "" && !hasContext(events, index, contextReq) {
@@ -562,9 +563,9 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		causalFeasible, causalBlockers, necessaryCauses, necessaryCauseSets, causalErr := evaluateRuleCausally(
 			rule,
 			reqPresence(index, rule),
-			precondStatusMap(rule, facts, requirementAt, hasReqTime),
+			precondStatusMap(rule, facts, requirementAt, hasReqTime, cfg.OrderingJitter),
 			map[string]bool{
-				"no_contradiction": !contradiction,
+				"no_contradiction": true,
 				"context_ok":       !missingContext,
 				"env_reachable":    true,
 				"identity_priv_ok": true,
@@ -594,6 +595,8 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 			name = name + " (conflicted)"
 		} else if telemetryGap {
 			name = name + " (telemetry gap)"
+		} else if orderAmbiguous {
+			name = name + " (ordering ambiguous)"
 		} else if !precondOK {
 			name = name + " (preconditions unmet)"
 		}
@@ -604,6 +607,8 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 			reason += " Contradictory evidence observed."
 		} else if telemetryGap {
 			reason += " High-signal defensive impairment suggests a telemetry gap."
+		} else if orderAmbiguous {
+			reason += " Ordering is ambiguous within the configured jitter window."
 		} else if missingContext {
 			reason += " Required context missing."
 		} else if len(missing) > 0 {
@@ -615,6 +620,8 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 			gapNarrative = "Conflicted: evidence contradicts a required condition for this attack path."
 		} else if telemetryGap {
 			gapNarrative = "High-signal defensive impairment suggests missing telemetry; treat as incomplete pending evidence."
+		} else if orderAmbiguous {
+			gapNarrative = "Event ordering is ambiguous within the jitter window; treat as incomplete until ordering is confirmed."
 		} else if missingContext {
 			gapNarrative = "Required context is missing to evaluate this rule; treat as incomplete until context is provided."
 		} else if len(missing) > 0 {
@@ -636,7 +643,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 			SupportingEventIDs: supportingIDs,
 			Explanation:        reason,
 			GapNarrative:       gapNarrative,
-			ReasonCode:         reasonCodeWithContradiction(precondOK, missing, len(events), contradiction, missingContext, telemetryGap),
+			ReasonCode:         reasonCodeWithContradiction(precondOK, missing, len(events), contradiction, missingContext, telemetryGap, orderAmbiguous),
 			CausalBlockers:     causalBlockers,
 			CausalError:        causalErrMsg,
 			NecessaryCauses:    necessaryCauses,
@@ -669,7 +676,7 @@ func reasonCode(precondOK bool, missing []model.EvidenceRequirement, eventCount 
 	}
 }
 
-func reasonCodeWithContradiction(precondOK bool, missing []model.EvidenceRequirement, eventCount int, contradiction bool, missingContext bool, telemetryGap bool) string {
+func reasonCodeWithContradiction(precondOK bool, missing []model.EvidenceRequirement, eventCount int, contradiction bool, missingContext bool, telemetryGap bool, orderAmbiguous bool) string {
 	if contradiction {
 		return "conflicted"
 	}
@@ -678,6 +685,9 @@ func reasonCodeWithContradiction(precondOK bool, missing []model.EvidenceRequire
 	}
 	if telemetryGap {
 		return "telemetry_gap_high_signal"
+	}
+	if orderAmbiguous {
+		return "precond_order_ambiguous"
 	}
 	return reasonCode(precondOK, missing, eventCount)
 }
@@ -699,10 +709,22 @@ func hasHighSignalEvidence(index map[string][]int) bool {
 	return false
 }
 
-func hasContradiction(rule Rule, index map[string][]int) bool {
+func hasOrderAmbiguousPreconds(reqs []model.EvidenceRequirement) bool {
+	for _, req := range reqs {
+		if strings.HasPrefix(req.Type, "precond_order_ambiguous:") {
+			return true
+		}
+	}
+	return false
+}
+
+func hasContradiction(rule Rule, events []model.Event, index map[string][]int) bool {
 	types := contradictionsForRule(rule)
 	if len(types) == 0 {
 		return false
+	}
+	if contextForRule(rule) == "identity" {
+		return hasScopedContradiction(rule, events, index, types)
 	}
 	for _, t := range types {
 		if len(index[t]) > 0 {

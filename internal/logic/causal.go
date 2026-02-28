@@ -12,6 +12,14 @@ type causalFact struct {
 	At       time.Time
 }
 
+type precondOrder int
+
+const (
+	precondOrderOK precondOrder = iota
+	precondOrderAmbiguous
+	precondOrderViolated
+)
+
 func ActiveFacts(events []model.Event) map[string]bool {
 	index := make(map[string][]int, 64)
 	for i, e := range events {
@@ -111,14 +119,18 @@ func preconditionGaps(
 	facts map[string]causalFact,
 	requirementAt time.Time,
 	hasRequirementTime bool,
+	orderingJitter time.Duration,
 ) []model.EvidenceRequirement {
 	gaps := []model.EvidenceRequirement{}
 	for _, p := range rule.Preconds {
-		ok, orderOK := precondSatisfied(p, facts, requirementAt, hasRequirementTime)
+		ok, orderStatus := precondSatisfied(p, facts, requirementAt, hasRequirementTime, orderingJitter)
 		if !ok {
 			kind := "precond:" + p
 			desc := "Precondition not observed: " + p
-			if !orderOK {
+			if orderStatus == precondOrderAmbiguous {
+				kind = "precond_order_ambiguous:" + p
+				desc = "Precondition ordering ambiguous within jitter window: " + p
+			} else if orderStatus == precondOrderViolated {
 				kind = "precond_order:" + p
 				desc = "Precondition observed after dependent activity: " + p
 			}
@@ -134,7 +146,7 @@ func preconditionGaps(
 		}
 		groupOK := false
 		for _, p := range group {
-			ok, _ := precondSatisfied(p, facts, requirementAt, hasRequirementTime)
+			ok, _ := precondSatisfied(p, facts, requirementAt, hasRequirementTime, orderingJitter)
 			if ok {
 				groupOK = true
 				break
@@ -150,15 +162,18 @@ func preconditionGaps(
 	return gaps
 }
 
-func precondSatisfied(name string, facts map[string]causalFact, requirementAt time.Time, hasRequirementTime bool) (bool, bool) {
+func precondSatisfied(name string, facts map[string]causalFact, requirementAt time.Time, hasRequirementTime bool, orderingJitter time.Duration) (bool, precondOrder) {
 	f, ok := facts[name]
 	if !ok || !f.Observed {
-		return false, true
+		return false, precondOrderOK
 	}
 	if hasRequirementTime && !f.At.IsZero() && f.At.After(requirementAt) {
-		return false, false
+		if orderingJitter > 0 && !f.At.After(requirementAt.Add(orderingJitter)) {
+			return false, precondOrderAmbiguous
+		}
+		return false, precondOrderViolated
 	}
-	return true, true
+	return true, precondOrderOK
 }
 
 func earliestRequirementTime(events []model.Event, index map[string][]int, rule Rule) (time.Time, bool) {

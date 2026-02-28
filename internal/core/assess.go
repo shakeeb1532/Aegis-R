@@ -197,12 +197,17 @@ func applyDecisionCacheAndThreads(rep *model.ReasoningReport, events []model.Eve
 		if entry, ok := st.DecisionCache[key]; ok {
 			if now.Sub(entry.UpdatedAt) <= decisionCacheTTL {
 				cacheHit = true
-				if r.Feasible {
+				if r.Conflicted {
+					label = "keep"
+					reasonCode = "conflicted"
+				} else if r.Feasible {
 					label = "escalate"
 				} else if label == "keep" {
 					label = "deprioritize"
 				}
-				reasonCode = "policy_override"
+				if reasonCode == "" {
+					reasonCode = "policy_override"
+				}
 			}
 		}
 		r.DecisionLabel = label
@@ -268,7 +273,7 @@ func decisionLabel(r *model.RuleResult, host string, principal string) (string, 
 
 func hasMissingPreconds(reqs []model.EvidenceRequirement) bool {
 	for _, req := range reqs {
-		if strings.HasPrefix(req.Type, "precond:") || strings.HasPrefix(req.Type, "precond_order:") || strings.HasPrefix(req.Type, "precond_any:") || req.Type == "environment_context" {
+		if strings.HasPrefix(req.Type, "precond:") || strings.HasPrefix(req.Type, "precond_order:") || strings.HasPrefix(req.Type, "precond_order_ambiguous:") || strings.HasPrefix(req.Type, "precond_any:") || req.Type == "environment_context" {
 			return true
 		}
 	}
