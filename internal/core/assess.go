@@ -233,6 +233,9 @@ func decisionLabel(r *model.RuleResult, host string, principal string) (string, 
 	if r.Conflicted {
 		return "keep", "conflicted"
 	}
+	if r.ReasonCode == "telemetry_gap_high_signal" {
+		return "keep", "telemetry_gap_high_signal"
+	}
 	if r.Feasible {
 		if host == "" && principal == "" {
 			return "escalate", "environment_unknown"
@@ -265,7 +268,7 @@ func decisionLabel(r *model.RuleResult, host string, principal string) (string, 
 
 func hasMissingPreconds(reqs []model.EvidenceRequirement) bool {
 	for _, req := range reqs {
-		if strings.HasPrefix(req.Type, "precond:") || strings.HasPrefix(req.Type, "precond_order:") || req.Type == "environment_context" {
+		if strings.HasPrefix(req.Type, "precond:") || strings.HasPrefix(req.Type, "precond_order:") || strings.HasPrefix(req.Type, "precond_any:") || req.Type == "environment_context" {
 			return true
 		}
 	}

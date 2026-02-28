@@ -38,6 +38,8 @@ type ConfidenceFactors struct {
 	CoverageWeight      float64 `json:"coverage_weight"`
 	RecencyWeight       float64 `json:"recency_weight"`
 	CorroborationWeight float64 `json:"corroboration_weight"`
+	HighSignalBoost     float64 `json:"high_signal_boost,omitempty"`
+	HighSignalApplied   bool    `json:"high_signal_applied,omitempty"`
 	RawScore            float64 `json:"raw_score"`
 	Floor               float64 `json:"floor"`
 	Ceiling             float64 `json:"ceiling"`

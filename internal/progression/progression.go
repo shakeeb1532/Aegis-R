@@ -105,7 +105,7 @@ func ApplyWindowAndDecay(st *state.AttackState, window time.Duration) {
 func classify(action string) (string, string) {
 	a := strings.ToLower(action)
 	// Identity / Auth
-	if containsAny(a, []string{"new_geo_login", "impossible_travel", "mfa_disabled", "mfa_bypass", "mfa_reset", "token_refresh_anomaly", "token_creation_anomaly", "iam_change", "new_admin_account"}) {
+	if containsAny(a, []string{"new_geo_login", "impossible_travel", "mfa_method_removed", "mfa_policy_changed", "mfa_bypass", "mfa_reset", "token_refresh_anomaly", "token_creation_anomaly", "iam_change", "new_admin_account"}) {
 		return "identity_auth", "Identity/auth progression signal"
 	}
 	// Host / Execution

@@ -109,7 +109,16 @@ func mapMDEAction(action string, details map[string]interface{}) string {
 		return "registry_change"
 	}
 	if containsAny(low, "mfa", "auth") && containsAny(low, "disable", "reset", "bypass") {
-		return "mfa_disabled"
+		return "mfa_method_removed"
+	}
+	if containsAny(low, "mfa", "auth") && containsAny(low, "policy", "require") {
+		return "mfa_policy_changed"
+	}
+	if containsAny(low, "mfa") && containsAny(low, "challenge") && containsAny(low, "fail", "deny") {
+		return "mfa_challenge_failed"
+	}
+	if containsAny(low, "mfa") && containsAny(low, "notrequired", "not_required", "skip") {
+		return "mfa_not_required"
 	}
 	if containsAny(low, "token", "oauth") && containsAny(low, "refresh", "grant") {
 		return "token_refresh_anomaly"

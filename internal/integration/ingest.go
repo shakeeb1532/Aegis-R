@@ -71,11 +71,11 @@ func IngestEvents(raw []byte, opts IngestOptions) ([]model.Event, error) {
 
 type ecsEvent struct {
 	Event struct {
-		ID   string   `json:"id"`
-		Kind string   `json:"kind"`
-		Action string `json:"action"`
+		ID       string   `json:"id"`
+		Kind     string   `json:"kind"`
+		Action   string   `json:"action"`
 		Category []string `json:"category"`
-		Type []string `json:"type"`
+		Type     []string `json:"type"`
 	} `json:"event"`
 	Host struct {
 		Name string `json:"name"`
@@ -183,7 +183,13 @@ func normalizeInternalEventType(v string) string {
 	case "process", "process_start", "start":
 		return "process_creation"
 	case "authentication", "auth", "login", "user_login":
-		return "valid_account_login"
+		return "signin_success"
+	case "auth_failed", "login_failed", "authentication_failure":
+		return "signin_failed_auth"
+	case "auth_denied_policy", "login_denied_policy":
+		return "signin_denied_policy"
+	case "account_locked", "account_disabled":
+		return "signin_denied_account_state"
 	case "network", "connection", "network_connection":
 		return "network_connection"
 	case "privilege_change", "role_change":

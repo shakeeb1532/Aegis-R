@@ -99,19 +99,31 @@ func mapSplunkAuthType(action string, signature string, fields map[string]interf
 	case containsAny(joined, "new device", "new_device"):
 		return "new_device_login"
 	case containsAny(joined, "mfa") && containsAny(joined, "disable", "reset", "bypass"):
-		return "mfa_disabled"
+		return "mfa_method_removed"
+	case containsAny(joined, "mfa") && containsAny(joined, "policy", "require"):
+		return "mfa_policy_changed"
+	case containsAny(joined, "mfa") && containsAny(joined, "challenge") && containsAny(joined, "fail", "deny"):
+		return "mfa_challenge_failed"
+	case containsAny(joined, "mfa") && containsAny(joined, "not required", "not_required", "skip"):
+		return "mfa_not_required"
 	case containsAny(joined, "token") && containsAny(joined, "refresh", "replay"):
 		return "token_refresh_anomaly"
 	case containsAny(joined, "password spray", "password_spray"):
 		return "password_spray"
 	case containsAny(joined, "credential stuffing", "credential_stuffing"):
 		return "credential_stuffing"
+	case containsAny(joined, "denied") && containsAny(joined, "policy", "conditional"):
+		return "signin_denied_policy"
+	case containsAny(joined, "account") && containsAny(joined, "locked", "disabled"):
+		return "signin_denied_account_state"
+	case containsAny(joined, "fail", "failure"):
+		return "signin_failed_auth"
 	case containsAny(joined, "admin group", "privilege", "role change"):
 		return "admin_group_change"
 	case containsAny(joined, "oauth", "consent"):
 		return "oauth_consent"
 	default:
-		return firstNonEmpty(action, signature, "authentication")
+		return firstNonEmpty(action, signature, "signin_success")
 	}
 }
 

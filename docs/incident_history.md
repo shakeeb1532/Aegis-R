@@ -18,7 +18,7 @@ JSON with a top‑level `incidents` array.
       "id": "inc-001",
       "rule_ids": ["TA0006.IDENTITY_ANOMALY", "TA0004.MFA_BYPASS"],
       "outcome": "confirmed",
-      "missing_evidence": ["valid_account_login"],
+      "missing_evidence": ["signin_success"],
       "summary": "Identity anomaly followed by MFA disable",
       "playbook": "idp-account-takeover"
     }

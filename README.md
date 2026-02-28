@@ -90,7 +90,7 @@ Example trust boundary with conditions (`env.json`):
   "from": "user-net",
   "to": "secure-net",
   "mode": "conditional",
-  "requires": ["valid_account_login", "c2_established"],
+  "requires": ["signin_success", "c2_established"],
   "notes": "Requires active session + C2 before traversal"
 }
 ```
@@ -590,6 +590,18 @@ go run ./cmd/aman approve \
   -signer alice \
   -role approver \
   -out approval.json
+```
+
+### Approve (Template)
+```bash
+go run ./cmd/aman govern templates
+
+go run ./cmd/aman govern approve \
+  --item change-1 \
+  --template safe_change \
+  --key keypair.json \
+  --signer alice \
+  --log data/approvals.log
 ```
 
 ### Approve (Dual)

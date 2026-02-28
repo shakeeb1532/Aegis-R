@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"strings"
 	"time"
 
 	"aman/internal/model"
@@ -24,8 +25,25 @@ func deriveCausalFacts(events []model.Event, index map[string][]int) map[string]
 	facts := map[string]causalFact{}
 	emailAt, hasEmail := earliestEventTime(events, index["email_attachment_open"])
 	macroAt, hasMacro := earliestEventTime(events, index["macro_execution"])
+	initialAt := time.Time{}
 	if hasEmail && hasMacro && !macroAt.Before(emailAt) {
-		facts["initial_access"] = causalFact{Observed: true, At: macroAt}
+		initialAt = macroAt
+	}
+	if t, ok := earliestAnyEventTime(events, index, "token_reuse", "exploit_kit_hit", "web_exploit_hit"); ok {
+		if initialAt.IsZero() || t.Before(initialAt) {
+			initialAt = t
+		}
+	}
+	phishAt, hasPhish := earliestEventTime(events, index["phish_link_click"])
+	consentAt, hasConsent := earliestEventTime(events, index["oauth_consent"])
+	if hasPhish && hasConsent {
+		phishChain := maxTime(phishAt, consentAt)
+		if initialAt.IsZero() || phishChain.Before(initialAt) {
+			initialAt = phishChain
+		}
+	}
+	if !initialAt.IsZero() {
+		facts["initial_access"] = causalFact{Observed: true, At: initialAt}
 	}
 
 	tokenAt, hasToken := earliestEventTime(events, index["token_manipulation"])
@@ -59,7 +77,7 @@ func deriveCausalFacts(events []model.Event, index map[string][]int) map[string]
 	}
 
 	if t, ok := earliestAnyEventTime(events, index,
-		"impossible_travel", "new_device_login", "mfa_disabled", "token_refresh_anomaly",
+		"impossible_travel", "new_device_login", "mfa_method_removed", "mfa_policy_changed", "token_refresh_anomaly",
 	); ok {
 		facts["identity_compromise"] = causalFact{Observed: true, At: t}
 	} else if countObservedEventTypes(index,
@@ -71,8 +89,8 @@ func deriveCausalFacts(events []model.Event, index map[string][]int) map[string]
 			facts["identity_compromise"] = causalFact{Observed: true, At: t}
 		}
 	}
-	if t, ok := earliestEventTime(events, index["valid_account_login"]); ok {
-		facts["valid_account_login"] = causalFact{Observed: true, At: t}
+	if t, ok := earliestEventTime(events, index["signin_success"]); ok {
+		facts["signin_success"] = causalFact{Observed: true, At: t}
 	}
 
 	return facts
@@ -96,22 +114,51 @@ func preconditionGaps(
 ) []model.EvidenceRequirement {
 	gaps := []model.EvidenceRequirement{}
 	for _, p := range rule.Preconds {
-		f, ok := facts[p]
-		if !ok || !f.Observed {
+		ok, orderOK := precondSatisfied(p, facts, requirementAt, hasRequirementTime)
+		if !ok {
+			kind := "precond:" + p
+			desc := "Precondition not observed: " + p
+			if !orderOK {
+				kind = "precond_order:" + p
+				desc = "Precondition observed after dependent activity: " + p
+			}
 			gaps = append(gaps, model.EvidenceRequirement{
-				Type:        "precond:" + p,
-				Description: "Precondition not observed: " + p,
+				Type:        kind,
+				Description: desc,
 			})
+		}
+	}
+	for _, group := range rule.PrecondGroups {
+		if len(group) == 0 {
 			continue
 		}
-		if hasRequirementTime && !f.At.IsZero() && f.At.After(requirementAt) {
+		groupOK := false
+		for _, p := range group {
+			ok, _ := precondSatisfied(p, facts, requirementAt, hasRequirementTime)
+			if ok {
+				groupOK = true
+				break
+			}
+		}
+		if !groupOK {
 			gaps = append(gaps, model.EvidenceRequirement{
-				Type:        "precond_order:" + p,
-				Description: "Precondition observed after dependent activity: " + p,
+				Type:        "precond_any:" + strings.Join(group, "|"),
+				Description: "Missing any of preconditions: " + strings.Join(group, ", "),
 			})
 		}
 	}
 	return gaps
+}
+
+func precondSatisfied(name string, facts map[string]causalFact, requirementAt time.Time, hasRequirementTime bool) (bool, bool) {
+	f, ok := facts[name]
+	if !ok || !f.Observed {
+		return false, true
+	}
+	if hasRequirementTime && !f.At.IsZero() && f.At.After(requirementAt) {
+		return false, false
+	}
+	return true, true
 }
 
 func earliestRequirementTime(events []model.Event, index map[string][]int, rule Rule) (time.Time, bool) {
@@ -161,7 +208,6 @@ func earliestAnyEventTime(events []model.Event, index map[string][]int, types ..
 	}
 	return out, found
 }
-
 
 func minTime(a time.Time, b time.Time) time.Time {
 	if a.IsZero() {

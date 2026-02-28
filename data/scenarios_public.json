@@ -19,7 +19,7 @@
           "time": "2026-02-08T12:01:00Z",
           "host": "111111111111",
           "user": "arn:aws:iam::111111111111:user/console",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "details": {
             "source": "cloudtrail"
           }
@@ -65,7 +65,7 @@
           "time": "2026-02-08T12:12:00Z",
           "host": "111111111111",
           "user": "arn:aws:iam::111111111111:user/console",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "details": {
             "source": "cloudtrail"
           }
@@ -311,7 +311,7 @@
           "time": "2026-02-06T09:50:00Z",
           "host": "idp-okta",
           "user": "alice",
-          "type": "mfa_disabled",
+          "type": "mfa_method_removed",
           "details": {}
         },
         {
@@ -403,7 +403,7 @@
           "time": "2026-02-06T10:20:00Z",
           "host": "host-4",
           "user": "bob",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "details": {}
         }
       ],
@@ -507,7 +507,7 @@
           "time": "2026-02-06T12:20:00Z",
           "host": "idp-1",
           "user": "carol",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "details": {}
         },
         {
@@ -535,7 +535,7 @@
           "time": "2026-02-06T12:30:00Z",
           "host": "idp-1",
           "user": "erin",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "details": {}
         },
         {
@@ -639,7 +639,7 @@
           "time": "2026-02-06T12:55:00Z",
           "host": "idp-1",
           "user": "carol",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "details": {}
         }
       ],
@@ -659,7 +659,7 @@
           "time": "2026-02-06T13:00:00Z",
           "host": "idp-1",
           "user": "alice",
-          "type": "mfa_disabled",
+          "type": "mfa_method_removed",
           "details": {}
         },
         {

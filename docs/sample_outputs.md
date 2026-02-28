@@ -143,11 +143,11 @@ Confidence note: Rule-based heuristic confidence; not calibrated.
 - [NOT FEASIBLE] Valid Accounts Abuse (TA0006.VALID_ACCOUNTS, 0.55)
   Decision: 
   Reason code: evidence_gap
-  Compromised valid accounts enable access without malware. Missing evidence: valid_account_login
-  Gap: This attack would require valid_account_login but no such evidence was observed.
+  Compromised valid accounts enable access without malware. Missing evidence: signin_success
+  Gap: This attack would require signin_success but no such evidence was observed.
   Evidence IDs: id-2
   Missing Evidence:
-  - valid_account_login: Login using valid credentials in unusual context
+  - signin_success: Login using valid credentials in unusual context
 
 - [NOT FEASIBLE] Brute Force / Credential Stuffing (TA0006.BRUTE_FORCE, 0.55)
   Decision: 
@@ -307,11 +307,11 @@ Confidence note: Rule-based heuristic confidence; not calibrated.
 - [NOT FEASIBLE] Valid Accounts Abuse (TA0006.VALID_ACCOUNTS, 0.55)
   Decision: 
   Reason code: evidence_gap
-  Compromised valid accounts enable access without malware. Missing evidence: valid_account_login
-  Gap: This attack would require valid_account_login but no such evidence was observed.
+  Compromised valid accounts enable access without malware. Missing evidence: signin_success
+  Gap: This attack would require signin_success but no such evidence was observed.
   Evidence IDs: id-2
   Missing Evidence:
-  - valid_account_login: Login using valid credentials in unusual context
+  - signin_success: Login using valid credentials in unusual context
 
 - [NOT FEASIBLE] Brute Force / Credential Stuffing (TA0006.BRUTE_FORCE, 0.55)
   Decision: 
@@ -480,7 +480,7 @@ Reasoning Narrative:
 - Proved feasible: TA0004.MFA_BYPASS (MFA Disable or Bypass) with all preconditions and evidence satisfied.
 - Proved feasible: TA0002.LOLBIN_CHAIN (Suspicious LOLBin Execution Chain) with all preconditions and evidence satisfied.
 - Incomplete: TA0003.PERSIST_EXTENDED (Extended Persistence Mechanisms) missing evidence registry_run_key.
-- Incomplete: TA0006.VALID_ACCOUNTS (Valid Accounts Abuse) missing evidence valid_account_login.
+- Incomplete: TA0006.VALID_ACCOUNTS (Valid Accounts Abuse) missing evidence signin_success.
 - Incomplete: TA0006.BRUTE_FORCE (Brute Force / Credential Stuffing) missing evidence password_spray, credential_stuffing.
 - Incomplete: TA0004.ACCOUNT_MANIP (Account Manipulation) missing evidence account_manipulation, admin_group_change.
 - Incomplete: TA0005.AUTH_PROCESS_MOD (Modify Authentication Process) missing evidence auth_process_modify.

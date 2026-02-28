@@ -502,7 +502,7 @@ func attackProfiles() []attackProfile {
 				return []model.Event{
 					ev(fmt.Sprintf("id-%d-1", seed), "", "alice", "impossible_travel", 0),
 					ev(fmt.Sprintf("id-%d-2", seed), "", "alice", "new_device_login", 1),
-					ev(fmt.Sprintf("id-%d-3", seed), "", "alice", "mfa_disabled", 2),
+					ev(fmt.Sprintf("id-%d-3", seed), "", "alice", "mfa_method_removed", 2),
 				}
 			},
 			ExpectedNote: "should remain detectable in auth-heavy noise",
@@ -564,7 +564,7 @@ func vendorPatternTypes(vendor string) []string {
 	case "splunk":
 		return []string{"authentication_success", "authentication_failure", "network_connection", "password_spray", "dns_query"}
 	case "okta":
-		return []string{"valid_account_login", "token_refresh_anomaly", "oauth_consent", "iam_change", "new_device_login"}
+		return []string{"signin_success", "token_refresh_anomaly", "oauth_consent", "iam_change", "new_device_login"}
 	case "cloudtrail":
 		return []string{"iam_change", "role_assume", "policy_change", "new_firewall_rule", "trust_boundary_change"}
 	case "sentinel":

@@ -4,7 +4,7 @@
     "time": "2026-02-27T10:30:00Z",
     "host": "host-1",
     "user": "alice",
-    "type": "valid_account_login",
+    "type": "signin_success",
     "details": {}
   },
   {

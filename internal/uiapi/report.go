@@ -96,9 +96,12 @@ func loadReport(path string) (*reportFile, error) {
 	return &out, nil
 }
 
-func verdictFromResult(feasible bool, precondOK bool) string {
+func verdictFromResult(feasible bool, precondOK bool, reasonCode string) string {
 	if feasible {
 		return "POSSIBLE"
+	}
+	if reasonCode == "telemetry_gap_high_signal" {
+		return "INCOMPLETE"
 	}
 	if !precondOK {
 		return "IMPOSSIBLE"
@@ -180,7 +183,7 @@ func buildOverview(r *reportFile) OverviewResponse {
 			headline = ReasoningItem{
 				ID:                res.RuleID,
 				Title:             res.Name,
-				Verdict:           verdictFromResult(res.Feasible, res.PrecondOK),
+				Verdict:           verdictFromResult(res.Feasible, res.PrecondOK, res.ReasonCode),
 				Confidence:        res.Confidence,
 				ConfidenceFactors: mapConfidenceFactors(res.ConfidenceFactors),
 				Summary:           res.Explanation,
@@ -232,7 +235,7 @@ func buildReasoningItems(r *reportFile) []ReasoningItem {
 		items = append(items, ReasoningItem{
 			ID:                res.RuleID,
 			Title:             res.Name,
-			Verdict:           verdictFromResult(res.Feasible, res.PrecondOK),
+			Verdict:           verdictFromResult(res.Feasible, res.PrecondOK, res.ReasonCode),
 			Confidence:        res.Confidence,
 			ConfidenceFactors: mapConfidenceFactors(res.ConfidenceFactors),
 			Summary:           res.Explanation,

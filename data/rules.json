@@ -454,8 +454,8 @@
     "name": "Stolen Credentials Initial Access",
     "requirements": [
       {
-        "type": "valid_account_login",
-        "description": "Login using valid credentials"
+        "type": "signin_success",
+        "description": "Sign-in using valid credentials"
       },
       {
         "type": "token_reuse",
@@ -493,8 +493,8 @@
     "name": "Stolen Credentials with Anomalous Access",
     "requirements": [
       {
-        "type": "valid_account_login",
-        "description": "Login using valid credentials"
+        "type": "signin_success",
+        "description": "Sign-in using valid credentials"
       },
       {
         "type": "token_reuse",
@@ -573,7 +573,7 @@
     "name": "Valid Accounts \u2013 External",
     "requirements": [
       {
-        "type": "valid_account_login",
+        "type": "signin_success",
         "description": "Valid Accounts \u2013 External"
       },
       {
@@ -1527,7 +1527,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Execution in a container environment.",
     "mitre": {
@@ -1718,7 +1718,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Persistence through mailbox rules and forwarding.",
     "mitre": {
@@ -2361,8 +2361,8 @@
     "name": "MFA Disable or Bypass",
     "requirements": [
       {
-        "type": "mfa_disabled",
-        "description": "MFA disabled or reset"
+        "type": "mfa_method_removed",
+        "description": "MFA method removed or reset"
       },
       {
         "type": "token_refresh_anomaly",
@@ -2646,8 +2646,8 @@
         "description": "Authentication process modified"
       },
       {
-        "type": "mfa_disabled",
-        "description": "MFA disabled or bypassed"
+        "type": "mfa_method_removed",
+        "description": "MFA method removed or bypassed"
       }
     ],
     "preconds": [
@@ -4238,7 +4238,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Large-scale access without compromise signals suggests insider misuse.",
     "mitre": {
@@ -4479,7 +4479,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Kerberos ticket reuse following a valid login.",
     "mitre": {
@@ -4598,8 +4598,8 @@
     "name": "Valid Accounts Abuse",
     "requirements": [
       {
-        "type": "valid_account_login",
-        "description": "Login using valid credentials in unusual context"
+        "type": "signin_success",
+        "description": "Sign-in using valid credentials in unusual context"
       },
       {
         "type": "new_device_login",
@@ -4656,7 +4656,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Enumerating accounts after a valid login.",
     "mitre": {
@@ -4687,7 +4687,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Discovery of account password policies.",
     "mitre": {
@@ -4726,7 +4726,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Application Window Discovery",
     "mitre": {
@@ -4761,7 +4761,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Browser Information Discovery",
     "mitre": {
@@ -4796,7 +4796,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Discovery of IAM roles and policies.",
     "mitre": {
@@ -4831,7 +4831,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Discovery of cloud infrastructure and services.",
     "mitre": {
@@ -4862,7 +4862,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Discovery of available cloud services.",
     "mitre": {
@@ -4901,7 +4901,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Cloud Storage Object Discovery",
     "mitre": {
@@ -4936,7 +4936,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Cloud Service Dashboard",
     "mitre": {
@@ -4975,7 +4975,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Container and Resource Discovery",
     "mitre": {
@@ -5014,7 +5014,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Domain Trust Discovery",
     "mitre": {
@@ -5053,7 +5053,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "File and Directory Discovery",
     "mitre": {
@@ -5092,7 +5092,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Group Policy Discovery",
     "mitre": {
@@ -5158,7 +5158,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Discovery of network shares.",
     "mitre": {
@@ -5197,7 +5197,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Network Sniffing \u2013 Discovery",
     "mitre": {
@@ -5236,7 +5236,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Password Policy Discovery",
     "mitre": {
@@ -5267,7 +5267,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Enumerating permission groups after a valid login.",
     "mitre": {
@@ -5341,7 +5341,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Query Registry",
     "mitre": {
@@ -5380,7 +5380,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Remote System Discovery",
     "mitre": {
@@ -5419,7 +5419,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Security Software Discovery",
     "mitre": {
@@ -5489,7 +5489,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "System Location Discovery",
     "mitre": {
@@ -5532,7 +5532,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "System Network Configuration Discovery",
     "mitre": {
@@ -5567,7 +5567,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "System Network Connections Discovery",
     "mitre": {
@@ -5606,7 +5606,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "System Owner/User Discovery",
     "mitre": {
@@ -5645,7 +5645,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "System Service Discovery",
     "mitre": {
@@ -5684,7 +5684,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "System Time Discovery",
     "mitre": {
@@ -5723,7 +5723,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Virtualization/Sandbox Discovery",
     "mitre": {
@@ -6093,7 +6093,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Collected data archived prior to exfiltration.",
     "mitre": {
@@ -6457,7 +6457,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Bulk collection of email content.",
     "mitre": {
@@ -6525,7 +6525,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Screen capture used to collect information.",
     "mitre": {
@@ -6679,7 +6679,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Collection of data from cloud storage.",
     "mitre": {
@@ -6797,7 +6797,7 @@
       }
     ],
     "preconds": [
-      "valid_account_login"
+      "signin_success"
     ],
     "explain": "Export of cloud database snapshots for exfiltration.",
     "mitre": {

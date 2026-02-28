@@ -1,19 +1,19 @@
 rule_id,rule_name,tactic,technique,requirements
-TA0001.CONTENT_INJECTION,Content Injection,TA0001,T1659,valid_account_login
+TA0001.CONTENT_INJECTION,Content Injection,TA0001,T1659,signin_success
 TA0001.DEVICE_CODE_PHISH,Device Code Phishing,TA0001,T1566.002,"device_code_flow_start;device_code_flow_success"
 TA0001.DEVICE_JOIN_PHISH,Device Join Phishing,TA0001,T1566.002,"device_join_request;device_join_complete"
-TA0001.DRIVE_BY,Drive-by Compromise,TA0001,T1189,valid_account_login
-TA0001.EXPLOIT_PUBLIC,Exploit Public-Facing Application,TA0001,T1190,valid_account_login
-TA0001.EXTERN_REMOTE_SVC,External Remote Services,TA0001,T1133,valid_account_login
-TA0001.HARDWARE_ADD,Hardware Additions,TA0001,T1200,valid_account_login
+TA0001.DRIVE_BY,Drive-by Compromise,TA0001,T1189,signin_success
+TA0001.EXPLOIT_PUBLIC,Exploit Public-Facing Application,TA0001,T1190,signin_success
+TA0001.EXTERN_REMOTE_SVC,External Remote Services,TA0001,T1133,signin_success
+TA0001.HARDWARE_ADD,Hardware Additions,TA0001,T1200,signin_success
 TA0001.OAUTH_CONSENT_PHISH,OAuth Consent Phishing,TA0001,T1566.002,"oauth_consent;new_app_grant"
 TA0001.PHISHING,Initial Access via Phishing,TA0001,T1566,"email_attachment_open;macro_execution;beacon_outbound"
 TA0001.PHISH_LINK,Phishing via Link and OAuth Consent,TA0001,T1566,"phish_link_click;oauth_consent"
-TA0001.REPL_REMOVABLE,Replication Through Removable Media,TA0001,T1091,valid_account_login
-TA0001.STOLEN_CREDS,Stolen Credentials Initial Access,TA0001,T1078,"valid_account_login;token_reuse"
-TA0001.STOLEN_CREDS_ANOMALY,Stolen Credentials with Anomalous Access,TA0001,T1078,"valid_account_login;token_reuse;new_device_login"
-TA0001.TRUSTED_RELATION,Trusted Relationship,TA0001,T1199,valid_account_login
-TA0001.VALID_ACCOUNTS_EXT,Valid Accounts – External,TA0001,T1078,valid_account_login
+TA0001.REPL_REMOVABLE,Replication Through Removable Media,TA0001,T1091,signin_success
+TA0001.STOLEN_CREDS,Stolen Credentials Initial Access,TA0001,T1078,"signin_success;token_reuse"
+TA0001.STOLEN_CREDS_ANOMALY,Stolen Credentials with Anomalous Access,TA0001,T1078,"signin_success;token_reuse;new_device_login"
+TA0001.TRUSTED_RELATION,Trusted Relationship,TA0001,T1199,signin_success
+TA0001.VALID_ACCOUNTS_EXT,Valid Accounts – External,TA0001,T1078,signin_success
 TA0002.CMD_SCRIPT_BASH,Command & Scripting – Bash/Shell,TA0002,T1059.004,process_creation
 TA0002.CMD_SCRIPT_CLOUD,Command & Scripting – Cloud API,TA0002,T1059.009,process_creation
 TA0002.CMD_SCRIPT_JS,Command & Scripting – JavaScript/JScript,TA0002,T1059.007,process_creation
@@ -59,14 +59,14 @@ TA0004.ACCESS_TOKEN_MANIP,Access Token Manipulation,TA0004,T1134,admin_group_cha
 TA0004.ACCOUNT_MANIP,Account Manipulation,TA0004,T1098,"account_manipulation;admin_group_change"
 TA0004.DOMAIN_POLICY_MOD,Domain Policy Modification,TA0004,T1484,admin_group_change
 TA0004.EXPLOIT_PRIVESC,Kernel/Driver Exploit for Privesc,TA0004,T1068,admin_group_change
-TA0004.MFA_BYPASS,MFA Disable or Bypass,TA0004,T1556,"mfa_disabled;token_refresh_anomaly"
+TA0004.MFA_BYPASS,MFA Disable or Bypass,TA0004,T1556,"mfa_method_removed;token_refresh_anomaly"
 TA0004.PRIVESCA,Privilege Escalation,TA0004,T1068,"token_manipulation;admin_group_change"
 TA0004.PROC_INJECTION_PE,Process Injection – Privilege Escalation,TA0004,T1055,admin_group_change
 TA0004.SAAS_ADMIN,SaaS Admin Takeover,TA0004,T1098,"new_admin_role;oauth_app_grant"
 TA0004.SID_HISTORY,SID-History Injection,TA0004,T1134.005,admin_group_change
 TA0004.VALID_ACCT_PRIVESC,Valid Accounts – Privilege Escalation,TA0004,T1078,admin_group_change
 TA0005.ACCESS_TOKEN_EV,Access Token Manipulation – Evasion,TA0005,T1134,process_creation
-TA0005.AUTH_PROCESS_MOD,Modify Authentication Process,TA0005,T1556,"auth_process_modify;mfa_disabled"
+TA0005.AUTH_PROCESS_MOD,Modify Authentication Process,TA0005,T1556,"auth_process_modify;mfa_method_removed"
 TA0005.BITS_JOBS_EV,BITS Jobs – Evasion,TA0005,T1197,process_creation
 TA0005.DEBUGGER_EVASION,Debugger Evasion,TA0005,T1622,process_creation
 TA0005.DEOBFUSCATE_DECODE,Deobfuscate/Decode Files,TA0005,T1140,process_creation
@@ -116,7 +116,7 @@ TA0006.PASS_THE_TICKET,Pass the Ticket,TA0006,T1550.003,"kerberos_ticket;ticket_
 TA0006.STEAL_APP_TOKEN,Steal Application Access Token,TA0006,T1528,lsass_access
 TA0006.STEAL_WEB_SESSION,Steal Web Session Cookie,TA0006,T1539,lsass_access
 TA0006.UNSECURED_CREDS,Unsecured Credentials – Files/Registry,TA0006,T1552,lsass_access
-TA0006.VALID_ACCOUNTS,Valid Accounts Abuse,TA0006,T1078,"valid_account_login;new_device_login"
+TA0006.VALID_ACCOUNTS,Valid Accounts Abuse,TA0006,T1078,"signin_success;new_device_login"
 TA0007.ACCOUNT_DISCOVERY,Account Discovery,TA0007,T1087,"ldap_query;net_user_exec"
 TA0007.ACCOUNT_POLICY_DISCOVERY,Account Policy Discovery,TA0007,T1201,password_policy_discovery
 TA0007.APP_WIN_DISC,Application Window Discovery,TA0007,T1010,network_connection

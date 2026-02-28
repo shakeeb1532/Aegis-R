@@ -15,6 +15,14 @@ export function Governance() {
                   <p className="text-xs uppercase tracking-[0.2em] text-muted">{approval.id}</p>
                   <h3 className="section-title mt-2 text-lg font-semibold">{approval.scope}</h3>
                   <p className="mt-2 text-xs text-muted">Approver: {approval.approver}</p>
+                  {approval.template_id && (
+                    <p className="mt-2 text-xs text-muted">
+                      Template:{" "}
+                      <span className="inline-flex rounded-full border border-border px-2 py-0.5 text-[10px] uppercase tracking-[0.2em]">
+                        {approval.template_id}
+                      </span>
+                    </p>
+                  )}
                 </div>
                 <div className="text-right">
                   <span className="badge border-purple text-purple">{approval.status}</span>

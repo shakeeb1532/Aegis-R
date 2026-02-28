@@ -1,6 +1,6 @@
 # Test Results
 
-Generated: 2026-02-09
+Generated: 2026-02-27
 
 ## Unit + Integration
 
@@ -11,25 +11,34 @@ go test ./...
 
 Result:
 ```
-?   	aman/cmd/aman	[no test files]
-ok   	aman/internal/approval	(cached)
-ok   	aman/internal/audit	(cached)
-ok   	aman/internal/core	(cached)
-ok   	aman/internal/env	(cached)
-ok   	aman/internal/eval	(cached)
-ok   	aman/internal/governance	(cached)
-ok   	aman/internal/integration	(cached)
-ok   	aman/internal/inventory	(cached)
-ok   	aman/internal/logic	(cached)
+ok  	aman/cmd/aman	(cached)
+?   	aman/cmd/aman-stress	[no test files]
+ok  	aman/internal/approval	(cached)
+ok  	aman/internal/assist	(cached)
+ok  	aman/internal/audit	(cached)
+ok  	aman/internal/causal	(cached)
+ok  	aman/internal/compliance	(cached)
+ok  	aman/internal/compress	(cached) [no tests to run]
+ok  	aman/internal/core	(cached)
+?   	aman/internal/engines	[no test files]
+ok  	aman/internal/env	(cached)
+ok  	aman/internal/eval	(cached)
+?   	aman/internal/explain	[no test files]
+ok  	aman/internal/governance	(cached)
+ok  	aman/internal/integration	(cached)
+ok  	aman/internal/inventory	(cached)
+ok  	aman/internal/logic	(cached)
 ?   	aman/internal/model	[no test files]
 ?   	aman/internal/ops	[no test files]
-ok   	aman/internal/progression	(cached)
+ok  	aman/internal/overlay	(cached)
+ok  	aman/internal/progression	(cached)
 ?   	aman/internal/report	[no test files]
+ok  	aman/internal/secureingest	(cached)
 ?   	aman/internal/sim	[no test files]
 ?   	aman/internal/state	[no test files]
 ?   	aman/internal/testutil	[no test files]
-ok   	aman/internal/ui	(cached)
-ok   	aman/internal/validate	(cached)
+ok  	aman/internal/uiapi	(cached)
+ok  	aman/internal/validate	(cached)
 ?   	aman/internal/zerotrust	[no test files]
 ?   	aman/scripts	[no test files]
 ```
@@ -39,6 +48,7 @@ ok   	aman/internal/validate	(cached)
 Command:
 ```bash
 go run ./cmd/aman evaluate -scenarios data/scenarios_realistic.json -rules data/rules.json -format md -out docs/regression_report.md
+go run ./cmd/aman evaluate -scenarios data/scenarios_realistic.json -rules data/rules.json -format json -out docs/regression_report.json
 ```
 
 Output:
@@ -49,12 +59,15 @@ Output:
 Command:
 ```bash
 go run ./cmd/aman evaluate -scenarios data/scenarios_public.json -rules data/rules.json -format md -out docs/public_dataset_report.md
+go run ./cmd/aman evaluate -scenarios data/scenarios_public.json -rules data/rules.json -format json -out docs/public_dataset_report.json
 ```
 
 Output:
 - `docs/public_dataset_report.md`
 
 ## Performance Snapshot (Apple M1)
+
+Note: benchmarks not rerun in this cycle; values below are the most recent baseline.
 
 Assess:
 - 1k: 1.67 ms/op, 1.50 MB/op, 4,696 allocs/op
@@ -67,6 +80,8 @@ Reason:
 - 100k: 15.3 ms/op, 74 MB/op, 814 allocs/op
 
 ## Audit Compression Benchmarks (Apple M1)
+
+Note: benchmarks not rerun in this cycle; values below are the most recent baseline.
 
 Append throughput:
 - JSONL: 24.4 µs/op, 792 B/op, 11 allocs/op

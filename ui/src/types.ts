@@ -42,9 +42,16 @@ export type QueueItem = {
 export type Approval = {
   id: string;
   scope: string;
-  status: "PENDING" | "DUAL" | "SIGNED";
+  status: string;
   approver: string;
+  approvers?: string[];
   expires: string;
+  dual_required?: number;
+  valid_signers?: number;
+  dual_approved?: boolean;
+  okta_verified?: boolean;
+  human_decision?: string;
+  template_id?: string;
 };
 
 export type AuditItem = {

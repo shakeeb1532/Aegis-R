@@ -41,7 +41,7 @@ func TestMappingElasticECS(t *testing.T) {
 	assertHasType(t, toLike(events), "file_delete")
 	assertHasType(t, toLike(events), "file_modify")
 	assertHasType(t, toLike(events), "registry_change")
-	assertHasType(t, toLike(events), "mfa_disabled")
+	assertHasType(t, toLike(events), "mfa_method_removed")
 	assertHasType(t, toLike(events), "token_refresh_anomaly")
 	assertHasType(t, toLike(events), "admin_group_change")
 	assertHasType(t, toLike(events), "policy_override")
@@ -57,8 +57,8 @@ func TestMappingOkta(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ingest: %v", err)
 	}
-	assertHasType(t, toLike(events), "valid_account_login")
-	assertHasType(t, toLike(events), "mfa_disabled")
+	assertHasType(t, toLike(events), "signin_success")
+	assertHasType(t, toLike(events), "mfa_method_removed")
 	assertHasType(t, toLike(events), "admin_group_change")
 	assertHasType(t, toLike(events), "oauth_consent")
 	assertHasType(t, toLike(events), "token_refresh_anomaly")
@@ -185,7 +185,7 @@ func TestMappingMDEIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ingest: %v", err)
 	}
-	assertHasType(t, toLike(events), "mfa_disabled")
+	assertHasType(t, toLike(events), "mfa_method_removed")
 	assertHasType(t, toLike(events), "admin_group_change")
 	assertHasType(t, toLike(events), "token_refresh_anomaly")
 }

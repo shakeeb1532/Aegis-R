@@ -1,22 +1,22 @@
 # Pilot Metrics Report
 
-Generated: 2026-02-19T10:56:11Z
+Generated: 2026-02-27T23:56:00Z
 
 - Report source: `data/bench/report.json`
 - History source: `data/incident_history.json`
 
 ## Funnel
-- Candidate alerts: 33
-- Escalated alerts: 28
-- Triaged alerts: 5
+- Candidate alerts: 50
+- Escalated alerts: 11
+- Triaged alerts: 39
 - Suppressed alerts: 0
-- Queue reduction: 15.15%
+- Queue reduction: 78.00%
 
 ## Outcome Alignment (History-Matched)
-- Escalated + confirmed: 3
-- Escalated + false positive: 1
-- Escalated + unknown outcome: 24
-- Escalated precision proxy: 75.00%
+- Escalated + confirmed: 2
+- Escalated + false positive: 0
+- Escalated + unknown outcome: 9
+- Escalated precision proxy: 100.00%
 
 ## Safety
 - Suppressed but later true (history overlap): 0

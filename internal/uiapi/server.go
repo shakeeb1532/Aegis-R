@@ -81,20 +81,25 @@ func (s *Server) handleGovernance(w http.ResponseWriter, _ *http.Request) {
 	file, err := os.Open(s.approvalsPath)
 	if err == nil {
 		type group struct {
-			latest  approval.Approval
-			signers map[string]bool
-			valid   int
+			latest   approval.Approval
+			signers  map[string]bool
+			valid    int
+			template string
+		}
+		type record struct {
+			Approval   approval.Approval `json:"approval"`
+			TemplateID string            `json:"template_id"`
 		}
 		groups := map[string]*group{}
 		scanner := bufio.NewScanner(file)
 		for scanner.Scan() {
 			line := scanner.Bytes()
-			var wrapped struct {
-				Approval approval.Approval `json:"approval"`
-			}
+			var wrapped record
 			a := approval.Approval{}
+			templateID := ""
 			if err := json.Unmarshal(line, &wrapped); err == nil && wrapped.Approval.ID != "" {
 				a = wrapped.Approval
+				templateID = wrapped.TemplateID
 			} else if err := json.Unmarshal(line, &a); err != nil || a.ID == "" {
 				continue
 			}
@@ -104,6 +109,9 @@ func (s *Server) handleGovernance(w http.ResponseWriter, _ *http.Request) {
 				groups[a.ID] = g
 			}
 			g.latest = a
+			if templateID != "" {
+				g.template = templateID
+			}
 			if a.SignerID != "" {
 				g.signers[a.SignerID] = true
 			}
@@ -137,6 +145,7 @@ func (s *Server) handleGovernance(w http.ResponseWriter, _ *http.Request) {
 				DualApproved:  dualApproved,
 				OktaVerified:  g.latest.OktaVerified,
 				HumanDecision: "human_signoff_required",
+				TemplateID:    g.template,
 			})
 		}
 		sort.Slice(items, func(i, j int) bool { return items[i].ID < items[j].ID })

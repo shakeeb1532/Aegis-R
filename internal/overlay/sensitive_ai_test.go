@@ -51,7 +51,7 @@ func TestSourceProfilesIdentityMoreSensitiveThanEDR(t *testing.T) {
 			Name: "Identity Rule",
 			Requirements: []model.EvidenceRequirement{
 				{Type: "impossible_travel"},
-				{Type: "mfa_disabled"},
+				{Type: "mfa_method_removed"},
 			},
 		},
 		{

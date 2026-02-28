@@ -8,7 +8,7 @@
       ],
       "outcome": "confirmed",
       "missing_evidence": [
-        "valid_account_login"
+        "signin_success"
       ],
       "summary": "Identity anomaly followed by MFA disable",
       "playbook": "idp-account-takeover"

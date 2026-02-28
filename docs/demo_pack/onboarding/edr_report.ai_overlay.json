@@ -252,7 +252,7 @@
       "confidence": 0.55,
       "missing_evidence": [
         {
-          "type": "mfa_disabled",
+          "type": "mfa_method_removed",
           "description": "MFA disabled or reset"
         },
         {
@@ -266,8 +266,8 @@
       ],
       "supporting_events": [],
       "supporting_event_ids": [],
-      "explanation": "MFA changes combined with token anomalies indicate bypass. Missing evidence: mfa_disabled, token_refresh_anomaly, precond:identity_compromise",
-      "gap_narrative": "This attack would require mfa_disabled, token_refresh_anomaly, precond:identity_compromise but no such evidence was observed.",
+      "explanation": "MFA changes combined with token anomalies indicate bypass. Missing evidence: mfa_method_removed, token_refresh_anomaly, precond:identity_compromise",
+      "gap_narrative": "This attack would require mfa_method_removed, token_refresh_anomaly, precond:identity_compromise but no such evidence was observed.",
       "reason_code": "evidence_gap",
       "decision_label": "",
       "cache_hit": false,
@@ -338,7 +338,7 @@
       "confidence": 0.55,
       "missing_evidence": [
         {
-          "type": "valid_account_login",
+          "type": "signin_success",
           "description": "Login using valid credentials in unusual context"
         },
         {
@@ -348,8 +348,8 @@
       ],
       "supporting_events": [],
       "supporting_event_ids": [],
-      "explanation": "Compromised valid accounts enable access without malware. Missing evidence: valid_account_login, new_device_login",
-      "gap_narrative": "This attack would require valid_account_login, new_device_login but no such evidence was observed.",
+      "explanation": "Compromised valid accounts enable access without malware. Missing evidence: signin_success, new_device_login",
+      "gap_narrative": "This attack would require signin_success, new_device_login but no such evidence was observed.",
       "reason_code": "evidence_gap",
       "decision_label": "",
       "cache_hit": false,
@@ -427,7 +427,7 @@
           "description": "Authentication process modified"
         },
         {
-          "type": "mfa_disabled",
+          "type": "mfa_method_removed",
           "description": "MFA disabled or bypassed"
         },
         {
@@ -437,8 +437,8 @@
       ],
       "supporting_events": [],
       "supporting_event_ids": [],
-      "explanation": "Authentication controls were altered to bypass access checks. Missing evidence: auth_process_modify, mfa_disabled, precond:identity_compromise",
-      "gap_narrative": "This attack would require auth_process_modify, mfa_disabled, precond:identity_compromise but no such evidence was observed.",
+      "explanation": "Authentication controls were altered to bypass access checks. Missing evidence: auth_process_modify, mfa_method_removed, precond:identity_compromise",
+      "gap_narrative": "This attack would require auth_process_modify, mfa_method_removed, precond:identity_compromise but no such evidence was observed.",
       "reason_code": "evidence_gap",
       "decision_label": "",
       "cache_hit": false,
@@ -578,14 +578,14 @@
           "description": "Auto-forwarding rule set"
         },
         {
-          "type": "precond:valid_account_login",
-          "description": "Precondition not observed: valid_account_login"
+          "type": "precond:signin_success",
+          "description": "Precondition not observed: signin_success"
         }
       ],
       "supporting_events": [],
       "supporting_event_ids": [],
-      "explanation": "Persistence through mailbox rules and forwarding. Missing evidence: mailbox_rule_create, forwarding_rule_set, precond:valid_account_login",
-      "gap_narrative": "This attack would require mailbox_rule_create, forwarding_rule_set, precond:valid_account_login but no such evidence was observed.",
+      "explanation": "Persistence through mailbox rules and forwarding. Missing evidence: mailbox_rule_create, forwarding_rule_set, precond:signin_success",
+      "gap_narrative": "This attack would require mailbox_rule_create, forwarding_rule_set, precond:signin_success but no such evidence was observed.",
       "reason_code": "evidence_gap",
       "decision_label": "",
       "cache_hit": false,
@@ -663,14 +663,14 @@
           "description": "Unusual access scope"
         },
         {
-          "type": "precond:valid_account_login",
-          "description": "Precondition not observed: valid_account_login"
+          "type": "precond:signin_success",
+          "description": "Precondition not observed: signin_success"
         }
       ],
       "supporting_events": [],
       "supporting_event_ids": [],
-      "explanation": "Large-scale access without compromise signals suggests insider misuse. Missing evidence: bulk_download, unusual_access_scope, precond:valid_account_login",
-      "gap_narrative": "This attack would require bulk_download, unusual_access_scope, precond:valid_account_login but no such evidence was observed.",
+      "explanation": "Large-scale access without compromise signals suggests insider misuse. Missing evidence: bulk_download, unusual_access_scope, precond:signin_success",
+      "gap_narrative": "This attack would require bulk_download, unusual_access_scope, precond:signin_success but no such evidence was observed.",
       "reason_code": "evidence_gap",
       "decision_label": "",
       "cache_hit": false,
@@ -980,7 +980,7 @@
       "confidence": 0.55,
       "missing_evidence": [
         {
-          "type": "valid_account_login",
+          "type": "signin_success",
           "description": "Login using valid credentials"
         },
         {
@@ -990,8 +990,8 @@
       ],
       "supporting_events": [],
       "supporting_event_ids": [],
-      "explanation": "Stolen credentials used for initial access, often detected by token reuse. Missing evidence: valid_account_login, token_reuse",
-      "gap_narrative": "This attack would require valid_account_login, token_reuse but no such evidence was observed.",
+      "explanation": "Stolen credentials used for initial access, often detected by token reuse. Missing evidence: signin_success, token_reuse",
+      "gap_narrative": "This attack would require signin_success, token_reuse but no such evidence was observed.",
       "reason_code": "evidence_gap",
       "decision_label": "",
       "cache_hit": false,
@@ -1007,7 +1007,7 @@
       "confidence": 0.55,
       "missing_evidence": [
         {
-          "type": "valid_account_login",
+          "type": "signin_success",
           "description": "Login using valid credentials"
         },
         {
@@ -1021,8 +1021,8 @@
       ],
       "supporting_events": [],
       "supporting_event_ids": [],
-      "explanation": "Stolen credentials with anomalous device access indicate initial compromise. Missing evidence: valid_account_login, token_reuse, new_device_login",
-      "gap_narrative": "This attack would require valid_account_login, token_reuse, new_device_login but no such evidence was observed.",
+      "explanation": "Stolen credentials with anomalous device access indicate initial compromise. Missing evidence: signin_success, token_reuse, new_device_login",
+      "gap_narrative": "This attack would require signin_success, token_reuse, new_device_login but no such evidence was observed.",
       "reason_code": "evidence_gap",
       "decision_label": "",
       "cache_hit": false,
@@ -1040,21 +1040,21 @@
     "Incomplete: TA0011.C2 (Command and Control) missing evidence beacon_outbound, dns_tunneling, precond:initial_access.",
     "Incomplete: TA0010.EXFIL (Exfiltration) missing evidence data_staging, large_outbound_transfer, precond:c2_established, precond:credential_access.",
     "Incomplete: TA0006.IDENTITY_ANOMALY (Identity Anomaly (Impossible Travel / New Device)) missing evidence impossible_travel, new_device_login.",
-    "Incomplete: TA0004.MFA_BYPASS (MFA Disable or Bypass) missing evidence mfa_disabled, token_refresh_anomaly, precond:identity_compromise.",
+    "Incomplete: TA0004.MFA_BYPASS (MFA Disable or Bypass) missing evidence mfa_method_removed, token_refresh_anomaly, precond:identity_compromise.",
     "Incomplete: TA0002.LOLBIN_CHAIN (Suspicious LOLBin Execution Chain) missing evidence process_creation, precond:initial_access.",
     "Incomplete: TA0003.PERSIST_EXTENDED (Extended Persistence Mechanisms) missing evidence precond:initial_access.",
-    "Incomplete: TA0006.VALID_ACCOUNTS (Valid Accounts Abuse) missing evidence valid_account_login, new_device_login.",
+    "Incomplete: TA0006.VALID_ACCOUNTS (Valid Accounts Abuse) missing evidence signin_success, new_device_login.",
     "Incomplete: TA0006.BRUTE_FORCE (Brute Force / Credential Stuffing) missing evidence password_spray, credential_stuffing.",
     "Incomplete: TA0004.ACCOUNT_MANIP (Account Manipulation) missing evidence account_manipulation, admin_group_change, precond:identity_compromise.",
-    "Incomplete: TA0005.AUTH_PROCESS_MOD (Modify Authentication Process) missing evidence auth_process_modify, mfa_disabled, precond:identity_compromise.",
+    "Incomplete: TA0005.AUTH_PROCESS_MOD (Modify Authentication Process) missing evidence auth_process_modify, mfa_method_removed, precond:identity_compromise.",
     "Incomplete: TA0011.APP_LAYER_C2 (Application Layer Protocol C2) missing evidence app_layer_c2, beacon_outbound, precond:initial_access.",
     "Incomplete: TA0005.IMPAIR_DEFENSES (Impair Defenses) missing evidence disable_logging, cloud_firewall_change.",
     "Incomplete: TA0010.EXFIL_WEB (Exfiltration Over Web Service) missing evidence exfil_web_service, large_outbound_transfer, precond:c2_established.",
     "Incomplete: TA0001.PHISH_LINK (Phishing via Link and OAuth Consent) missing evidence phish_link_click, oauth_consent.",
-    "Incomplete: TA0003.MAILBOX_PERSIST (Mailbox Rule Persistence) missing evidence mailbox_rule_create, forwarding_rule_set, precond:valid_account_login.",
+    "Incomplete: TA0003.MAILBOX_PERSIST (Mailbox Rule Persistence) missing evidence mailbox_rule_create, forwarding_rule_set, precond:signin_success.",
     "Incomplete: TA0040.IMPACT_ENCRYPT (Data Encrypted for Impact) missing evidence mass_file_rename, encrypt_activity, precond:privilege_escalation.",
     "Incomplete: TA0040.RECOVERY_INHIBIT (Inhibit System Recovery) missing evidence shadow_copy_delete.",
-    "Incomplete: TA0006.INSIDER_EXFIL (Insider Data Exfiltration) missing evidence bulk_download, unusual_access_scope, precond:valid_account_login.",
+    "Incomplete: TA0006.INSIDER_EXFIL (Insider Data Exfiltration) missing evidence bulk_download, unusual_access_scope, precond:signin_success.",
     "Incomplete: TA0043.SUPPLY_CHAIN (Supply Chain Compromise) missing evidence ci_runner_compromise, artifact_tamper.",
     "Incomplete: TA0008.CLOUD_PIVOT (Cloud Lateral Movement) missing evidence role_assume, trust_policy_change.",
     "Incomplete: TA0004.SAAS_ADMIN (SaaS Admin Takeover) missing evidence new_admin_role, oauth_app_grant, precond:identity_compromise.",
@@ -1065,8 +1065,8 @@
     "Incomplete: TA0001.DEVICE_CODE_PHISH (Device Code Phishing) missing evidence device_code_flow_start, device_code_flow_success.",
     "Incomplete: TA0001.OAUTH_CONSENT_PHISH (OAuth Consent Phishing) missing evidence oauth_consent, new_app_grant.",
     "Incomplete: TA0001.DEVICE_JOIN_PHISH (Device Join Phishing) missing evidence device_join_request, device_join_complete.",
-    "Incomplete: TA0001.STOLEN_CREDS (Stolen Credentials Initial Access) missing evidence valid_account_login, token_reuse.",
-    "Incomplete: TA0001.STOLEN_CREDS_ANOMALY (Stolen Credentials with Anomalous Access) missing evidence valid_account_login, token_reuse, new_device_login."
+    "Incomplete: TA0001.STOLEN_CREDS (Stolen Credentials Initial Access) missing evidence signin_success, token_reuse.",
+    "Incomplete: TA0001.STOLEN_CREDS_ANOMALY (Stolen Credentials with Anomalous Access) missing evidence signin_success, token_reuse, new_device_login."
   ],
   "confidence_model": "heuristic",
   "confidence_note": "Rule-based heuristic confidence; not calibrated.",

@@ -92,6 +92,8 @@ func ReasonWithEnvAndMetricsWithConfig(
 		if len(missingPreconds) > 0 {
 			precondOK = false
 		}
+		highSignal := hasHighSignalEvidence(index)
+		telemetryGap := len(missingPreconds) > 0 && highSignal
 		missing = append(missing, missingPreconds...)
 
 		contradiction := hasContradiction(rule, index)
@@ -106,20 +108,20 @@ func ReasonWithEnvAndMetricsWithConfig(
 
 		envUnreachable := false
 		envUnknown := false
-		if precondOK && !contradiction && !missingContext {
+		if (precondOK || telemetryGap) && !contradiction && !missingContext {
 			envUnreachable, envUnknown = checkEnvUnreachable(rule, events, index, hostZone, reachableZones)
 		}
 
 		insufficientPriv := false
 		unknownPriv := false
-		if precondOK && !contradiction && !missingContext {
+		if (precondOK || telemetryGap) && !contradiction && !missingContext {
 			insufficientPriv, unknownPriv = checkInsufficientPriv(rule, events, identityPriv)
 		}
 
 		causalFeasible, causalBlockers, necessaryCauses, necessaryCauseSets, causalErr := evaluateRuleCausally(
 			rule,
 			reqPresence(index, rule),
-			precondStatusMap(rule, missing),
+			precondStatusMap(rule, facts, requirementAt, hasReqTime),
 			map[string]bool{
 				"no_contradiction": !contradiction,
 				"context_ok":       !missingContext,
@@ -138,7 +140,7 @@ func ReasonWithEnvAndMetricsWithConfig(
 				Description: "Causal model evaluation failed",
 			})
 		}
-		confidence, confidenceFactors := scoreConfidence(rule, supporting, missing, precondOK, now)
+		confidence, confidenceFactors := scoreConfidence(rule, supporting, missing, precondOK || telemetryGap, now, highSignal)
 		if feasible && rule.Constraints.MinConfidence > 0 && confidence < rule.Constraints.MinConfidence {
 			feasible = false
 			missing = append(missing, model.EvidenceRequirement{
@@ -150,9 +152,11 @@ func ReasonWithEnvAndMetricsWithConfig(
 		name := rule.Name
 		reason := rule.Explain
 		gapNarrative := ""
-		reasonCode := envReasonCode(precondOK, missing, len(events), contradiction, missingContext, envUnreachable, envUnknown, insufficientPriv, unknownPriv)
+		reasonCode := envReasonCode(precondOK, missing, len(events), contradiction, missingContext, envUnreachable, envUnknown, insufficientPriv, unknownPriv, telemetryGap)
 		if contradiction {
 			name += " (conflicted)"
+		} else if telemetryGap {
+			name += " (telemetry gap)"
 		} else if !precondOK {
 			name += " (preconditions unmet)"
 		}
@@ -161,6 +165,9 @@ func ReasonWithEnvAndMetricsWithConfig(
 			missing = nil
 			reason += " Contradictory evidence observed."
 			gapNarrative = "Conflicted: evidence contradicts a required condition for this attack path."
+		case telemetryGap:
+			reason += " High-signal defensive impairment suggests a telemetry gap."
+			gapNarrative = "High-signal defensive impairment suggests missing telemetry; treat as incomplete pending evidence."
 		case missingContext:
 			reason += " Required context missing."
 			gapNarrative = "Required context is missing to evaluate this rule; treat as incomplete until context is provided."
@@ -282,6 +289,7 @@ func scoreConfidence(
 	missing []model.EvidenceRequirement,
 	precondOK bool,
 	now time.Time,
+	highSignal bool,
 ) (float64, model.ConfidenceFactors) {
 	factors := model.ConfidenceFactors{
 		EvidenceTotal:       len(rule.Requirements),
@@ -293,7 +301,7 @@ func scoreConfidence(
 		Floor:               confidenceFloor,
 		Ceiling:             confidenceCeiling,
 	}
-	if !precondOK || len(rule.Requirements) == 0 {
+	if (!precondOK && !highSignal) || len(rule.Requirements) == 0 {
 		factors.RawScore = confidenceFloor
 		return confidenceFloor, factors
 	}
@@ -311,6 +319,11 @@ func scoreConfidence(
 	}
 	corroboration := math.Min(extra/5.0, 1.0)
 	raw := coverage*confidenceCoverageW + recency*confidenceRecencyW + corroboration*confidenceCorroborW
+	if highSignal {
+		raw += confidenceHighSignalBoost
+		factors.HighSignalBoost = confidenceHighSignalBoost
+		factors.HighSignalApplied = true
+	}
 	factors.Coverage = coverage
 	factors.Recency = recency
 	factors.Corroboration = corroboration
@@ -351,12 +364,15 @@ func envReasonCode(
 	envUnknown bool,
 	insufficientPriv bool,
 	unknownPriv bool,
+	telemetryGap bool,
 ) string {
 	switch {
 	case contradiction:
 		return "conflicted"
 	case missingContext:
 		return "environment_unknown"
+	case telemetryGap:
+		return "telemetry_gap_high_signal"
 	case envUnreachable:
 		return "env_unreachable"
 	case envUnknown:

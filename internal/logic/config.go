@@ -3,13 +3,14 @@ package logic
 import "time"
 
 const (
-	confidenceFloor       = 0.10
-	confidenceCeiling     = 0.95
-	confidenceCoverageW   = 0.65
-	confidenceRecencyW    = 0.20
-	confidenceCorroborW   = 0.10
-	confidenceRecencySpan = 7 * 24 * time.Hour
-	confidenceNoTSRecency = 0.30
+	confidenceFloor           = 0.10
+	confidenceCeiling         = 0.95
+	confidenceCoverageW       = 0.65
+	confidenceRecencyW        = 0.20
+	confidenceCorroborW       = 0.10
+	confidenceHighSignalBoost = 0.08
+	confidenceRecencySpan     = 7 * 24 * time.Hour
+	confidenceNoTSRecency     = 0.30
 )
 
 type ReasonerConfig struct {

@@ -122,13 +122,25 @@ func classifyECS(e elasticECSEvent) string {
 		case containsAny(action, "new_device"):
 			return "new_device_login"
 		case containsAny(action, "mfa") && containsAny(action, "disable", "reset", "bypass"):
-			return "mfa_disabled"
+			return "mfa_method_removed"
+		case containsAny(action, "mfa") && containsAny(action, "policy", "require"):
+			return "mfa_policy_changed"
+		case containsAny(action, "mfa") && containsAny(action, "challenge") && containsAny(action, "fail", "deny"):
+			return "mfa_challenge_failed"
+		case containsAny(action, "mfa") && containsAny(action, "not_required", "skip"):
+			return "mfa_not_required"
 		case containsAny(action, "token") && containsAny(action, "refresh", "replay"):
 			return "token_refresh_anomaly"
 		case containsAny(action, "password_spray", "bruteforce"):
 			return "password_spray"
+		case containsAny(action, "deny", "blocked") && containsAny(action, "policy", "conditional"):
+			return "signin_denied_policy"
+		case containsAny(action, "account") && containsAny(action, "locked", "disabled"):
+			return "signin_denied_account_state"
+		case containsAny(action, "fail", "failure"):
+			return "signin_failed_auth"
 		default:
-			return "valid_account_login"
+			return "signin_success"
 		}
 	}
 	if contains(categories, "network") && e.Destination.Port != 0 {

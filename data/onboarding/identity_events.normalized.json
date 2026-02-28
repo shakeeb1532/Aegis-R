@@ -4,7 +4,7 @@
     "time": "2026-02-06T12:30:00Z",
     "host": "",
     "user": "hank@example.com",
-    "type": "valid_account_login",
+    "type": "signin_success",
     "details": {
       "actor_id": "okta-user-1",
       "client_ip": "203.0.113.55",
@@ -17,7 +17,7 @@
     "time": "2026-02-06T12:31:00Z",
     "host": "",
     "user": "hank@example.com",
-    "type": "mfa_disabled",
+    "type": "mfa_method_removed",
     "details": {
       "actor_id": "okta-user-1",
       "client_ip": "203.0.113.55",
@@ -66,7 +66,7 @@
     "time": "2026-02-06T12:34:00Z",
     "host": "",
     "user": "jill@example.com",
-    "type": "mfa_disabled",
+    "type": "mfa_method_removed",
     "details": {
       "actor_id": "okta-user-3",
       "client_ip": "203.0.113.58",

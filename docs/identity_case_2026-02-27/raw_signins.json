@@ -1,0 +1,44 @@
+[
+  {
+    "id": "si-123",
+    "createdDateTime": "2026-02-27T00:00:01Z",
+    "userPrincipalName": "user_a@example.com",
+    "appDisplayName": "Office 365",
+    "ipAddress": "203.0.113.10",
+    "status": {
+      "errorCode": 0,
+      "failureReason": ""
+    },
+    "conditionalAccessStatus": "success",
+    "deviceDetail": {
+      "deviceId": "dev-111",
+      "isCompliant": false,
+      "operatingSystem": "Windows"
+    },
+    "location": {
+      "countryOrRegion": "AU",
+      "city": "Sydney"
+    }
+  },
+  {
+    "id": "si-123",
+    "createdDateTime": "2026-02-27T00:00:07Z",
+    "userPrincipalName": "user_a@example.com",
+    "appDisplayName": "Office 365",
+    "ipAddress": "203.0.113.10",
+    "status": {
+      "errorCode": 50053,
+      "failureReason": "Account locked"
+    },
+    "conditionalAccessStatus": "failure",
+    "deviceDetail": {
+      "deviceId": "dev-unknown",
+      "isCompliant": false,
+      "operatingSystem": "Windows"
+    },
+    "location": {
+      "countryOrRegion": "AU",
+      "city": "Sydney"
+    }
+  }
+]

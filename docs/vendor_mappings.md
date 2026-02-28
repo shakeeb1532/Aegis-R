@@ -14,9 +14,9 @@ This document summarizes how Aman normalizes vendor-specific fields into interna
 - `event.category=iam` + `event.action` contains `policy|trust` -> `policy_override`
 - `event.category=authentication` + `event.action` contains `impossible_travel` -> `impossible_travel`
 - `event.category=authentication` + `event.action` contains `new_device` -> `new_device_login`
-- `event.category=authentication` + `event.action` contains `mfa` + `disable|reset|bypass` -> `mfa_disabled`
+- `event.category=authentication` + `event.action` contains `mfa` + `disable|reset|bypass` -> `mfa_method_removed`
 - `event.category=authentication` + `event.action` contains `token` + `refresh|replay` -> `token_refresh_anomaly`
-- `event.category=authentication` default -> `valid_account_login`
+- `event.category=authentication` default -> `signin_success`
 - `destination.port` in `22,445,3389,5985,5986` -> `new_inbound_admin_protocol`
 - Otherwise: `event.action` or first `event.type`/`event.category`
 
@@ -30,7 +30,7 @@ Key fields:
 - Type mapping:
   - `impossible travel` -> `impossible_travel`
   - `new device` -> `new_device_login`
-  - `mfa` + `disable|reset|bypass` -> `mfa_disabled`
+  - `mfa` + `disable|reset|bypass` -> `mfa_method_removed`
   - `token` + `refresh|replay` -> `token_refresh_anomaly`
   - `password spray` -> `password_spray`
   - `credential stuffing` -> `credential_stuffing`
@@ -59,7 +59,7 @@ Key fields:
   - `CommandLine` contains `lsass` -> `lsass_access`
   - `ServiceInstalled|ServiceCreated` -> `service_install`
   - `Registry*` + `\\Run` -> `registry_run_key`
-  - MFA/token changes -> `mfa_disabled` / `token_refresh_anomaly`
+  - MFA/token changes -> `mfa_method_removed` / `token_refresh_anomaly`
   - otherwise: `ActionType`
 - Host: `DeviceName`
 - User: `AccountName`
@@ -69,7 +69,7 @@ Key fields:
 ### Identity Events (`mde`, kind=`identity`)
 - Type mapping:
   - `ActionType` (same mapping rules as device events when present)
-  - `MFAReset|MFABypass|MFADisabled` -> `mfa_disabled`
+  - `MFAReset|MFABypass|MFADisabled` -> `mfa_method_removed`
   - `AddUserToGroup|AddMemberToGroup` -> `admin_group_change`
   - `OAuthGrant|TokenRefresh` -> `token_refresh_anomaly`
   - default: `identity_event`
@@ -82,10 +82,10 @@ Key fields:
 - Type mapping:
   - `impossible_travel` -> `impossible_travel`
   - `new_device` -> `new_device_login`
-  - `user.mfa.factor.deactivate|reset|suspend` -> `mfa_disabled`
+  - `user.mfa.factor.deactivate|reset|suspend` -> `mfa_method_removed`
   - `token` + `refresh|revoke` -> `token_refresh_anomaly`
   - `oauth` + `consent` -> `oauth_consent`
-  - `user.session.start|user.authentication*` -> `valid_account_login`
+  - `user.session.start|user.authentication*` -> `signin_success`
   - `admin role` -> `new_admin_role`
   - `user.lifecycle*` -> `iam_change`
   - `group.user_membership*` -> `admin_group_change`

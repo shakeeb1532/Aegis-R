@@ -49,7 +49,7 @@ cat > data/failures_events.json <<'JSON'
     "time": "2026-02-06T01:12:00Z",
     "host": "idp-1",
     "user": "alice",
-    "type": "mfa_disabled",
+    "type": "mfa_method_removed",
     "details": {"method": "app", "reason": "user_action"}
   },
   {

@@ -67,6 +67,7 @@ type ApprovalItem struct {
 	DualApproved  bool     `json:"dual_approved"`
 	OktaVerified  bool     `json:"okta_verified"`
 	HumanDecision string   `json:"human_decision"`
+	TemplateID    string   `json:"template_id,omitempty"`
 }
 
 type AuditItem struct {

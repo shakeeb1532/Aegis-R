@@ -57,15 +57,27 @@ func mapOktaEventType(eventType string) string {
 	case strings.Contains(etype, "new_device"):
 		return "new_device_login"
 	case strings.Contains(etype, "mfa.factor.deactivate") || strings.Contains(etype, "mfa.factor.reset") || strings.Contains(etype, "mfa.factor.suspend"):
-		return "mfa_disabled"
+		return "mfa_method_removed"
+	case strings.Contains(etype, "mfa.policy"):
+		return "mfa_policy_changed"
+	case strings.Contains(etype, "mfa.challenge") && (strings.Contains(etype, "fail") || strings.Contains(etype, "deny")):
+		return "mfa_challenge_failed"
+	case strings.Contains(etype, "mfa") && (strings.Contains(etype, "not_required") || strings.Contains(etype, "skip")):
+		return "mfa_not_required"
 	case strings.Contains(etype, "token") && strings.Contains(etype, "refresh"):
 		return "token_refresh_anomaly"
 	case strings.Contains(etype, "token") && strings.Contains(etype, "revoke"):
 		return "token_refresh_anomaly"
 	case strings.Contains(etype, "oauth") && strings.Contains(etype, "consent"):
 		return "oauth_consent"
+	case strings.Contains(etype, "user.authentication.failed"):
+		return "signin_failed_auth"
+	case strings.Contains(etype, "policy") && (strings.Contains(etype, "deny") || strings.Contains(etype, "blocked")):
+		return "signin_denied_policy"
+	case strings.Contains(etype, "account") && (strings.Contains(etype, "locked") || strings.Contains(etype, "disabled") || strings.Contains(etype, "deactivated")):
+		return "signin_denied_account_state"
 	case strings.Contains(etype, "user.session.start") || strings.Contains(etype, "user.authentication") || strings.Contains(etype, "user.session.launch"):
-		return "valid_account_login"
+		return "signin_success"
 	case strings.Contains(etype, "admin") && strings.Contains(etype, "role"):
 		return "new_admin_role"
 	case strings.HasPrefix(etype, "user.lifecycle"):

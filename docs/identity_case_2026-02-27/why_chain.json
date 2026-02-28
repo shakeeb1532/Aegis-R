@@ -1,0 +1,4290 @@
+[
+  {
+    "rule_id": "TA0001.CONTENT_INJECTION",
+    "rule_name": "Content Injection",
+    "verdict": "INCOMPLETE",
+    "explanation": "Content Injection Missing evidence: network_connection, http_response_modify, script_injection",
+    "gap_narrative": "This attack would require network_connection, http_response_modify, script_injection but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "network_connection",
+      "http_response_modify",
+      "script_injection"
+    ],
+    "causal_blockers": [
+      "req:http_response_modify",
+      "req:network_connection",
+      "req:script_injection"
+    ]
+  },
+  {
+    "rule_id": "TA0001.DEVICE_CODE_PHISH",
+    "rule_name": "Device Code Phishing",
+    "verdict": "INCOMPLETE",
+    "explanation": "Abuse of device code authentication flow indicates likely credential theft. Missing evidence: device_code_flow_start, device_code_flow_success",
+    "gap_narrative": "This attack would require device_code_flow_start, device_code_flow_success but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "device_code_flow_start",
+      "device_code_flow_success"
+    ],
+    "causal_blockers": [
+      "req:device_code_flow_start",
+      "req:device_code_flow_success"
+    ]
+  },
+  {
+    "rule_id": "TA0001.DEVICE_JOIN_PHISH",
+    "rule_name": "Device Join Phishing",
+    "verdict": "INCOMPLETE",
+    "explanation": "Phishing to register attacker-controlled device to tenant. Missing evidence: device_join_request, device_join_complete",
+    "gap_narrative": "This attack would require device_join_request, device_join_complete but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "device_join_request",
+      "device_join_complete"
+    ],
+    "causal_blockers": [
+      "req:device_join_complete",
+      "req:device_join_request"
+    ]
+  },
+  {
+    "rule_id": "TA0001.DRIVE_BY",
+    "rule_name": "Drive-by Compromise",
+    "verdict": "INCOMPLETE",
+    "explanation": "Drive-by Compromise Missing evidence: browser_process_spawn, exploit_kit_hit, drive_by_download",
+    "gap_narrative": "This attack would require browser_process_spawn, exploit_kit_hit, drive_by_download but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "browser_process_spawn",
+      "exploit_kit_hit",
+      "drive_by_download"
+    ],
+    "causal_blockers": [
+      "req:browser_process_spawn",
+      "req:drive_by_download",
+      "req:exploit_kit_hit"
+    ]
+  },
+  {
+    "rule_id": "TA0001.EXPLOIT_PUBLIC",
+    "rule_name": "Exploit Public-Facing Application",
+    "verdict": "INCOMPLETE",
+    "explanation": "Exploit Public-Facing Application Missing evidence: web_exploit_hit, waf_alert, unexpected_process_from_web_server",
+    "gap_narrative": "This attack would require web_exploit_hit, waf_alert, unexpected_process_from_web_server but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "web_exploit_hit",
+      "waf_alert",
+      "unexpected_process_from_web_server"
+    ],
+    "causal_blockers": [
+      "req:unexpected_process_from_web_server",
+      "req:waf_alert",
+      "req:web_exploit_hit"
+    ]
+  },
+  {
+    "rule_id": "TA0001.EXTERN_REMOTE_SVC",
+    "rule_name": "External Remote Services",
+    "verdict": "INCOMPLETE",
+    "explanation": "External Remote Services Missing evidence: vpn_auth, rdp_auth, citrix_auth, off_hours_remote_login",
+    "gap_narrative": "This attack would require vpn_auth, rdp_auth, citrix_auth, off_hours_remote_login but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "vpn_auth",
+      "rdp_auth",
+      "citrix_auth",
+      "off_hours_remote_login"
+    ],
+    "causal_blockers": [
+      "req:citrix_auth",
+      "req:off_hours_remote_login",
+      "req:rdp_auth",
+      "req:vpn_auth"
+    ]
+  },
+  {
+    "rule_id": "TA0001.HARDWARE_ADD",
+    "rule_name": "Hardware Additions",
+    "verdict": "INCOMPLETE",
+    "explanation": "Hardware Additions Missing evidence: usb_device_insert, new_network_device, unauthorized_hardware",
+    "gap_narrative": "This attack would require usb_device_insert, new_network_device, unauthorized_hardware but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "usb_device_insert",
+      "new_network_device",
+      "unauthorized_hardware"
+    ],
+    "causal_blockers": [
+      "req:new_network_device",
+      "req:unauthorized_hardware",
+      "req:usb_device_insert"
+    ]
+  },
+  {
+    "rule_id": "TA0001.OAUTH_CONSENT_PHISH",
+    "rule_name": "OAuth Consent Phishing",
+    "verdict": "INCOMPLETE",
+    "explanation": "Malicious app consent grants attacker access tokens and persistent access. Missing evidence: oauth_consent, new_app_grant",
+    "gap_narrative": "This attack would require oauth_consent, new_app_grant but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "oauth_consent",
+      "new_app_grant"
+    ],
+    "causal_blockers": [
+      "req:new_app_grant",
+      "req:oauth_consent"
+    ]
+  },
+  {
+    "rule_id": "TA0001.PHISHING",
+    "rule_name": "Initial Access via Phishing",
+    "verdict": "INCOMPLETE",
+    "explanation": "User interaction and macro execution leading to outbound beaconing. Missing evidence: email_attachment_open, macro_execution, beacon_outbound",
+    "gap_narrative": "This attack would require email_attachment_open, macro_execution, beacon_outbound but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "email_attachment_open",
+      "macro_execution",
+      "beacon_outbound"
+    ],
+    "causal_blockers": [
+      "req:beacon_outbound",
+      "req:email_attachment_open",
+      "req:macro_execution"
+    ]
+  },
+  {
+    "rule_id": "TA0001.PHISH_LINK",
+    "rule_name": "Phishing via Link and OAuth Consent",
+    "verdict": "INCOMPLETE",
+    "explanation": "Link phishing followed by OAuth consent indicates account compromise. Missing evidence: phish_link_click, oauth_consent",
+    "gap_narrative": "This attack would require phish_link_click, oauth_consent but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "phish_link_click",
+      "oauth_consent"
+    ],
+    "causal_blockers": [
+      "req:oauth_consent",
+      "req:phish_link_click"
+    ]
+  },
+  {
+    "rule_id": "TA0001.REPL_REMOVABLE",
+    "rule_name": "Replication Through Removable Media",
+    "verdict": "INCOMPLETE",
+    "explanation": "Replication Through Removable Media Missing evidence: usb_device_insert, autorun_event, file_copy_from_removable",
+    "gap_narrative": "This attack would require usb_device_insert, autorun_event, file_copy_from_removable but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "usb_device_insert",
+      "autorun_event",
+      "file_copy_from_removable"
+    ],
+    "causal_blockers": [
+      "req:autorun_event",
+      "req:file_copy_from_removable",
+      "req:usb_device_insert"
+    ]
+  },
+  {
+    "rule_id": "TA0001.STOLEN_CREDS",
+    "rule_name": "Stolen Credentials Initial Access",
+    "verdict": "INCOMPLETE",
+    "explanation": "Stolen credentials used for initial access, often detected by token reuse. Missing evidence: token_reuse",
+    "gap_narrative": "This attack would require token_reuse but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "supporting_event_ids": [
+      "evt-1"
+    ],
+    "missing_evidence": [
+      "token_reuse"
+    ],
+    "causal_blockers": [
+      "req:token_reuse"
+    ]
+  },
+  {
+    "rule_id": "TA0001.STOLEN_CREDS_ANOMALY",
+    "rule_name": "Stolen Credentials with Anomalous Access",
+    "verdict": "INCOMPLETE",
+    "explanation": "Stolen credentials with anomalous device access indicate initial compromise. Missing evidence: token_reuse",
+    "gap_narrative": "This attack would require token_reuse but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "supporting_event_ids": [
+      "evt-1",
+      "evt-2"
+    ],
+    "missing_evidence": [
+      "token_reuse"
+    ],
+    "causal_blockers": [
+      "req:token_reuse"
+    ]
+  },
+  {
+    "rule_id": "TA0001.TRUSTED_RELATION",
+    "rule_name": "Trusted Relationship",
+    "verdict": "INCOMPLETE",
+    "explanation": "Trusted Relationship Missing evidence: third_party_account_auth, msp_tool_access, vendor_vpn_login",
+    "gap_narrative": "This attack would require third_party_account_auth, msp_tool_access, vendor_vpn_login but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "third_party_account_auth",
+      "msp_tool_access",
+      "vendor_vpn_login"
+    ],
+    "causal_blockers": [
+      "req:msp_tool_access",
+      "req:third_party_account_auth",
+      "req:vendor_vpn_login"
+    ]
+  },
+  {
+    "rule_id": "TA0001.VALID_ACCOUNTS_EXT",
+    "rule_name": "Valid Accounts – External",
+    "verdict": "INCOMPLETE",
+    "explanation": "Valid Accounts – External Missing evidence: impossible_travel, known_bad_ip_auth",
+    "gap_narrative": "This attack would require impossible_travel, known_bad_ip_auth but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "supporting_event_ids": [
+      "evt-1"
+    ],
+    "missing_evidence": [
+      "impossible_travel",
+      "known_bad_ip_auth"
+    ],
+    "causal_blockers": [
+      "req:impossible_travel",
+      "req:known_bad_ip_auth"
+    ]
+  },
+  {
+    "rule_id": "TA0002.CMD_SCRIPT_BASH",
+    "rule_name": "Command \u0026 Scripting – Bash/Shell (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Command \u0026 Scripting – Bash/Shell Missing evidence: process_creation, suspicious_shell_cmd, curl_pipe_bash, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, suspicious_shell_cmd, curl_pipe_bash, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "suspicious_shell_cmd",
+      "curl_pipe_bash",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:curl_pipe_bash",
+      "req:process_creation",
+      "req:suspicious_shell_cmd"
+    ]
+  },
+  {
+    "rule_id": "TA0002.CMD_SCRIPT_CLOUD",
+    "rule_name": "Command \u0026 Scripting – Cloud API (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Command \u0026 Scripting – Cloud API Missing evidence: process_creation, cloud_api_call, cli_unusual_action, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, cloud_api_call, cli_unusual_action, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "cloud_api_call",
+      "cli_unusual_action",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:cli_unusual_action",
+      "req:cloud_api_call",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0002.CMD_SCRIPT_JS",
+    "rule_name": "Command \u0026 Scripting – JavaScript/JScript (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Command \u0026 Scripting – JavaScript/JScript Missing evidence: process_creation, wscript_exec, cscript_exec, jscript_child_proc, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, wscript_exec, cscript_exec, jscript_child_proc, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "wscript_exec",
+      "cscript_exec",
+      "jscript_child_proc",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:cscript_exec",
+      "req:jscript_child_proc",
+      "req:process_creation",
+      "req:wscript_exec"
+    ]
+  },
+  {
+    "rule_id": "TA0002.CMD_SCRIPT_PS",
+    "rule_name": "Command \u0026 Scripting – PowerShell (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Command \u0026 Scripting – PowerShell Missing evidence: process_creation, encoded_command, powershell_download_cradle, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, encoded_command, powershell_download_cradle, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "encoded_command",
+      "powershell_download_cradle",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:encoded_command",
+      "req:powershell_download_cradle",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0002.CMD_SCRIPT_PYTHON",
+    "rule_name": "Command \u0026 Scripting – Python (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Command \u0026 Scripting – Python Missing evidence: process_creation, python_exec_decode, python_subprocess_shell, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, python_exec_decode, python_subprocess_shell, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "python_exec_decode",
+      "python_subprocess_shell",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:process_creation",
+      "req:python_exec_decode",
+      "req:python_subprocess_shell"
+    ]
+  },
+  {
+    "rule_id": "TA0002.CMD_SCRIPT_VBA",
+    "rule_name": "Command \u0026 Scripting – Visual Basic/VBA (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Command \u0026 Scripting – Visual Basic/VBA Missing evidence: process_creation, macro_execution, office_child_proc, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, macro_execution, office_child_proc, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "macro_execution",
+      "office_child_proc",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:macro_execution",
+      "req:office_child_proc",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0002.CONTAINER_ADMIN",
+    "rule_name": "Container Administration Command (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Container Administration Command Missing evidence: process_creation, kubectl_exec, docker_exec_prod, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, kubectl_exec, docker_exec_prod, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "kubectl_exec",
+      "docker_exec_prod",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:docker_exec_prod",
+      "req:kubectl_exec",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0002.DEPLOY_CONTAINER",
+    "rule_name": "Deploy Container (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Deploy Container Missing evidence: process_creation, container_start, privileged_container_create, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, container_start, privileged_container_create, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "container_start",
+      "privileged_container_create",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:container_start",
+      "req:privileged_container_create",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0002.EXPLOIT_CLIENT",
+    "rule_name": "Exploitation for Client Execution (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Exploitation for Client Execution Missing evidence: process_creation, browser_child_proc, renderer_spawn_cmd, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, browser_child_proc, renderer_spawn_cmd, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "browser_child_proc",
+      "renderer_spawn_cmd",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:browser_child_proc",
+      "req:process_creation",
+      "req:renderer_spawn_cmd"
+    ]
+  },
+  {
+    "rule_id": "TA0002.INTER_PROC_COMM",
+    "rule_name": "Inter-Process Communication (COM/DCOM) (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Inter-Process Communication (COM/DCOM) Missing evidence: process_creation, dcom_lateral_exec, com_object_hijack, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, dcom_lateral_exec, com_object_hijack, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "dcom_lateral_exec",
+      "com_object_hijack",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:com_object_hijack",
+      "req:dcom_lateral_exec",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0002.LOLBIN_CHAIN",
+    "rule_name": "Suspicious LOLBin Execution Chain (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "LOLBin execution following initial access suggests hands-on-keyboard activity. Missing evidence: process_creation, lolbin_execution, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, lolbin_execution, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "lolbin_execution",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:lolbin_execution",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0002.NATIVE_API",
+    "rule_name": "Native API Abuse (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Native API Abuse Missing evidence: process_creation, direct_syscall, ntdll_direct_invoke, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, direct_syscall, ntdll_direct_invoke, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "direct_syscall",
+      "ntdll_direct_invoke",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:direct_syscall",
+      "req:ntdll_direct_invoke",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0002.SCHED_TASK_EXEC",
+    "rule_name": "Scheduled Task/Job – Execution (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Scheduled Task/Job – Execution Missing evidence: process_creation, schtasks_create, at_exec_trigger, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, schtasks_create, at_exec_trigger, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "schtasks_create",
+      "at_exec_trigger",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:at_exec_trigger",
+      "req:process_creation",
+      "req:schtasks_create"
+    ]
+  },
+  {
+    "rule_id": "TA0002.SERVERLESS_EXEC",
+    "rule_name": "Serverless Execution (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Serverless Execution Missing evidence: process_creation, lambda_invoke_anomaly, function_unusual_trigger, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, lambda_invoke_anomaly, function_unusual_trigger, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "lambda_invoke_anomaly",
+      "function_unusual_trigger",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:function_unusual_trigger",
+      "req:lambda_invoke_anomaly",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0002.SVC_EXECUTION",
+    "rule_name": "System Services – Service Execution (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "System Services – Service Execution Missing evidence: process_creation, sc_exec, psexec_svc, smb_service_create, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, sc_exec, psexec_svc, smb_service_create, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "sc_exec",
+      "psexec_svc",
+      "smb_service_create",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:process_creation",
+      "req:psexec_svc",
+      "req:sc_exec",
+      "req:smb_service_create"
+    ]
+  },
+  {
+    "rule_id": "TA0002.USER_EXEC_FILE",
+    "rule_name": "User Execution – Malicious File (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "User Execution – Malicious File Missing evidence: process_creation, user_open_attachment, child_proc_from_office, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, user_open_attachment, child_proc_from_office, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "user_open_attachment",
+      "child_proc_from_office",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:child_proc_from_office",
+      "req:process_creation",
+      "req:user_open_attachment"
+    ]
+  },
+  {
+    "rule_id": "TA0002.USER_EXEC_LINK",
+    "rule_name": "User Execution – Malicious Link (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "User Execution – Malicious Link Missing evidence: process_creation, browser_spawn_from_mail, oauth_redirect_abuse, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, browser_spawn_from_mail, oauth_redirect_abuse, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "browser_spawn_from_mail",
+      "oauth_redirect_abuse",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:browser_spawn_from_mail",
+      "req:oauth_redirect_abuse",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0002.WMI_EXEC",
+    "rule_name": "Windows Management Instrumentation (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Windows Management Instrumentation Missing evidence: process_creation, wmic_process_create, wmi_subscription_trigger, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, wmic_process_create, wmi_subscription_trigger, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "wmic_process_create",
+      "wmi_subscription_trigger",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:process_creation",
+      "req:wmi_subscription_trigger",
+      "req:wmic_process_create"
+    ]
+  },
+  {
+    "rule_id": "TA0003.ACCOUNT_CREATE",
+    "rule_name": "Create Account (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Account creation for persistence. Missing evidence: account_create, account_privilege_change, precond:privilege_escalation",
+    "gap_narrative": "This attack would require account_create, account_privilege_change, precond:privilege_escalation but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "account_create",
+      "account_privilege_change",
+      "precond:privilege_escalation"
+    ],
+    "causal_blockers": [
+      "pre:privilege_escalation",
+      "req:account_create",
+      "req:account_privilege_change"
+    ]
+  },
+  {
+    "rule_id": "TA0003.BITS_JOBS",
+    "rule_name": "BITS Jobs (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "BITS Jobs Missing evidence: bitsadmin_job_create, bits_network_transfer, bits_persistence, precond:initial_access",
+    "gap_narrative": "This attack would require bitsadmin_job_create, bits_network_transfer, bits_persistence, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "bitsadmin_job_create",
+      "bits_network_transfer",
+      "bits_persistence",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:bits_network_transfer",
+      "req:bits_persistence",
+      "req:bitsadmin_job_create"
+    ]
+  },
+  {
+    "rule_id": "TA0003.BOOT_PREOB",
+    "rule_name": "Pre-OS Boot – Bootkit/UEFI (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Pre-OS Boot – Bootkit/UEFI Missing evidence: firmware_alert, secure_boot_bypass, uefi_write_attempt, precond:initial_access",
+    "gap_narrative": "This attack would require firmware_alert, secure_boot_bypass, uefi_write_attempt, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "firmware_alert",
+      "secure_boot_bypass",
+      "uefi_write_attempt",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:firmware_alert",
+      "req:secure_boot_bypass",
+      "req:uefi_write_attempt"
+    ]
+  },
+  {
+    "rule_id": "TA0003.BROWSER_EXT",
+    "rule_name": "Browser Extensions (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Browser Extensions Missing evidence: browser_extension_install, ext_excessive_permissions, precond:initial_access",
+    "gap_narrative": "This attack would require browser_extension_install, ext_excessive_permissions, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "browser_extension_install",
+      "ext_excessive_permissions",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:browser_extension_install",
+      "req:ext_excessive_permissions"
+    ]
+  },
+  {
+    "rule_id": "TA0003.COMPROMISE_HOST_SW",
+    "rule_name": "Compromise Host Software Binary (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Compromise Host Software Binary Missing evidence: binary_hash_mismatch, system_binary_tamper, file_integrity_alert, precond:initial_access",
+    "gap_narrative": "This attack would require binary_hash_mismatch, system_binary_tamper, file_integrity_alert, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "binary_hash_mismatch",
+      "system_binary_tamper",
+      "file_integrity_alert",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:binary_hash_mismatch",
+      "req:file_integrity_alert",
+      "req:system_binary_tamper"
+    ]
+  },
+  {
+    "rule_id": "TA0003.CONTAINER_EXECUTION",
+    "rule_name": "Container Execution",
+    "verdict": "INCOMPLETE",
+    "explanation": "Execution in a container environment. Missing evidence: container_start, container_exec",
+    "gap_narrative": "This attack would require container_start, container_exec but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "container_start",
+      "container_exec"
+    ],
+    "causal_blockers": [
+      "req:container_exec",
+      "req:container_start"
+    ]
+  },
+  {
+    "rule_id": "TA0003.CREATE_MOD_SVC",
+    "rule_name": "Create or Modify System Process (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Create or Modify System Process Missing evidence: service_install, launchd_unit_add, systemd_unit_create, precond:initial_access",
+    "gap_narrative": "This attack would require service_install, launchd_unit_add, systemd_unit_create, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "service_install",
+      "launchd_unit_add",
+      "systemd_unit_create",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:launchd_unit_add",
+      "req:service_install",
+      "req:systemd_unit_create"
+    ]
+  },
+  {
+    "rule_id": "TA0003.EVENT_TRIGGER",
+    "rule_name": "Event-Triggered Execution (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Event-Triggered Execution Missing evidence: wmi_event_subscription, accessibility_feature_hijack, at_trigger, precond:initial_access",
+    "gap_narrative": "This attack would require wmi_event_subscription, accessibility_feature_hijack, at_trigger, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "wmi_event_subscription",
+      "accessibility_feature_hijack",
+      "at_trigger",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:accessibility_feature_hijack",
+      "req:at_trigger",
+      "req:wmi_event_subscription"
+    ]
+  },
+  {
+    "rule_id": "TA0003.HIJACK_EXEC_FLOW",
+    "rule_name": "Hijack Execution Flow – DLL Sideload (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Hijack Execution Flow – DLL Sideload Missing evidence: dll_sideload_detect, search_order_hijack, dll_in_app_dir, precond:initial_access",
+    "gap_narrative": "This attack would require dll_sideload_detect, search_order_hijack, dll_in_app_dir, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "dll_sideload_detect",
+      "search_order_hijack",
+      "dll_in_app_dir",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:dll_in_app_dir",
+      "req:dll_sideload_detect",
+      "req:search_order_hijack"
+    ]
+  },
+  {
+    "rule_id": "TA0003.IMPLANT_CONTAINER",
+    "rule_name": "Implant Internal Image (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Implant Internal Image Missing evidence: image_push_to_registry, image_hash_mismatch, backdoor_image_scan, precond:initial_access",
+    "gap_narrative": "This attack would require image_push_to_registry, image_hash_mismatch, backdoor_image_scan, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "image_push_to_registry",
+      "image_hash_mismatch",
+      "backdoor_image_scan",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:backdoor_image_scan",
+      "req:image_hash_mismatch",
+      "req:image_push_to_registry"
+    ]
+  },
+  {
+    "rule_id": "TA0003.MAILBOX_PERSIST",
+    "rule_name": "Mailbox Rule Persistence",
+    "verdict": "INCOMPLETE",
+    "explanation": "Persistence through mailbox rules and forwarding. Missing evidence: mailbox_rule_create, forwarding_rule_set",
+    "gap_narrative": "This attack would require mailbox_rule_create, forwarding_rule_set but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "mailbox_rule_create",
+      "forwarding_rule_set"
+    ],
+    "causal_blockers": [
+      "req:forwarding_rule_set",
+      "req:mailbox_rule_create"
+    ]
+  },
+  {
+    "rule_id": "TA0003.MOD_AUTH_PERSIST",
+    "rule_name": "Modify Authentication Process – Persistence (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Modify Authentication Process – Persistence Missing evidence: pam_module_add, sso_handler_modify, auth_config_change, precond:initial_access",
+    "gap_narrative": "This attack would require pam_module_add, sso_handler_modify, auth_config_change, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "pam_module_add",
+      "sso_handler_modify",
+      "auth_config_change",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:auth_config_change",
+      "req:pam_module_add",
+      "req:sso_handler_modify"
+    ]
+  },
+  {
+    "rule_id": "TA0003.PERSIST",
+    "rule_name": "Persistence (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Persistence established after initial access. Required context missing.",
+    "gap_narrative": "Required context is missing to evaluate this rule; treat as incomplete until context is provided.",
+    "reason_code": "environment_unknown",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "registry_run_key",
+      "scheduled_task",
+      "precond:initial_access",
+      "environment_context"
+    ],
+    "causal_blockers": [
+      "gate:context_ok",
+      "pre:initial_access",
+      "req:registry_run_key",
+      "req:scheduled_task"
+    ]
+  },
+  {
+    "rule_id": "TA0003.PERSIST_EXTENDED",
+    "rule_name": "Extended Persistence Mechanisms (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Persistence via registry and services after initial access. Required context missing.",
+    "gap_narrative": "Required context is missing to evaluate this rule; treat as incomplete until context is provided.",
+    "reason_code": "environment_unknown",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "registry_run_key",
+      "service_install",
+      "precond:initial_access",
+      "environment_context"
+    ],
+    "causal_blockers": [
+      "gate:context_ok",
+      "pre:initial_access",
+      "req:registry_run_key",
+      "req:service_install"
+    ]
+  },
+  {
+    "rule_id": "TA0003.PWR_SHELL_PROFILE",
+    "rule_name": "PowerShell Profile Persistence (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "PowerShell Profile Persistence Missing evidence: ps_profile_modify, ps_profile_execution, profile_path_change, precond:initial_access",
+    "gap_narrative": "This attack would require ps_profile_modify, ps_profile_execution, profile_path_change, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "ps_profile_modify",
+      "ps_profile_execution",
+      "profile_path_change",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:profile_path_change",
+      "req:ps_profile_execution",
+      "req:ps_profile_modify"
+    ]
+  },
+  {
+    "rule_id": "TA0003.SCHED_TASK_PERSIST",
+    "rule_name": "Scheduled Task – Persistence (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Scheduled Task – Persistence Missing evidence: schtasks_create, task_nonstandard_path, task_created_by_nonadmin, precond:initial_access",
+    "gap_narrative": "This attack would require schtasks_create, task_nonstandard_path, task_created_by_nonadmin, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "schtasks_create",
+      "task_nonstandard_path",
+      "task_created_by_nonadmin",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:schtasks_create",
+      "req:task_created_by_nonadmin",
+      "req:task_nonstandard_path"
+    ]
+  },
+  {
+    "rule_id": "TA0003.SERVER_SW_COMP",
+    "rule_name": "Server Software Component – Webshell (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Server Software Component – Webshell Missing evidence: webshell_detect, web_root_file_create, web_server_spawn_shell, precond:initial_access",
+    "gap_narrative": "This attack would require webshell_detect, web_root_file_create, web_server_spawn_shell, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "webshell_detect",
+      "web_root_file_create",
+      "web_server_spawn_shell",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:web_root_file_create",
+      "req:web_server_spawn_shell",
+      "req:webshell_detect"
+    ]
+  },
+  {
+    "rule_id": "TA0003.SSH_AUTH_KEYS",
+    "rule_name": "SSH Authorized Keys Modification (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "SSH Authorized Keys Modification Missing evidence: authorized_keys_modify, ssh_key_add_outside_provisioning, precond:initial_access",
+    "gap_narrative": "This attack would require authorized_keys_modify, ssh_key_add_outside_provisioning, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "authorized_keys_modify",
+      "ssh_key_add_outside_provisioning",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:authorized_keys_modify",
+      "req:ssh_key_add_outside_provisioning"
+    ]
+  },
+  {
+    "rule_id": "TA0003.TRAFFIC_SIGNAL",
+    "rule_name": "Traffic Signaling – Port Knocking (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Traffic Signaling – Port Knocking Missing evidence: port_knock_sequence, sequenced_port_connect, hidden_svc_trigger, precond:initial_access",
+    "gap_narrative": "This attack would require port_knock_sequence, sequenced_port_connect, hidden_svc_trigger, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "port_knock_sequence",
+      "sequenced_port_connect",
+      "hidden_svc_trigger",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:hidden_svc_trigger",
+      "req:port_knock_sequence",
+      "req:sequenced_port_connect"
+    ]
+  },
+  {
+    "rule_id": "TA0003.VALID_ACCOUNT_CLOUD",
+    "rule_name": "Valid Accounts – Cloud Account Persistence (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Valid Accounts – Cloud Account Persistence Missing evidence: unused_svc_account_reactivate, iam_account_kept_post_compromise, precond:initial_access",
+    "gap_narrative": "This attack would require unused_svc_account_reactivate, iam_account_kept_post_compromise, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "unused_svc_account_reactivate",
+      "iam_account_kept_post_compromise",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:iam_account_kept_post_compromise",
+      "req:unused_svc_account_reactivate"
+    ]
+  },
+  {
+    "rule_id": "TA0004.ABUSE_ELEV_CLOUD",
+    "rule_name": "Abuse Elevation – Temporary Cloud Access (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Abuse Elevation – Temporary Cloud Access Missing evidence: admin_group_change, precond:initial_access",
+    "gap_narrative": "This attack would require admin_group_change, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "admin_group_change",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:admin_group_change"
+    ]
+  },
+  {
+    "rule_id": "TA0004.ABUSE_ELEV_SUDO",
+    "rule_name": "Abuse Elevation – Sudo/Sudoers (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Abuse Elevation – Sudo/Sudoers Missing evidence: admin_group_change, precond:initial_access",
+    "gap_narrative": "This attack would require admin_group_change, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "admin_group_change",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:admin_group_change"
+    ]
+  },
+  {
+    "rule_id": "TA0004.ABUSE_ELEV_UAC",
+    "rule_name": "Abuse Elevation – UAC Bypass (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Abuse Elevation – UAC Bypass Missing evidence: admin_group_change, precond:initial_access",
+    "gap_narrative": "This attack would require admin_group_change, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "admin_group_change",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:admin_group_change"
+    ]
+  },
+  {
+    "rule_id": "TA0004.ACCESS_TOKEN_MANIP",
+    "rule_name": "Access Token Manipulation (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Access Token Manipulation Missing evidence: admin_group_change, precond:initial_access",
+    "gap_narrative": "This attack would require admin_group_change, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "admin_group_change",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:admin_group_change"
+    ]
+  },
+  {
+    "rule_id": "TA0004.ACCOUNT_MANIP",
+    "rule_name": "Account Manipulation",
+    "verdict": "INCOMPLETE",
+    "explanation": "Account changes used to persist or elevate access. Identity privilege is unknown in environment inventory.",
+    "gap_narrative": "Cannot prove required identity privilege due to missing inventory context.",
+    "reason_code": "environment_unknown",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "account_manipulation",
+      "admin_group_change"
+    ],
+    "causal_blockers": [
+      "gate:identity_priv_ok",
+      "req:account_manipulation",
+      "req:admin_group_change"
+    ]
+  },
+  {
+    "rule_id": "TA0004.DOMAIN_POLICY_MOD",
+    "rule_name": "Domain Policy Modification (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Domain Policy Modification Missing evidence: admin_group_change, precond:initial_access",
+    "gap_narrative": "This attack would require admin_group_change, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "admin_group_change",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:admin_group_change"
+    ]
+  },
+  {
+    "rule_id": "TA0004.EXPLOIT_PRIVESC",
+    "rule_name": "Kernel/Driver Exploit for Privesc (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Kernel/Driver Exploit for Privesc Missing evidence: admin_group_change, precond:initial_access",
+    "gap_narrative": "This attack would require admin_group_change, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "admin_group_change",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:admin_group_change"
+    ]
+  },
+  {
+    "rule_id": "TA0004.MFA_BYPASS",
+    "rule_name": "MFA Disable or Bypass",
+    "verdict": "INCOMPLETE",
+    "explanation": "MFA changes combined with token anomalies indicate bypass. Missing evidence: mfa_method_removed, token_refresh_anomaly",
+    "gap_narrative": "This attack would require mfa_method_removed, token_refresh_anomaly but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "mfa_method_removed",
+      "token_refresh_anomaly"
+    ],
+    "causal_blockers": [
+      "req:mfa_method_removed",
+      "req:token_refresh_anomaly"
+    ]
+  },
+  {
+    "rule_id": "TA0004.PRIVESCA",
+    "rule_name": "Privilege Escalation",
+    "verdict": "INCOMPLETE",
+    "explanation": "Evidence of elevating access beyond initial privileges. Identity privilege is unknown in environment inventory.",
+    "gap_narrative": "Cannot prove required identity privilege due to missing inventory context.",
+    "reason_code": "environment_unknown",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "token_manipulation",
+      "admin_group_change"
+    ],
+    "causal_blockers": [
+      "gate:identity_priv_ok",
+      "req:admin_group_change",
+      "req:token_manipulation"
+    ]
+  },
+  {
+    "rule_id": "TA0004.PROC_INJECTION_PE",
+    "rule_name": "Process Injection – Privilege Escalation (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Process Injection – Privilege Escalation Missing evidence: admin_group_change, precond:initial_access",
+    "gap_narrative": "This attack would require admin_group_change, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "admin_group_change",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:admin_group_change"
+    ]
+  },
+  {
+    "rule_id": "TA0004.SAAS_ADMIN",
+    "rule_name": "SaaS Admin Takeover",
+    "verdict": "INCOMPLETE",
+    "explanation": "Admin access gained through OAuth grants and role changes. Missing evidence: new_admin_role, oauth_app_grant",
+    "gap_narrative": "This attack would require new_admin_role, oauth_app_grant but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "new_admin_role",
+      "oauth_app_grant"
+    ],
+    "causal_blockers": [
+      "req:new_admin_role",
+      "req:oauth_app_grant"
+    ]
+  },
+  {
+    "rule_id": "TA0004.SID_HISTORY",
+    "rule_name": "SID-History Injection (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "SID-History Injection Missing evidence: admin_group_change, precond:initial_access",
+    "gap_narrative": "This attack would require admin_group_change, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "admin_group_change",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:admin_group_change"
+    ]
+  },
+  {
+    "rule_id": "TA0004.VALID_ACCT_PRIVESC",
+    "rule_name": "Valid Accounts – Privilege Escalation (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Valid Accounts – Privilege Escalation Missing evidence: admin_group_change, precond:initial_access",
+    "gap_narrative": "This attack would require admin_group_change, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "admin_group_change",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:admin_group_change"
+    ]
+  },
+  {
+    "rule_id": "TA0005.ACCESS_TOKEN_EV",
+    "rule_name": "Access Token Manipulation – Evasion (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Access Token Manipulation – Evasion Missing evidence: process_creation, token_impersonation, seimpersonate_abuse, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, token_impersonation, seimpersonate_abuse, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "token_impersonation",
+      "seimpersonate_abuse",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:process_creation",
+      "req:seimpersonate_abuse",
+      "req:token_impersonation"
+    ]
+  },
+  {
+    "rule_id": "TA0005.AUTH_PROCESS_MOD",
+    "rule_name": "Modify Authentication Process",
+    "verdict": "INCOMPLETE",
+    "explanation": "Authentication controls were altered to bypass access checks. Identity privilege is unknown in environment inventory.",
+    "gap_narrative": "Cannot prove required identity privilege due to missing inventory context.",
+    "reason_code": "environment_unknown",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "auth_process_modify",
+      "mfa_method_removed"
+    ],
+    "causal_blockers": [
+      "gate:identity_priv_ok",
+      "req:auth_process_modify",
+      "req:mfa_method_removed"
+    ]
+  },
+  {
+    "rule_id": "TA0005.BITS_JOBS_EV",
+    "rule_name": "BITS Jobs – Evasion (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "BITS Jobs – Evasion Missing evidence: process_creation, bitsadmin_download, bits_blend_windows_update, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, bitsadmin_download, bits_blend_windows_update, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "bitsadmin_download",
+      "bits_blend_windows_update",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:bits_blend_windows_update",
+      "req:bitsadmin_download",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0005.DEBUGGER_EVASION",
+    "rule_name": "Debugger Evasion (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Debugger Evasion Missing evidence: process_creation, anti_debug_check, timing_attack_detect, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, anti_debug_check, timing_attack_detect, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "anti_debug_check",
+      "timing_attack_detect",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:anti_debug_check",
+      "req:process_creation",
+      "req:timing_attack_detect"
+    ]
+  },
+  {
+    "rule_id": "TA0005.DEOBFUSCATE_DECODE",
+    "rule_name": "Deobfuscate/Decode Files (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Deobfuscate/Decode Files Missing evidence: process_creation, certutil_decode, base64_xor_decode_runtime, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, certutil_decode, base64_xor_decode_runtime, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "certutil_decode",
+      "base64_xor_decode_runtime",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:base64_xor_decode_runtime",
+      "req:certutil_decode",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0005.DIRECT_VOL_ACCESS",
+    "rule_name": "Direct Volume Access (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Direct Volume Access Missing evidence: process_creation, raw_disk_access, volume_shadow_manipulation, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, raw_disk_access, volume_shadow_manipulation, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "raw_disk_access",
+      "volume_shadow_manipulation",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:process_creation",
+      "req:raw_disk_access",
+      "req:volume_shadow_manipulation"
+    ]
+  },
+  {
+    "rule_id": "TA0005.EXEC_GUARDRAILS",
+    "rule_name": "Execution Guardrails (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Execution Guardrails Missing evidence: process_creation, vm_check, sandbox_detect, env_keyed_payload, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, vm_check, sandbox_detect, env_keyed_payload, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "vm_check",
+      "sandbox_detect",
+      "env_keyed_payload",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:env_keyed_payload",
+      "req:process_creation",
+      "req:sandbox_detect",
+      "req:vm_check"
+    ]
+  },
+  {
+    "rule_id": "TA0005.FILE_DIR_PERM_MOD",
+    "rule_name": "File and Directory Permissions Modification (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "File and Directory Permissions Modification Missing evidence: process_creation, icacls_exec, dacl_modification, chmod_security, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, icacls_exec, dacl_modification, chmod_security, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "icacls_exec",
+      "dacl_modification",
+      "chmod_security",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:chmod_security",
+      "req:dacl_modification",
+      "req:icacls_exec",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0005.FORGE_WEB_CRED",
+    "rule_name": "Forge Web Credentials – SAML/OAuth (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Forge Web Credentials – SAML/OAuth Missing evidence: process_creation, golden_saml_detect, jwt_manipulation, token_forge, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, golden_saml_detect, jwt_manipulation, token_forge, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "golden_saml_detect",
+      "jwt_manipulation",
+      "token_forge",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:golden_saml_detect",
+      "req:jwt_manipulation",
+      "req:process_creation",
+      "req:token_forge"
+    ]
+  },
+  {
+    "rule_id": "TA0005.HIDE_ARTIFACTS",
+    "rule_name": "Hide Artifacts (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Hide Artifacts Missing evidence: process_creation, ads_stream_create, hidden_file_create, process_hide, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, ads_stream_create, hidden_file_create, process_hide, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "ads_stream_create",
+      "hidden_file_create",
+      "process_hide",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:ads_stream_create",
+      "req:hidden_file_create",
+      "req:process_creation",
+      "req:process_hide"
+    ]
+  },
+  {
+    "rule_id": "TA0005.HIJACK_EXEC_EV",
+    "rule_name": "Hijack Execution Flow – Evasion (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Hijack Execution Flow – Evasion Missing evidence: process_creation, dll_hijack_allowlist_bypass, lolbin_load_hijack, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, dll_hijack_allowlist_bypass, lolbin_load_hijack, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "dll_hijack_allowlist_bypass",
+      "lolbin_load_hijack",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:dll_hijack_allowlist_bypass",
+      "req:lolbin_load_hijack",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0005.IMPAIR_DEFENSES",
+    "rule_name": "Impair Defenses",
+    "verdict": "INCOMPLETE",
+    "explanation": "Defensive controls weakened to evade detection. Identity privilege is unknown in environment inventory.",
+    "gap_narrative": "Cannot prove required identity privilege due to missing inventory context.",
+    "reason_code": "environment_unknown",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "disable_logging",
+      "cloud_firewall_change"
+    ],
+    "causal_blockers": [
+      "gate:identity_priv_ok",
+      "req:cloud_firewall_change",
+      "req:disable_logging"
+    ]
+  },
+  {
+    "rule_id": "TA0005.INDICATOR_REMOVAL",
+    "rule_name": "Indicator Removal (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Indicators removed to evade detection. Missing evidence: log_clear, file_delete, precond:privilege_escalation",
+    "gap_narrative": "This attack would require log_clear, file_delete, precond:privilege_escalation but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "log_clear",
+      "file_delete",
+      "precond:privilege_escalation"
+    ],
+    "causal_blockers": [
+      "pre:privilege_escalation",
+      "req:file_delete",
+      "req:log_clear"
+    ]
+  },
+  {
+    "rule_id": "TA0005.INDIRECT_CMD_EXEC",
+    "rule_name": "Indirect Command Execution (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Indirect Command Execution Missing evidence: process_creation, forfiles_exec, pcalua_exec, msiexec_cmd, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, forfiles_exec, pcalua_exec, msiexec_cmd, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "forfiles_exec",
+      "pcalua_exec",
+      "msiexec_cmd",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:forfiles_exec",
+      "req:msiexec_cmd",
+      "req:pcalua_exec",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0005.LOG_TAMPER",
+    "rule_name": "Disable or Modify Security Logging (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Disabling logging to hide attacker activity. Missing evidence: disable_logging, policy_bypass, precond:initial_access",
+    "gap_narrative": "This attack would require disable_logging, policy_bypass, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "disable_logging",
+      "policy_bypass",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:disable_logging",
+      "req:policy_bypass"
+    ]
+  },
+  {
+    "rule_id": "TA0005.MASQUERADING",
+    "rule_name": "Masquerading (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Masquerading to evade detection. Missing evidence: process_creation, binary_path_anomaly, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, binary_path_anomaly, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "binary_path_anomaly",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:binary_path_anomaly",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0005.MOD_CLOUD_INFRA",
+    "rule_name": "Modify Cloud Compute Infrastructure (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Modify Cloud Compute Infrastructure Missing evidence: process_creation, snapshot_create_before_delete, ami_create_anomaly, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, snapshot_create_before_delete, ami_create_anomaly, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "snapshot_create_before_delete",
+      "ami_create_anomaly",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:ami_create_anomaly",
+      "req:process_creation",
+      "req:snapshot_create_before_delete"
+    ]
+  },
+  {
+    "rule_id": "TA0005.MOD_REGISTRY",
+    "rule_name": "Modify Registry (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Modify Registry Missing evidence: process_creation, registry_modification, security_tool_disable_key, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, registry_modification, security_tool_disable_key, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "registry_modification",
+      "security_tool_disable_key",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:process_creation",
+      "req:registry_modification",
+      "req:security_tool_disable_key"
+    ]
+  },
+  {
+    "rule_id": "TA0005.OBFUSCATED_FILES",
+    "rule_name": "Obfuscated Files or Information (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Obfuscation used to evade defenses. Missing evidence: script_execution, encoded_command, precond:initial_access",
+    "gap_narrative": "This attack would require script_execution, encoded_command, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "script_execution",
+      "encoded_command",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:encoded_command",
+      "req:script_execution"
+    ]
+  },
+  {
+    "rule_id": "TA0005.PROCESS_INJECTION",
+    "rule_name": "Process Injection (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Process injection following initial access. Missing evidence: process_injection, suspicious_thread, precond:initial_access",
+    "gap_narrative": "This attack would require process_injection, suspicious_thread, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_injection",
+      "suspicious_thread",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:process_injection",
+      "req:suspicious_thread"
+    ]
+  },
+  {
+    "rule_id": "TA0005.PROC_INJECTION_EV",
+    "rule_name": "Process Injection – Evasion (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Process Injection – Evasion Missing evidence: process_creation, code_inject_legit_proc, hollowing_detect, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, code_inject_legit_proc, hollowing_detect, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "code_inject_legit_proc",
+      "hollowing_detect",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:code_inject_legit_proc",
+      "req:hollowing_detect",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0005.REFLECTIVE_LOAD",
+    "rule_name": "Reflective Code Loading (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Reflective Code Loading Missing evidence: process_creation, reflective_dll_inject, in_memory_dotnet_load, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, reflective_dll_inject, in_memory_dotnet_load, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "reflective_dll_inject",
+      "in_memory_dotnet_load",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:in_memory_dotnet_load",
+      "req:process_creation",
+      "req:reflective_dll_inject"
+    ]
+  },
+  {
+    "rule_id": "TA0005.ROGUE_DOMAIN_CTRL",
+    "rule_name": "Rogue Domain Controller (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Rogue Domain Controller Missing evidence: process_creation, dcshadow_detect, unauthorized_dc_replicate, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, dcshadow_detect, unauthorized_dc_replicate, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "dcshadow_detect",
+      "unauthorized_dc_replicate",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:dcshadow_detect",
+      "req:process_creation",
+      "req:unauthorized_dc_replicate"
+    ]
+  },
+  {
+    "rule_id": "TA0005.ROOTKIT",
+    "rule_name": "Rootkit (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Rootkit Missing evidence: process_creation, dkom_detect, kernel_hook_alert, bookit_detect, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, dkom_detect, kernel_hook_alert, bookit_detect, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "dkom_detect",
+      "kernel_hook_alert",
+      "bookit_detect",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:bookit_detect",
+      "req:dkom_detect",
+      "req:kernel_hook_alert",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0005.SIGNED_BINARY_PROX",
+    "rule_name": "Signed Binary Proxy – rundll32/mshta/certutil (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Signed Binary Proxy – rundll32/mshta/certutil Missing evidence: process_creation, rundll32_network_dll, mshta_remote_hta, certutil_download, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, rundll32_network_dll, mshta_remote_hta, certutil_download, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "rundll32_network_dll",
+      "mshta_remote_hta",
+      "certutil_download",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:certutil_download",
+      "req:mshta_remote_hta",
+      "req:process_creation",
+      "req:rundll32_network_dll"
+    ]
+  },
+  {
+    "rule_id": "TA0005.SUBVERT_TRUST",
+    "rule_name": "Subvert Trust Controls (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Subvert Trust Controls Missing evidence: process_creation, code_sign_cert_theft, root_ca_abuse, sip_hijack, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, code_sign_cert_theft, root_ca_abuse, sip_hijack, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "code_sign_cert_theft",
+      "root_ca_abuse",
+      "sip_hijack",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:code_sign_cert_theft",
+      "req:process_creation",
+      "req:root_ca_abuse",
+      "req:sip_hijack"
+    ]
+  },
+  {
+    "rule_id": "TA0005.TEMPLATE_INJECT",
+    "rule_name": "Template Injection (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Template Injection Missing evidence: process_creation, remote_template_load, macro_via_template, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, remote_template_load, macro_via_template, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "remote_template_load",
+      "macro_via_template",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:macro_via_template",
+      "req:process_creation",
+      "req:remote_template_load"
+    ]
+  },
+  {
+    "rule_id": "TA0005.TRAFFIC_SIGNAL_EV",
+    "rule_name": "Traffic Signaling – Evasion (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Traffic Signaling – Evasion Missing evidence: process_creation, passive_backdoor_trigger, port_knock_activate, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, passive_backdoor_trigger, port_knock_activate, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "passive_backdoor_trigger",
+      "port_knock_activate",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:passive_backdoor_trigger",
+      "req:port_knock_activate",
+      "req:process_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0005.VIRT_SANDBOX_EVADE",
+    "rule_name": "Virtualization/Sandbox Evasion (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Virtualization/Sandbox Evasion Missing evidence: process_creation, vm_artifact_check, cpuid_check, sleep_timing_evade, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, vm_artifact_check, cpuid_check, sleep_timing_evade, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "vm_artifact_check",
+      "cpuid_check",
+      "sleep_timing_evade",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:cpuid_check",
+      "req:process_creation",
+      "req:sleep_timing_evade",
+      "req:vm_artifact_check"
+    ]
+  },
+  {
+    "rule_id": "TA0005.WEAKEN_ENCRYPTION",
+    "rule_name": "Weaken Encryption (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Weaken Encryption Missing evidence: process_creation, tls_downgrade, storage_encryption_disable, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, tls_downgrade, storage_encryption_disable, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "tls_downgrade",
+      "storage_encryption_disable",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:process_creation",
+      "req:storage_encryption_disable",
+      "req:tls_downgrade"
+    ]
+  },
+  {
+    "rule_id": "TA0005.XSL_SCRIPT",
+    "rule_name": "XSL Script Processing (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "XSL Script Processing Missing evidence: process_creation, msxsl_exec, wmic_xsl_format, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, msxsl_exec, wmic_xsl_format, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "msxsl_exec",
+      "wmic_xsl_format",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:msxsl_exec",
+      "req:process_creation",
+      "req:wmic_xsl_format"
+    ]
+  },
+  {
+    "rule_id": "TA0006.AITM",
+    "rule_name": "Adversary-in-the-Middle (AiTM) (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Adversary-in-the-Middle (AiTM) Missing evidence: lsass_access, precond:credential_access",
+    "gap_narrative": "This attack would require lsass_access, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "lsass_access",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:lsass_access"
+    ]
+  },
+  {
+    "rule_id": "TA0006.BRUTE_FORCE",
+    "rule_name": "Brute Force / Credential Stuffing",
+    "verdict": "INCOMPLETE",
+    "explanation": "High-volume authentication failures followed by access attempts. Missing evidence: password_spray, credential_stuffing",
+    "gap_narrative": "This attack would require password_spray, credential_stuffing but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "password_spray",
+      "credential_stuffing"
+    ],
+    "causal_blockers": [
+      "req:credential_stuffing",
+      "req:password_spray"
+    ]
+  },
+  {
+    "rule_id": "TA0006.CLOUD_IMDS",
+    "rule_name": "Cloud Instance Metadata API Abuse (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Cloud Instance Metadata API Abuse Missing evidence: lsass_access, precond:credential_access",
+    "gap_narrative": "This attack would require lsass_access, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "lsass_access",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:lsass_access"
+    ]
+  },
+  {
+    "rule_id": "TA0006.CLOUD_TOKEN_ABUSE",
+    "rule_name": "Cloud Access Token Abuse",
+    "verdict": "INCOMPLETE",
+    "explanation": "Abuse of cloud access tokens following identity compromise. Missing evidence: access_token_use, token_anomaly",
+    "gap_narrative": "This attack would require access_token_use, token_anomaly but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "access_token_use",
+      "token_anomaly"
+    ],
+    "causal_blockers": [
+      "req:access_token_use",
+      "req:token_anomaly"
+    ]
+  },
+  {
+    "rule_id": "TA0006.CREDDUMP",
+    "rule_name": "Credential Dumping (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Requires elevated privileges to access credential stores. Missing evidence: credential_dumping, lsass_access, precond:privilege_escalation",
+    "gap_narrative": "This attack would require credential_dumping, lsass_access, precond:privilege_escalation but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "credential_dumping",
+      "lsass_access",
+      "precond:privilege_escalation"
+    ],
+    "causal_blockers": [
+      "pre:privilege_escalation",
+      "req:credential_dumping",
+      "req:lsass_access"
+    ]
+  },
+  {
+    "rule_id": "TA0006.EXPLOIT_CRED_ACCESS",
+    "rule_name": "Exploitation for Credential Access (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Exploitation for Credential Access Missing evidence: lsass_access, precond:credential_access",
+    "gap_narrative": "This attack would require lsass_access, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "lsass_access",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:lsass_access"
+    ]
+  },
+  {
+    "rule_id": "TA0006.FORGE_KERBEROS",
+    "rule_name": "Forge Kerberos Tickets – Golden Ticket (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Forge Kerberos Tickets – Golden Ticket Missing evidence: lsass_access, precond:credential_access",
+    "gap_narrative": "This attack would require lsass_access, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "lsass_access",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:lsass_access"
+    ]
+  },
+  {
+    "rule_id": "TA0006.IDENTITY_ANOMALY",
+    "rule_name": "Identity Anomaly (Impossible Travel / New Device)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Identity anomalies indicate possible account compromise. Missing evidence: impossible_travel",
+    "gap_narrative": "This attack would require impossible_travel but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "supporting_event_ids": [
+      "evt-2"
+    ],
+    "missing_evidence": [
+      "impossible_travel"
+    ],
+    "causal_blockers": [
+      "req:impossible_travel"
+    ]
+  },
+  {
+    "rule_id": "TA0006.INSIDER_EXFIL",
+    "rule_name": "Insider Data Exfiltration",
+    "verdict": "INCOMPLETE",
+    "explanation": "Large-scale access without compromise signals suggests insider misuse. Missing evidence: bulk_download, unusual_access_scope",
+    "gap_narrative": "This attack would require bulk_download, unusual_access_scope but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "bulk_download",
+      "unusual_access_scope"
+    ],
+    "causal_blockers": [
+      "req:bulk_download",
+      "req:unusual_access_scope"
+    ]
+  },
+  {
+    "rule_id": "TA0006.KERBEROASTING",
+    "rule_name": "Kerberoasting – SPN Ticket Request (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Kerberoasting – SPN Ticket Request Missing evidence: lsass_access, precond:credential_access",
+    "gap_narrative": "This attack would require lsass_access, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "lsass_access",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:lsass_access"
+    ]
+  },
+  {
+    "rule_id": "TA0006.KEYLOGGING",
+    "rule_name": "Keylogging (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Keylogger activity after initial access. Missing evidence: keylogger_installed, keystroke_capture, precond:initial_access",
+    "gap_narrative": "This attack would require keylogger_installed, keystroke_capture, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "keylogger_installed",
+      "keystroke_capture",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:keylogger_installed",
+      "req:keystroke_capture"
+    ]
+  },
+  {
+    "rule_id": "TA0006.MFA_INTERCEPT",
+    "rule_name": "MFA Interception / SIM Swap (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "MFA Interception / SIM Swap Missing evidence: lsass_access, precond:credential_access",
+    "gap_narrative": "This attack would require lsass_access, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "lsass_access",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:lsass_access"
+    ]
+  },
+  {
+    "rule_id": "TA0006.MULTI_FACTOR_FATIGUE",
+    "rule_name": "MFA Request Generation / Fatigue (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "MFA Request Generation / Fatigue Missing evidence: lsass_access, precond:credential_access",
+    "gap_narrative": "This attack would require lsass_access, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "lsass_access",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:lsass_access"
+    ]
+  },
+  {
+    "rule_id": "TA0006.NETWORK_SNIFF",
+    "rule_name": "Network Sniffing (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Network Sniffing Missing evidence: lsass_access, precond:credential_access",
+    "gap_narrative": "This attack would require lsass_access, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "lsass_access",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:lsass_access"
+    ]
+  },
+  {
+    "rule_id": "TA0006.PASS_THE_HASH",
+    "rule_name": "Pass-the-Hash (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Pass-the-Hash Missing evidence: lsass_access, precond:credential_access",
+    "gap_narrative": "This attack would require lsass_access, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "lsass_access",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:lsass_access"
+    ]
+  },
+  {
+    "rule_id": "TA0006.PASS_THE_TICKET",
+    "rule_name": "Pass the Ticket",
+    "verdict": "INCOMPLETE",
+    "explanation": "Kerberos ticket reuse following a valid login. Missing evidence: kerberos_ticket, ticket_reuse",
+    "gap_narrative": "This attack would require kerberos_ticket, ticket_reuse but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "kerberos_ticket",
+      "ticket_reuse"
+    ],
+    "causal_blockers": [
+      "req:kerberos_ticket",
+      "req:ticket_reuse"
+    ]
+  },
+  {
+    "rule_id": "TA0006.STEAL_APP_TOKEN",
+    "rule_name": "Steal Application Access Token (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Steal Application Access Token Missing evidence: lsass_access, precond:credential_access",
+    "gap_narrative": "This attack would require lsass_access, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "lsass_access",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:lsass_access"
+    ]
+  },
+  {
+    "rule_id": "TA0006.STEAL_WEB_SESSION",
+    "rule_name": "Steal Web Session Cookie (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Steal Web Session Cookie Missing evidence: lsass_access, precond:credential_access",
+    "gap_narrative": "This attack would require lsass_access, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "lsass_access",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:lsass_access"
+    ]
+  },
+  {
+    "rule_id": "TA0006.UNSECURED_CREDS",
+    "rule_name": "Unsecured Credentials – Files/Registry (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Unsecured Credentials – Files/Registry Missing evidence: lsass_access, precond:credential_access",
+    "gap_narrative": "This attack would require lsass_access, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "lsass_access",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:lsass_access"
+    ]
+  },
+  {
+    "rule_id": "TA0007.ACCOUNT_DISCOVERY",
+    "rule_name": "Account Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Enumerating accounts after a valid login. Missing evidence: ldap_query, net_user_exec",
+    "gap_narrative": "This attack would require ldap_query, net_user_exec but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "ldap_query",
+      "net_user_exec"
+    ],
+    "causal_blockers": [
+      "req:ldap_query",
+      "req:net_user_exec"
+    ]
+  },
+  {
+    "rule_id": "TA0007.ACCOUNT_POLICY_DISCOVERY",
+    "rule_name": "Account Policy Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Discovery of account password policies. Missing evidence: password_policy_discovery",
+    "gap_narrative": "This attack would require password_policy_discovery but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "password_policy_discovery"
+    ],
+    "causal_blockers": [
+      "req:password_policy_discovery"
+    ]
+  },
+  {
+    "rule_id": "TA0007.APP_WIN_DISC",
+    "rule_name": "Application Window Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Application Window Discovery Missing evidence: process_creation, window_enum_call, spy_hook_detect",
+    "gap_narrative": "This attack would require process_creation, window_enum_call, spy_hook_detect but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "process_creation",
+      "window_enum_call",
+      "spy_hook_detect"
+    ],
+    "causal_blockers": [
+      "req:process_creation",
+      "req:spy_hook_detect",
+      "req:window_enum_call"
+    ]
+  },
+  {
+    "rule_id": "TA0007.BROWSER_INFO_DISC",
+    "rule_name": "Browser Information Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Browser Information Discovery Missing evidence: browser_history_access, browser_credential_store_read",
+    "gap_narrative": "This attack would require browser_history_access, browser_credential_store_read but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "browser_history_access",
+      "browser_credential_store_read"
+    ],
+    "causal_blockers": [
+      "req:browser_credential_store_read",
+      "req:browser_history_access"
+    ]
+  },
+  {
+    "rule_id": "TA0007.CLOUD_IAM_DISCOVERY",
+    "rule_name": "Cloud IAM Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Discovery of IAM roles and policies. Missing evidence: iam_list_roles, iam_list_policies",
+    "gap_narrative": "This attack would require iam_list_roles, iam_list_policies but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "iam_list_roles",
+      "iam_list_policies"
+    ],
+    "causal_blockers": [
+      "req:iam_list_policies",
+      "req:iam_list_roles"
+    ]
+  },
+  {
+    "rule_id": "TA0007.CLOUD_INFRA_DISCOVERY",
+    "rule_name": "Cloud Infrastructure Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Discovery of cloud infrastructure and services. Missing evidence: cloud_service_discovery, list_cloud_resources",
+    "gap_narrative": "This attack would require cloud_service_discovery, list_cloud_resources but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "cloud_service_discovery",
+      "list_cloud_resources"
+    ],
+    "causal_blockers": [
+      "req:cloud_service_discovery",
+      "req:list_cloud_resources"
+    ]
+  },
+  {
+    "rule_id": "TA0007.CLOUD_SERVICE_DISCOVERY",
+    "rule_name": "Cloud Service Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Discovery of available cloud services. Missing evidence: cloud_service_discovery",
+    "gap_narrative": "This attack would require cloud_service_discovery but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "cloud_service_discovery"
+    ],
+    "causal_blockers": [
+      "req:cloud_service_discovery"
+    ]
+  },
+  {
+    "rule_id": "TA0007.CLOUD_STORAGE_DISC",
+    "rule_name": "Cloud Storage Object Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Cloud Storage Object Discovery Missing evidence: s3_list_objects, gcs_ls, blob_list_outside_app",
+    "gap_narrative": "This attack would require s3_list_objects, gcs_ls, blob_list_outside_app but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "s3_list_objects",
+      "gcs_ls",
+      "blob_list_outside_app"
+    ],
+    "causal_blockers": [
+      "req:blob_list_outside_app",
+      "req:gcs_ls",
+      "req:s3_list_objects"
+    ]
+  },
+  {
+    "rule_id": "TA0007.CLOUD_SVC_DASH",
+    "rule_name": "Cloud Service Dashboard",
+    "verdict": "INCOMPLETE",
+    "explanation": "Cloud Service Dashboard Missing evidence: console_access, read_only_role_cloud_browse",
+    "gap_narrative": "This attack would require console_access, read_only_role_cloud_browse but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "console_access",
+      "read_only_role_cloud_browse"
+    ],
+    "causal_blockers": [
+      "req:console_access",
+      "req:read_only_role_cloud_browse"
+    ]
+  },
+  {
+    "rule_id": "TA0007.CONTAINER_DISC",
+    "rule_name": "Container and Resource Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Container and Resource Discovery Missing evidence: kubectl_get_pods, kubectl_get_secrets, docker_ps_prod",
+    "gap_narrative": "This attack would require kubectl_get_pods, kubectl_get_secrets, docker_ps_prod but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "kubectl_get_pods",
+      "kubectl_get_secrets",
+      "docker_ps_prod"
+    ],
+    "causal_blockers": [
+      "req:docker_ps_prod",
+      "req:kubectl_get_pods",
+      "req:kubectl_get_secrets"
+    ]
+  },
+  {
+    "rule_id": "TA0007.DOMAIN_TRUST_DISC",
+    "rule_name": "Domain Trust Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Domain Trust Discovery Missing evidence: nltest_domain_trusts, bloodhound_ad_enum, ldap_trust_query",
+    "gap_narrative": "This attack would require nltest_domain_trusts, bloodhound_ad_enum, ldap_trust_query but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "nltest_domain_trusts",
+      "bloodhound_ad_enum",
+      "ldap_trust_query"
+    ],
+    "causal_blockers": [
+      "req:bloodhound_ad_enum",
+      "req:ldap_trust_query",
+      "req:nltest_domain_trusts"
+    ]
+  },
+  {
+    "rule_id": "TA0007.FILE_DIR_DISC",
+    "rule_name": "File and Directory Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "File and Directory Discovery Missing evidence: dir_recursive_enum, find_sensitive_paths, ls_etc_scan",
+    "gap_narrative": "This attack would require dir_recursive_enum, find_sensitive_paths, ls_etc_scan but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "dir_recursive_enum",
+      "find_sensitive_paths",
+      "ls_etc_scan"
+    ],
+    "causal_blockers": [
+      "req:dir_recursive_enum",
+      "req:find_sensitive_paths",
+      "req:ls_etc_scan"
+    ]
+  },
+  {
+    "rule_id": "TA0007.GROUP_POLICY_DISC",
+    "rule_name": "Group Policy Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Group Policy Discovery Missing evidence: gpresult_exec, get_gpo_call, ad_policy_enum",
+    "gap_narrative": "This attack would require gpresult_exec, get_gpo_call, ad_policy_enum but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "gpresult_exec",
+      "get_gpo_call",
+      "ad_policy_enum"
+    ],
+    "causal_blockers": [
+      "req:ad_policy_enum",
+      "req:get_gpo_call",
+      "req:gpresult_exec"
+    ]
+  },
+  {
+    "rule_id": "TA0007.NETWORK_SERVICE_DISCOVERY",
+    "rule_name": "Network Service Discovery (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Enumerating network services after initial access. Missing evidence: network_scan, port_probe, precond:initial_access",
+    "gap_narrative": "This attack would require network_scan, port_probe, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "network_scan",
+      "port_probe",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:network_scan",
+      "req:port_probe"
+    ]
+  },
+  {
+    "rule_id": "TA0007.NETWORK_SHARE_DISCOVERY",
+    "rule_name": "Network Share Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Discovery of network shares. Missing evidence: network_share_discovery",
+    "gap_narrative": "This attack would require network_share_discovery but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "network_share_discovery"
+    ],
+    "causal_blockers": [
+      "req:network_share_discovery"
+    ]
+  },
+  {
+    "rule_id": "TA0007.NET_SNIFF_DISC",
+    "rule_name": "Network Sniffing – Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Network Sniffing – Discovery Missing evidence: tcpdump_exec, wireshark_prod_host, promiscuous_mode_nic",
+    "gap_narrative": "This attack would require tcpdump_exec, wireshark_prod_host, promiscuous_mode_nic but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "tcpdump_exec",
+      "wireshark_prod_host",
+      "promiscuous_mode_nic"
+    ],
+    "causal_blockers": [
+      "req:promiscuous_mode_nic",
+      "req:tcpdump_exec",
+      "req:wireshark_prod_host"
+    ]
+  },
+  {
+    "rule_id": "TA0007.PASS_POLICY_DISC",
+    "rule_name": "Password Policy Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Password Policy Discovery Missing evidence: net_accounts_exec, ldap_pwpolicy_query, domain_password_policy",
+    "gap_narrative": "This attack would require net_accounts_exec, ldap_pwpolicy_query, domain_password_policy but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "net_accounts_exec",
+      "ldap_pwpolicy_query",
+      "domain_password_policy"
+    ],
+    "causal_blockers": [
+      "req:domain_password_policy",
+      "req:ldap_pwpolicy_query",
+      "req:net_accounts_exec"
+    ]
+  },
+  {
+    "rule_id": "TA0007.PERMISSION_GROUP_DISCOVERY",
+    "rule_name": "Permission Group Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Enumerating permission groups after a valid login. Missing evidence: group_membership_enum",
+    "gap_narrative": "This attack would require group_membership_enum but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "group_membership_enum"
+    ],
+    "causal_blockers": [
+      "req:group_membership_enum"
+    ]
+  },
+  {
+    "rule_id": "TA0007.PROCESS_DISCOVERY",
+    "rule_name": "Process Discovery (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Enumerating processes after initial access. Missing evidence: process_creation, tasklist_exec, precond:initial_access",
+    "gap_narrative": "This attack would require process_creation, tasklist_exec, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_creation",
+      "tasklist_exec",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:process_creation",
+      "req:tasklist_exec"
+    ]
+  },
+  {
+    "rule_id": "TA0007.QUERY_REGISTRY",
+    "rule_name": "Query Registry",
+    "verdict": "INCOMPLETE",
+    "explanation": "Query Registry Missing evidence: reg_query_exec, security_hive_access, sam_hive_access",
+    "gap_narrative": "This attack would require reg_query_exec, security_hive_access, sam_hive_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "reg_query_exec",
+      "security_hive_access",
+      "sam_hive_access"
+    ],
+    "causal_blockers": [
+      "req:reg_query_exec",
+      "req:sam_hive_access",
+      "req:security_hive_access"
+    ]
+  },
+  {
+    "rule_id": "TA0007.REMOTE_SYS_DISC",
+    "rule_name": "Remote System Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Remote System Discovery Missing evidence: ping_sweep, arp_scan, ad_computer_enum",
+    "gap_narrative": "This attack would require ping_sweep, arp_scan, ad_computer_enum but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "ping_sweep",
+      "arp_scan",
+      "ad_computer_enum"
+    ],
+    "causal_blockers": [
+      "req:ad_computer_enum",
+      "req:arp_scan",
+      "req:ping_sweep"
+    ]
+  },
+  {
+    "rule_id": "TA0007.SEC_SW_DISC",
+    "rule_name": "Security Software Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Security Software Discovery Missing evidence: tasklist_findstr_sectools, av_edr_product_enum, security_sw_query",
+    "gap_narrative": "This attack would require tasklist_findstr_sectools, av_edr_product_enum, security_sw_query but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "tasklist_findstr_sectools",
+      "av_edr_product_enum",
+      "security_sw_query"
+    ],
+    "causal_blockers": [
+      "req:av_edr_product_enum",
+      "req:security_sw_query",
+      "req:tasklist_findstr_sectools"
+    ]
+  },
+  {
+    "rule_id": "TA0007.SYSTEM_INFO_DISCOVERY",
+    "rule_name": "System Information Discovery (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Enumerating system information after initial access. Missing evidence: system_info_discovery, precond:initial_access",
+    "gap_narrative": "This attack would require system_info_discovery, precond:initial_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "system_info_discovery",
+      "precond:initial_access"
+    ],
+    "causal_blockers": [
+      "pre:initial_access",
+      "req:system_info_discovery"
+    ]
+  },
+  {
+    "rule_id": "TA0007.SYS_LOCATION_DISC",
+    "rule_name": "System Location Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "System Location Discovery Missing evidence: timezone_query, locale_query, language_check",
+    "gap_narrative": "This attack would require timezone_query, locale_query, language_check but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "timezone_query",
+      "locale_query",
+      "language_check"
+    ],
+    "causal_blockers": [
+      "req:language_check",
+      "req:locale_query",
+      "req:timezone_query"
+    ]
+  },
+  {
+    "rule_id": "TA0007.SYS_NET_CONF_DISC",
+    "rule_name": "System Network Configuration Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "System Network Configuration Discovery Missing evidence: ipconfig_exec, ifconfig_exec, route_print, dns_config_enum",
+    "gap_narrative": "This attack would require ipconfig_exec, ifconfig_exec, route_print, dns_config_enum but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "ipconfig_exec",
+      "ifconfig_exec",
+      "route_print",
+      "dns_config_enum"
+    ],
+    "causal_blockers": [
+      "req:dns_config_enum",
+      "req:ifconfig_exec",
+      "req:ipconfig_exec",
+      "req:route_print"
+    ]
+  },
+  {
+    "rule_id": "TA0007.SYS_NET_CONN_DISC",
+    "rule_name": "System Network Connections Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "System Network Connections Discovery Missing evidence: netstat_exec, active_conn_enum_suspicious_proc",
+    "gap_narrative": "This attack would require netstat_exec, active_conn_enum_suspicious_proc but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "netstat_exec",
+      "active_conn_enum_suspicious_proc"
+    ],
+    "causal_blockers": [
+      "req:active_conn_enum_suspicious_proc",
+      "req:netstat_exec"
+    ]
+  },
+  {
+    "rule_id": "TA0007.SYS_OWNER_DISC",
+    "rule_name": "System Owner/User Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "System Owner/User Discovery Missing evidence: whoami_all, id_exec, get_local_user",
+    "gap_narrative": "This attack would require whoami_all, id_exec, get_local_user but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "whoami_all",
+      "id_exec",
+      "get_local_user"
+    ],
+    "causal_blockers": [
+      "req:get_local_user",
+      "req:id_exec",
+      "req:whoami_all"
+    ]
+  },
+  {
+    "rule_id": "TA0007.SYS_SVC_DISC",
+    "rule_name": "System Service Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "System Service Discovery Missing evidence: sc_query, systemctl_list, service_enum",
+    "gap_narrative": "This attack would require sc_query, systemctl_list, service_enum but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "sc_query",
+      "systemctl_list",
+      "service_enum"
+    ],
+    "causal_blockers": [
+      "req:sc_query",
+      "req:service_enum",
+      "req:systemctl_list"
+    ]
+  },
+  {
+    "rule_id": "TA0007.SYS_TIME_DISC",
+    "rule_name": "System Time Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "System Time Discovery Missing evidence: w32tm_query, time_check_sandbox, time_api_call",
+    "gap_narrative": "This attack would require w32tm_query, time_check_sandbox, time_api_call but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "w32tm_query",
+      "time_check_sandbox",
+      "time_api_call"
+    ],
+    "causal_blockers": [
+      "req:time_api_call",
+      "req:time_check_sandbox",
+      "req:w32tm_query"
+    ]
+  },
+  {
+    "rule_id": "TA0007.VIRT_DISC",
+    "rule_name": "Virtualization/Sandbox Discovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Virtualization/Sandbox Discovery Missing evidence: vmware_registry_check, cpuid_vm_detect, screen_res_check",
+    "gap_narrative": "This attack would require vmware_registry_check, cpuid_vm_detect, screen_res_check but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "vmware_registry_check",
+      "cpuid_vm_detect",
+      "screen_res_check"
+    ],
+    "causal_blockers": [
+      "req:cpuid_vm_detect",
+      "req:screen_res_check",
+      "req:vmware_registry_check"
+    ]
+  },
+  {
+    "rule_id": "TA0008.ADMIN_PROTOCOL_LATERAL",
+    "rule_name": "Admin Protocol Lateral Movement (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Lateral movement over admin protocols with valid credentials. Required context missing.",
+    "gap_narrative": "Required context is missing to evaluate this rule; treat as incomplete until context is provided.",
+    "reason_code": "environment_unknown",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "new_inbound_admin_protocol",
+      "network_logon",
+      "precond:credential_access",
+      "environment_context"
+    ],
+    "causal_blockers": [
+      "gate:context_ok",
+      "pre:credential_access",
+      "req:network_logon",
+      "req:new_inbound_admin_protocol"
+    ]
+  },
+  {
+    "rule_id": "TA0008.CLOUD_PIVOT",
+    "rule_name": "Cloud Lateral Movement",
+    "verdict": "INCOMPLETE",
+    "explanation": "Cross-account pivot using trust policy changes. Missing evidence: role_assume, trust_policy_change",
+    "gap_narrative": "This attack would require role_assume, trust_policy_change but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "role_assume",
+      "trust_policy_change"
+    ],
+    "causal_blockers": [
+      "req:role_assume",
+      "req:trust_policy_change"
+    ]
+  },
+  {
+    "rule_id": "TA0008.EXPLOIT_REMOTE_SVC",
+    "rule_name": "Exploitation of Remote Services (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Exploitation of Remote Services Missing evidence: new_inbound_admin_protocol, precond:credential_access",
+    "gap_narrative": "This attack would require new_inbound_admin_protocol, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "new_inbound_admin_protocol",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:new_inbound_admin_protocol"
+    ]
+  },
+  {
+    "rule_id": "TA0008.INTERNAL_SPEARPHISH",
+    "rule_name": "Internal Spearphishing (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Internal Spearphishing Missing evidence: new_inbound_admin_protocol, precond:credential_access",
+    "gap_narrative": "This attack would require new_inbound_admin_protocol, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "new_inbound_admin_protocol",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:new_inbound_admin_protocol"
+    ]
+  },
+  {
+    "rule_id": "TA0008.LATERAL",
+    "rule_name": "Lateral Movement (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Requires valid credentials before remote execution. Required context missing.",
+    "gap_narrative": "Required context is missing to evaluate this rule; treat as incomplete until context is provided.",
+    "reason_code": "environment_unknown",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "remote_service_creation",
+      "network_logon",
+      "precond:credential_access",
+      "environment_context"
+    ],
+    "causal_blockers": [
+      "gate:context_ok",
+      "pre:credential_access",
+      "req:network_logon",
+      "req:remote_service_creation"
+    ]
+  },
+  {
+    "rule_id": "TA0008.LATERAL_TOOL_XFER",
+    "rule_name": "Lateral Tool Transfer (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Lateral Tool Transfer Missing evidence: new_inbound_admin_protocol, precond:credential_access",
+    "gap_narrative": "This attack would require new_inbound_admin_protocol, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "new_inbound_admin_protocol",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:new_inbound_admin_protocol"
+    ]
+  },
+  {
+    "rule_id": "TA0008.SOFTWARE_DEPLOY",
+    "rule_name": "Software Deployment Tools (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Software Deployment Tools Missing evidence: new_inbound_admin_protocol, precond:credential_access",
+    "gap_narrative": "This attack would require new_inbound_admin_protocol, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "new_inbound_admin_protocol",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:new_inbound_admin_protocol"
+    ]
+  },
+  {
+    "rule_id": "TA0008.TAINT_SHARED",
+    "rule_name": "Taint Shared Content (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Taint Shared Content Missing evidence: new_inbound_admin_protocol, precond:credential_access",
+    "gap_narrative": "This attack would require new_inbound_admin_protocol, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "new_inbound_admin_protocol",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:new_inbound_admin_protocol"
+    ]
+  },
+  {
+    "rule_id": "TA0008.USE_ALT_AUTH",
+    "rule_name": "Use Alternate Authentication Material (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Use Alternate Authentication Material Missing evidence: new_inbound_admin_protocol, precond:credential_access",
+    "gap_narrative": "This attack would require new_inbound_admin_protocol, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "new_inbound_admin_protocol",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:new_inbound_admin_protocol"
+    ]
+  },
+  {
+    "rule_id": "TA0009.ARCHIVE_COLLECTED_DATA",
+    "rule_name": "Archive Collected Data",
+    "verdict": "INCOMPLETE",
+    "explanation": "Collected data archived prior to exfiltration. Missing evidence: archive_create, bulk_access_download",
+    "gap_narrative": "This attack would require archive_create, bulk_access_download but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "archive_create",
+      "bulk_access_download"
+    ],
+    "causal_blockers": [
+      "req:archive_create",
+      "req:bulk_access_download"
+    ]
+  },
+  {
+    "rule_id": "TA0009.AUDIO_CAPTURE",
+    "rule_name": "Audio Capture",
+    "verdict": "INCOMPLETE",
+    "explanation": "Audio Capture Missing evidence: microphone_access, audio_record_process, non_conf_app_mic",
+    "gap_narrative": "This attack would require microphone_access, audio_record_process, non_conf_app_mic but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "microphone_access",
+      "audio_record_process",
+      "non_conf_app_mic"
+    ],
+    "causal_blockers": [
+      "req:audio_record_process",
+      "req:microphone_access",
+      "req:non_conf_app_mic"
+    ]
+  },
+  {
+    "rule_id": "TA0009.AUTO_COLLECTION",
+    "rule_name": "Automated Collection",
+    "verdict": "INCOMPLETE",
+    "explanation": "Automated Collection Missing evidence: file_create, script_file_harvest, pattern_match_bulk_copy",
+    "gap_narrative": "This attack would require file_create, script_file_harvest, pattern_match_bulk_copy but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "file_create",
+      "script_file_harvest",
+      "pattern_match_bulk_copy"
+    ],
+    "causal_blockers": [
+      "req:file_create",
+      "req:pattern_match_bulk_copy",
+      "req:script_file_harvest"
+    ]
+  },
+  {
+    "rule_id": "TA0009.BROWSER_SESSION",
+    "rule_name": "Browser Session Hijacking",
+    "verdict": "INCOMPLETE",
+    "explanation": "Browser Session Hijacking Missing evidence: cookie_theft_js, browser_proc_mem_access, session_hijack_detect",
+    "gap_narrative": "This attack would require cookie_theft_js, browser_proc_mem_access, session_hijack_detect but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "cookie_theft_js",
+      "browser_proc_mem_access",
+      "session_hijack_detect"
+    ],
+    "causal_blockers": [
+      "req:browser_proc_mem_access",
+      "req:cookie_theft_js",
+      "req:session_hijack_detect"
+    ]
+  },
+  {
+    "rule_id": "TA0009.CLIPBOARD_DATA",
+    "rule_name": "Clipboard Data",
+    "verdict": "INCOMPLETE",
+    "explanation": "Clipboard Data Missing evidence: clipboard_monitor_proc, setwindowshookex_keyboard, pwmgr_clipboard",
+    "gap_narrative": "This attack would require clipboard_monitor_proc, setwindowshookex_keyboard, pwmgr_clipboard but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "clipboard_monitor_proc",
+      "setwindowshookex_keyboard",
+      "pwmgr_clipboard"
+    ],
+    "causal_blockers": [
+      "req:clipboard_monitor_proc",
+      "req:pwmgr_clipboard",
+      "req:setwindowshookex_keyboard"
+    ]
+  },
+  {
+    "rule_id": "TA0009.CLOUD_STORAGE_COLL",
+    "rule_name": "Data from Cloud Storage",
+    "verdict": "INCOMPLETE",
+    "explanation": "Data from Cloud Storage Missing evidence: s3_getobject_burst, blob_mass_download, gcs_bulk_read",
+    "gap_narrative": "This attack would require s3_getobject_burst, blob_mass_download, gcs_bulk_read but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "s3_getobject_burst",
+      "blob_mass_download",
+      "gcs_bulk_read"
+    ],
+    "causal_blockers": [
+      "req:blob_mass_download",
+      "req:gcs_bulk_read",
+      "req:s3_getobject_burst"
+    ]
+  },
+  {
+    "rule_id": "TA0009.DATA_FROM_INFO_REPO",
+    "rule_name": "Data from Information Repositories",
+    "verdict": "INCOMPLETE",
+    "explanation": "Data from Information Repositories Missing evidence: sharepoint_mass_download, confluence_bulk_export, jira_bulk_export",
+    "gap_narrative": "This attack would require sharepoint_mass_download, confluence_bulk_export, jira_bulk_export but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "sharepoint_mass_download",
+      "confluence_bulk_export",
+      "jira_bulk_export"
+    ],
+    "causal_blockers": [
+      "req:confluence_bulk_export",
+      "req:jira_bulk_export",
+      "req:sharepoint_mass_download"
+    ]
+  },
+  {
+    "rule_id": "TA0009.DATA_FROM_LOCAL_SYS",
+    "rule_name": "Data from Local System",
+    "verdict": "INCOMPLETE",
+    "explanation": "Data from Local System Missing evidence: file_create, sensitive_file_access, dlp_trigger",
+    "gap_narrative": "This attack would require file_create, sensitive_file_access, dlp_trigger but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "file_create",
+      "sensitive_file_access",
+      "dlp_trigger"
+    ],
+    "causal_blockers": [
+      "req:dlp_trigger",
+      "req:file_create",
+      "req:sensitive_file_access"
+    ]
+  },
+  {
+    "rule_id": "TA0009.DATA_FROM_NET_SHARE",
+    "rule_name": "Data from Network Shared Drive",
+    "verdict": "INCOMPLETE",
+    "explanation": "Data from Network Shared Drive Missing evidence: smb_mass_file_read, mapped_drive_enum_copy",
+    "gap_narrative": "This attack would require smb_mass_file_read, mapped_drive_enum_copy but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "smb_mass_file_read",
+      "mapped_drive_enum_copy"
+    ],
+    "causal_blockers": [
+      "req:mapped_drive_enum_copy",
+      "req:smb_mass_file_read"
+    ]
+  },
+  {
+    "rule_id": "TA0009.DATA_STAGED",
+    "rule_name": "Data Staged",
+    "verdict": "INCOMPLETE",
+    "explanation": "Data Staged Missing evidence: file_create, large_temp_dir_accumulate, staging_before_exfil",
+    "gap_narrative": "This attack would require file_create, large_temp_dir_accumulate, staging_before_exfil but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "file_create",
+      "large_temp_dir_accumulate",
+      "staging_before_exfil"
+    ],
+    "causal_blockers": [
+      "req:file_create",
+      "req:large_temp_dir_accumulate",
+      "req:staging_before_exfil"
+    ]
+  },
+  {
+    "rule_id": "TA0009.EMAIL_COLLECTION",
+    "rule_name": "Email Collection",
+    "verdict": "INCOMPLETE",
+    "explanation": "Bulk collection of email content. Missing evidence: mailbox_access, ews_bulk_read",
+    "gap_narrative": "This attack would require mailbox_access, ews_bulk_read but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "mailbox_access",
+      "ews_bulk_read"
+    ],
+    "causal_blockers": [
+      "req:ews_bulk_read",
+      "req:mailbox_access"
+    ]
+  },
+  {
+    "rule_id": "TA0009.INPUT_CAPTURE_COLL",
+    "rule_name": "Input Capture – Keylogging",
+    "verdict": "INCOMPLETE",
+    "explanation": "Input Capture – Keylogging Missing evidence: keylogger_proc, setwindowshookex_keyboard, keystroke_log_file",
+    "gap_narrative": "This attack would require keylogger_proc, setwindowshookex_keyboard, keystroke_log_file but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "keylogger_proc",
+      "setwindowshookex_keyboard",
+      "keystroke_log_file"
+    ],
+    "causal_blockers": [
+      "req:keylogger_proc",
+      "req:keystroke_log_file",
+      "req:setwindowshookex_keyboard"
+    ]
+  },
+  {
+    "rule_id": "TA0009.SCREEN_CAPTURE",
+    "rule_name": "Screen Capture",
+    "verdict": "INCOMPLETE",
+    "explanation": "Screen capture used to collect information. Missing evidence: screen_capture",
+    "gap_narrative": "This attack would require screen_capture but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "screen_capture"
+    ],
+    "causal_blockers": [
+      "req:screen_capture"
+    ]
+  },
+  {
+    "rule_id": "TA0009.VIDEO_CAPTURE",
+    "rule_name": "Video Capture",
+    "verdict": "INCOMPLETE",
+    "explanation": "Video Capture Missing evidence: webcam_access_non_conf, directshow_access, video_record_proc",
+    "gap_narrative": "This attack would require webcam_access_non_conf, directshow_access, video_record_proc but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "webcam_access_non_conf",
+      "directshow_access",
+      "video_record_proc"
+    ],
+    "causal_blockers": [
+      "req:directshow_access",
+      "req:video_record_proc",
+      "req:webcam_access_non_conf"
+    ]
+  },
+  {
+    "rule_id": "TA0010.AUTO_EXFIL",
+    "rule_name": "Automated Exfiltration (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Automated Exfiltration Missing evidence: large_outbound_transfer, precond:credential_access",
+    "gap_narrative": "This attack would require large_outbound_transfer, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "large_outbound_transfer",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:large_outbound_transfer"
+    ]
+  },
+  {
+    "rule_id": "TA0010.BULK_EXFIL",
+    "rule_name": "Bulk Data Exfiltration (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Bulk data access followed by outbound transfer. Required context missing.",
+    "gap_narrative": "Required context is missing to evaluate this rule; treat as incomplete until context is provided.",
+    "reason_code": "environment_unknown",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "bulk_download",
+      "large_outbound_transfer",
+      "precond:credential_access",
+      "environment_context"
+    ],
+    "causal_blockers": [
+      "gate:context_ok",
+      "pre:credential_access",
+      "req:bulk_download",
+      "req:large_outbound_transfer"
+    ]
+  },
+  {
+    "rule_id": "TA0010.CLOUD_STORAGE_COLLECTION",
+    "rule_name": "Cloud Storage Collection",
+    "verdict": "INCOMPLETE",
+    "explanation": "Collection of data from cloud storage. Missing evidence: cloud_storage_read, bulk_access_download",
+    "gap_narrative": "This attack would require cloud_storage_read, bulk_access_download but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "cloud_storage_read",
+      "bulk_access_download"
+    ],
+    "causal_blockers": [
+      "req:bulk_access_download",
+      "req:cloud_storage_read"
+    ]
+  },
+  {
+    "rule_id": "TA0010.DNS_EXFIL",
+    "rule_name": "Exfiltration Over Alt Protocol – DNS (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Exfiltration Over Alt Protocol – DNS Missing evidence: large_outbound_transfer, precond:credential_access",
+    "gap_narrative": "This attack would require large_outbound_transfer, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "large_outbound_transfer",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:large_outbound_transfer"
+    ]
+  },
+  {
+    "rule_id": "TA0010.EXFIL",
+    "rule_name": "Exfiltration (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Exfiltration typically follows C2 and credential access. Required context missing.",
+    "gap_narrative": "Required context is missing to evaluate this rule; treat as incomplete until context is provided.",
+    "reason_code": "environment_unknown",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "data_staging",
+      "large_outbound_transfer",
+      "precond:c2_established",
+      "precond:credential_access",
+      "environment_context"
+    ],
+    "causal_blockers": [
+      "gate:context_ok",
+      "pre:c2_established",
+      "pre:credential_access",
+      "req:data_staging",
+      "req:large_outbound_transfer"
+    ]
+  },
+  {
+    "rule_id": "TA0010.EXFIL_CLOUD_DB",
+    "rule_name": "Exfiltration from Cloud Database",
+    "verdict": "INCOMPLETE",
+    "explanation": "Export of cloud database snapshots for exfiltration. Missing evidence: db_export, s3_getobject_burst",
+    "gap_narrative": "This attack would require db_export, s3_getobject_burst but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "db_export",
+      "s3_getobject_burst"
+    ],
+    "causal_blockers": [
+      "req:db_export",
+      "req:s3_getobject_burst"
+    ]
+  },
+  {
+    "rule_id": "TA0010.EXFIL_CLOUD_SYNC",
+    "rule_name": "Exfiltration via Cloud Sync (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Data exfiltration using a cloud sync tool. Missing evidence: cloud_sync_tool, large_outbound_transfer, precond:c2_established",
+    "gap_narrative": "This attack would require cloud_sync_tool, large_outbound_transfer, precond:c2_established but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "cloud_sync_tool",
+      "large_outbound_transfer",
+      "precond:c2_established"
+    ],
+    "causal_blockers": [
+      "pre:c2_established",
+      "req:cloud_sync_tool",
+      "req:large_outbound_transfer"
+    ]
+  },
+  {
+    "rule_id": "TA0010.EXFIL_PHYS",
+    "rule_name": "Exfiltration Over Physical Medium (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Exfiltration Over Physical Medium Missing evidence: large_outbound_transfer, precond:credential_access",
+    "gap_narrative": "This attack would require large_outbound_transfer, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "large_outbound_transfer",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:large_outbound_transfer"
+    ]
+  },
+  {
+    "rule_id": "TA0010.EXFIL_WEB",
+    "rule_name": "Exfiltration Over Web Service (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Exfiltration using legitimate web services. Missing evidence: exfil_web_service, large_outbound_transfer, precond:c2_established",
+    "gap_narrative": "This attack would require exfil_web_service, large_outbound_transfer, precond:c2_established but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "exfil_web_service",
+      "large_outbound_transfer",
+      "precond:c2_established"
+    ],
+    "causal_blockers": [
+      "pre:c2_established",
+      "req:exfil_web_service",
+      "req:large_outbound_transfer"
+    ]
+  },
+  {
+    "rule_id": "TA0010.SCHED_TRANSFER",
+    "rule_name": "Scheduled Transfer (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Scheduled Transfer Missing evidence: large_outbound_transfer, precond:credential_access",
+    "gap_narrative": "This attack would require large_outbound_transfer, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "large_outbound_transfer",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:large_outbound_transfer"
+    ]
+  },
+  {
+    "rule_id": "TA0010.TRANSFER_CLOUD",
+    "rule_name": "Transfer Data to Cloud Account (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Transfer Data to Cloud Account Missing evidence: large_outbound_transfer, precond:credential_access",
+    "gap_narrative": "This attack would require large_outbound_transfer, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "large_outbound_transfer",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:large_outbound_transfer"
+    ]
+  },
+  {
+    "rule_id": "TA0011.APP_LAYER_C2",
+    "rule_name": "Application Layer Protocol C2 (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "C2 over common application protocols for stealth. Required context missing.",
+    "gap_narrative": "Required context is missing to evaluate this rule; treat as incomplete until context is provided.",
+    "reason_code": "environment_unknown",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "app_layer_c2",
+      "beacon_outbound",
+      "precond:initial_access",
+      "environment_context"
+    ],
+    "causal_blockers": [
+      "gate:context_ok",
+      "pre:initial_access",
+      "req:app_layer_c2",
+      "req:beacon_outbound"
+    ]
+  },
+  {
+    "rule_id": "TA0011.C2",
+    "rule_name": "Command and Control (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "C2 established after initial access. Required context missing.",
+    "gap_narrative": "Required context is missing to evaluate this rule; treat as incomplete until context is provided.",
+    "reason_code": "environment_unknown",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "beacon_outbound",
+      "dns_tunneling",
+      "precond:initial_access",
+      "environment_context"
+    ],
+    "causal_blockers": [
+      "gate:context_ok",
+      "pre:initial_access",
+      "req:beacon_outbound",
+      "req:dns_tunneling"
+    ]
+  },
+  {
+    "rule_id": "TA0011.COMM_THROUGH_PROXY",
+    "rule_name": "Communication Through Removable Media (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Communication Through Removable Media Missing evidence: beacon_outbound, precond:credential_access",
+    "gap_narrative": "This attack would require beacon_outbound, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "beacon_outbound",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:beacon_outbound"
+    ]
+  },
+  {
+    "rule_id": "TA0011.DATA_ENCODING",
+    "rule_name": "Data Encoding (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Data Encoding Missing evidence: beacon_outbound, precond:credential_access",
+    "gap_narrative": "This attack would require beacon_outbound, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "beacon_outbound",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:beacon_outbound"
+    ]
+  },
+  {
+    "rule_id": "TA0011.DATA_OBFUSCATION",
+    "rule_name": "Data Obfuscation (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Data Obfuscation Missing evidence: beacon_outbound, precond:credential_access",
+    "gap_narrative": "This attack would require beacon_outbound, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "beacon_outbound",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:beacon_outbound"
+    ]
+  },
+  {
+    "rule_id": "TA0011.DNS_C2",
+    "rule_name": "DNS C2 / DNS Tunneling (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "DNS C2 / DNS Tunneling Missing evidence: beacon_outbound, precond:credential_access",
+    "gap_narrative": "This attack would require beacon_outbound, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "beacon_outbound",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:beacon_outbound"
+    ]
+  },
+  {
+    "rule_id": "TA0011.DYN_RESOLUTION",
+    "rule_name": "Dynamic Resolution – DGA (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Dynamic Resolution – DGA Missing evidence: beacon_outbound, precond:credential_access",
+    "gap_narrative": "This attack would require beacon_outbound, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "beacon_outbound",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:beacon_outbound"
+    ]
+  },
+  {
+    "rule_id": "TA0011.ENCRYPTED_CHANNEL",
+    "rule_name": "Encrypted Channel – Non-Standard (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Encrypted Channel – Non-Standard Missing evidence: beacon_outbound, precond:credential_access",
+    "gap_narrative": "This attack would require beacon_outbound, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "beacon_outbound",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:beacon_outbound"
+    ]
+  },
+  {
+    "rule_id": "TA0011.FALLBACK_CHANNELS",
+    "rule_name": "Fallback Channels (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Fallback Channels Missing evidence: beacon_outbound, precond:credential_access",
+    "gap_narrative": "This attack would require beacon_outbound, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "beacon_outbound",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:beacon_outbound"
+    ]
+  },
+  {
+    "rule_id": "TA0011.INGRESS_TOOL_XFER",
+    "rule_name": "Ingress Tool Transfer (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Ingress Tool Transfer Missing evidence: beacon_outbound, precond:credential_access",
+    "gap_narrative": "This attack would require beacon_outbound, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "beacon_outbound",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:beacon_outbound"
+    ]
+  },
+  {
+    "rule_id": "TA0011.MULTI_HOP_PROXY",
+    "rule_name": "Multi-hop Proxy (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Multi-hop Proxy Missing evidence: beacon_outbound, precond:credential_access",
+    "gap_narrative": "This attack would require beacon_outbound, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "beacon_outbound",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:beacon_outbound"
+    ]
+  },
+  {
+    "rule_id": "TA0011.MULTI_STAGE_CHAN",
+    "rule_name": "Multi-Stage Channels (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Multi-Stage Channels Missing evidence: beacon_outbound, precond:credential_access",
+    "gap_narrative": "This attack would require beacon_outbound, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "beacon_outbound",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:beacon_outbound"
+    ]
+  },
+  {
+    "rule_id": "TA0011.NON_APP_LAYER",
+    "rule_name": "Non-Application Layer Protocol (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Non-Application Layer Protocol Missing evidence: beacon_outbound, precond:credential_access",
+    "gap_narrative": "This attack would require beacon_outbound, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "beacon_outbound",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:beacon_outbound"
+    ]
+  },
+  {
+    "rule_id": "TA0011.NON_STD_PORT",
+    "rule_name": "Non-Standard Port (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Non-Standard Port Missing evidence: beacon_outbound, precond:credential_access",
+    "gap_narrative": "This attack would require beacon_outbound, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "beacon_outbound",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:beacon_outbound"
+    ]
+  },
+  {
+    "rule_id": "TA0011.PROTOCOL_TUNNEL",
+    "rule_name": "Protocol Tunneling (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Protocol Tunneling Missing evidence: beacon_outbound, precond:credential_access",
+    "gap_narrative": "This attack would require beacon_outbound, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "beacon_outbound",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:beacon_outbound"
+    ]
+  },
+  {
+    "rule_id": "TA0011.REMOTE_ACCESS_SW",
+    "rule_name": "Remote Access Software (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Remote Access Software Missing evidence: beacon_outbound, precond:credential_access",
+    "gap_narrative": "This attack would require beacon_outbound, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "beacon_outbound",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:beacon_outbound"
+    ]
+  },
+  {
+    "rule_id": "TA0011.WEB_SERVICE_C2",
+    "rule_name": "Web Service – C2 via Cloud Platform (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Web Service – C2 via Cloud Platform Missing evidence: beacon_outbound, precond:credential_access",
+    "gap_narrative": "This attack would require beacon_outbound, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "beacon_outbound",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:beacon_outbound"
+    ]
+  },
+  {
+    "rule_id": "TA0040.ACCOUNT_ACCESS_RM",
+    "rule_name": "Account Access Removal (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Account Access Removal Missing evidence: mass_account_lockout, admin_password_reset_all, account_delete_bulk, precond:privilege_escalation",
+    "gap_narrative": "This attack would require mass_account_lockout, admin_password_reset_all, account_delete_bulk, precond:privilege_escalation but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "mass_account_lockout",
+      "admin_password_reset_all",
+      "account_delete_bulk",
+      "precond:privilege_escalation"
+    ],
+    "causal_blockers": [
+      "pre:privilege_escalation",
+      "req:account_delete_bulk",
+      "req:admin_password_reset_all",
+      "req:mass_account_lockout"
+    ]
+  },
+  {
+    "rule_id": "TA0040.DATA_DESTRUCTION",
+    "rule_name": "Data Destruction (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Destructive activity against data. Missing evidence: data_destroy, precond:privilege_escalation",
+    "gap_narrative": "This attack would require data_destroy, precond:privilege_escalation but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "data_destroy",
+      "precond:privilege_escalation"
+    ],
+    "causal_blockers": [
+      "pre:privilege_escalation",
+      "req:data_destroy"
+    ]
+  },
+  {
+    "rule_id": "TA0040.DATA_MANIP_RUNTIME",
+    "rule_name": "Data Manipulation – Runtime (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Data Manipulation – Runtime Missing evidence: process_memory_patch, in_memory_data_alter, runtime_data_tamper, precond:privilege_escalation",
+    "gap_narrative": "This attack would require process_memory_patch, in_memory_data_alter, runtime_data_tamper, precond:privilege_escalation but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "process_memory_patch",
+      "in_memory_data_alter",
+      "runtime_data_tamper",
+      "precond:privilege_escalation"
+    ],
+    "causal_blockers": [
+      "pre:privilege_escalation",
+      "req:in_memory_data_alter",
+      "req:process_memory_patch",
+      "req:runtime_data_tamper"
+    ]
+  },
+  {
+    "rule_id": "TA0040.DATA_MANIP_STORED",
+    "rule_name": "Data Manipulation – Stored (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Data Manipulation – Stored Missing evidence: db_record_tamper, financial_data_alter, integrity_attack_detect, precond:privilege_escalation",
+    "gap_narrative": "This attack would require db_record_tamper, financial_data_alter, integrity_attack_detect, precond:privilege_escalation but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "db_record_tamper",
+      "financial_data_alter",
+      "integrity_attack_detect",
+      "precond:privilege_escalation"
+    ],
+    "causal_blockers": [
+      "pre:privilege_escalation",
+      "req:db_record_tamper",
+      "req:financial_data_alter",
+      "req:integrity_attack_detect"
+    ]
+  },
+  {
+    "rule_id": "TA0040.DEFACEMENT_EXTERNAL",
+    "rule_name": "Defacement – External Website (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Defacement – External Website Missing evidence: web_root_modify, defacement_content_waf, file_integrity_webroot, precond:privilege_escalation",
+    "gap_narrative": "This attack would require web_root_modify, defacement_content_waf, file_integrity_webroot, precond:privilege_escalation but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "web_root_modify",
+      "defacement_content_waf",
+      "file_integrity_webroot",
+      "precond:privilege_escalation"
+    ],
+    "causal_blockers": [
+      "pre:privilege_escalation",
+      "req:defacement_content_waf",
+      "req:file_integrity_webroot",
+      "req:web_root_modify"
+    ]
+  },
+  {
+    "rule_id": "TA0040.DEFACEMENT_INTERNAL",
+    "rule_name": "Defacement – Internal (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Defacement – Internal Missing evidence: intranet_content_modify, internal_defacement_detect, precond:privilege_escalation",
+    "gap_narrative": "This attack would require intranet_content_modify, internal_defacement_detect, precond:privilege_escalation but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "intranet_content_modify",
+      "internal_defacement_detect",
+      "precond:privilege_escalation"
+    ],
+    "causal_blockers": [
+      "pre:privilege_escalation",
+      "req:internal_defacement_detect",
+      "req:intranet_content_modify"
+    ]
+  },
+  {
+    "rule_id": "TA0040.DISK_WIPE",
+    "rule_name": "Disk Wipe (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Disk wipe or destructive overwrite. Missing evidence: disk_wipe, precond:privilege_escalation",
+    "gap_narrative": "This attack would require disk_wipe, precond:privilege_escalation but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "disk_wipe",
+      "precond:privilege_escalation"
+    ],
+    "causal_blockers": [
+      "pre:privilege_escalation",
+      "req:disk_wipe"
+    ]
+  },
+  {
+    "rule_id": "TA0040.ENDPOINT_DOS",
+    "rule_name": "Endpoint Denial of Service (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Endpoint Denial of Service Missing evidence: cpu_exhaustion_proc, fork_bomb_detect, resource_depletion_alert, precond:privilege_escalation",
+    "gap_narrative": "This attack would require cpu_exhaustion_proc, fork_bomb_detect, resource_depletion_alert, precond:privilege_escalation but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "cpu_exhaustion_proc",
+      "fork_bomb_detect",
+      "resource_depletion_alert",
+      "precond:privilege_escalation"
+    ],
+    "causal_blockers": [
+      "pre:privilege_escalation",
+      "req:cpu_exhaustion_proc",
+      "req:fork_bomb_detect",
+      "req:resource_depletion_alert"
+    ]
+  },
+  {
+    "rule_id": "TA0040.FIRMWARE_CORRUPT",
+    "rule_name": "Firmware Corruption (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Firmware Corruption Missing evidence: bios_flash_attempt, firmware_update_unsigned, uefi_write_attempt, precond:privilege_escalation",
+    "gap_narrative": "This attack would require bios_flash_attempt, firmware_update_unsigned, uefi_write_attempt, precond:privilege_escalation but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "bios_flash_attempt",
+      "firmware_update_unsigned",
+      "uefi_write_attempt",
+      "precond:privilege_escalation"
+    ],
+    "causal_blockers": [
+      "pre:privilege_escalation",
+      "req:bios_flash_attempt",
+      "req:firmware_update_unsigned",
+      "req:uefi_write_attempt"
+    ]
+  },
+  {
+    "rule_id": "TA0040.NETWORK_DOS",
+    "rule_name": "Network Denial of Service (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Network Denial of Service Missing evidence: volumetric_attack_internal, ddos_participation, flood_from_host, precond:privilege_escalation",
+    "gap_narrative": "This attack would require volumetric_attack_internal, ddos_participation, flood_from_host, precond:privilege_escalation but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "volumetric_attack_internal",
+      "ddos_participation",
+      "flood_from_host",
+      "precond:privilege_escalation"
+    ],
+    "causal_blockers": [
+      "pre:privilege_escalation",
+      "req:ddos_participation",
+      "req:flood_from_host",
+      "req:volumetric_attack_internal"
+    ]
+  },
+  {
+    "rule_id": "TA0040.RECOVERY_INHIBIT",
+    "rule_name": "Inhibit System Recovery",
+    "verdict": "INCOMPLETE",
+    "explanation": "Recovery features disabled to prevent restoration. Missing evidence: shadow_copy_delete",
+    "gap_narrative": "This attack would require shadow_copy_delete but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "shadow_copy_delete"
+    ],
+    "causal_blockers": [
+      "req:shadow_copy_delete"
+    ]
+  },
+  {
+    "rule_id": "TA0040.RESOURCE_HIJACK",
+    "rule_name": "Resource Hijacking (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Resources hijacked for unauthorized compute. Missing evidence: cryptomining_process, resource_spike, precond:credential_access",
+    "gap_narrative": "This attack would require cryptomining_process, resource_spike, precond:credential_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "cryptomining_process",
+      "resource_spike",
+      "precond:credential_access"
+    ],
+    "causal_blockers": [
+      "pre:credential_access",
+      "req:cryptomining_process",
+      "req:resource_spike"
+    ]
+  },
+  {
+    "rule_id": "TA0040.SVC_STOP",
+    "rule_name": "Service Stop (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "Service Stop Missing evidence: sc_stop_security_svc, critical_svc_stopped, av_backup_svc_kill, precond:privilege_escalation",
+    "gap_narrative": "This attack would require sc_stop_security_svc, critical_svc_stopped, av_backup_svc_kill, precond:privilege_escalation but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "sc_stop_security_svc",
+      "critical_svc_stopped",
+      "av_backup_svc_kill",
+      "precond:privilege_escalation"
+    ],
+    "causal_blockers": [
+      "pre:privilege_escalation",
+      "req:av_backup_svc_kill",
+      "req:critical_svc_stopped",
+      "req:sc_stop_security_svc"
+    ]
+  },
+  {
+    "rule_id": "TA0040.SYS_SHUTDOWN",
+    "rule_name": "System Shutdown/Reboot (preconditions unmet)",
+    "verdict": "INCOMPLETE",
+    "explanation": "System Shutdown/Reboot Missing evidence: unexpected_shutdown_cmd, initiate_shutdown_exec, reboot_flood, precond:privilege_escalation",
+    "gap_narrative": "This attack would require unexpected_shutdown_cmd, initiate_shutdown_exec, reboot_flood, precond:privilege_escalation but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": false,
+    "missing_evidence": [
+      "unexpected_shutdown_cmd",
+      "initiate_shutdown_exec",
+      "reboot_flood",
+      "precond:privilege_escalation"
+    ],
+    "causal_blockers": [
+      "pre:privilege_escalation",
+      "req:initiate_shutdown_exec",
+      "req:reboot_flood",
+      "req:unexpected_shutdown_cmd"
+    ]
+  },
+  {
+    "rule_id": "TA0042.ACQUIRE_ACCESS",
+    "rule_name": "Acquire Access",
+    "verdict": "INCOMPLETE",
+    "explanation": "Acquisition of access by adversary. Missing evidence: acquire_access",
+    "gap_narrative": "This attack would require acquire_access but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "acquire_access"
+    ],
+    "causal_blockers": [
+      "req:acquire_access"
+    ]
+  },
+  {
+    "rule_id": "TA0042.ACQUIRE_INFRA",
+    "rule_name": "Acquire Infrastructure",
+    "verdict": "INCOMPLETE",
+    "explanation": "Acquisition of infrastructure resources. Missing evidence: acquire_infra",
+    "gap_narrative": "This attack would require acquire_infra but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "acquire_infra"
+    ],
+    "causal_blockers": [
+      "req:acquire_infra"
+    ]
+  },
+  {
+    "rule_id": "TA0042.COMPROMISE_INFRA",
+    "rule_name": "Compromise Infrastructure",
+    "verdict": "INCOMPLETE",
+    "explanation": "Compromise of third-party infrastructure. Missing evidence: compromise_infra",
+    "gap_narrative": "This attack would require compromise_infra but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "compromise_infra"
+    ],
+    "causal_blockers": [
+      "req:compromise_infra"
+    ]
+  },
+  {
+    "rule_id": "TA0042.DEVELOP_CAPABILITY",
+    "rule_name": "Develop Capabilities",
+    "verdict": "INCOMPLETE",
+    "explanation": "Develop Capabilities Missing evidence: iam_change",
+    "gap_narrative": "This attack would require iam_change but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "iam_change"
+    ],
+    "causal_blockers": [
+      "req:iam_change"
+    ]
+  },
+  {
+    "rule_id": "TA0042.ESTABLISH_ACCOUNTS",
+    "rule_name": "Establish Accounts",
+    "verdict": "INCOMPLETE",
+    "explanation": "Establishing accounts for future use. Missing evidence: establish_accounts",
+    "gap_narrative": "This attack would require establish_accounts but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "establish_accounts"
+    ],
+    "causal_blockers": [
+      "req:establish_accounts"
+    ]
+  },
+  {
+    "rule_id": "TA0042.OBTAIN_CAPABILITY",
+    "rule_name": "Obtain Capabilities",
+    "verdict": "INCOMPLETE",
+    "explanation": "Obtain Capabilities Missing evidence: iam_change",
+    "gap_narrative": "This attack would require iam_change but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "iam_change"
+    ],
+    "causal_blockers": [
+      "req:iam_change"
+    ]
+  },
+  {
+    "rule_id": "TA0042.STAGE_CAPABILITY",
+    "rule_name": "Stage Capabilities",
+    "verdict": "INCOMPLETE",
+    "explanation": "Staging malicious capabilities. Missing evidence: stage_capability",
+    "gap_narrative": "This attack would require stage_capability but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "stage_capability"
+    ],
+    "causal_blockers": [
+      "req:stage_capability"
+    ]
+  },
+  {
+    "rule_id": "TA0043.ACTIVE_SCAN_IP",
+    "rule_name": "Active Scanning – IP Block Scan",
+    "verdict": "INCOMPLETE",
+    "explanation": "Reconnaissance scanning of IP blocks. Missing evidence: active_scan_ip",
+    "gap_narrative": "This attack would require active_scan_ip but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "active_scan_ip"
+    ],
+    "causal_blockers": [
+      "req:active_scan_ip"
+    ]
+  },
+  {
+    "rule_id": "TA0043.ACTIVE_SCAN_VULN",
+    "rule_name": "Active Scanning – Vulnerability Scanning",
+    "verdict": "INCOMPLETE",
+    "explanation": "Reconnaissance vulnerability scanning. Missing evidence: active_scan_vuln",
+    "gap_narrative": "This attack would require active_scan_vuln but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "active_scan_vuln"
+    ],
+    "causal_blockers": [
+      "req:active_scan_vuln"
+    ]
+  },
+  {
+    "rule_id": "TA0043.ACTIVE_SCAN_WORD",
+    "rule_name": "Active Scanning – Wordlist Scanning",
+    "verdict": "INCOMPLETE",
+    "explanation": "Active Scanning – Wordlist Scanning Missing evidence: web_404_burst, directory_brute_force, wordlist_scan_detect",
+    "gap_narrative": "This attack would require web_404_burst, directory_brute_force, wordlist_scan_detect but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "web_404_burst",
+      "directory_brute_force",
+      "wordlist_scan_detect"
+    ],
+    "causal_blockers": [
+      "req:directory_brute_force",
+      "req:web_404_burst",
+      "req:wordlist_scan_detect"
+    ]
+  },
+  {
+    "rule_id": "TA0043.GATHER_HOST_INFO",
+    "rule_name": "Gather Victim Host Information",
+    "verdict": "INCOMPLETE",
+    "explanation": "Reconnaissance of victim host information. Missing evidence: gather_host_info",
+    "gap_narrative": "This attack would require gather_host_info but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "gather_host_info"
+    ],
+    "causal_blockers": [
+      "req:gather_host_info"
+    ]
+  },
+  {
+    "rule_id": "TA0043.GATHER_ID_INFO",
+    "rule_name": "Gather Victim Identity Information",
+    "verdict": "INCOMPLETE",
+    "explanation": "Reconnaissance of victim identity information. Missing evidence: gather_id_info",
+    "gap_narrative": "This attack would require gather_id_info but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "gather_id_info"
+    ],
+    "causal_blockers": [
+      "req:gather_id_info"
+    ]
+  },
+  {
+    "rule_id": "TA0043.GATHER_NET_INFO",
+    "rule_name": "Gather Victim Network Information",
+    "verdict": "INCOMPLETE",
+    "explanation": "Reconnaissance of victim network information. Missing evidence: gather_net_info",
+    "gap_narrative": "This attack would require gather_net_info but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "gather_net_info"
+    ],
+    "causal_blockers": [
+      "req:gather_net_info"
+    ]
+  },
+  {
+    "rule_id": "TA0043.GATHER_ORG_INFO",
+    "rule_name": "Gather Victim Org Information",
+    "verdict": "INCOMPLETE",
+    "explanation": "Gather Victim Org Information Missing evidence: linkedin_scrape, job_posting_analysis, osint_feed_signal",
+    "gap_narrative": "This attack would require linkedin_scrape, job_posting_analysis, osint_feed_signal but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "linkedin_scrape",
+      "job_posting_analysis",
+      "osint_feed_signal"
+    ],
+    "causal_blockers": [
+      "req:job_posting_analysis",
+      "req:linkedin_scrape",
+      "req:osint_feed_signal"
+    ]
+  },
+  {
+    "rule_id": "TA0043.PHISH_INFO",
+    "rule_name": "Phishing for Information",
+    "verdict": "INCOMPLETE",
+    "explanation": "Pretexting phishing to gather information. Missing evidence: phish_info",
+    "gap_narrative": "This attack would require phish_info but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "phish_info"
+    ],
+    "causal_blockers": [
+      "req:phish_info"
+    ]
+  },
+  {
+    "rule_id": "TA0043.SEARCH_OPEN_SITES",
+    "rule_name": "Search Open Websites / Domains",
+    "verdict": "INCOMPLETE",
+    "explanation": "Search Open Websites / Domains Missing evidence: osint_correlation, shodan_query, passive_recon_signal",
+    "gap_narrative": "This attack would require osint_correlation, shodan_query, passive_recon_signal but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "osint_correlation",
+      "shodan_query",
+      "passive_recon_signal"
+    ],
+    "causal_blockers": [
+      "req:osint_correlation",
+      "req:passive_recon_signal",
+      "req:shodan_query"
+    ]
+  },
+  {
+    "rule_id": "TA0043.SEARCH_VICTIM_WEB",
+    "rule_name": "Search Victim-Owned Websites",
+    "verdict": "INCOMPLETE",
+    "explanation": "Search Victim-Owned Websites Missing evidence: crawler_activity, scraper_against_org_web, excessive_crawl_rate",
+    "gap_narrative": "This attack would require crawler_activity, scraper_against_org_web, excessive_crawl_rate but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "crawler_activity",
+      "scraper_against_org_web",
+      "excessive_crawl_rate"
+    ],
+    "causal_blockers": [
+      "req:crawler_activity",
+      "req:excessive_crawl_rate",
+      "req:scraper_against_org_web"
+    ]
+  },
+  {
+    "rule_id": "TA0043.SUPPLY_CHAIN",
+    "rule_name": "Supply Chain Compromise",
+    "verdict": "INCOMPLETE",
+    "explanation": "Build pipeline compromise with artifact tampering. Missing evidence: ci_runner_compromise, artifact_tamper",
+    "gap_narrative": "This attack would require ci_runner_compromise, artifact_tamper but no such evidence was observed.",
+    "reason_code": "evidence_gap",
+    "precondition_ok": true,
+    "missing_evidence": [
+      "ci_runner_compromise",
+      "artifact_tamper"
+    ],
+    "causal_blockers": [
+      "req:artifact_tamper",
+      "req:ci_runner_compromise"
+    ]
+  }
+]

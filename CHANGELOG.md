@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-02-27
+### Added
+- Rule linting command (`aman system rule-lint`) to flag missing metadata and legacy identity evidence types.
+
+### Changed
+- Identity evidence taxonomy updated: `signin_success` replaces `valid_account_login`, `mfa_method_removed` replaces `mfa_disabled`.
+- Ingest mappings updated (Okta, ECS, Splunk CIM, MDE) to emit new identity evidence types.
+- Sample data, fixtures, and documentation refreshed to align with new identity evidence types.
+
 ## 2026-02-12
 ### Added
 - Expansion rule pack support (`data/rules_expansion.json`) for optional coverage growth.

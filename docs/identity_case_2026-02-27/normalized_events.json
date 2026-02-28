@@ -1,0 +1,39 @@
+[
+  {
+    "id": "evt-1",
+    "time": "2026-02-27T00:00:01Z",
+    "host": "",
+    "user": "user_a",
+    "type": "signin_success",
+    "details": {
+      "signInId": "si-123",
+      "ip_redacted": "203.0.113.10",
+      "device_id": "dev-111",
+      "device_compliant": false,
+      "tenant_id": "tenant-redacted"
+    }
+  },
+  {
+    "id": "evt-2",
+    "time": "2026-02-27T00:00:05Z",
+    "host": "",
+    "user": "user_a",
+    "type": "new_device_login",
+    "details": {
+      "signInId": "si-123",
+      "device_id": "dev-unknown",
+      "device_registered": false
+    }
+  },
+  {
+    "id": "evt-3",
+    "time": "2026-02-27T00:00:07Z",
+    "host": "",
+    "user": "user_a",
+    "type": "account_locked",
+    "details": {
+      "signInId": "si-123",
+      "policy": "lockout"
+    }
+  }
+]

@@ -15,6 +15,7 @@ Returns analyst queue items derived from ticketed findings.
 
 ### `GET /api/governance`
 Returns approvals (JSONL in `data/approvals.log`).
+Includes `template_id` when approvals were created via `govern approve --template`.
 
 ### `GET /api/audit`
 Returns audit artifacts (JSONL in `data/audit.log`).

@@ -410,7 +410,7 @@
           "host": "",
           "id": "s12-1",
           "time": "2026-02-06T14:10:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -692,7 +692,7 @@
           "host": "mail-1",
           "id": "s20-3",
           "time": "2026-02-06T15:29:40Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         }
       ],
@@ -937,7 +937,7 @@
           "host": "host-9",
           "id": "a29-noise1",
           "time": "2026-02-06T10:29:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "noise"
         },
         {
@@ -974,7 +974,7 @@
           "host": "host-9",
           "id": "a30-noise1",
           "time": "2026-02-06T10:30:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "noise"
         },
         {
@@ -1011,7 +1011,7 @@
           "host": "host-9",
           "id": "a31-noise1",
           "time": "2026-02-06T10:31:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "noise"
         },
         {
@@ -1610,9 +1610,9 @@
         {
           "details": {},
           "host": "host-1",
-          "id": "r50-valid_account_login",
+          "id": "r50-signin_success",
           "time": "2026-02-06T10:50:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "bob"
         },
         {
@@ -1639,9 +1639,9 @@
         {
           "details": {},
           "host": "host-1",
-          "id": "r51-valid_account_login",
+          "id": "r51-signin_success",
           "time": "2026-02-06T10:51:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "bob"
         }
       ],
@@ -1660,9 +1660,9 @@
         {
           "details": {},
           "host": "host-1",
-          "id": "r52-valid_account_login",
+          "id": "r52-signin_success",
           "time": "2026-02-06T10:53:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "bob"
         }
       ],
@@ -3167,7 +3167,7 @@
           "host": "host-1",
           "id": "cx3",
           "time": "2026-02-06T17:03:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "carl"
         },
         {
@@ -3425,7 +3425,7 @@
           "host": "host-7",
           "id": "hc10",
           "time": "2026-02-06T18:50:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "carl"
         },
         {
@@ -3963,7 +3963,7 @@
           "host": "idp-1",
           "id": "sc1",
           "time": "2026-02-06T20:30:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "dana"
         },
         {
@@ -3992,7 +3992,7 @@
           "host": "idp-1",
           "id": "sc3",
           "time": "2026-02-06T20:35:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "dana"
         }
       ],
@@ -4013,7 +4013,7 @@
           "host": "idp-1",
           "id": "sca1",
           "time": "2026-02-06T21:00:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "erin"
         },
         {
@@ -4050,7 +4050,7 @@
           "host": "idp-1",
           "id": "sca4",
           "time": "2026-02-06T21:05:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "erin"
         },
         {
@@ -4079,7 +4079,7 @@
           "host": "host-1",
           "id": "ad-1",
           "time": "2026-02-06T15:00:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -4247,7 +4247,7 @@
           "host": "host-1",
           "id": "pgd-1",
           "time": "2026-02-06T15:00:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -4627,7 +4627,7 @@
           "host": "host-3",
           "id": "kerb-1",
           "time": "2026-02-06T15:01:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -4687,7 +4687,7 @@
           "host": "host-3",
           "id": "ptt-1",
           "time": "2026-02-06T15:01:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -4761,9 +4761,9 @@
         {
           "details": {},
           "host": "host-1",
-          "id": "fix-precond-valid_account_login",
+          "id": "fix-precond-signin_success",
           "time": "2026-02-06T15:03:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         }
       ],
@@ -5091,7 +5091,7 @@
           "host": "host-1",
           "id": "b2-0-0",
           "time": "2026-02-06T16:00:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -5135,7 +5135,7 @@
           "host": "host-1",
           "id": "b2-1-0",
           "time": "2026-02-06T16:06:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -5267,7 +5267,7 @@
           "host": "host-1",
           "id": "b2-4-0",
           "time": "2026-02-06T16:24:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -5395,7 +5395,7 @@
           "host": "host-1",
           "id": "b2-6-0",
           "time": "2026-02-06T16:36:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -5439,7 +5439,7 @@
           "host": "host-1",
           "id": "b2-7-0",
           "time": "2026-02-06T16:42:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -5483,7 +5483,7 @@
           "host": "host-1",
           "id": "b2-8-0",
           "time": "2026-02-06T16:48:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -5595,7 +5595,7 @@
           "host": "host-1",
           "id": "b2-10-0",
           "time": "2026-02-06T17:00:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -5639,7 +5639,7 @@
           "host": "host-1",
           "id": "b2-11-0",
           "time": "2026-02-06T17:06:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -5683,7 +5683,7 @@
           "host": "host-1",
           "id": "b3-0-0",
           "time": "2026-02-06T17:00:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -5727,7 +5727,7 @@
           "host": "host-1",
           "id": "b3-1-0",
           "time": "2026-02-06T17:05:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -5771,7 +5771,7 @@
           "host": "host-1",
           "id": "b3-2-0",
           "time": "2026-02-06T17:10:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -5823,7 +5823,7 @@
           "host": "host-1",
           "id": "b3-3-0",
           "time": "2026-02-06T17:15:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -6331,7 +6331,7 @@
           "host": "host-1",
           "id": "b3-14-0",
           "time": "2026-02-06T18:10:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -6367,7 +6367,7 @@
           "host": "host-1",
           "id": "b3-15-0",
           "time": "2026-02-06T18:15:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10163,7 +10163,7 @@
           "host": "host-1",
           "id": "b6-58-p1",
           "time": "2026-02-06T21:56:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10199,7 +10199,7 @@
           "host": "host-1",
           "id": "b6-59-p1",
           "time": "2026-02-06T21:58:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10251,7 +10251,7 @@
           "host": "host-1",
           "id": "b6-60-p1",
           "time": "2026-02-06T22:00:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10287,7 +10287,7 @@
           "host": "host-1",
           "id": "b6-61-p1",
           "time": "2026-02-06T22:02:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10323,7 +10323,7 @@
           "host": "host-1",
           "id": "b6-62-p1",
           "time": "2026-02-06T22:04:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10359,7 +10359,7 @@
           "host": "host-1",
           "id": "b6-63-p1",
           "time": "2026-02-06T22:06:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10395,7 +10395,7 @@
           "host": "host-1",
           "id": "b6-64-p1",
           "time": "2026-02-06T22:08:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10431,7 +10431,7 @@
           "host": "host-1",
           "id": "b6-65-p1",
           "time": "2026-02-06T22:10:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10467,7 +10467,7 @@
           "host": "host-1",
           "id": "b6-66-p1",
           "time": "2026-02-06T22:12:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10503,7 +10503,7 @@
           "host": "host-1",
           "id": "b6-67-p1",
           "time": "2026-02-06T22:14:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10539,7 +10539,7 @@
           "host": "host-1",
           "id": "b6-68-p1",
           "time": "2026-02-06T22:16:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10575,7 +10575,7 @@
           "host": "host-1",
           "id": "b6-69-p1",
           "time": "2026-02-06T22:18:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10611,7 +10611,7 @@
           "host": "host-1",
           "id": "b6-70-p1",
           "time": "2026-02-06T22:20:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10647,7 +10647,7 @@
           "host": "host-1",
           "id": "b6-71-p1",
           "time": "2026-02-06T22:22:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10683,7 +10683,7 @@
           "host": "host-1",
           "id": "b6-72-p1",
           "time": "2026-02-06T22:24:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10719,7 +10719,7 @@
           "host": "host-1",
           "id": "b6-73-p1",
           "time": "2026-02-06T22:26:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10755,7 +10755,7 @@
           "host": "host-1",
           "id": "b6-74-p1",
           "time": "2026-02-06T22:28:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10791,7 +10791,7 @@
           "host": "host-1",
           "id": "b6-75-p1",
           "time": "2026-02-06T22:30:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10827,7 +10827,7 @@
           "host": "host-1",
           "id": "b6-76-p1",
           "time": "2026-02-06T22:32:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10863,7 +10863,7 @@
           "host": "host-1",
           "id": "b6-77-p1",
           "time": "2026-02-06T22:34:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10899,7 +10899,7 @@
           "host": "host-1",
           "id": "b6-78-p1",
           "time": "2026-02-06T22:36:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10935,7 +10935,7 @@
           "host": "host-1",
           "id": "b6-79-p1",
           "time": "2026-02-06T22:38:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -10971,7 +10971,7 @@
           "host": "host-1",
           "id": "b6-80-p1",
           "time": "2026-02-06T22:40:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -11007,7 +11007,7 @@
           "host": "host-1",
           "id": "b6-81-p1",
           "time": "2026-02-06T22:42:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -12971,7 +12971,7 @@
           "host": "host-1",
           "id": "b7-10-p1",
           "time": "2026-02-06T22:20:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -13007,7 +13007,7 @@
           "host": "host-1",
           "id": "b7-11-p1",
           "time": "2026-02-06T22:22:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {
@@ -13043,7 +13043,7 @@
           "host": "host-1",
           "id": "b7-12-p1",
           "time": "2026-02-06T22:24:00Z",
-          "type": "valid_account_login",
+          "type": "signin_success",
           "user": "alice"
         },
         {

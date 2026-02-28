@@ -52,10 +52,49 @@ type KeypairFile struct {
 	PrivateKey string `json:"private_key"`
 }
 
+type ApprovalTemplate struct {
+	ID           string `json:"id"`
+	Description  string `json:"description"`
+	Role         string `json:"role"`
+	TTL          string `json:"ttl"`
+	Second       bool   `json:"second"`
+	RequireOkta  bool   `json:"require_okta"`
+	MinSigners   int    `json:"min_signers,omitempty"`
+	TemplateFile string `json:"-"`
+}
+
+func loadApprovalTemplates(path string) ([]ApprovalTemplate, error) {
+	if !ops.IsSafePath(path) {
+		return nil, os.ErrInvalid
+	}
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	var out []ApprovalTemplate
+	if err := json.Unmarshal(data, &out); err != nil {
+		return nil, err
+	}
+	for i := range out {
+		out[i].TemplateFile = path
+	}
+	return out, nil
+}
+
+func findApprovalTemplate(templates []ApprovalTemplate, id string) (ApprovalTemplate, bool) {
+	for _, t := range templates {
+		if strings.EqualFold(t.ID, id) {
+			return t, true
+		}
+	}
+	return ApprovalTemplate{}, false
+}
+
 type approvalRecord struct {
 	Approval     approval.Approval `json:"approval"`
 	Rationale    string            `json:"rationale"`
 	EvidenceGaps []string          `json:"evidence_gaps"`
+	TemplateID   string            `json:"template_id,omitempty"`
 }
 
 type GlobalFlags struct {
@@ -127,6 +166,13 @@ type IntegrationQuickstartReport struct {
 	Runs        []IntegrationQuickstartRun `json:"runs"`
 	Passed      int                        `json:"passed"`
 	Failed      int                        `json:"failed"`
+}
+
+type RuleLintReport struct {
+	GeneratedAt  time.Time               `json:"generated_at"`
+	RulesPath    string                  `json:"rules_path"`
+	WarningCount int                     `json:"warning_count"`
+	Warnings     []logic.RuleLintWarning `json:"warnings"`
 }
 
 type NoisegraphQuickstartReport struct {
@@ -371,6 +417,8 @@ func usage() {
 	fmt.Println("  keys -out keypair.json")
 	fmt.Println("  approve -key keypair.json -id change-1 -ttl 10m -okta true -signer alice -role approver -out approval.json")
 	fmt.Println("  approve2 -key1 key1.json -key2 key2.json -id change-1 -ttl 10m -okta true -signer1 alice -signer2 bob -out dual_approval.json")
+	fmt.Println("  govern templates [-templates data/approval_templates.json]")
+	fmt.Println("  govern approve --item change-1 --template safe_change --key keypair.json --signer alice")
 	fmt.Println("  verify -approval approval.json [-require-okta]")
 	fmt.Println("  audit-verify -audit audit.log")
 	fmt.Println("  audit-sign -audit audit.log -out signed_audit.log -signer soc-admin")
@@ -395,6 +443,8 @@ func usage() {
 	fmt.Println("  system noisegraph-quickstart [-decisions external/noisegraph/state/decisions.jsonl] [-events data/noisegraph_events.json] [-report docs/noisegraph_quickstart.json]")
 	fmt.Println("  system roi-scorecard [-pilot docs/pilot_metrics_report.json] [-integration docs/integration_readiness.json] [-benchmark docs/production_benchmark_report.md] [-out docs/roi_scorecard.md]")
 	fmt.Println("  system demo-pack [-outdir docs/demo_pack] [-rules data/rules.json]")
+	fmt.Println("  system drift-quickstart [-outdir data/inventory]")
+	fmt.Println("  system rule-lint [-rules data/rules.json] [-format text|json|md] [-out docs/rule_lint.md]")
 	fmt.Println("  graph killchain|blast-radius|controls|identity-pivots|timelapse|evidence-confidence -state data/state.json [-env data/env.json] [-format text|mermaid]")
 	fmt.Println("  system nist -rules data/rules.json [-out nist.json]")
 	fmt.Println("  system killchain -rules data/rules.json [-out killchain.json]")
@@ -677,6 +727,28 @@ func renderConfidenceMarkdown(high int, med int, low int) string {
 	fmt.Fprintf(buf, "Notes:\n")
 	fmt.Fprintf(buf, "- Confidence is heuristic and rule-based (not calibrated ML).\n")
 	fmt.Fprintf(buf, "- Use this banding for coarse calibration checks and audit summaries.\n")
+	return buf.String()
+}
+
+func renderRuleLintMarkdown(report RuleLintReport) string {
+	buf := &strings.Builder{}
+	fmt.Fprintf(buf, "# Rule Lint Report\n\n")
+	fmt.Fprintf(buf, "Generated: %s\n\n", report.GeneratedAt.Format(time.RFC3339))
+	fmt.Fprintf(buf, "- Rules file: %s\n", report.RulesPath)
+	fmt.Fprintf(buf, "- Warnings: %d\n\n", report.WarningCount)
+	if len(report.Warnings) == 0 {
+		fmt.Fprintln(buf, "No warnings.")
+		return buf.String()
+	}
+	fmt.Fprintln(buf, "| Rule | Issue | Severity | Detail |")
+	fmt.Fprintln(buf, "| --- | --- | --- | --- |")
+	for _, w := range report.Warnings {
+		detail := w.Detail
+		if detail == "" {
+			detail = "-"
+		}
+		fmt.Fprintf(buf, "| %s | %s | %s | %s |\n", w.RuleID, w.Issue, w.Severity, detail)
+	}
 	return buf.String()
 }
 
@@ -1437,9 +1509,42 @@ func printConfidenceModel(rep model.ReasoningReport) {
 
 func handleGovern(args []string) {
 	if len(args) == 0 {
-		fatal(errors.New("govern requires a subcommand: approve|freeze|list|ticket"))
+		fatal(errors.New("govern requires a subcommand: approve|templates|freeze|list|ticket"))
 	}
 	switch args[0] {
+	case "templates":
+		fs := flag.NewFlagSet("govern templates", flag.ExitOnError)
+		templatesPath := fs.String("templates", "data/approval_templates.json", "approval templates json")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		templates, err := loadApprovalTemplates(*templatesPath)
+		if err != nil {
+			fatal(err)
+		}
+		if gFlags.JSON {
+			outJSON(templates)
+			return
+		}
+		outln(fmt.Sprintf("Approval templates (%d) from %s:", len(templates), *templatesPath))
+		for _, t := range templates {
+			ttl := t.TTL
+			if ttl == "" {
+				ttl = "default"
+			}
+			line := fmt.Sprintf("- %s (role=%s ttl=%s", t.ID, t.Role, ttl)
+			if t.Second {
+				line += " dual"
+			}
+			if t.RequireOkta {
+				line += " okta"
+			}
+			line += ")"
+			outln(line)
+			if t.Description != "" {
+				outln("  " + t.Description)
+			}
+		}
 	case "approve":
 		fs := flag.NewFlagSet("govern approve", flag.ExitOnError)
 		item := fs.String("item", "", "item id")
@@ -1450,12 +1555,44 @@ func handleGovern(args []string) {
 		role := fs.String("role", "approver", "signer role")
 		ttl := fs.Duration("ttl", 10*time.Minute, "ttl")
 		second := fs.Bool("second", false, "second approver required")
+		templateID := fs.String("template", "", "approval template id")
+		templatesPath := fs.String("templates", "data/approval_templates.json", "approval templates json")
+		logPath := fs.String("log", "", "append approval record to approvals log")
 		out := fs.String("out", "data/approval.json", "output file")
 		if err := fs.Parse(args[1:]); err != nil {
 			fatal(err)
 		}
 		if *item == "" {
 			fatal(errors.New("govern approve requires --item"))
+		}
+		oktaVerified := true
+		if *templateID != "" {
+			templates, err := loadApprovalTemplates(*templatesPath)
+			if err != nil {
+				fatal(err)
+			}
+			tmpl, ok := findApprovalTemplate(templates, *templateID)
+			if !ok {
+				fatal(fmt.Errorf("approval template not found: %s", *templateID))
+			}
+			if *role == "approver" && tmpl.Role != "" {
+				*role = tmpl.Role
+			}
+			if *ttl == 10*time.Minute && tmpl.TTL != "" {
+				if parsed, err := time.ParseDuration(tmpl.TTL); err == nil {
+					*ttl = parsed
+				} else {
+					fatal(fmt.Errorf("invalid ttl in template %s: %w", tmpl.ID, err))
+				}
+			}
+			if !*second && tmpl.Second {
+				*second = true
+			}
+			if tmpl.RequireOkta {
+				oktaVerified = true
+			} else {
+				oktaVerified = false
+			}
 		}
 		if *second {
 			if *key2 == "" || *signer2 == "" || *key == "" || *signer == "" {
@@ -1468,16 +1605,24 @@ func handleGovern(args []string) {
 			priv1, _ := base64.StdEncoding.DecodeString(kp1.PrivateKey)
 			pub2, _ := base64.StdEncoding.DecodeString(kp2.PublicKey)
 			priv2, _ := base64.StdEncoding.DecodeString(kp2.PrivateKey)
-			app1, err := approval.Sign(*item, *ttl, true, *signer, *role, pub1, priv1)
+			app1, err := approval.Sign(*item, *ttl, oktaVerified, *signer, *role, pub1, priv1)
 			if err != nil {
 				fatal(err)
 			}
-			app2, err := approval.Sign(*item, *ttl, true, *signer2, *role, pub2, priv2)
+			app2, err := approval.Sign(*item, *ttl, oktaVerified, *signer2, *role, pub2, priv2)
 			if err != nil {
 				fatal(err)
 			}
 			dual := approval.DualApproval{Approvals: []approval.Approval{app1, app2}}
 			writeJSON(*out, dual)
+			if *logPath != "" {
+				if err := appendApprovalRecord(*logPath, approvalRecord{Approval: app1, TemplateID: *templateID}); err != nil {
+					fatal(err)
+				}
+				if err := appendApprovalRecord(*logPath, approvalRecord{Approval: app2, TemplateID: *templateID}); err != nil {
+					fatal(err)
+				}
+			}
 			outln("Approval recorded")
 			outln("Approver: " + *signer)
 			outln("Scope: Promote item " + *item)
@@ -1491,11 +1636,16 @@ func handleGovern(args []string) {
 		readJSON(*key, &kp)
 		pubBytes, _ := base64.StdEncoding.DecodeString(kp.PublicKey)
 		privBytes, _ := base64.StdEncoding.DecodeString(kp.PrivateKey)
-		app, err := approval.Sign(*item, *ttl, true, *signer, *role, pubBytes, privBytes)
+		app, err := approval.Sign(*item, *ttl, oktaVerified, *signer, *role, pubBytes, privBytes)
 		if err != nil {
 			fatal(err)
 		}
 		writeJSON(*out, app)
+		if *logPath != "" {
+			if err := appendApprovalRecord(*logPath, approvalRecord{Approval: app, TemplateID: *templateID}); err != nil {
+				fatal(err)
+			}
+		}
 		outln("Approval recorded")
 		outln("Approver: " + *signer)
 		outln("Scope: Promote item " + *item)
@@ -1659,6 +1809,28 @@ func readApprovalRecords(path string) ([]approvalRecord, error) {
 		out = append(out, approvalRecord{Approval: a})
 	}
 	return out, nil
+}
+
+func appendApprovalRecord(path string, rec approvalRecord) error {
+	if path == "" {
+		return nil
+	}
+	if !ops.IsSafePath(path) {
+		return os.ErrInvalid
+	}
+	data, err := json.Marshal(rec)
+	if err != nil {
+		return err
+	}
+	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0600)
+	if err != nil {
+		return err
+	}
+	defer func() { _ = f.Close() }()
+	if _, err := f.Write(append(data, '\n')); err != nil {
+		return err
+	}
+	return nil
 }
 
 func readAuditArtifacts(path string) ([]audit.Artifact, error) {
@@ -2643,7 +2815,7 @@ func handleAudit(args []string) {
 
 func handleSystem(args []string) {
 	if len(args) == 0 {
-		fatal(errors.New("system requires a subcommand: status|config|health|coverage|nist|killchain|confidence|engines|pilot-metrics|integration-readiness|integration-quickstart|noisegraph-quickstart|roi-scorecard|demo-pack"))
+		fatal(errors.New("system requires a subcommand: status|config|health|coverage|nist|killchain|confidence|engines|pilot-metrics|integration-readiness|integration-quickstart|noisegraph-quickstart|roi-scorecard|demo-pack|rule-lint|drift-quickstart"))
 	}
 	switch args[0] {
 	case "status":
@@ -2814,6 +2986,115 @@ func handleSystem(args []string) {
 				outln("  error: " + r.Error)
 			}
 		}
+	case "drift-quickstart":
+		fs := flag.NewFlagSet("system drift-quickstart", flag.ExitOnError)
+		outDir := fs.String("outdir", "data/inventory", "output directory")
+		configPath := fs.String("config", "data/inventory/config.json", "adapter config json")
+		basePath := fs.String("base", "data/env.json", "baseline env.json path")
+		driftPath := fs.String("drift", "data/drift.json", "drift report output path")
+		requestPath := fs.String("drift-request", "data/drift_request.json", "drift approval request output path")
+		interval := fs.String("interval", "6h", "refresh interval")
+		jitter := fs.String("jitter", "30m", "interval jitter")
+		outPath := fs.String("out", "", "output summary report path (optional)")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		if !ops.IsSafePath(*outDir) {
+			fatal(os.ErrInvalid)
+		}
+		if err := os.MkdirAll(*outDir, 0755); err != nil {
+			fatal(err)
+		}
+		scriptPath := filepath.Join(*outDir, "auto_drift.sh")
+		readmePath := filepath.Join(*outDir, "auto_drift_README.md")
+		script := `#!/usr/bin/env bash
+set -euo pipefail
+
+AMAN_BIN="${AMAN_BIN:-aman}"
+CONFIG="${1:-` + *configPath + `}"
+BASE="${2:-` + *basePath + `}"
+DRIFT="${3:-` + *driftPath + `}"
+DRIFT_REQUEST="${4:-` + *requestPath + `}"
+INTERVAL="${5:-` + *interval + `}"
+JITTER="${6:-` + *jitter + `}"
+
+echo "Starting Aman inventory schedule..."
+$AMAN_BIN inventory-schedule -provider all -config "$CONFIG" -base "$BASE" -out "$BASE" -drift "$DRIFT" -drift-request "$DRIFT_REQUEST" -interval "$INTERVAL" -jitter "$JITTER"
+`
+		readme := `# Aman Auto Drift Workflow
+
+This quickstart generates a minimal auto-drift runner.
+
+## 1) One-time baseline
+Run once to create your initial env snapshot:
+
+` + "```\n" + `aman inventory-refresh -provider all -config ` + *configPath + ` -base ` + *basePath + ` -out ` + *basePath + ` -drift ` + *driftPath + ` -drift-request ` + *requestPath + `
+` + "```\n" + `
+
+## 2) Start auto refresh
+Run the schedule loop (recommended in tmux/systemd):
+
+` + "```\n" + `bash ` + scriptPath + `
+` + "```\n" + `
+
+### Systemd example (optional)
+Create a unit that runs the script in the background.
+
+` + "```\n" + `[Unit]
+Description=Aman inventory auto drift
+
+[Service]
+ExecStart=/bin/bash ` + scriptPath + `
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+` + "```\n" + `
+
+## Outputs
+- baseline: ` + *basePath + `
+- drift report: ` + *driftPath + `
+- drift request (if changes): ` + *requestPath + `
+`
+		writeText(scriptPath, script)
+		if err := os.Chmod(scriptPath, 0755); err != nil {
+			fatal(err)
+		}
+		writeText(readmePath, readme)
+		report := map[string]string{
+			"output_dir":    *outDir,
+			"script_path":   scriptPath,
+			"readme_path":   readmePath,
+			"config_path":   *configPath,
+			"base_path":     *basePath,
+			"drift_path":    *driftPath,
+			"drift_request": *requestPath,
+			"interval":      *interval,
+			"jitter":        *jitter,
+		}
+		if *outPath != "" {
+			data, err := json.MarshalIndent(report, "", "  ")
+			if err != nil {
+				fatal(err)
+			}
+			if !ops.IsSafePath(*outPath) {
+				fatal(os.ErrInvalid)
+			}
+			if err := os.WriteFile(*outPath, data, 0600); err != nil {
+				fatal(err)
+			}
+			outln("Drift quickstart written: " + *outPath)
+		}
+		if gFlags.JSON {
+			outJSON(report)
+			return
+		}
+		outln("Drift quickstart ready:")
+		outln("- Script: " + scriptPath)
+		outln("- README: " + readmePath)
+		outln("- Baseline: " + *basePath)
+		outln("- Drift report: " + *driftPath)
 	case "noisegraph-quickstart":
 		fs := flag.NewFlagSet("system noisegraph-quickstart", flag.ExitOnError)
 		decisions := fs.String("decisions", "external/noisegraph/state/decisions.jsonl", "noisegraph decisions JSONL path")
@@ -2889,6 +3170,49 @@ func handleSystem(args []string) {
 		outln(fmt.Sprintf("Demo pack generated: %s", rep.OutDir))
 		for _, f := range rep.Files {
 			outln("- " + f)
+		}
+	case "rule-lint":
+		fs := flag.NewFlagSet("system rule-lint", flag.ExitOnError)
+		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
+		outPath := fs.String("out", "", "output file (optional)")
+		format := fs.String("format", "text", "output format: text|json|md")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		rules, err := logic.LoadRulesCombined(*rulesPath, *rulesExtra)
+		if err != nil {
+			fatal(err)
+		}
+		warnings := logic.LintRules(rules)
+		report := RuleLintReport{
+			GeneratedAt:  time.Now().UTC(),
+			RulesPath:    *rulesPath,
+			WarningCount: len(warnings),
+			Warnings:     warnings,
+		}
+		switch strings.ToLower(strings.TrimSpace(*format)) {
+		case "json":
+			if *outPath != "" {
+				writeJSON(*outPath, report)
+			} else {
+				outJSON(report)
+			}
+		case "md":
+			md := renderRuleLintMarkdown(report)
+			writeText(*outPath, md)
+		default:
+			outln(fmt.Sprintf("Rule lint: %d warnings", report.WarningCount))
+			for _, w := range warnings {
+				detail := w.Detail
+				if detail != "" {
+					detail = " — " + detail
+				}
+				outln(fmt.Sprintf("- %s [%s] %s%s", w.RuleID, w.Issue, w.Severity, detail))
+			}
+			if *outPath != "" {
+				writeText(*outPath, renderRuleLintMarkdown(report))
+			}
 		}
 	case "coverage":
 		fs := flag.NewFlagSet("system coverage", flag.ExitOnError)

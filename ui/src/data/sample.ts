@@ -102,16 +102,18 @@ export const approvals: Approval[] = [
   {
     id: "A-4011",
     scope: "Promote svc-backup to CONFIRMED",
-    status: "DUAL",
+    status: "dual_approved",
     approver: "a.norton",
-    expires: "in 45m"
+    expires: "in 45m",
+    template_id: "high_risk"
   },
   {
     id: "A-4012",
     scope: "Override evidence gap: no ticket",
-    status: "PENDING",
+    status: "pending_second_approval",
     approver: "m.lee",
-    expires: "in 2h"
+    expires: "in 2h",
+    template_id: "safe_change"
   }
 ];
 

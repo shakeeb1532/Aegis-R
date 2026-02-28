@@ -1,0 +1,26 @@
+# Commands used to generate this case
+# (run from repo root)
+
+# 1) Assess normalized identity events
+
+go run ./cmd/aman assess \
+  -in docs/identity_case_2026-02-27/normalized_events.json \
+  -env data/env.json \
+  -state data/state.json \
+  -audit docs/identity_case_2026-02-27/audit.log \
+  -rules data/rules.json \
+  -out docs/identity_case_2026-02-27/report.json
+
+# 2) Generate evidence bundle
+
+go run ./cmd/aman audit package \
+  -decision artifact-1772236107495975000 \
+  -report docs/identity_case_2026-02-27/report.json \
+  -audit docs/identity_case_2026-02-27/audit.log \
+  -approvals data/approvals.log \
+  -rules data/rules.json \
+  -out docs/identity_case_2026-02-27/evidence.zip
+
+# 3) Extract manifest + why_chain
+unzip -p docs/identity_case_2026-02-27/evidence.zip manifest.json > docs/identity_case_2026-02-27/manifest.json
+unzip -p docs/identity_case_2026-02-27/evidence.zip "evidence/decision_artifact-1772236107495975000/why_chain.json" > docs/identity_case_2026-02-27/why_chain.json

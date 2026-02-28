@@ -16,6 +16,7 @@ type Rule struct {
 	Name                 string                      `json:"name"`
 	Requirements         []model.EvidenceRequirement `json:"requirements"`
 	Preconds             []string                    `json:"preconds"`
+	PrecondGroups        [][]string                  `json:"precond_groups,omitempty"`
 	Explain              string                      `json:"explain"`
 	Contradictions       []string                    `json:"contradictions,omitempty"`
 	RequiresContext      string                      `json:"requires_context,omitempty"` // "", "host", "identity"
@@ -139,7 +140,7 @@ func DefaultRules() []Rule {
 			ID:   "TA0004.MFA_BYPASS",
 			Name: "MFA Disable or Bypass",
 			Requirements: []model.EvidenceRequirement{
-				{Type: "mfa_disabled", Description: "MFA disabled or reset"},
+				{Type: "mfa_method_removed", Description: "MFA method removed or reset"},
 				{Type: "token_refresh_anomaly", Description: "Unusual token refresh or replay"},
 			},
 			Preconds: []string{"identity_compromise"},
@@ -169,7 +170,7 @@ func DefaultRules() []Rule {
 			ID:   "TA0006.VALID_ACCOUNTS",
 			Name: "Valid Accounts Abuse",
 			Requirements: []model.EvidenceRequirement{
-				{Type: "valid_account_login", Description: "Login using valid credentials in unusual context"},
+				{Type: "signin_success", Description: "Sign-in using valid credentials in unusual context"},
 				{Type: "new_device_login", Description: "New device or unknown client"},
 			},
 			Preconds: []string{},
@@ -200,7 +201,7 @@ func DefaultRules() []Rule {
 			Name: "Modify Authentication Process",
 			Requirements: []model.EvidenceRequirement{
 				{Type: "auth_process_modify", Description: "Authentication process modified"},
-				{Type: "mfa_disabled", Description: "MFA disabled or bypassed"},
+				{Type: "mfa_method_removed", Description: "MFA method removed or reset"},
 			},
 			Preconds: []string{"identity_compromise"},
 			Explain:  "Authentication controls were altered to bypass access checks.",
@@ -252,7 +253,7 @@ func DefaultRules() []Rule {
 				{Type: "mailbox_rule_create", Description: "Mailbox rule created"},
 				{Type: "forwarding_rule_set", Description: "Auto-forwarding rule set"},
 			},
-			Preconds: []string{"valid_account_login"},
+			Preconds: []string{"signin_success"},
 			Explain:  "Persistence through mailbox rules and forwarding.",
 		},
 		{
@@ -281,7 +282,7 @@ func DefaultRules() []Rule {
 				{Type: "bulk_download", Description: "Bulk download or data access"},
 				{Type: "unusual_access_scope", Description: "Unusual access scope"},
 			},
-			Preconds: []string{"valid_account_login"},
+			Preconds: []string{"signin_success"},
 			Explain:  "Large-scale access without compromise signals suggests insider misuse.",
 		},
 		{
@@ -389,7 +390,7 @@ func DefaultRules() []Rule {
 			ID:   "TA0001.STOLEN_CREDS",
 			Name: "Stolen Credentials Initial Access",
 			Requirements: []model.EvidenceRequirement{
-				{Type: "valid_account_login", Description: "Login using valid credentials"},
+				{Type: "signin_success", Description: "Sign-in using valid credentials"},
 				{Type: "token_reuse", Description: "Token reuse or session replay"},
 			},
 			Preconds: []string{},
@@ -399,7 +400,7 @@ func DefaultRules() []Rule {
 			ID:   "TA0001.STOLEN_CREDS_ANOMALY",
 			Name: "Stolen Credentials with Anomalous Access",
 			Requirements: []model.EvidenceRequirement{
-				{Type: "valid_account_login", Description: "Login using valid credentials"},
+				{Type: "signin_success", Description: "Sign-in using valid credentials"},
 				{Type: "token_reuse", Description: "Token reuse or session replay"},
 				{Type: "new_device_login", Description: "New device or unknown client"},
 			},
@@ -543,6 +544,8 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		if len(missingPreconds) > 0 {
 			precondOK = false
 		}
+		highSignal := hasHighSignalEvidence(index)
+		telemetryGap := len(missingPreconds) > 0 && highSignal
 		contradiction := hasContradiction(rule, index)
 		contextReq := contextForRule(rule)
 		missingContext := false
@@ -559,7 +562,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		causalFeasible, causalBlockers, necessaryCauses, necessaryCauseSets, causalErr := evaluateRuleCausally(
 			rule,
 			reqPresence(index, rule),
-			precondStatusMap(rule, missing),
+			precondStatusMap(rule, facts, requirementAt, hasReqTime),
 			map[string]bool{
 				"no_contradiction": !contradiction,
 				"context_ok":       !missingContext,
@@ -578,7 +581,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 				Description: "Causal model evaluation failed",
 			})
 		}
-		confidence, confidenceFactors := scoreConfidence(rule, supporting, missing, precondOK, now)
+		confidence, confidenceFactors := scoreConfidence(rule, supporting, missing, precondOK || telemetryGap, now, highSignal)
 		if feasible && rule.Constraints.MinConfidence > 0 && confidence < rule.Constraints.MinConfidence {
 			feasible = false
 			missing = append(missing, model.EvidenceRequirement{
@@ -589,6 +592,8 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		name := rule.Name
 		if contradiction {
 			name = name + " (conflicted)"
+		} else if telemetryGap {
+			name = name + " (telemetry gap)"
 		} else if !precondOK {
 			name = name + " (preconditions unmet)"
 		}
@@ -597,6 +602,8 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		if contradiction {
 			missing = []model.EvidenceRequirement{}
 			reason += " Contradictory evidence observed."
+		} else if telemetryGap {
+			reason += " High-signal defensive impairment suggests a telemetry gap."
 		} else if missingContext {
 			reason += " Required context missing."
 		} else if len(missing) > 0 {
@@ -606,6 +613,8 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 		gapNarrative := ""
 		if contradiction {
 			gapNarrative = "Conflicted: evidence contradicts a required condition for this attack path."
+		} else if telemetryGap {
+			gapNarrative = "High-signal defensive impairment suggests missing telemetry; treat as incomplete pending evidence."
 		} else if missingContext {
 			gapNarrative = "Required context is missing to evaluate this rule; treat as incomplete until context is provided."
 		} else if len(missing) > 0 {
@@ -627,7 +636,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 			SupportingEventIDs: supportingIDs,
 			Explanation:        reason,
 			GapNarrative:       gapNarrative,
-			ReasonCode:         reasonCodeWithContradiction(precondOK, missing, len(events), contradiction, missingContext),
+			ReasonCode:         reasonCodeWithContradiction(precondOK, missing, len(events), contradiction, missingContext, telemetryGap),
 			CausalBlockers:     causalBlockers,
 			CausalError:        causalErrMsg,
 			NecessaryCauses:    necessaryCauses,
@@ -660,14 +669,34 @@ func reasonCode(precondOK bool, missing []model.EvidenceRequirement, eventCount 
 	}
 }
 
-func reasonCodeWithContradiction(precondOK bool, missing []model.EvidenceRequirement, eventCount int, contradiction bool, missingContext bool) string {
+func reasonCodeWithContradiction(precondOK bool, missing []model.EvidenceRequirement, eventCount int, contradiction bool, missingContext bool, telemetryGap bool) string {
 	if contradiction {
 		return "conflicted"
 	}
 	if missingContext {
 		return "environment_unknown"
 	}
+	if telemetryGap {
+		return "telemetry_gap_high_signal"
+	}
 	return reasonCode(precondOK, missing, eventCount)
+}
+
+var telemetryGapSignals = map[string]bool{
+	"disable_logging":     true,
+	"log_clear":           true,
+	"auth_process_modify": true,
+	"mfa_method_removed":  true,
+	"mfa_policy_changed":  true,
+}
+
+func hasHighSignalEvidence(index map[string][]int) bool {
+	for t := range telemetryGapSignals {
+		if len(index[t]) > 0 {
+			return true
+		}
+	}
+	return false
 }
 
 func hasContradiction(rule Rule, index map[string][]int) bool {
