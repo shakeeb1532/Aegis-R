@@ -2,9 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { fetchHealth, fetchMetrics, HealthResponse, MetricsResponse } from "../api/health";
 
 const DEFAULT_BASE = (import.meta as any).env?.VITE_INGEST_BASE_URL || "http://localhost:8080";
+const STORAGE_KEY = "ingestBaseUrl";
 
 export function IngestStatusPanel() {
-  const [baseUrl, setBaseUrl] = useState(DEFAULT_BASE);
+  const [baseUrl, setBaseUrl] = useState(
+    () => window.localStorage.getItem(STORAGE_KEY) || DEFAULT_BASE
+  );
   const [health, setHealth] = useState<HealthResponse | null>(null);
   const [metrics, setMetrics] = useState<MetricsResponse | null>(null);
   const [error, setError] = useState<string>("");
@@ -26,6 +29,7 @@ export function IngestStatusPanel() {
   };
 
   useEffect(() => {
+    window.localStorage.setItem(STORAGE_KEY, baseUrl);
     void refresh();
   }, [baseUrl]);
 

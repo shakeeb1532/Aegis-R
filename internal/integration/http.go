@@ -83,6 +83,11 @@ type errorResponse struct {
 }
 
 func IngestHandler(w http.ResponseWriter, r *http.Request) {
+	enableIngestCORS(w)
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
 	atomic.AddUint64(&defaultIngestStats.totalRequests, 1)
 	if r.Method != http.MethodPost {
 		atomic.AddUint64(&defaultIngestStats.failures, 1)
@@ -97,9 +102,16 @@ func IngestHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	schema := r.URL.Query().Get("schema")
 	if schema == "" {
-		schema = string(SchemaNative)
+		if headerSchema := r.Header.Get("X-Aman-Schema"); headerSchema != "" {
+			schema = headerSchema
+		} else {
+			schema = string(SchemaNative)
+		}
 	}
 	kind := r.URL.Query().Get("kind")
+	if kind == "" {
+		kind = r.Header.Get("X-Aman-Kind")
+	}
 	r.Body = http.MaxBytesReader(w, r.Body, defaultIngestMaxBytes)
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -130,6 +142,11 @@ func IngestHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func HealthHandler(w http.ResponseWriter, r *http.Request) {
+	enableIngestCORS(w)
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
 	if r.Method != http.MethodGet {
 		writeJSONError(w, http.StatusMethodNotAllowed, "method_not_allowed")
 		return
@@ -148,6 +165,11 @@ func HealthHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func MetricsHandler(w http.ResponseWriter, r *http.Request) {
+	enableIngestCORS(w)
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
 	if r.Method != http.MethodGet {
 		writeJSONError(w, http.StatusMethodNotAllowed, "method_not_allowed")
 		return
@@ -175,6 +197,12 @@ func writeJSONError(w http.ResponseWriter, code int, msg string) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
 	_ = json.NewEncoder(w).Encode(errorResponse{Error: msg})
+}
+
+func enableIngestCORS(w http.ResponseWriter) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-API-Key, X-Aman-Schema, X-Aman-Kind")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 }
 
 func trackMappingMisses(events []model.Event) {

@@ -158,6 +158,33 @@ func normalizeEntraSignIn(s entraSignIn) []model.Event {
 		out = append(out, newEvent("new_device_login"))
 	}
 
+	switch strings.ToLower(strings.TrimSpace(s.ConditionalAccessStatus)) {
+	case "success":
+		out = append(out, newEvent("conditional_access_satisfied"))
+	case "failure", "blocked":
+		out = append(out, newEvent("conditional_access_blocked"))
+	case "notapplied", "not_applied":
+		out = append(out, newEvent("conditional_access_not_applied"))
+	}
+
+	switch strings.ToLower(strings.TrimSpace(s.RiskLevelAggregated)) {
+	case "high":
+		out = append(out, newEvent("risk_level_high"))
+	case "medium":
+		out = append(out, newEvent("risk_level_medium"))
+	case "low":
+		out = append(out, newEvent("risk_level_low"))
+	}
+
+	switch strings.ToLower(strings.TrimSpace(s.RiskState)) {
+	case "atrisk":
+		out = append(out, newEvent("risk_state_at_risk"))
+	case "confirmedcompromised":
+		out = append(out, newEvent("risk_state_confirmed_compromised"))
+	case "remediated":
+		out = append(out, newEvent("risk_state_remediated"))
+	}
+
 	mfaFailed, sawMfa := authDetailsMFA(s.AuthenticationDetails)
 	if mfaFailed {
 		out = append(out, newEvent("mfa_challenge_failed"))

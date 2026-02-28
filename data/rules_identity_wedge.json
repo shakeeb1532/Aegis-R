@@ -245,5 +245,128 @@
       "approved_at": "2026-02-28"
     },
     "constraints": {"min_confidence": 0.4, "applies_to": ["identity"]}
+  },
+  {
+    "id": "TA0006.CA_BLOCKED_SIGNIN",
+    "name": "Conditional Access blocked sign-in",
+    "requirements": [
+      {"type": "signin_attempt", "description": "Sign-in attempt observed"},
+      {"type": "conditional_access_blocked", "description": "Conditional Access blocked the sign-in"}
+    ],
+    "preconds": [],
+    "explain": "Conditional Access blocked the sign-in attempt.",
+    "contradictions": ["signin_success", "conditional_access_satisfied"],
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0.35, "applies_to": ["identity"]}
+  },
+  {
+    "id": "TA0006.CA_NOT_APPLIED_SIGNIN",
+    "name": "Conditional Access not applied",
+    "requirements": [
+      {"type": "signin_attempt", "description": "Sign-in attempt observed"},
+      {"type": "conditional_access_not_applied", "description": "Conditional Access not applied"}
+    ],
+    "preconds": [],
+    "explain": "Conditional Access was not applied to this sign-in attempt.",
+    "contradictions": ["conditional_access_blocked"],
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0.3, "applies_to": ["identity"]}
+  },
+  {
+    "id": "TA0006.RISK_LEVEL_HIGH_SIGNIN",
+    "name": "High-risk sign-in attempt",
+    "requirements": [
+      {"type": "signin_attempt", "description": "Sign-in attempt observed"},
+      {"type": "risk_level_high", "description": "Sign-in flagged as high risk"}
+    ],
+    "preconds": [],
+    "explain": "Entra marked the sign-in attempt as high risk.",
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0.45, "applies_to": ["identity"]}
+  },
+  {
+    "id": "TA0006.RISK_LEVEL_MEDIUM_SIGNIN",
+    "name": "Medium-risk sign-in attempt",
+    "requirements": [
+      {"type": "signin_attempt", "description": "Sign-in attempt observed"},
+      {"type": "risk_level_medium", "description": "Sign-in flagged as medium risk"}
+    ],
+    "preconds": [],
+    "explain": "Entra marked the sign-in attempt as medium risk.",
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0.35, "applies_to": ["identity"]}
+  },
+  {
+    "id": "TA0006.RISK_LEVEL_HIGH_SUCCESS",
+    "name": "High-risk sign-in success",
+    "requirements": [
+      {"type": "signin_success", "description": "Sign-in completed successfully"},
+      {"type": "risk_level_high", "description": "Sign-in flagged as high risk"}
+    ],
+    "preconds": [],
+    "explain": "A successful sign-in occurred despite a high risk rating.",
+    "contradictions": ["signin_denied_policy", "signin_failed_auth", "signin_denied_account_state"],
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0.55, "applies_to": ["identity"]}
+  },
+  {
+    "id": "TA0006.RISK_STATE_CONFIRMED_COMPROMISED",
+    "name": "Sign-in marked confirmed compromised",
+    "requirements": [
+      {"type": "signin_attempt", "description": "Sign-in attempt observed"},
+      {"type": "risk_state_confirmed_compromised", "description": "Risk state marked confirmed compromised"}
+    ],
+    "preconds": [],
+    "explain": "Entra marked the sign-in as confirmed compromised.",
+    "requires_context": "identity",
+    "mitre": {"tactic": "TA0006", "technique": "T1078"},
+    "provenance": {
+      "author": "Aman",
+      "version": "1.0",
+      "sources": ["entra_graph_signins"],
+      "reviewed_by": [],
+      "approved_at": "2026-02-28"
+    },
+    "constraints": {"min_confidence": 0.6, "applies_to": ["identity"]}
   }
 ]

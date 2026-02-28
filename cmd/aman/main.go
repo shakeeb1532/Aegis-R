@@ -2329,7 +2329,7 @@ Verification:
 `)
 }
 
-func buildHumanReportHTML(summary BundleSummary, matched []model.RuleResult, approvals DualApprovalSummary) string {
+func buildHumanReportHTMLLegacy(summary BundleSummary, matched []model.RuleResult, approvals DualApprovalSummary) string {
 	type row struct {
 		RuleID         string
 		Verdict        string
@@ -2434,6 +2434,224 @@ func buildHumanReportHTML(summary BundleSummary, matched []model.RuleResult, app
 	return builder.String()
 }
 
+func buildHumanReportHTML(summary BundleSummary, matched []model.RuleResult, approvals DualApprovalSummary) string {
+	type row struct {
+		RuleID         string
+		Verdict        string
+		ReasonCode     string
+		PreconditionOK string
+		Explanation    string
+		Missing        string
+	}
+	type confRow struct {
+		RuleID        string
+		Coverage      string
+		Recency       string
+		Corroboration string
+		SupportEvents string
+	}
+
+	rows := make([]row, 0, len(matched))
+	confRows := make([]confRow, 0, len(matched))
+	verdictCounts := map[string]int{}
+	headline := "Security activity review"
+	primary := ""
+	for _, r := range matched {
+		if r.Feasible {
+			primary = r.Name
+			break
+		}
+	}
+	if primary == "" && len(matched) > 0 {
+		primary = matched[0].Name
+	}
+	if primary != "" {
+		headline = primary
+	}
+
+	for _, r := range matched {
+		verdict := verdictLabel(r)
+		verdictCounts[verdict]++
+		missing := ""
+		if len(r.MissingEvidence) > 0 {
+			names := make([]string, 0, len(r.MissingEvidence))
+			for _, m := range r.MissingEvidence {
+				if m.Description != "" {
+					names = append(names, m.Description)
+				} else if m.Type != "" {
+					names = append(names, m.Type)
+				}
+			}
+			if len(names) > 0 {
+				missing = strings.Join(names, "; ")
+			}
+		}
+		rows = append(rows, row{
+			RuleID:         r.RuleID,
+			Verdict:        verdict,
+			ReasonCode:     r.ReasonCode,
+			PreconditionOK: strconv.FormatBool(r.PrecondOK),
+			Explanation:    r.Explanation,
+			Missing:        missing,
+		})
+		if r.ConfidenceFactors != nil {
+			confRows = append(confRows, confRow{
+				RuleID:        r.RuleID,
+				Coverage:      fmt.Sprintf("%d / %d", r.ConfidenceFactors.EvidencePresent, r.ConfidenceFactors.EvidenceTotal),
+				Recency:       confidenceBandLabel(r.ConfidenceFactors.Recency),
+				Corroboration: confidenceBandLabel(r.ConfidenceFactors.Corroboration),
+				SupportEvents: fmt.Sprintf("%d", r.ConfidenceFactors.SupportingEvents),
+			})
+		}
+	}
+
+	status := "Monitoring"
+	switch {
+	case verdictCounts["feasible"] > 0:
+		status = "Investigation in progress"
+	case verdictCounts["conflicted"] > 0:
+		status = "Human review required"
+	case verdictCounts["incomplete"] > 0:
+		status = "Awaiting evidence"
+	case verdictCounts["policy_impossible"] > 0:
+		status = "Blocked by policy"
+	default:
+		status = "No feasible path detected"
+	}
+
+	missingRules := []string{}
+	signalCounts := map[string]int{}
+	for _, r := range matched {
+		verdict := verdictLabel(r)
+		if verdict == "feasible" || verdict == "conflicted" {
+			category := tacticCategoryLabel(r.RuleID)
+			if category == "" {
+				category = "Security signals"
+			}
+			signalCounts[category]++
+		} else if verdict == "incomplete" {
+			missingRules = append(missingRules, r.Name)
+		}
+	}
+	signalSummary := []string{}
+	for label, count := range signalCounts {
+		signalSummary = append(signalSummary, fmt.Sprintf("%s (%d)", label, count))
+	}
+	sort.Strings(signalSummary)
+	if len(signalSummary) > 3 {
+		signalSummary = signalSummary[:3]
+	}
+	missingRules = dedupeStrings(missingRules)
+	if len(missingRules) > 8 {
+		missingRules = missingRules[:8]
+	}
+
+	builder := strings.Builder{}
+	builder.WriteString("<!doctype html><html><head><meta charset=\"utf-8\">")
+	builder.WriteString("<title>Aman Evidence Report</title>")
+	builder.WriteString("<style>")
+	builder.WriteString("body{font-family:Inter,Arial,Helvetica,sans-serif;margin:24px;color:#0f172a;background:#f8fafc}")
+	builder.WriteString("h1{margin:0 0 6px;font-size:26px}h2{margin:0 0 10px;font-size:18px}")
+	builder.WriteString(".card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:0 1px 2px rgba(15,23,42,0.04)}")
+	builder.WriteString(".muted{color:#64748b;font-size:13px} .badge{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid #e2e8f0;font-size:11px;text-transform:uppercase;letter-spacing:.08em}")
+	builder.WriteString(".badge.feasible{border-color:#16a34a;color:#16a34a} .badge.incomplete{border-color:#f59e0b;color:#b45309} .badge.conflicted{border-color:#ef4444;color:#b91c1c} .badge.policy_impossible{border-color:#6366f1;color:#4f46e5} .badge.unknown{border-color:#94a3b8;color:#64748b}")
+	builder.WriteString("table{border-collapse:collapse;width:100%;font-size:13px}th,td{border:1px solid #e2e8f0;padding:8px;text-align:left;vertical-align:top}th{background:#f1f5f9}")
+	builder.WriteString("code{background:#f1f5f9;padding:2px 4px;border-radius:4px}")
+	builder.WriteString("</style>")
+	builder.WriteString("</head><body>")
+	builder.WriteString("<h1>Aman Evidence Report</h1>")
+	builder.WriteString("<p class=\"muted\">Non-technical incident summary. For machine verification, use the manifest and bundle verification command.</p>")
+
+	builder.WriteString("<section class=\"card\"><h2>Executive Summary</h2>")
+	builder.WriteString(fmt.Sprintf("<p><strong>Incident headline:</strong> %s</p>", htmlEscape(headline)))
+	builder.WriteString(fmt.Sprintf("<p><strong>Date/Time:</strong> %s</p>", summary.GeneratedAt))
+	builder.WriteString(fmt.Sprintf("<p><strong>Status:</strong> %s</p>", status))
+	builder.WriteString(fmt.Sprintf("<p><strong>Approval required:</strong> %t</p>", summary.DualApprovalRequired))
+	builder.WriteString(fmt.Sprintf("<p><strong>Approved:</strong> %t</p>", summary.DualApproved))
+	builder.WriteString("<p><strong>Business impact:</strong> No confirmed customer data impact in available telemetry.</p>")
+	if len(signalSummary) > 0 {
+		builder.WriteString("<p><strong>Signals observed:</strong></p><ul>")
+		for _, f := range signalSummary {
+			builder.WriteString("<li>" + htmlEscape(f) + "</li>")
+		}
+		builder.WriteString("</ul>")
+	} else {
+		builder.WriteString("<p><strong>Signals observed:</strong> No high-confidence signals.</p>")
+	}
+	builder.WriteString("</section>")
+
+	builder.WriteString("<section class=\"card\"><h2>Incident Description</h2>")
+	builder.WriteString("<p>Aman evaluated the available telemetry and produced a governed decision record. This report summarizes what was seen, what was missing, and what actions are recommended.</p>")
+	builder.WriteString(fmt.Sprintf("<p><strong>Reference ID:</strong> %s</p>", summary.DecisionID))
+	builder.WriteString("</section>")
+
+	builder.WriteString("<section class=\"card\"><h2>Business Impact Assessment</h2>")
+	builder.WriteString("<p>Not assessed in this automated report. Analysts should complete this section during review.</p>")
+	builder.WriteString("</section>")
+
+	builder.WriteString("<section class=\"card\"><h2>Actions Taken & Current Status</h2>")
+	builder.WriteString(fmt.Sprintf("<p><strong>Approval required:</strong> %t</p>", summary.DualApprovalRequired))
+	builder.WriteString(fmt.Sprintf("<p><strong>Approved:</strong> %t</p>", summary.DualApproved))
+	builder.WriteString(fmt.Sprintf("<p><strong>Valid signers:</strong> %d</p>", approvals.ValidSigners))
+	if len(approvals.SignerIDs) > 0 {
+		builder.WriteString("<p><strong>Signers:</strong> " + htmlEscape(strings.Join(approvals.SignerIDs, ", ")) + "</p>")
+	}
+	builder.WriteString("</section>")
+
+	if len(missingRules) > 0 {
+		builder.WriteString("<section class=\"card\"><h2>Recommendations & Next Steps</h2>")
+		builder.WriteString("<p class=\"muted\">Additional evidence is required to confirm or rule out activity. See the technical appendix for full details.</p>")
+		builder.WriteString("<ul>")
+		builder.WriteString("<li>Collect MFA and conditional access outcomes for the affected identities.</li>")
+		builder.WriteString("<li>Verify device compliance and registration status.</li>")
+		builder.WriteString("<li>Confirm administrative approvals or change tickets for sensitive actions.</li>")
+		builder.WriteString("</ul></section>")
+	} else {
+		builder.WriteString("<section class=\"card\"><h2>Recommendations & Next Steps</h2><p>No outstanding evidence gaps were reported.</p></section>")
+	}
+
+	builder.WriteString("<details class=\"card\"><summary><strong>Technical Appendix (for analysts)</strong></summary>")
+	builder.WriteString(fmt.Sprintf("<p class=\"muted\">Bundle verified: %t · Controls linked: %d</p>", summary.BundleVerified, summary.ControlsLinked))
+	builder.WriteString("<section><h2>Why Chain (Decision Rationale)</h2>")
+	builder.WriteString("<table><thead><tr><th>Rule</th><th>Verdict</th><th>Reason</th><th>Precondition OK</th><th>Explanation</th><th>Missing Evidence</th></tr></thead><tbody>")
+	for _, r := range rows {
+		builder.WriteString("<tr>")
+		builder.WriteString("<td><code>" + htmlEscape(r.RuleID) + "</code></td>")
+		builder.WriteString("<td><span class=\"badge " + htmlEscape(r.Verdict) + "\">" + htmlEscape(strings.ReplaceAll(r.Verdict, "_", " ")) + "</span></td>")
+		builder.WriteString("<td>" + htmlEscape(r.ReasonCode) + "</td>")
+		builder.WriteString("<td>" + htmlEscape(r.PreconditionOK) + "</td>")
+		builder.WriteString("<td>" + htmlEscape(r.Explanation) + "</td>")
+		builder.WriteString("<td>" + htmlEscape(r.Missing) + "</td>")
+		builder.WriteString("</tr>")
+	}
+	builder.WriteString("</tbody></table></section>")
+
+	if len(confRows) > 0 {
+		builder.WriteString("<section><h2>Confidence Rationale</h2>")
+		builder.WriteString("<p class=\"muted\">Confidence is a support score derived from evidence coverage, recency, and corroboration. It is not a probability.</p>")
+		builder.WriteString("<table><thead><tr><th>Rule</th><th>Coverage</th><th>Recency</th><th>Corroboration</th><th>Supporting Events</th></tr></thead><tbody>")
+		for _, r := range confRows {
+			builder.WriteString("<tr>")
+			builder.WriteString("<td><code>" + htmlEscape(r.RuleID) + "</code></td>")
+			builder.WriteString("<td>" + htmlEscape(r.Coverage) + "</td>")
+			builder.WriteString("<td>" + htmlEscape(r.Recency) + "</td>")
+			builder.WriteString("<td>" + htmlEscape(r.Corroboration) + "</td>")
+			builder.WriteString("<td>" + htmlEscape(r.SupportEvents) + "</td>")
+			builder.WriteString("</tr>")
+		}
+		builder.WriteString("</tbody></table></section>")
+	}
+	builder.WriteString("</details>")
+
+	builder.WriteString("<section class=\"card\"><h2>Verification</h2>")
+	builder.WriteString("<p class=\"muted\">To verify integrity, run:</p>")
+	builder.WriteString("<code>aman audit bundle-verify --bundle evidence.zip</code>")
+	builder.WriteString("</section>")
+
+	builder.WriteString("</body></html>")
+	return builder.String()
+}
+
 func htmlEscape(s string) string {
 	replacer := strings.NewReplacer(
 		"&", "&amp;",
@@ -2453,6 +2671,63 @@ func confidenceBandLabel(value float64) string {
 		return "Moderate"
 	default:
 		return "Low"
+	}
+}
+
+func friendlyVerdictLabel(v string) string {
+	switch v {
+	case "feasible":
+		return "Possible"
+	case "incomplete":
+		return "Needs more evidence"
+	case "conflicted":
+		return "Conflicting evidence"
+	case "policy_impossible":
+		return "Blocked by policy"
+	default:
+		return "Unknown"
+	}
+}
+
+func tacticCategoryLabel(ruleID string) string {
+	if ruleID == "" {
+		return ""
+	}
+	parts := strings.Split(ruleID, ".")
+	if len(parts) == 0 {
+		return ""
+	}
+	switch parts[0] {
+	case "TA0001":
+		return "Initial access signals"
+	case "TA0002":
+		return "Execution signals"
+	case "TA0003":
+		return "Persistence signals"
+	case "TA0004":
+		return "Privilege escalation signals"
+	case "TA0005":
+		return "Defense evasion signals"
+	case "TA0006":
+		return "Credential access signals"
+	case "TA0007":
+		return "Discovery activity"
+	case "TA0008":
+		return "Lateral movement signals"
+	case "TA0009":
+		return "Collection activity"
+	case "TA0010":
+		return "Data movement signals"
+	case "TA0011":
+		return "Command and control signals"
+	case "TA0040":
+		return "Impact signals"
+	case "TA0042":
+		return "Resource development signals"
+	case "TA0043":
+		return "Reconnaissance signals"
+	default:
+		return ""
 	}
 }
 
@@ -3443,7 +3718,7 @@ func handlePilotIdentityEntra(args []string) {
 	end := fs.String("end", "", "RFC3339 end time")
 	outDir := fs.String("outdir", "out/pilot/entra", "output base directory")
 	envPath := fs.String("env", "data/env.json", "environment json")
-	rulesPath := fs.String("rules", "data/rules.json", "rules json")
+	rulesPath := fs.String("rules", "data/rules_identity_wedge.json", "rules json")
 	rulesExtra := fs.String("rules-extra", "", "optional extra rules json")
 	statePath := fs.String("state", "", "state json (optional)")
 	policyPath := fs.String("policy", "", "governance policy json (optional)")

@@ -9,6 +9,7 @@ import { Queue } from "./pages/Queue";
 import { Governance } from "./pages/Governance";
 import { Audit } from "./pages/Audit";
 import { Evaluations } from "./pages/Evaluations";
+import { Ingestion } from "./pages/Ingestion";
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
             <Route path="/governance" element={<Governance />} />
             <Route path="/audit" element={<Audit />} />
             <Route path="/evaluations" element={<Evaluations />} />
+            <Route path="/ingestion" element={<Ingestion />} />
           </Routes>
         </main>
       </div>
