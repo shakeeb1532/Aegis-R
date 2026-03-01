@@ -1,4 +1,4 @@
-import { Approval, AuditItem, Evaluation, QueueItem, ReasoningItem } from "../types";
+import { Approval, AuditItem, Evaluation, GraphResponse, QueueItem, ReasoningItem } from "../types";
 
 export const overviewKpis = [
   { label: "Active Threads", value: "4", sub: "Last 24h" },
@@ -165,3 +165,46 @@ export const driftSignals = [
   "OAuth consent to unknown app",
   "New device joined to tenant"
 ];
+
+export const graphSample: GraphResponse = {
+  threads: [
+    {
+      id: "thread-1",
+      host: "host-1",
+      principal: "alice@example.com",
+      rule_ids: ["TA0006.SIGNIN_SUCCESS", "TA0006.RISK_LEVEL_HIGH_SUCCESS"],
+      confidence: 0.72,
+      reason: "High-risk sign-in success"
+    }
+  ],
+  nodes: [
+    { id: "host:host-1", label: "host-1", kind: "host", status: "compromised" },
+    { id: "host:host-2", label: "host-2", kind: "host", status: "reachable" },
+    { id: "identity:alice@example.com", label: "alice@example.com", kind: "identity", status: "compromised" },
+    { id: "identity:svc-backup", label: "svc-backup", kind: "identity", status: "reachable" }
+  ],
+  edges: [
+    { from: "host:host-1", to: "host:host-2", label: "reachable", status: "incomplete" },
+    { from: "identity:alice@example.com", to: "identity:svc-backup", label: "reachable", status: "incomplete" }
+  ],
+  progression: [
+    {
+      time: "2026-02-27 10:04 UTC",
+      stage: "identity_auth",
+      action: "signin_success",
+      principal: "alice@example.com",
+      asset: "IdP",
+      confidence: 0.78,
+      rationale: "Successful sign-in with elevated risk"
+    },
+    {
+      time: "2026-02-27 10:07 UTC",
+      stage: "privilege_change",
+      action: "admin_group_change",
+      principal: "alice@example.com",
+      asset: "Azure AD",
+      confidence: 0.64,
+      rationale: "Admin role added"
+    }
+  ]
+};

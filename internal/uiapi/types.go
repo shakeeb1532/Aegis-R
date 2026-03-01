@@ -85,7 +85,10 @@ type EvaluationItem struct {
 }
 
 type GraphResponse struct {
-	Threads []ThreadItem `json:"threads"`
+	Threads     []ThreadItem      `json:"threads"`
+	Nodes       []GraphNode       `json:"nodes"`
+	Edges       []GraphEdge       `json:"edges"`
+	Progression []ProgressionItem `json:"progression"`
 }
 
 type ThreadItem struct {
@@ -95,4 +98,28 @@ type ThreadItem struct {
 	RuleIDs    []string `json:"rule_ids"`
 	Confidence float64  `json:"confidence"`
 	Reason     string   `json:"reason"`
+}
+
+type GraphNode struct {
+	ID     string `json:"id"`
+	Label  string `json:"label"`
+	Kind   string `json:"kind"`
+	Status string `json:"status"`
+}
+
+type GraphEdge struct {
+	From   string `json:"from"`
+	To     string `json:"to"`
+	Label  string `json:"label"`
+	Status string `json:"status"`
+}
+
+type ProgressionItem struct {
+	Time       string  `json:"time"`
+	Stage      string  `json:"stage"`
+	Action     string  `json:"action"`
+	Principal  string  `json:"principal"`
+	Asset      string  `json:"asset"`
+	Confidence float64 `json:"confidence"`
+	Rationale  string  `json:"rationale"`
 }

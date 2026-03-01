@@ -67,3 +67,41 @@ export type Evaluation = {
   delta: string;
   note: string;
 };
+
+export type GraphNode = {
+  id: string;
+  label: string;
+  kind: "host" | "identity";
+  status: "compromised" | "reachable" | "observed";
+};
+
+export type GraphEdge = {
+  from: string;
+  to: string;
+  label: string;
+  status: "blocked" | "incomplete" | "feasible";
+};
+
+export type ProgressionItem = {
+  time: string;
+  stage: string;
+  action: string;
+  principal: string;
+  asset: string;
+  confidence: number;
+  rationale: string;
+};
+
+export type GraphResponse = {
+  threads: {
+    id: string;
+    host: string;
+    principal: string;
+    rule_ids: string[];
+    confidence: number;
+    reason: string;
+  }[];
+  nodes: GraphNode[];
+  edges: GraphEdge[];
+  progression: ProgressionItem[];
+};

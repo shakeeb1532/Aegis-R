@@ -13,6 +13,7 @@ import {
   auditItems,
   evaluations,
   evidenceGaps,
+  graphSample,
   driftSignals,
   overviewKpis,
   queueItems,
@@ -74,6 +75,14 @@ export function useEvaluations() {
   const [data, setData] = useState<EvaluationsResponse>(evaluations);
   useEffect(() => {
     void fetchJson<EvaluationsResponse>("/v1/evaluations", evaluations).then(setData);
+  }, []);
+  return data;
+}
+
+export function useGraph() {
+  const [data, setData] = useState(graphSample);
+  useEffect(() => {
+    void fetchJson("/v1/graph", graphSample).then(setData);
   }, []);
   return data;
 }

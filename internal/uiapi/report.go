@@ -13,7 +13,23 @@ import (
 type reportFile struct {
 	GeneratedAt string `json:"generated_at"`
 	Summary     string `json:"summary"`
-	Reasoning   struct {
+	State       struct {
+		ReachableHosts      map[string]bool `json:"reachable_hosts"`
+		ReachableIdentities map[string]bool `json:"reachable_identities"`
+		CompromisedHosts    map[string]bool `json:"compromised_hosts"`
+		CompromisedUsers    map[string]bool `json:"compromised_users"`
+		Progression         []struct {
+			Time       string  `json:"time"`
+			Source     string  `json:"source"`
+			Principal  string  `json:"principal"`
+			Asset      string  `json:"asset"`
+			Action     string  `json:"action"`
+			Confidence float64 `json:"confidence"`
+			Stage      string  `json:"stage"`
+			Rationale  string  `json:"rationale"`
+		} `json:"progression"`
+	} `json:"state"`
+	Reasoning struct {
 		GeneratedAt string                      `json:"generated_at"`
 		Summary     string                      `json:"summary"`
 		Results     []reportFileReasoningResult `json:"results"`
@@ -338,5 +354,86 @@ func buildGraph(r *reportFile) GraphResponse {
 			Reason:     t.Reason,
 		})
 	}
-	return GraphResponse{Threads: threads}
+	nodes := map[string]GraphNode{}
+	edges := []GraphEdge{}
+	compHosts := []string{}
+	compUsers := []string{}
+
+	addNode := func(kind string, label string, status string) string {
+		id := kind + ":" + label
+		if _, ok := nodes[id]; !ok {
+			nodes[id] = GraphNode{
+				ID:     id,
+				Label:  label,
+				Kind:   kind,
+				Status: status,
+			}
+		}
+		return id
+	}
+
+	for host := range r.State.CompromisedHosts {
+		compHosts = append(compHosts, addNode("host", host, "compromised"))
+	}
+	for host := range r.State.ReachableHosts {
+		if r.State.CompromisedHosts[host] {
+			continue
+		}
+		addNode("host", host, "reachable")
+	}
+	for user := range r.State.CompromisedUsers {
+		compUsers = append(compUsers, addNode("identity", user, "compromised"))
+	}
+	for user := range r.State.ReachableIdentities {
+		if r.State.CompromisedUsers[user] {
+			continue
+		}
+		addNode("identity", user, "reachable")
+	}
+
+	if len(compHosts) > 0 {
+		for id, node := range nodes {
+			if node.Kind == "host" && node.Status == "reachable" {
+				edges = append(edges, GraphEdge{
+					From:   compHosts[0],
+					To:     id,
+					Label:  "reachable",
+					Status: "incomplete",
+				})
+			}
+		}
+	}
+	if len(compUsers) > 0 {
+		for id, node := range nodes {
+			if node.Kind == "identity" && node.Status == "reachable" {
+				edges = append(edges, GraphEdge{
+					From:   compUsers[0],
+					To:     id,
+					Label:  "reachable",
+					Status: "incomplete",
+				})
+			}
+		}
+	}
+
+	progression := make([]ProgressionItem, 0, len(r.State.Progression))
+	for _, p := range r.State.Progression {
+		progression = append(progression, ProgressionItem{
+			Time:       latestTimestamp(p.Time),
+			Stage:      p.Stage,
+			Action:     p.Action,
+			Principal:  p.Principal,
+			Asset:      p.Asset,
+			Confidence: p.Confidence,
+			Rationale:  p.Rationale,
+		})
+	}
+
+	nodeList := make([]GraphNode, 0, len(nodes))
+	for _, n := range nodes {
+		nodeList = append(nodeList, n)
+	}
+	sort.Slice(nodeList, func(i, j int) bool { return nodeList[i].ID < nodeList[j].ID })
+
+	return GraphResponse{Threads: threads, Nodes: nodeList, Edges: edges, Progression: progression}
 }

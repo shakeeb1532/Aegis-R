@@ -131,25 +131,27 @@ const schemaOptions: SchemaOption[] = [
     value: "entra_signins_graph",
     label: "Entra Graph signIns",
     sample: JSON.stringify(
-      [
-        {
-          id: "signin-123",
-          createdDateTime: "2026-02-27T05:45:00Z",
-          userPrincipalName: "alice@example.com",
-          userId: "user-1",
-          tenantId: "tenant-1",
-          ipAddress: "203.0.113.10",
-          conditionalAccessStatus: "failure",
-          authenticationRequirement: "singleFactorAuthentication",
-          riskLevelAggregated: "high",
-          riskState: "atRisk",
-          status: { errorCode: 53003, failureReason: "Conditional Access blocked", additionalDetails: "" },
-          deviceDetail: { deviceId: "device-1", displayName: "laptop-1", isCompliant: false, isManaged: false },
-          authenticationDetails: [
-            { authenticationMethod: "Password", succeeded: true, authenticationStepResultDetail: "" }
-          ]
-        }
-      ],
+      {
+        value: [
+          {
+            id: "signin-123",
+            createdDateTime: "2026-02-27T05:45:00Z",
+            userPrincipalName: "alice@example.com",
+            userId: "user-1",
+            tenantId: "tenant-1",
+            ipAddress: "203.0.113.10",
+            conditionalAccessStatus: "failure",
+            authenticationRequirement: "singleFactorAuthentication",
+            riskLevelAggregated: "high",
+            riskState: "atRisk",
+            status: { errorCode: 53003, failureReason: "Conditional Access blocked", additionalDetails: "" },
+            deviceDetail: { deviceId: "device-1", displayName: "laptop-1", isCompliant: false, isManaged: false },
+            authenticationDetails: [
+              { authenticationMethod: "Password", succeeded: true, authenticationStepResultDetail: "" }
+            ]
+          }
+        ]
+      },
       null,
       2
     )
