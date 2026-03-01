@@ -3,10 +3,36 @@ import { useGovernance } from "../hooks/useApiData";
 
 export function Governance() {
   const data = useGovernance();
+  const statusCounts = data.reduce((acc, item) => {
+    const key = item.status || "unknown";
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+  const statusEntries = Object.entries(statusCounts);
+  const maxCount = Math.max(1, ...statusEntries.map(([, count]) => count));
   return (
     <div className="space-y-6">
       <section className="card">
         <SectionHeader title="Governance" subtitle="Signed approvals and trust changes" />
+        <div className="mt-6 rounded-2xl border border-border bg-panelElev p-5">
+          <p className="text-xs uppercase tracking-[0.12em] text-muted">Human Oversight</p>
+          <div className="mt-4 space-y-3">
+            {statusEntries.map(([status, count]) => (
+              <div key={status} className="space-y-1">
+                <div className="flex items-center justify-between text-xs text-muted">
+                  <span>{status.replaceAll("_", " ")}</span>
+                  <span className="text-text">{count}</span>
+                </div>
+                <div className="h-2 w-full rounded-full bg-panel">
+                  <div
+                    className="h-2 rounded-full bg-purple/70"
+                    style={{ width: `${Math.max(6, (count / maxCount) * 100)}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
         <div className="mt-6 grid gap-4">
           {data.map((approval) => (
             <div key={approval.id} className="rounded-2xl border border-border bg-panelElev p-5">

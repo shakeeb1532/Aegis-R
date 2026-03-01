@@ -62,9 +62,9 @@ function stageTone(stage: string) {
 
 function stageFill(stage: string) {
   const s = stage.toLowerCase();
-  if (s.includes("impact")) return "fill-red";
-  if (s.includes("privilege") || s.includes("credential")) return "fill-amber";
-  return "fill-teal";
+  if (s.includes("impact")) return "#ff4f5e";
+  if (s.includes("privilege") || s.includes("credential")) return "#f7b53b";
+  return "#27beff";
 }
 
 export function AttackGraph() {
@@ -264,7 +264,7 @@ export function AttackGraph() {
                 const x = 60 + idx * 120;
                 return (
                   <g key={`${item.time}-${idx}`} onClick={() => setSelectedProgress(item)}>
-                    <circle cx={x} cy={90} r="12" className={stageFill(item.stage)} />
+                    <circle cx={x} cy={90} r="12" fill={stageFill(item.stage)} />
                     <text x={x} y={120} textAnchor="middle" fontSize="10" fill="#9fb3c8">
                       {item.stage || "stage"}
                     </text>
