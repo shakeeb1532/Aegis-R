@@ -530,6 +530,14 @@ func buildPilotKpis(r *reportFile) PilotKpisResponse {
 	}
 }
 
+func ComputePilotKpis(reportPath string) (PilotKpisResponse, error) {
+	rep, err := loadReport(reportPath)
+	if err != nil {
+		return PilotKpisResponse{}, err
+	}
+	return buildPilotKpis(rep), nil
+}
+
 func topCounts(in map[string]int, limit int) []CountItem {
 	if len(in) == 0 {
 		return []CountItem{}
