@@ -25,6 +25,7 @@
 /data/zero_trust_baseline.json
 /aman
 /aman-linux
+/build/
 
 .cache/
 .DS_Store
