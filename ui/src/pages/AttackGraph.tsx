@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { SectionHeader } from "../components/SectionHeader";
 import { useGraph } from "../hooks/useApiData";
 import { GraphEdge, GraphNode, ProgressionItem } from "../types";
@@ -60,20 +60,84 @@ function stageTone(stage: string) {
   return "bg-teal";
 }
 
+function stageFill(stage: string) {
+  const s = stage.toLowerCase();
+  if (s.includes("impact")) return "fill-red";
+  if (s.includes("privilege") || s.includes("credential")) return "fill-amber";
+  return "fill-teal";
+}
+
 export function AttackGraph() {
   const graph = useGraph();
+  const svgRef = useRef<SVGSVGElement | null>(null);
   const [selectedNode, setSelectedNode] = useState<LayoutNode | null>(null);
   const [selectedEdge, setSelectedEdge] = useState<GraphEdge | null>(null);
   const [selectedProgress, setSelectedProgress] = useState<ProgressionItem | null>(null);
+  const [nodes, setNodes] = useState<LayoutNode[]>([]);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const dragRef = useRef<{ id: string; offsetX: number; offsetY: number } | null>(null);
+  const panRef = useRef<{ startX: number; startY: number; originX: number; originY: number } | null>(null);
 
-  const layout = useMemo(() => layoutNodes(graph.nodes || []), [graph.nodes]);
+  useEffect(() => {
+    setNodes(layoutNodes(graph.nodes || []));
+  }, [graph.nodes]);
+
   const nodeById = useMemo(() => {
     const map = new Map<string, LayoutNode>();
-    layout.forEach((n) => map.set(n.id, n));
+    nodes.forEach((n) => map.set(n.id, n));
     return map;
-  }, [layout]);
+  }, [nodes]);
 
   const progression = graph.progression || [];
+
+  const toSvgPoint = (evt: React.MouseEvent) => {
+    const rect = svgRef.current?.getBoundingClientRect();
+    if (!rect) return { x: 0, y: 0 };
+    const x = (evt.clientX - rect.left - pan.x) / zoom;
+    const y = (evt.clientY - rect.top - pan.y) / zoom;
+    return { x, y };
+  };
+
+  const onWheel = (evt: React.WheelEvent) => {
+    evt.preventDefault();
+    const delta = evt.deltaY > 0 ? -0.08 : 0.08;
+    setZoom((z) => Math.min(1.6, Math.max(0.6, z + delta)));
+  };
+
+  const onMouseDown = (evt: React.MouseEvent) => {
+    const target = evt.target as HTMLElement;
+    if (target.closest("[data-node]")) return;
+    panRef.current = { startX: evt.clientX, startY: evt.clientY, originX: pan.x, originY: pan.y };
+  };
+
+  const onMouseMove = (evt: React.MouseEvent) => {
+    if (dragRef.current) {
+      const point = toSvgPoint(evt);
+      setNodes((prev) =>
+        prev.map((n) =>
+          n.id === dragRef.current?.id
+            ? {
+                ...n,
+                x: point.x - dragRef.current.offsetX,
+                y: point.y - dragRef.current.offsetY
+              }
+            : n
+        )
+      );
+      return;
+    }
+    if (panRef.current) {
+      const dx = evt.clientX - panRef.current.startX;
+      const dy = evt.clientY - panRef.current.startY;
+      setPan({ x: panRef.current.originX + dx, y: panRef.current.originY + dy });
+    }
+  };
+
+  const onMouseUp = () => {
+    dragRef.current = null;
+    panRef.current = null;
+  };
 
   return (
     <div className="space-y-8">
@@ -81,7 +145,16 @@ export function AttackGraph() {
         <SectionHeader title="Attack Graph" subtitle="Live infrastructure reachability + decision overlay" />
         <div className="mt-6 grid gap-6 xl:grid-cols-[1.5fr_1fr]">
           <div className="rounded-2xl border border-border bg-panel p-4">
-            <svg viewBox="0 0 1200 520" className="h-[360px] w-full">
+            <svg
+              ref={svgRef}
+              viewBox="0 0 1200 520"
+              className="h-[360px] w-full"
+              onWheel={onWheel}
+              onMouseDown={onMouseDown}
+              onMouseMove={onMouseMove}
+              onMouseUp={onMouseUp}
+              onMouseLeave={onMouseUp}
+            >
               <defs>
                 <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
                   <circle cx="2" cy="2" r="1" fill="#1f2937" />
@@ -89,52 +162,66 @@ export function AttackGraph() {
               </defs>
               <rect x="0" y="0" width="1200" height="520" fill="url(#dots)" />
 
-              {graph.edges?.map((edge) => {
-                const from = nodeById.get(edge.from);
-                const to = nodeById.get(edge.to);
-                if (!from || !to) return null;
-                const stroke = edgeColors[edge.status] || "#64748b";
-                const isActive = selectedEdge?.from === edge.from && selectedEdge?.to === edge.to;
-                return (
-                  <g key={`${edge.from}-${edge.to}`} onClick={() => setSelectedEdge(edge)}>
-                    <path
-                      d={edgePath(from, to)}
-                      fill="none"
-                      stroke={stroke}
-                      strokeWidth={isActive ? "3" : "2"}
-                      opacity={isActive ? 1 : 0.85}
-                    />
-                    <text x={(from.x + to.x) / 2} y={(from.y + to.y) / 2 - 10} fill={stroke} fontSize="12">
-                      {edge.label}
-                    </text>
-                  </g>
-                );
-              })}
+              <g transform={`translate(${pan.x} ${pan.y}) scale(${zoom})`}>
+                {graph.edges?.map((edge) => {
+                  const from = nodeById.get(edge.from);
+                  const to = nodeById.get(edge.to);
+                  if (!from || !to) return null;
+                  const stroke = edgeColors[edge.status] || "#64748b";
+                  const isActive = selectedEdge?.from === edge.from && selectedEdge?.to === edge.to;
+                  return (
+                    <g key={`${edge.from}-${edge.to}`} onClick={() => setSelectedEdge(edge)}>
+                      <path
+                        d={edgePath(from, to)}
+                        fill="none"
+                        stroke={stroke}
+                        strokeWidth={isActive ? "3" : "2"}
+                        opacity={isActive ? 1 : 0.85}
+                      />
+                      <text x={(from.x + to.x) / 2} y={(from.y + to.y) / 2 - 10} fill={stroke} fontSize="12">
+                        {edge.label}
+                      </text>
+                    </g>
+                  );
+                })}
 
-              {layout.map((node) => {
-                const color = nodeColors[node.status] || nodeColors.observed;
-                const isActive = selectedNode?.id === node.id;
-                return (
-                  <g key={node.id} onClick={() => setSelectedNode(node)}>
-                    <rect
-                      x={node.x - 90}
-                      y={node.y - 30}
-                      width="180"
-                      height="60"
-                      rx="12"
-                      fill={color.fill}
-                      stroke={color.stroke}
-                      strokeWidth={isActive ? "3" : "2"}
-                    />
-                    <text x={node.x} y={node.y - 4} textAnchor="middle" fontSize="13" fill="#e2e8f0">
-                      {node.label}
-                    </text>
-                    <text x={node.x} y={node.y + 16} textAnchor="middle" fontSize="11" fill={color.text}>
-                      {node.status.toUpperCase()}
-                    </text>
-                  </g>
-                );
-              })}
+                {nodes.map((node) => {
+                  const color = nodeColors[node.status] || nodeColors.observed;
+                  const isActive = selectedNode?.id === node.id;
+                  return (
+                    <g
+                      key={node.id}
+                      data-node
+                      onMouseDown={(evt) => {
+                        const point = toSvgPoint(evt);
+                        dragRef.current = {
+                          id: node.id,
+                          offsetX: point.x - node.x,
+                          offsetY: point.y - node.y
+                        };
+                      }}
+                      onClick={() => setSelectedNode(node)}
+                    >
+                      <rect
+                        x={node.x - 90}
+                        y={node.y - 30}
+                        width="180"
+                        height="60"
+                        rx="12"
+                        fill={color.fill}
+                        stroke={color.stroke}
+                        strokeWidth={isActive ? "3" : "2"}
+                      />
+                      <text x={node.x} y={node.y - 4} textAnchor="middle" fontSize="13" fill="#e2e8f0">
+                        {node.label}
+                      </text>
+                      <text x={node.x} y={node.y + 16} textAnchor="middle" fontSize="11" fill={color.text}>
+                        {node.status.toUpperCase()}
+                      </text>
+                    </g>
+                  );
+                })}
+              </g>
             </svg>
           </div>
 
@@ -177,7 +264,7 @@ export function AttackGraph() {
                 const x = 60 + idx * 120;
                 return (
                   <g key={`${item.time}-${idx}`} onClick={() => setSelectedProgress(item)}>
-                    <circle cx={x} cy={90} r="12" className={stageTone(item.stage)} />
+                    <circle cx={x} cy={90} r="12" className={stageFill(item.stage)} />
                     <text x={x} y={120} textAnchor="middle" fontSize="10" fill="#9fb3c8">
                       {item.stage || "stage"}
                     </text>
