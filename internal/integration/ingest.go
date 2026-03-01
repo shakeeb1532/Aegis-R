@@ -72,6 +72,39 @@ func IngestEvents(raw []byte, opts IngestOptions) ([]model.Event, error) {
 	}
 }
 
+func SupportedSchemas() []Schema {
+	return []Schema{
+		SchemaNative,
+		SchemaECS,
+		SchemaElasticECS,
+		SchemaOCSF,
+		SchemaCIM,
+		SchemaSplunkAuth,
+		SchemaSplunkNet,
+		SchemaMDE,
+		SchemaOkta,
+		SchemaCloudTrail,
+		SchemaSentinelCSL,
+		SchemaCrowdStrike,
+		SchemaEntraGraph,
+	}
+}
+
+func ValidateEvents(events []model.Event) error {
+	if len(events) == 0 {
+		return errors.New("no events provided")
+	}
+	for i, ev := range events {
+		if strings.TrimSpace(ev.Type) == "" {
+			return fmt.Errorf("event %d missing type", i)
+		}
+		if ev.Time.IsZero() {
+			return fmt.Errorf("event %d missing time", i)
+		}
+	}
+	return nil
+}
+
 type ecsEvent struct {
 	Event struct {
 		ID       string   `json:"id"`

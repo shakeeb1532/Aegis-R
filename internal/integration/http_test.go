@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
 )
 
 func TestHealthHandler(t *testing.T) {
+	SetIngestConfig(IngestConfig{RequireAPIKey: false, Strict: false})
 	req := httptest.NewRequest(http.MethodGet, "/healthz", nil)
 	w := httptest.NewRecorder()
 	HealthHandler(w, req)
@@ -22,7 +22,7 @@ func TestHealthHandler(t *testing.T) {
 }
 
 func TestIngestHandlerRequiresAPIKeyWhenConfigured(t *testing.T) {
-	t.Setenv("AMAN_INGEST_API_KEY", "secret")
+	SetIngestConfig(IngestConfig{RequireAPIKey: true, APIKey: "secret", Strict: false})
 	req := httptest.NewRequest(http.MethodPost, "/ingest?schema=native", bytes.NewBufferString(`[]`))
 	w := httptest.NewRecorder()
 	IngestHandler(w, req)
@@ -32,27 +32,30 @@ func TestIngestHandlerRequiresAPIKeyWhenConfigured(t *testing.T) {
 }
 
 func TestIngestHandlerSuccessWithAPIKey(t *testing.T) {
-	t.Setenv("AMAN_INGEST_API_KEY", "secret")
-	req := httptest.NewRequest(http.MethodPost, "/ingest?schema=native", bytes.NewBufferString(`[]`))
+	SetIngestConfig(IngestConfig{RequireAPIKey: true, APIKey: "secret", Strict: true})
+	payload := `[{"id":"e1","time":"2026-02-27T00:00:00Z","host":"host-1","user":"alice","type":"signin_attempt","details":{"signInId":"s1"}}]`
+	req := httptest.NewRequest(http.MethodPost, "/ingest?schema=native", bytes.NewBufferString(payload))
 	req.Header.Set("X-API-Key", "secret")
 	w := httptest.NewRecorder()
 	IngestHandler(w, req)
 	if w.Code != http.StatusOK {
 		t.Fatalf("expected 200, got %d body=%s", w.Code, w.Body.String())
 	}
-	var got map[string]int
+	var got struct {
+		Data struct {
+			Count int `json:"count"`
+		} `json:"data"`
+	}
 	if err := json.Unmarshal(w.Body.Bytes(), &got); err != nil {
 		t.Fatalf("decode: %v", err)
 	}
-	if got["count"] != 0 {
-		t.Fatalf("expected count=0")
+	if got.Data.Count != 1 {
+		t.Fatalf("expected count=1")
 	}
 }
 
 func TestIngestHandlerPayloadTooLarge(t *testing.T) {
-	old := os.Getenv("AMAN_INGEST_API_KEY")
-	t.Cleanup(func() { _ = os.Setenv("AMAN_INGEST_API_KEY", old) })
-	_ = os.Unsetenv("AMAN_INGEST_API_KEY")
+	SetIngestConfig(IngestConfig{RequireAPIKey: false, Strict: false})
 
 	payload := bytes.Repeat([]byte("a"), int(defaultIngestMaxBytes)+1)
 	req := httptest.NewRequest(http.MethodPost, "/ingest?schema=native", bytes.NewReader(payload))

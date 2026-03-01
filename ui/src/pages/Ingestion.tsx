@@ -202,7 +202,7 @@ export function Ingestion() {
     setSending(true);
     setStatus("");
     try {
-      const url = new URL(`${baseUrl}/ingest`);
+      const url = new URL(`${baseUrl}/v1/ingest`);
       url.searchParams.set("schema", schema);
       if (resolvedKind) url.searchParams.set("kind", resolvedKind);
       const res = await fetch(url.toString(), {
@@ -214,10 +214,12 @@ export function Ingestion() {
         body
       });
       const data = await res.json();
+      const payload = data?.data ?? data;
       if (!res.ok) {
-        setStatus(data?.error ? `Ingest failed: ${data.error}` : "Ingest failed.");
+        const msg = data?.error?.message || data?.error || "Ingest failed.";
+        setStatus(`Ingest failed: ${msg}`);
       } else {
-        setStatus(`Ingested ${data?.count ?? 0} events successfully.`);
+        setStatus(`Ingested ${payload?.count ?? 0} events successfully.`);
         void checkHealth();
       }
     } catch (err) {
@@ -250,6 +252,30 @@ export function Ingestion() {
           title="Ingestion Setup"
           subtitle="Connect your data source and send a test event"
         />
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          <div className="rounded-2xl border border-border bg-panelElev p-4 text-sm text-muted">
+            <p className="text-xs uppercase tracking-[0.2em] text-muted">Two Ingestion Paths</p>
+            <ul className="mt-3 space-y-2 text-sm text-text">
+              <li>
+                <span className="font-semibold text-teal">Path A (recommended):</span>{" "}
+                Pull Entra sign-ins with the CLI, normalize to atomic evidence, then POST to
+                <span className="text-teal"> /v1/ingest?schema=native</span>.
+              </li>
+              <li>
+                <span className="font-semibold text-amber">Path B (server-side normalize):</span>{" "}
+                Send raw Entra Graph signIns directly to
+                <span className="text-amber"> /v1/ingest?schema=entra_signins_graph</span>.
+              </li>
+            </ul>
+          </div>
+          <div className="rounded-2xl border border-border bg-panelElev p-4 text-sm text-muted">
+            <p className="text-xs uppercase tracking-[0.2em] text-muted">Key Clarification</p>
+            <p className="mt-3 text-sm text-text">
+              The ingest API does not pull from Entra. It only accepts events you POST. Use the
+              CLI puller/normalizer first, or send raw Graph signIns with the special schema.
+            </p>
+          </div>
+        </div>
         <div className="mt-6 grid gap-6 lg:grid-cols-[1.2fr_1fr]">
           <div className="space-y-4">
             <label className="text-xs uppercase tracking-[0.2em] text-muted">Ingest Base URL</label>
@@ -375,4 +401,3 @@ function MetricCard({ label, value }: { label: string; value?: string | number }
     </div>
   );
 }
-

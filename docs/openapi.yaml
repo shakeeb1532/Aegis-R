@@ -1,0 +1,371 @@
+openapi: 3.0.3
+info:
+  title: Aman APIs
+  version: "1.0.0"
+servers:
+  - url: http://localhost:8080
+    description: Ingest Service
+  - url: http://localhost:8081
+    description: UI API
+security:
+  - ApiKeyAuth: []
+  - BearerAuth: []
+paths:
+  /v1/ingest:
+    post:
+      summary: Ingest events
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+      parameters:
+        - in: query
+          name: schema
+          schema:
+            type: string
+            example: native
+        - in: query
+          name: kind
+          schema:
+            type: string
+        - in: query
+          name: strict
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Ingested
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IngestEnvelope"
+        "400":
+          description: Schema mapping error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /v1/healthz:
+    get:
+      summary: Ingest health
+      responses:
+        "200":
+          description: Health OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthEnvelope"
+  /v1/metrics:
+    get:
+      summary: Ingest metrics
+      responses:
+        "200":
+          description: Metrics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MetricsEnvelope"
+  /v1/schemas:
+    get:
+      summary: Supported ingest schemas
+      responses:
+        "200":
+          description: Schemas
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SchemasEnvelope"
+  /v1/overview:
+    get:
+      summary: Overview summary for UI
+      responses:
+        "200":
+          description: Overview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OverviewEnvelope"
+  /v1/reasoning:
+    get:
+      summary: Reasoning items (UI)
+      responses:
+        "200":
+          description: Reasoning items
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReasoningEnvelope"
+  /v1/decisions:
+    get:
+      summary: Decisions list (filterable)
+      parameters:
+        - in: query
+          name: verdict
+          schema:
+            type: string
+        - in: query
+          name: rule_id
+          schema:
+            type: string
+        - in: query
+          name: thread_id
+          schema:
+            type: string
+        - in: query
+          name: confidence_min
+          schema:
+            type: number
+        - in: query
+          name: confidence_max
+          schema:
+            type: number
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: offset
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Decisions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DecisionsEnvelope"
+  /v1/queue:
+    get:
+      summary: Queue items
+      responses:
+        "200":
+          description: Queue
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueueEnvelope"
+  /v1/governance:
+    get:
+      summary: Governance approvals
+      responses:
+        "200":
+          description: Governance
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GovernanceEnvelope"
+  /v1/audit:
+    get:
+      summary: Audit ledger
+      responses:
+        "200":
+          description: Audit entries
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuditEnvelope"
+  /v1/evaluations:
+    get:
+      summary: Evaluation metrics
+      responses:
+        "200":
+          description: Evaluations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EvaluationsEnvelope"
+  /v1/graph:
+    get:
+      summary: Graph data
+      responses:
+        "200":
+          description: Graph
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GraphEnvelope"
+  /v1/report:
+    get:
+      summary: Full report (raw)
+      responses:
+        "200":
+          description: Report JSON
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    ErrorEnvelope:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            request_id:
+              type: string
+    Meta:
+      type: object
+      properties:
+        request_id:
+          type: string
+        total:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+    IngestEnvelope:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            count:
+              type: integer
+        meta:
+          $ref: "#/components/schemas/Meta"
+    HealthEnvelope:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            status:
+              type: string
+            rules:
+              type: integer
+        meta:
+          $ref: "#/components/schemas/Meta"
+    MetricsEnvelope:
+      type: object
+      properties:
+        data:
+          type: object
+        meta:
+          $ref: "#/components/schemas/Meta"
+    SchemasEnvelope:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            schemas:
+              type: array
+              items:
+                type: string
+        meta:
+          $ref: "#/components/schemas/Meta"
+    OverviewEnvelope:
+      type: object
+      properties:
+        data:
+          type: object
+        meta:
+          $ref: "#/components/schemas/Meta"
+    ReasoningEnvelope:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        meta:
+          $ref: "#/components/schemas/Meta"
+    DecisionItem:
+      type: object
+      properties:
+        rule_id:
+          type: string
+        name:
+          type: string
+        verdict:
+          type: string
+        confidence:
+          type: number
+        reason_code:
+          type: string
+        decision_label:
+          type: string
+        thread_id:
+          type: string
+        missing_evidence:
+          type: array
+          items:
+            type: string
+        updated:
+          type: string
+        evidence:
+          type: array
+          items:
+            type: string
+        explanation:
+          type: string
+    DecisionsEnvelope:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/DecisionItem"
+        meta:
+          $ref: "#/components/schemas/Meta"
+    QueueEnvelope:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        meta:
+          $ref: "#/components/schemas/Meta"
+    GovernanceEnvelope:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        meta:
+          $ref: "#/components/schemas/Meta"
+    AuditEnvelope:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        meta:
+          $ref: "#/components/schemas/Meta"
+    EvaluationsEnvelope:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        meta:
+          $ref: "#/components/schemas/Meta"
+    GraphEnvelope:
+      type: object
+      properties:
+        data:
+          type: object
+        meta:
+          $ref: "#/components/schemas/Meta"

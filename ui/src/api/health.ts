@@ -18,14 +18,25 @@ export type MetricsResponse = {
   failure_rate: number;
 };
 
+function apiKeyHeader() {
+  const key =
+    (import.meta as any).env?.VITE_INGEST_API_KEY ||
+    window.localStorage.getItem("ingestApiKey") ||
+    window.localStorage.getItem("amanApiKey") ||
+    "";
+  return key ? { "X-API-Key": key } : undefined;
+}
+
 export async function fetchHealth(baseUrl: string) {
-  const res = await fetch(`${baseUrl}/healthz`);
+  const res = await fetch(`${baseUrl}/v1/healthz`, { headers: apiKeyHeader() });
   if (!res.ok) throw new Error("health_fetch_failed");
-  return (await res.json()) as HealthResponse;
+  const raw = (await res.json()) as any;
+  return (raw?.data ?? raw) as HealthResponse;
 }
 
 export async function fetchMetrics(baseUrl: string) {
-  const res = await fetch(`${baseUrl}/metrics`);
+  const res = await fetch(`${baseUrl}/v1/metrics`, { headers: apiKeyHeader() });
   if (!res.ok) throw new Error("metrics_fetch_failed");
-  return (await res.json()) as MetricsResponse;
+  const raw = (await res.json()) as any;
+  return (raw?.data ?? raw) as MetricsResponse;
 }

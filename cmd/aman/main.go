@@ -429,7 +429,7 @@ func usage() {
 	fmt.Println("  audit-sign -audit audit.log -out signed_audit.log -signer soc-admin")
 	fmt.Println("  generate-scenarios -out scenarios.json [-rules rules.json] [-rules-extra rules_expansion.json] [-multiplier 1] [-noise]")
 	fmt.Println("  evaluate -scenarios scenarios.json [-rules rules.json] [-format cli|json|md] [-out report.md]")
-	fmt.Println("  ingest-http -addr :8080 [-secure-keyring data/ingest_keys.json] (schema: ecs|elastic_ecs|ocsf|cim|splunk_cim_auth|splunk_cim_net|mde|entra_signins_graph)")
+	fmt.Println("  ingest-http -addr :8080 [--require-key] [--max-bytes N] [--strict] [-secure-keyring data/ingest_keys.json] (schema: ecs|elastic_ecs|ocsf|cim|splunk_cim_auth|splunk_cim_net|mde|entra_signins_graph)")
 	fmt.Println("  ingest secure-pack -in events.json -out events.aman --keyring data/ingest_keys.json [-compress auto|none|lz4] [-policy adaptive] [-risk medium]")
 	fmt.Println("  ingest secure-unpack -in events.aman -out events.json --keyring data/ingest_keys.json")
 	fmt.Println("  ingest secure-keygen -out keys.json")
@@ -442,7 +442,7 @@ func usage() {
 	fmt.Println("  inventory-adapter -provider aws|okta|azure|gcp -config data/inventory/config.json -out data/env.json")
 	fmt.Println("  inventory-refresh -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json")
 	fmt.Println("  inventory-schedule -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json -interval 6h -jitter 30m")
-	fmt.Println("  serve-api -addr :8081 -report data/report.json -audit data/audit.log -approvals data/approvals.log")
+	fmt.Println("  serve-api -addr :8081 -report data/report.json -audit data/audit.log -approvals data/approvals.log [--require-key]")
 	fmt.Println("  system engines")
 	fmt.Println("  system pilot-metrics -report data/bench/report.json -history data/incident_history.json [-format json|md] [-out docs/pilot_metrics_report.md]")
 	fmt.Println("  system integration-readiness [-rules data/rules.json] [-out docs/integration_readiness.json]")
@@ -4530,14 +4530,32 @@ func handleEvaluate(args []string) {
 func handleIngestHTTP(args []string) {
 	fs := flag.NewFlagSet("ingest-http", flag.ExitOnError)
 	addr := fs.String("addr", ":8080", "listen address")
+	requireKey := fs.Bool("require-key", true, "require API key (AMAN_INGEST_API_KEY)")
+	maxBytes := fs.Int64("max-bytes", 10<<20, "max request size in bytes")
+	strict := fs.Bool("strict", true, "enforce strict event validation")
 	secureKeyring := fs.String("secure-keyring", "", "keyring json for secure ingest")
 	if err := fs.Parse(args); err != nil {
 		fatal(err)
 	}
 
+	if *requireKey && strings.TrimSpace(os.Getenv("AMAN_INGEST_API_KEY")) == "" {
+		fatal(errors.New("AMAN_INGEST_API_KEY is required when --require-key is enabled"))
+	}
+
+	integration.SetIngestConfig(integration.IngestConfig{
+		RequireAPIKey: *requireKey,
+		APIKey:        strings.TrimSpace(os.Getenv("AMAN_INGEST_API_KEY")),
+		MaxBytes:      *maxBytes,
+		Strict:        *strict,
+	})
+
 	http.HandleFunc("/ingest", integration.IngestHandler)
+	http.HandleFunc("/v1/ingest", integration.IngestHandler)
 	http.HandleFunc("/healthz", integration.HealthHandler)
+	http.HandleFunc("/v1/healthz", integration.HealthHandler)
 	http.HandleFunc("/metrics", integration.MetricsHandler)
+	http.HandleFunc("/v1/metrics", integration.MetricsHandler)
+	http.HandleFunc("/v1/schemas", integration.SchemasHandler)
 	if *secureKeyring != "" {
 		ring, err := secureingest.LoadKeyring(*secureKeyring)
 		if err != nil {

@@ -43,21 +43,28 @@ func TestGovernanceDualApprovalVisibility(t *testing.T) {
 	}
 	_ = f.Close()
 
-	s := NewServer("", "", approvalsPath)
+	s := NewServer(ServerOptions{
+		ReportPath:    "",
+		AuditPath:     "",
+		ApprovalsPath: approvalsPath,
+		RequireKey:    false,
+	})
 	req := httptest.NewRequest("GET", "/api/governance", nil)
 	w := httptest.NewRecorder()
 	s.handleGovernance(w, req)
 	if w.Code != 200 {
 		t.Fatalf("status code %d", w.Code)
 	}
-	var items []ApprovalItem
-	if err := json.Unmarshal(w.Body.Bytes(), &items); err != nil {
+	var resp struct {
+		Data []ApprovalItem `json:"data"`
+	}
+	if err := json.Unmarshal(w.Body.Bytes(), &resp); err != nil {
 		t.Fatal(err)
 	}
-	if len(items) != 1 {
-		t.Fatalf("expected 1 item, got %d", len(items))
+	if len(resp.Data) != 1 {
+		t.Fatalf("expected 1 item, got %d", len(resp.Data))
 	}
-	if !items[0].DualApproved || items[0].ValidSigners != 2 {
-		t.Fatalf("unexpected governance status: %+v", items[0])
+	if !resp.Data[0].DualApproved || resp.Data[0].ValidSigners != 2 {
+		t.Fatalf("unexpected governance status: %+v", resp.Data[0])
 	}
 }
