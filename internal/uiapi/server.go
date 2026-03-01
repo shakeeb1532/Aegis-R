@@ -18,8 +18,8 @@ type Server struct {
 	reportPath    string
 	auditPath     string
 	approvalsPath string
-	requireKey   bool
-	apiKey       string
+	requireKey    bool
+	apiKey        string
 }
 
 type ServerOptions struct {
@@ -52,6 +52,7 @@ func (s *Server) Routes() http.Handler {
 	mux.HandleFunc("/v1/audit", s.handleAudit)
 	mux.HandleFunc("/v1/evaluations", s.handleEvaluations)
 	mux.HandleFunc("/v1/graph", s.handleGraph)
+	mux.HandleFunc("/v1/pilot-kpis", s.handlePilotKpis)
 	mux.HandleFunc("/v1/report", s.handleReport)
 
 	// Deprecated v0 routes for backward compatibility.
@@ -62,6 +63,7 @@ func (s *Server) Routes() http.Handler {
 	mux.HandleFunc("/api/audit", s.handleAudit)
 	mux.HandleFunc("/api/evaluations", s.handleEvaluations)
 	mux.HandleFunc("/api/graph", s.handleGraph)
+	mux.HandleFunc("/api/pilot-kpis", s.handlePilotKpis)
 	return s.withCORS(s.withAuth(mux))
 }
 
@@ -253,6 +255,16 @@ func (s *Server) handleGraph(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, buildGraph(report), responseMeta{RequestID: reqID})
 }
 
+func (s *Server) handlePilotKpis(w http.ResponseWriter, r *http.Request) {
+	reqID := setRequestID(w, r)
+	report, err := loadReport(s.reportPath)
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "report_unavailable", err.Error(), reqID)
+		return
+	}
+	writeJSON(w, buildPilotKpis(report), responseMeta{RequestID: reqID})
+}
+
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 	reqID := setRequestID(w, r)
 	writeJSON(w, map[string]string{"status": "ok"}, responseMeta{RequestID: reqID})
@@ -366,17 +378,17 @@ func setRequestID(w http.ResponseWriter, r *http.Request) string {
 }
 
 type DecisionItem struct {
-	RuleID       string   `json:"rule_id"`
-	Name         string   `json:"name"`
-	Verdict      string   `json:"verdict"`
-	Confidence   float64  `json:"confidence"`
-	ReasonCode   string   `json:"reason_code"`
-	Decision     string   `json:"decision_label"`
-	ThreadID     string   `json:"thread_id"`
-	Missing      []string `json:"missing_evidence"`
-	Updated      string   `json:"updated"`
-	Evidence     []string `json:"evidence"`
-	Explanation  string   `json:"explanation"`
+	RuleID      string   `json:"rule_id"`
+	Name        string   `json:"name"`
+	Verdict     string   `json:"verdict"`
+	Confidence  float64  `json:"confidence"`
+	ReasonCode  string   `json:"reason_code"`
+	Decision    string   `json:"decision_label"`
+	ThreadID    string   `json:"thread_id"`
+	Missing     []string `json:"missing_evidence"`
+	Updated     string   `json:"updated"`
+	Evidence    []string `json:"evidence"`
+	Explanation string   `json:"explanation"`
 }
 
 func buildDecisionItems(r *reportFile) []DecisionItem {

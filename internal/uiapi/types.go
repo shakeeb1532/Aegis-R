@@ -123,3 +123,26 @@ type ProgressionItem struct {
 	Confidence float64 `json:"confidence"`
 	Rationale  string  `json:"rationale"`
 }
+
+type PilotKpisResponse struct {
+	GeneratedAt      string      `json:"generated_at"`
+	TotalResults     int         `json:"total_results"`
+	Feasible         int         `json:"feasible"`
+	Incomplete       int         `json:"incomplete"`
+	Impossible       int         `json:"impossible"`
+	Conflicted       int         `json:"conflicted"`
+	PolicyBlocked    int         `json:"policy_blocked"`
+	Escalate         int         `json:"escalate"`
+	Suppress         int         `json:"suppress"`
+	Keep             int         `json:"keep"`
+	Deprioritize     int         `json:"deprioritize"`
+	AvgConfidence    float64     `json:"avg_confidence"`
+	TopReasonCodes   []CountItem `json:"top_reason_codes"`
+	TopEvidenceGaps  []CountItem `json:"top_evidence_gaps"`
+	TopDecisionRules []CountItem `json:"top_decision_rules"`
+}
+
+type CountItem struct {
+	Label string `json:"label"`
+	Count int    `json:"count"`
+}

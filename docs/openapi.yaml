@@ -188,6 +188,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GraphEnvelope"
+  /v1/pilot-kpis:
+    get:
+      summary: Pilot KPI snapshot
+      responses:
+        "200":
+          description: Pilot KPIs
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PilotKpisEnvelope"
   /v1/report:
     get:
       summary: Full report (raw)
@@ -363,6 +373,13 @@ components:
         meta:
           $ref: "#/components/schemas/Meta"
     GraphEnvelope:
+      type: object
+      properties:
+        data:
+          type: object
+        meta:
+          $ref: "#/components/schemas/Meta"
+    PilotKpisEnvelope:
       type: object
       properties:
         data:

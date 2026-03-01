@@ -66,6 +66,8 @@ type reportFileReasoningResult struct {
 	Name              string  `json:"name"`
 	Feasible          bool    `json:"feasible"`
 	PrecondOK         bool    `json:"precond_ok"`
+	Conflicted        bool    `json:"conflicted"`
+	PolicyImpossible  bool    `json:"policy_impossible"`
 	Confidence        float64 `json:"confidence"`
 	ConfidenceFactors *struct {
 		Coverage            float64 `json:"coverage"`
@@ -436,4 +438,114 @@ func buildGraph(r *reportFile) GraphResponse {
 	sort.Slice(nodeList, func(i, j int) bool { return nodeList[i].ID < nodeList[j].ID })
 
 	return GraphResponse{Threads: threads, Nodes: nodeList, Edges: edges, Progression: progression}
+}
+
+func buildPilotKpis(r *reportFile) PilotKpisResponse {
+	total := len(r.Reasoning.Results)
+	feasible := 0
+	incomplete := 0
+	impossible := 0
+	conflicted := 0
+	policyBlocked := 0
+	escalate := 0
+	suppress := 0
+	keep := 0
+	deprioritize := 0
+	confSum := 0.0
+	confCount := 0
+
+	reasonCounts := map[string]int{}
+	gapCounts := map[string]int{}
+	ruleCounts := map[string]int{}
+
+	for _, res := range r.Reasoning.Results {
+		if res.PolicyImpossible {
+			policyBlocked++
+		}
+		if res.Conflicted {
+			conflicted++
+		}
+		if res.Feasible {
+			feasible++
+			confSum += res.Confidence
+			confCount++
+		}
+		if len(res.MissingEvidence) > 0 {
+			incomplete++
+		} else if !res.Feasible && !res.Conflicted && !res.PolicyImpossible {
+			impossible++
+		}
+		switch strings.ToLower(strings.TrimSpace(res.DecisionLabel)) {
+		case "escalate":
+			escalate++
+		case "suppress":
+			suppress++
+		case "keep":
+			keep++
+		case "deprioritize":
+			deprioritize++
+		}
+		if res.ReasonCode != "" {
+			reasonCounts[res.ReasonCode]++
+		}
+		if res.RuleID != "" {
+			ruleCounts[res.RuleID]++
+		}
+		for _, gap := range res.MissingEvidence {
+			label := gap.Description
+			if label == "" {
+				label = gap.Type
+			}
+			if label != "" {
+				gapCounts[label]++
+			}
+		}
+	}
+
+	topReasons := topCounts(reasonCounts, 8)
+	topGaps := topCounts(gapCounts, 8)
+	topRules := topCounts(ruleCounts, 8)
+
+	avgConf := 0.0
+	if confCount > 0 {
+		avgConf = confSum / float64(confCount)
+	}
+
+	return PilotKpisResponse{
+		GeneratedAt:      latestTimestamp(r.GeneratedAt),
+		TotalResults:     total,
+		Feasible:         feasible,
+		Incomplete:       incomplete,
+		Impossible:       impossible,
+		Conflicted:       conflicted,
+		PolicyBlocked:    policyBlocked,
+		Escalate:         escalate,
+		Suppress:         suppress,
+		Keep:             keep,
+		Deprioritize:     deprioritize,
+		AvgConfidence:    avgConf,
+		TopReasonCodes:   topReasons,
+		TopEvidenceGaps:  topGaps,
+		TopDecisionRules: topRules,
+	}
+}
+
+func topCounts(in map[string]int, limit int) []CountItem {
+	if len(in) == 0 {
+		return []CountItem{}
+	}
+	out := make([]CountItem, 0, len(in))
+	for k, v := range in {
+		out = append(out, CountItem{Label: k, Count: v})
+	}
+	sort.Slice(out, func(i, j int) bool {
+		if out[i].Count == out[j].Count {
+			return out[i].Label < out[j].Label
+		}
+		return out[i].Count > out[j].Count
+	})
+	if len(out) > limit {
+		out = out[:limit]
+	}
+	return out
 }
