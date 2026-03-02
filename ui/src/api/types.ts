@@ -25,4 +25,15 @@ export type GraphThread = {
 
 export type GraphResponse = {
   threads: GraphThread[];
+  nodes?: { id: string; label: string; kind: string; status: string }[];
+  edges?: { from: string; to: string; label: string; status: string }[];
+  progression?: {
+    time: string;
+    stage: string;
+    action: string;
+    principal: string;
+    asset: string;
+    confidence: number;
+    rationale: string;
+  }[];
 };

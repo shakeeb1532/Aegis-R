@@ -4,20 +4,24 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
 	"time"
 
 	"aman/internal/approval"
+	"aman/internal/ops"
 )
 
 type Server struct {
 	reportPath    string
 	auditPath     string
 	approvalsPath string
+	feedbackPath  string
 	requireKey    bool
 	apiKey        string
 }
@@ -26,6 +30,7 @@ type ServerOptions struct {
 	ReportPath    string
 	AuditPath     string
 	ApprovalsPath string
+	FeedbackPath  string
 	RequireKey    bool
 	APIKey        string
 }
@@ -35,6 +40,7 @@ func NewServer(opts ServerOptions) *Server {
 		reportPath:    opts.ReportPath,
 		auditPath:     opts.AuditPath,
 		approvalsPath: opts.ApprovalsPath,
+		feedbackPath:  opts.FeedbackPath,
 		requireKey:    opts.RequireKey,
 		apiKey:        opts.APIKey,
 	}
@@ -53,6 +59,7 @@ func (s *Server) Routes() http.Handler {
 	mux.HandleFunc("/v1/evaluations", s.handleEvaluations)
 	mux.HandleFunc("/v1/graph", s.handleGraph)
 	mux.HandleFunc("/v1/pilot-kpis", s.handlePilotKpis)
+	mux.HandleFunc("/v1/feedback", s.handleFeedback)
 	mux.HandleFunc("/v1/report", s.handleReport)
 
 	// Deprecated v0 routes for backward compatibility.
@@ -64,6 +71,7 @@ func (s *Server) Routes() http.Handler {
 	mux.HandleFunc("/api/evaluations", s.handleEvaluations)
 	mux.HandleFunc("/api/graph", s.handleGraph)
 	mux.HandleFunc("/api/pilot-kpis", s.handlePilotKpis)
+	mux.HandleFunc("/api/feedback", s.handleFeedback)
 	return s.withCORS(s.withAuth(mux))
 }
 
@@ -71,7 +79,7 @@ func (s *Server) withCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-API-Key, X-Request-ID")
-		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusNoContent)
 			return
@@ -263,6 +271,75 @@ func (s *Server) handlePilotKpis(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, buildPilotKpis(report), responseMeta{RequestID: reqID})
+}
+
+func (s *Server) handleFeedback(w http.ResponseWriter, r *http.Request) {
+	reqID := setRequestID(w, r)
+	if r.Method != http.MethodPost {
+		writeError(w, http.StatusMethodNotAllowed, "method_not_allowed", "use POST", reqID)
+		return
+	}
+	if s.feedbackPath == "" {
+		writeError(w, http.StatusServiceUnavailable, "feedback_disabled", "feedback storage not configured", reqID)
+		return
+	}
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		writeError(w, http.StatusBadRequest, "invalid_body", "unable to read body", reqID)
+		return
+	}
+	var payload FeedbackRequest
+	if err := json.Unmarshal(body, &payload); err != nil {
+		writeError(w, http.StatusBadRequest, "invalid_json", "unable to parse json", reqID)
+		return
+	}
+	payload.AnalystLabel = strings.TrimSpace(payload.AnalystLabel)
+	if payload.DecisionID == "" || payload.AnalystLabel == "" {
+		writeError(w, http.StatusBadRequest, "missing_fields", "decision_id and analyst_label are required", reqID)
+		return
+	}
+	switch payload.AnalystLabel {
+	case "agree", "disagree", "need_more_context":
+	default:
+		writeError(w, http.StatusBadRequest, "invalid_label", "analyst_label must be agree|disagree|need_more_context", reqID)
+		return
+	}
+	if !ops.IsSafePath(s.feedbackPath) {
+		writeError(w, http.StatusBadRequest, "unsafe_path", "feedback path rejected", reqID)
+		return
+	}
+	if err := os.MkdirAll(filepath.Dir(s.feedbackPath), 0755); err != nil {
+		writeError(w, http.StatusInternalServerError, "io_error", err.Error(), reqID)
+		return
+	}
+	record := map[string]any{
+		"submitted_at":   time.Now().UTC().Format(time.RFC3339),
+		"request_id":     reqID,
+		"decision_id":    payload.DecisionID,
+		"decision_title": payload.DecisionTitle,
+		"verdict":        payload.Verdict,
+		"reason_code":    payload.ReasonCode,
+		"analyst_label":  payload.AnalystLabel,
+		"comment":        payload.Comment,
+		"user_agent":     r.UserAgent(),
+		"remote_addr":    r.RemoteAddr,
+	}
+	line, err := json.Marshal(record)
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "encode_error", err.Error(), reqID)
+		return
+	}
+	f, err := os.OpenFile(s.feedbackPath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600)
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "io_error", err.Error(), reqID)
+		return
+	}
+	defer f.Close()
+	if _, err := f.Write(append(line, '\n')); err != nil {
+		writeError(w, http.StatusInternalServerError, "io_error", err.Error(), reqID)
+		return
+	}
+	writeJSON(w, map[string]string{"status": "ok"}, responseMeta{RequestID: reqID})
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {

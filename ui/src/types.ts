@@ -4,6 +4,7 @@ export type ReasoningItem = {
   id: string;
   title: string;
   verdict: Verdict;
+  reason_code?: string;
   confidence: number;
   confidence_factors?: {
     coverage: number;
@@ -25,6 +26,15 @@ export type ReasoningItem = {
   gaps: string[];
   nextMoves: string[];
   updated: string;
+};
+
+export type FeedbackPayload = {
+  decision_id: string;
+  decision_title?: string;
+  verdict: string;
+  reason_code?: string;
+  analyst_label: "agree" | "disagree" | "need_more_context";
+  comment?: string;
 };
 
 export type QueueItem = {

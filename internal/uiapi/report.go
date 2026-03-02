@@ -254,6 +254,7 @@ func buildReasoningItems(r *reportFile) []ReasoningItem {
 			ID:                res.RuleID,
 			Title:             res.Name,
 			Verdict:           verdictFromResult(res.Feasible, res.PrecondOK, res.ReasonCode),
+			ReasonCode:        res.ReasonCode,
 			Confidence:        res.Confidence,
 			ConfidenceFactors: mapConfidenceFactors(res.ConfidenceFactors),
 			Summary:           res.Explanation,

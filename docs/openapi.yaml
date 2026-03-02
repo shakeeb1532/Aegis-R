@@ -198,6 +198,22 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PilotKpisEnvelope"
+  /v1/feedback:
+    post:
+      summary: Submit analyst feedback
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AckEnvelope"
   /v1/report:
     get:
       summary: Full report (raw)
@@ -380,6 +396,13 @@ components:
         meta:
           $ref: "#/components/schemas/Meta"
     PilotKpisEnvelope:
+      type: object
+      properties:
+        data:
+          type: object
+        meta:
+          $ref: "#/components/schemas/Meta"
+    AckEnvelope:
       type: object
       properties:
         data:

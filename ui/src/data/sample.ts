@@ -12,6 +12,7 @@ export const reasoningSamples: ReasoningItem[] = [
     id: "R-1841",
     title: "Impossible Travel + New Device Login",
     verdict: "POSSIBLE",
+    reason_code: "high_risk_identity_signal",
     confidence: 0.78,
     confidence_factors: {
       coverage: 0.66,
@@ -38,6 +39,7 @@ export const reasoningSamples: ReasoningItem[] = [
     id: "R-1842",
     title: "Admin Role Change + OAuth Consent",
     verdict: "CONFIRMED",
+    reason_code: "privilege_escalation",
     confidence: 0.91,
     confidence_factors: {
       coverage: 1.0,

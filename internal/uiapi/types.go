@@ -18,6 +18,7 @@ type ReasoningItem struct {
 	ID                string             `json:"id"`
 	Title             string             `json:"title"`
 	Verdict           string             `json:"verdict"`
+	ReasonCode        string             `json:"reason_code,omitempty"`
 	Confidence        float64            `json:"confidence"`
 	ConfidenceFactors *ConfidenceFactors `json:"confidence_factors,omitempty"`
 	Summary           string             `json:"summary"`
@@ -145,4 +146,13 @@ type PilotKpisResponse struct {
 type CountItem struct {
 	Label string `json:"label"`
 	Count int    `json:"count"`
+}
+
+type FeedbackRequest struct {
+	DecisionID    string `json:"decision_id"`
+	DecisionTitle string `json:"decision_title,omitempty"`
+	Verdict       string `json:"verdict"`
+	ReasonCode    string `json:"reason_code,omitempty"`
+	AnalystLabel  string `json:"analyst_label"`
+	Comment       string `json:"comment,omitempty"`
 }

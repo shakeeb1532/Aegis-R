@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { SectionHeader } from "../components/SectionHeader";
 import { VerdictPill } from "../components/VerdictPill";
+import { postFeedback } from "../api/feedback";
 import { useReasoning } from "../hooks/useApiData";
 
 function confidenceBand(value: number) {
@@ -16,6 +18,8 @@ function factorBand(value: number) {
 
 export function Reasoning() {
   const data = useReasoning();
+  const [commentById, setCommentById] = useState<Record<string, string>>({});
+  const [statusById, setStatusById] = useState<Record<string, string>>({});
   if (!data || data.length === 0) {
     return (
       <div className="card">
@@ -110,6 +114,51 @@ export function Reasoning() {
                 </div>
               )}
             </div>
+          </div>
+          <div className="rounded-xl border border-border bg-panel p-4">
+            <SectionHeader title="Analyst Feedback" subtitle="Help tune the model during the pilot" />
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              {["agree", "disagree", "need_more_context"].map((label) => (
+                <button
+                  key={label}
+                  onClick={async () => {
+                    setStatusById((prev) => ({ ...prev, [item.id]: "sending" }));
+                    try {
+                      await postFeedback({
+                        decision_id: item.id,
+                        decision_title: item.title,
+                        verdict: item.verdict,
+                        reason_code: item.reason_code,
+                        analyst_label: label as "agree" | "disagree" | "need_more_context",
+                        comment: commentById[item.id]
+                      });
+                      setStatusById((prev) => ({ ...prev, [item.id]: "sent" }));
+                    } catch {
+                      setStatusById((prev) => ({ ...prev, [item.id]: "error" }));
+                    }
+                  }}
+                  className="rounded-full border border-border px-4 py-2 text-xs uppercase tracking-wide text-muted hover:text-text"
+                >
+                  {label.replaceAll("_", " ")}
+                </button>
+              ))}
+              <span className="text-xs text-muted">
+                {statusById[item.id] === "sent" && "Saved"}
+                {statusById[item.id] === "sending" && "Saving..."}
+                {statusById[item.id] === "error" && "Error saving feedback"}
+              </span>
+            </div>
+            <textarea
+              className="mt-3 h-20 w-full rounded-xl border border-border bg-panelElev p-3 text-sm text-text"
+              placeholder="Optional comment (why?)"
+              value={commentById[item.id] || ""}
+              onChange={(e) =>
+                setCommentById((prev) => ({
+                  ...prev,
+                  [item.id]: e.target.value
+                }))
+              }
+            />
           </div>
         </section>
       ))}
