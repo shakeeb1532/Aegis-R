@@ -1,7 +1,7 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SectionHeader } from "../components/SectionHeader";
 import { useReasoning, useTuning } from "../hooks/useApiData";
-import { postTuning } from "../api/tuning";
+import { fetchTuningHistory, postTuning, postTuningReset, postTuningRollback } from "../api/tuning";
 import { RuleTuning } from "../types";
 
 export function Tuning() {
@@ -15,6 +15,16 @@ export function Tuning() {
 
   const [local, setLocal] = useState<Record<string, RuleTuning>>({});
   const [status, setStatus] = useState<Record<string, string>>({});
+  const [history, setHistory] = useState<{ id: string; at: string; note?: string }[]>([]);
+
+  const loadHistory = async () => {
+    const items = await fetchTuningHistory();
+    setHistory(items.reverse());
+  };
+
+  useEffect(() => {
+    void loadHistory();
+  }, []);
 
   const resolve = (ruleId: string): RuleTuning => {
     if (local[ruleId]) return local[ruleId];
@@ -46,6 +56,44 @@ export function Tuning() {
         <p className="mt-2 text-sm text-muted">
           Use this to disable noisy rules, set a minimum confidence, or require approval before escalation.
         </p>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <button
+            onClick={async () => {
+              await postTuningReset();
+              await loadHistory();
+            }}
+            className="rounded-full border border-border px-4 py-2 text-xs uppercase tracking-wide text-muted hover:text-text"
+          >
+            Reset to defaults
+          </button>
+          <button
+            onClick={loadHistory}
+            className="rounded-full border border-border px-4 py-2 text-xs uppercase tracking-wide text-muted hover:text-text"
+          >
+            Refresh history
+          </button>
+        </div>
+        {history.length > 0 ? (
+          <div className="mt-4 rounded-xl border border-border bg-panelElev p-4 text-xs text-muted">
+            <div className="mb-2 uppercase tracking-[0.2em]">Rollback history</div>
+            <div className="space-y-2">
+              {history.map((h) => (
+                <div key={h.id} className="flex items-center justify-between gap-3">
+                  <div>{h.at} · {h.note || "snapshot"}</div>
+                  <button
+                    onClick={async () => {
+                      await postTuningRollback(h.id);
+                      await loadHistory();
+                    }}
+                    className="rounded-full border border-border px-3 py-1 text-[10px] uppercase tracking-wide text-muted hover:text-text"
+                  >
+                    Rollback
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
       </section>
 
       <section className="grid gap-4">

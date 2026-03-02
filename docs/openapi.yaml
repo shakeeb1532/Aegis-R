@@ -239,6 +239,42 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AckEnvelope"
+  /v1/tuning/history:
+    get:
+      summary: Tuning history snapshots
+      responses:
+        "200":
+          description: History
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TuningHistoryEnvelope"
+  /v1/tuning/reset:
+    post:
+      summary: Reset tuning to defaults
+      responses:
+        "200":
+          description: Reset ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AckEnvelope"
+  /v1/tuning/rollback:
+    post:
+      summary: Roll back to a tuning snapshot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Rollback ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AckEnvelope"
   /v1/report:
     get:
       summary: Full report (raw)
@@ -435,6 +471,15 @@ components:
         meta:
           $ref: "#/components/schemas/Meta"
     TuningEnvelope:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        meta:
+          $ref: "#/components/schemas/Meta"
+    TuningHistoryEnvelope:
       type: object
       properties:
         data:

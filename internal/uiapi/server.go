@@ -24,6 +24,7 @@ type Server struct {
 	approvalsPath   string
 	feedbackPath    string
 	constraintsPath string
+	tuningAuditPath string
 	requireKey      bool
 	apiKey          string
 }
@@ -34,6 +35,7 @@ type ServerOptions struct {
 	ApprovalsPath   string
 	FeedbackPath    string
 	ConstraintsPath string
+	TuningAuditPath string
 	RequireKey      bool
 	APIKey          string
 }
@@ -45,6 +47,7 @@ func NewServer(opts ServerOptions) *Server {
 		approvalsPath:   opts.ApprovalsPath,
 		feedbackPath:    opts.FeedbackPath,
 		constraintsPath: opts.ConstraintsPath,
+		tuningAuditPath: opts.TuningAuditPath,
 		requireKey:      opts.RequireKey,
 		apiKey:          opts.APIKey,
 	}
@@ -65,6 +68,9 @@ func (s *Server) Routes() http.Handler {
 	mux.HandleFunc("/v1/pilot-kpis", s.handlePilotKpis)
 	mux.HandleFunc("/v1/feedback", s.handleFeedback)
 	mux.HandleFunc("/v1/tuning", s.handleTuning)
+	mux.HandleFunc("/v1/tuning/history", s.handleTuningHistory)
+	mux.HandleFunc("/v1/tuning/reset", s.handleTuningReset)
+	mux.HandleFunc("/v1/tuning/rollback", s.handleTuningRollback)
 	mux.HandleFunc("/v1/report", s.handleReport)
 
 	// Deprecated v0 routes for backward compatibility.
@@ -78,6 +84,9 @@ func (s *Server) Routes() http.Handler {
 	mux.HandleFunc("/api/pilot-kpis", s.handlePilotKpis)
 	mux.HandleFunc("/api/feedback", s.handleFeedback)
 	mux.HandleFunc("/api/tuning", s.handleTuning)
+	mux.HandleFunc("/api/tuning/history", s.handleTuningHistory)
+	mux.HandleFunc("/api/tuning/reset", s.handleTuningReset)
+	mux.HandleFunc("/api/tuning/rollback", s.handleTuningRollback)
 	return s.withCORS(s.withAuth(mux))
 }
 
@@ -355,6 +364,18 @@ type tuningPayload struct {
 	RequireApproval *bool    `json:"require_approval"`
 }
 
+type tuningAuditEntry struct {
+	ID          string                           `json:"id"`
+	At          string                           `json:"at"`
+	Action      string                           `json:"action"`
+	RuleID      string                           `json:"rule_id,omitempty"`
+	RequestID   string                           `json:"request_id,omitempty"`
+	Before      *RuleTuning                      `json:"before,omitempty"`
+	After       *RuleTuning                      `json:"after,omitempty"`
+	Constraints []governance.ReasoningConstraint `json:"constraints,omitempty"`
+	Note        string                           `json:"note,omitempty"`
+}
+
 func (s *Server) handleTuning(w http.ResponseWriter, r *http.Request) {
 	reqID := setRequestID(w, r)
 	if s.constraintsPath == "" {
@@ -396,11 +417,23 @@ func (s *Server) handleTuning(w http.ResponseWriter, r *http.Request) {
 			writeError(w, http.StatusInternalServerError, "read_failed", err.Error(), reqID)
 			return
 		}
+		before := findTuning(cons, payload.RuleID)
 		cons = upsertTuning(cons, payload)
 		if err := governance.SaveConstraints(s.constraintsPath, cons); err != nil {
 			writeError(w, http.StatusInternalServerError, "write_failed", err.Error(), reqID)
 			return
 		}
+		after := findTuning(cons, payload.RuleID)
+		s.appendTuningAudit(tuningAuditEntry{
+			ID:        fmt.Sprintf("tuning-%d", time.Now().UTC().UnixNano()),
+			At:        time.Now().UTC().Format(time.RFC3339),
+			Action:    "update",
+			RuleID:    payload.RuleID,
+			RequestID: reqID,
+			Before:    before,
+			After:     after,
+		})
+		s.appendTuningSnapshot(cons, "update")
 		writeJSON(w, map[string]string{"status": "ok"}, responseMeta{RequestID: reqID})
 		return
 	default:
@@ -475,6 +508,200 @@ func upsertTuning(cons []governance.ReasoningConstraint, payload tuningPayload) 
 		return cons
 	}
 	return append(cons, entry)
+}
+
+func (s *Server) handleTuningHistory(w http.ResponseWriter, r *http.Request) {
+	reqID := setRequestID(w, r)
+	if s.tuningAuditPath == "" {
+		writeError(w, http.StatusServiceUnavailable, "tuning_audit_disabled", "tuning audit not configured", reqID)
+		return
+	}
+	limit, _ := parsePagination(r, 200)
+	items := readTuningHistory(s.tuningAuditPath, limit)
+	writeJSON(w, items, responseMeta{RequestID: reqID})
+}
+
+func (s *Server) handleTuningReset(w http.ResponseWriter, r *http.Request) {
+	reqID := setRequestID(w, r)
+	if r.Method != http.MethodPost {
+		writeError(w, http.StatusMethodNotAllowed, "method_not_allowed", "use POST", reqID)
+		return
+	}
+	if s.constraintsPath == "" {
+		writeError(w, http.StatusServiceUnavailable, "tuning_disabled", "constraints path not configured", reqID)
+		return
+	}
+	cons, err := governance.LoadConstraints(s.constraintsPath)
+	if err != nil && !os.IsNotExist(err) {
+		writeError(w, http.StatusInternalServerError, "read_failed", err.Error(), reqID)
+		return
+	}
+	reset := []governance.ReasoningConstraint{}
+	for _, c := range cons {
+		if !strings.HasPrefix(c.ID, "tuning:") {
+			reset = append(reset, c)
+		}
+	}
+	if err := governance.SaveConstraints(s.constraintsPath, reset); err != nil {
+		writeError(w, http.StatusInternalServerError, "write_failed", err.Error(), reqID)
+		return
+	}
+	s.appendTuningAudit(tuningAuditEntry{
+		ID:        fmt.Sprintf("tuning-%d", time.Now().UTC().UnixNano()),
+		At:        time.Now().UTC().Format(time.RFC3339),
+		Action:    "reset",
+		RequestID: reqID,
+		Note:      "reset to defaults",
+	})
+	s.appendTuningSnapshot(reset, "reset")
+	writeJSON(w, map[string]string{"status": "ok"}, responseMeta{RequestID: reqID})
+}
+
+func (s *Server) handleTuningRollback(w http.ResponseWriter, r *http.Request) {
+	reqID := setRequestID(w, r)
+	if r.Method != http.MethodPost {
+		writeError(w, http.StatusMethodNotAllowed, "method_not_allowed", "use POST", reqID)
+		return
+	}
+	if s.constraintsPath == "" || s.tuningAuditPath == "" {
+		writeError(w, http.StatusServiceUnavailable, "tuning_disabled", "constraints or audit not configured", reqID)
+		return
+	}
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		writeError(w, http.StatusBadRequest, "invalid_body", "unable to read body", reqID)
+		return
+	}
+	var payload struct {
+		SnapshotID string `json:"snapshot_id"`
+	}
+	if err := json.Unmarshal(body, &payload); err != nil {
+		writeError(w, http.StatusBadRequest, "invalid_json", "unable to parse json", reqID)
+		return
+	}
+	if payload.SnapshotID == "" {
+		writeError(w, http.StatusBadRequest, "missing_fields", "snapshot_id required", reqID)
+		return
+	}
+	snapshot, ok := readSnapshotByID(s.tuningAuditPath, payload.SnapshotID)
+	if !ok {
+		writeError(w, http.StatusNotFound, "not_found", "snapshot not found", reqID)
+		return
+	}
+	if err := governance.SaveConstraints(s.constraintsPath, snapshot); err != nil {
+		writeError(w, http.StatusInternalServerError, "write_failed", err.Error(), reqID)
+		return
+	}
+	s.appendTuningAudit(tuningAuditEntry{
+		ID:        fmt.Sprintf("tuning-%d", time.Now().UTC().UnixNano()),
+		At:        time.Now().UTC().Format(time.RFC3339),
+		Action:    "rollback",
+		RequestID: reqID,
+		Note:      payload.SnapshotID,
+	})
+	s.appendTuningSnapshot(snapshot, "rollback")
+	writeJSON(w, map[string]string{"status": "ok"}, responseMeta{RequestID: reqID})
+}
+
+func (s *Server) appendTuningAudit(entry tuningAuditEntry) {
+	if s.tuningAuditPath == "" {
+		return
+	}
+	if !ops.IsSafePath(s.tuningAuditPath) {
+		return
+	}
+	if err := os.MkdirAll(filepath.Dir(s.tuningAuditPath), 0755); err != nil {
+		return
+	}
+	data, err := json.Marshal(entry)
+	if err != nil {
+		return
+	}
+	f, err := os.OpenFile(s.tuningAuditPath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600)
+	if err != nil {
+		return
+	}
+	defer f.Close()
+	_, _ = f.Write(append(data, '\n'))
+}
+
+func (s *Server) appendTuningSnapshot(cons []governance.ReasoningConstraint, action string) {
+	if s.tuningAuditPath == "" {
+		return
+	}
+	entry := tuningAuditEntry{
+		ID:          fmt.Sprintf("snapshot-%d", time.Now().UTC().UnixNano()),
+		At:          time.Now().UTC().Format(time.RFC3339),
+		Action:      "snapshot",
+		Note:        action,
+		Constraints: cons,
+	}
+	s.appendTuningAudit(entry)
+}
+
+func readTuningHistory(path string, limit int) []TuningHistoryItem {
+	items := []TuningHistoryItem{}
+	file, err := os.Open(path)
+	if err != nil {
+		return items
+	}
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		var entry tuningAuditEntry
+		if err := json.Unmarshal(scanner.Bytes(), &entry); err != nil {
+			continue
+		}
+		if entry.Action != "snapshot" {
+			continue
+		}
+		items = append(items, TuningHistoryItem{
+			ID:      entry.ID,
+			At:      entry.At,
+			Action:  entry.Action,
+			RuleID:  entry.RuleID,
+			Note:    entry.Note,
+			Request: entry.RequestID,
+		})
+	}
+	if limit > 0 && len(items) > limit {
+		items = items[len(items)-limit:]
+	}
+	return items
+}
+
+func readSnapshotByID(path string, snapshotID string) ([]governance.ReasoningConstraint, bool) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, false
+	}
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		var entry tuningAuditEntry
+		if err := json.Unmarshal(scanner.Bytes(), &entry); err != nil {
+			continue
+		}
+		if entry.ID == snapshotID && entry.Action == "snapshot" {
+			return entry.Constraints, true
+		}
+	}
+	return nil, false
+}
+
+func findTuning(cons []governance.ReasoningConstraint, ruleID string) *RuleTuning {
+	for _, c := range cons {
+		if c.ID == "tuning:"+ruleID {
+			enabled := !c.DisableRule && !c.PolicyImpossible
+			return &RuleTuning{
+				RuleID:          ruleID,
+				Enabled:         enabled,
+				MinConfidence:   c.MinConfidence,
+				RequireApproval: c.RequireApproval,
+			}
+		}
+	}
+	return nil
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {

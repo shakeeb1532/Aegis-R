@@ -22,6 +22,7 @@ func handleServeAPI(args []string) {
 	approvalsPath := fs.String("approvals", "data/approvals.log", "approvals log path")
 	feedbackPath := fs.String("feedback-out", "data/feedback.jsonl", "feedback jsonl output")
 	constraintsPath := fs.String("constraints", "data/constraints.json", "tuning constraints json")
+	tuningAuditPath := fs.String("tuning-audit-out", "data/tuning_audit.jsonl", "tuning audit jsonl output")
 	requireKey := fs.Bool("require-key", true, "require API key (AMAN_UI_API_KEY)")
 	pilotKpisOut := fs.String("pilot-kpis-out", "", "write pilot KPI snapshots to jsonl")
 	pilotKpisInterval := fs.Duration("pilot-kpis-interval", 10*time.Minute, "snapshot interval")
@@ -42,6 +43,7 @@ func handleServeAPI(args []string) {
 		ApprovalsPath:   *approvalsPath,
 		FeedbackPath:    *feedbackPath,
 		ConstraintsPath: *constraintsPath,
+		TuningAuditPath: *tuningAuditPath,
 		RequireKey:      *requireKey,
 		APIKey:          apiKey,
 	})

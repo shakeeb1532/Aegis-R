@@ -163,3 +163,12 @@ type RuleTuning struct {
 	MinConfidence   float64 `json:"min_confidence"`
 	RequireApproval bool    `json:"require_approval"`
 }
+
+type TuningHistoryItem struct {
+	ID      string `json:"id"`
+	At      string `json:"at"`
+	Action  string `json:"action"`
+	RuleID  string `json:"rule_id,omitempty"`
+	Note    string `json:"note,omitempty"`
+	Request string `json:"request_id,omitempty"`
+}
