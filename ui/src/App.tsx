@@ -10,6 +10,7 @@ import { Governance } from "./pages/Governance";
 import { Audit } from "./pages/Audit";
 import { Evaluations } from "./pages/Evaluations";
 import { Ingestion } from "./pages/Ingestion";
+import { Tuning } from "./pages/Tuning";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
             <Route path="/audit" element={<Audit />} />
             <Route path="/evaluations" element={<Evaluations />} />
             <Route path="/ingestion" element={<Ingestion />} />
+            <Route path="/tuning" element={<Tuning />} />
           </Routes>
         </main>
       </div>

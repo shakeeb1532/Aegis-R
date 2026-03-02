@@ -214,6 +214,31 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AckEnvelope"
+  /v1/tuning:
+    get:
+      summary: List rule tuning settings
+      responses:
+        "200":
+          description: Tuning settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TuningEnvelope"
+    post:
+      summary: Update rule tuning settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AckEnvelope"
   /v1/report:
     get:
       summary: Full report (raw)
@@ -407,5 +432,14 @@ components:
       properties:
         data:
           type: object
+        meta:
+          $ref: "#/components/schemas/Meta"
+    TuningEnvelope:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
         meta:
           $ref: "#/components/schemas/Meta"

@@ -22,6 +22,9 @@ type ReasoningConstraint struct {
 	ForbidEvidence   []string `json:"forbid_evidence"`
 	PolicyImpossible bool     `json:"policy_impossible,omitempty"`
 	PolicyReason     string   `json:"policy_reason,omitempty"`
+	DisableRule      bool     `json:"disable_rule,omitempty"`
+	MinConfidence    float64  `json:"min_confidence,omitempty"`
+	RequireApproval  bool     `json:"require_approval,omitempty"`
 	Author           string   `json:"author"`
 	CreatedAt        string   `json:"created_at"`
 	Notes            string   `json:"notes"`

@@ -4,6 +4,7 @@ const nav = [
   { path: "/", label: "Dashboard", icon: "▦" },
   { path: "/ingestion", label: "Ingestion", icon: "⬌" },
   { path: "/reasoning", label: "Decisions", icon: "◌" },
+  { path: "/tuning", label: "Tuning", icon: "⛭" },
   { path: "/queue", label: "Queue", icon: "◍" },
   { path: "/governance", label: "Governance", icon: "✶" },
   { path: "/audit", label: "Audit", icon: "◫" },

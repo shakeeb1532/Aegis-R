@@ -442,7 +442,7 @@ func usage() {
 	fmt.Println("  inventory-adapter -provider aws|okta|azure|gcp -config data/inventory/config.json -out data/env.json")
 	fmt.Println("  inventory-refresh -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json")
 	fmt.Println("  inventory-schedule -provider all -config data/inventory/config.json -base data/env.json -out data/env.json -drift drift.json -interval 6h -jitter 30m")
-	fmt.Println("  serve-api -addr :8081 -report data/report.json -audit data/audit.log -approvals data/approvals.log [-feedback-out data/feedback.jsonl] [--require-key]")
+	fmt.Println("  serve-api -addr :8081 -report data/report.json -audit data/audit.log -approvals data/approvals.log [-constraints data/constraints.json] [-feedback-out data/feedback.jsonl] [--require-key]")
 	fmt.Println("  system engines")
 	fmt.Println("  system pilot-metrics -report data/bench/report.json -history data/incident_history.json [-format json|md] [-out docs/pilot_metrics_report.md]")
 	fmt.Println("  system integration-readiness [-rules data/rules.json] [-out docs/integration_readiness.json]")

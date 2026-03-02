@@ -21,6 +21,7 @@ func handleServeAPI(args []string) {
 	auditPath := fs.String("audit", "data/audit.log", "audit log path")
 	approvalsPath := fs.String("approvals", "data/approvals.log", "approvals log path")
 	feedbackPath := fs.String("feedback-out", "data/feedback.jsonl", "feedback jsonl output")
+	constraintsPath := fs.String("constraints", "data/constraints.json", "tuning constraints json")
 	requireKey := fs.Bool("require-key", true, "require API key (AMAN_UI_API_KEY)")
 	pilotKpisOut := fs.String("pilot-kpis-out", "", "write pilot KPI snapshots to jsonl")
 	pilotKpisInterval := fs.Duration("pilot-kpis-interval", 10*time.Minute, "snapshot interval")
@@ -36,12 +37,13 @@ func handleServeAPI(args []string) {
 	}
 
 	srv := uiapi.NewServer(uiapi.ServerOptions{
-		ReportPath:    *reportPath,
-		AuditPath:     *auditPath,
-		ApprovalsPath: *approvalsPath,
-		FeedbackPath:  *feedbackPath,
-		RequireKey:    *requireKey,
-		APIKey:        apiKey,
+		ReportPath:      *reportPath,
+		AuditPath:       *auditPath,
+		ApprovalsPath:   *approvalsPath,
+		FeedbackPath:    *feedbackPath,
+		ConstraintsPath: *constraintsPath,
+		RequireKey:      *requireKey,
+		APIKey:          apiKey,
 	})
 
 	if *pilotKpisOut != "" {

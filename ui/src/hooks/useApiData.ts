@@ -17,8 +17,11 @@ import {
   driftSignals,
   overviewKpis,
   queueItems,
-  reasoningSamples
+  reasoningSamples,
+  tuningSamples
 } from "../data/sample";
+import { fetchTuning } from "../api/tuning";
+import { RuleTuning } from "../types";
 
 const overviewFallback: OverviewResponse = {
   kpis: overviewKpis,
@@ -83,6 +86,14 @@ export function useGraph() {
   const [data, setData] = useState(graphSample);
   useEffect(() => {
     void fetchJson("/v1/graph", graphSample).then(setData);
+  }, []);
+  return data;
+}
+
+export function useTuning() {
+  const [data, setData] = useState<RuleTuning[]>(tuningSamples);
+  useEffect(() => {
+    void fetchTuning().then(setData);
   }, []);
   return data;
 }

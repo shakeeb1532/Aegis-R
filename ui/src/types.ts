@@ -37,6 +37,13 @@ export type FeedbackPayload = {
   comment?: string;
 };
 
+export type RuleTuning = {
+  rule_id: string;
+  enabled: boolean;
+  min_confidence: number;
+  require_approval: boolean;
+};
+
 export type QueueItem = {
   id: string;
   rule: string;

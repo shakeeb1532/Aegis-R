@@ -14,35 +14,39 @@ import (
 	"time"
 
 	"aman/internal/approval"
+	"aman/internal/governance"
 	"aman/internal/ops"
 )
 
 type Server struct {
-	reportPath    string
-	auditPath     string
-	approvalsPath string
-	feedbackPath  string
-	requireKey    bool
-	apiKey        string
+	reportPath      string
+	auditPath       string
+	approvalsPath   string
+	feedbackPath    string
+	constraintsPath string
+	requireKey      bool
+	apiKey          string
 }
 
 type ServerOptions struct {
-	ReportPath    string
-	AuditPath     string
-	ApprovalsPath string
-	FeedbackPath  string
-	RequireKey    bool
-	APIKey        string
+	ReportPath      string
+	AuditPath       string
+	ApprovalsPath   string
+	FeedbackPath    string
+	ConstraintsPath string
+	RequireKey      bool
+	APIKey          string
 }
 
 func NewServer(opts ServerOptions) *Server {
 	return &Server{
-		reportPath:    opts.ReportPath,
-		auditPath:     opts.AuditPath,
-		approvalsPath: opts.ApprovalsPath,
-		feedbackPath:  opts.FeedbackPath,
-		requireKey:    opts.RequireKey,
-		apiKey:        opts.APIKey,
+		reportPath:      opts.ReportPath,
+		auditPath:       opts.AuditPath,
+		approvalsPath:   opts.ApprovalsPath,
+		feedbackPath:    opts.FeedbackPath,
+		constraintsPath: opts.ConstraintsPath,
+		requireKey:      opts.RequireKey,
+		apiKey:          opts.APIKey,
 	}
 }
 
@@ -60,6 +64,7 @@ func (s *Server) Routes() http.Handler {
 	mux.HandleFunc("/v1/graph", s.handleGraph)
 	mux.HandleFunc("/v1/pilot-kpis", s.handlePilotKpis)
 	mux.HandleFunc("/v1/feedback", s.handleFeedback)
+	mux.HandleFunc("/v1/tuning", s.handleTuning)
 	mux.HandleFunc("/v1/report", s.handleReport)
 
 	// Deprecated v0 routes for backward compatibility.
@@ -72,6 +77,7 @@ func (s *Server) Routes() http.Handler {
 	mux.HandleFunc("/api/graph", s.handleGraph)
 	mux.HandleFunc("/api/pilot-kpis", s.handlePilotKpis)
 	mux.HandleFunc("/api/feedback", s.handleFeedback)
+	mux.HandleFunc("/api/tuning", s.handleTuning)
 	return s.withCORS(s.withAuth(mux))
 }
 
@@ -340,6 +346,135 @@ func (s *Server) handleFeedback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, map[string]string{"status": "ok"}, responseMeta{RequestID: reqID})
+}
+
+type tuningPayload struct {
+	RuleID          string   `json:"rule_id"`
+	Enabled         *bool    `json:"enabled"`
+	MinConfidence   *float64 `json:"min_confidence"`
+	RequireApproval *bool    `json:"require_approval"`
+}
+
+func (s *Server) handleTuning(w http.ResponseWriter, r *http.Request) {
+	reqID := setRequestID(w, r)
+	if s.constraintsPath == "" {
+		writeError(w, http.StatusServiceUnavailable, "tuning_disabled", "constraints path not configured", reqID)
+		return
+	}
+	if !ops.IsSafePath(s.constraintsPath) {
+		writeError(w, http.StatusBadRequest, "unsafe_path", "constraints path rejected", reqID)
+		return
+	}
+
+	switch r.Method {
+	case http.MethodGet:
+		cons, err := governance.LoadConstraints(s.constraintsPath)
+		if err != nil && !os.IsNotExist(err) {
+			writeError(w, http.StatusInternalServerError, "read_failed", err.Error(), reqID)
+			return
+		}
+		writeJSON(w, flattenTuning(cons), responseMeta{RequestID: reqID})
+		return
+	case http.MethodPost:
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			writeError(w, http.StatusBadRequest, "invalid_body", "unable to read body", reqID)
+			return
+		}
+		var payload tuningPayload
+		if err := json.Unmarshal(body, &payload); err != nil {
+			writeError(w, http.StatusBadRequest, "invalid_json", "unable to parse json", reqID)
+			return
+		}
+		if strings.TrimSpace(payload.RuleID) == "" {
+			writeError(w, http.StatusBadRequest, "missing_fields", "rule_id is required", reqID)
+			return
+		}
+
+		cons, err := governance.LoadConstraints(s.constraintsPath)
+		if err != nil && !os.IsNotExist(err) {
+			writeError(w, http.StatusInternalServerError, "read_failed", err.Error(), reqID)
+			return
+		}
+		cons = upsertTuning(cons, payload)
+		if err := governance.SaveConstraints(s.constraintsPath, cons); err != nil {
+			writeError(w, http.StatusInternalServerError, "write_failed", err.Error(), reqID)
+			return
+		}
+		writeJSON(w, map[string]string{"status": "ok"}, responseMeta{RequestID: reqID})
+		return
+	default:
+		writeError(w, http.StatusMethodNotAllowed, "method_not_allowed", "use GET or POST", reqID)
+		return
+	}
+}
+
+func flattenTuning(cons []governance.ReasoningConstraint) []RuleTuning {
+	out := []RuleTuning{}
+	for _, c := range cons {
+		if !strings.HasPrefix(c.ID, "tuning:") {
+			continue
+		}
+		enabled := !c.DisableRule && !c.PolicyImpossible
+		out = append(out, RuleTuning{
+			RuleID:          c.RuleID,
+			Enabled:         enabled,
+			MinConfidence:   c.MinConfidence,
+			RequireApproval: c.RequireApproval,
+		})
+	}
+	sort.Slice(out, func(i, j int) bool { return out[i].RuleID < out[j].RuleID })
+	return out
+}
+
+func upsertTuning(cons []governance.ReasoningConstraint, payload tuningPayload) []governance.ReasoningConstraint {
+	id := "tuning:" + payload.RuleID
+	now := time.Now().UTC().Format(time.RFC3339)
+	var existing *governance.ReasoningConstraint
+	for i := range cons {
+		if cons[i].ID == id {
+			existing = &cons[i]
+			break
+		}
+	}
+	enabled := true
+	minConfidence := 0.0
+	requireApproval := false
+	if existing != nil {
+		enabled = !existing.DisableRule && !existing.PolicyImpossible
+		minConfidence = existing.MinConfidence
+		requireApproval = existing.RequireApproval
+	}
+	if payload.Enabled != nil {
+		enabled = *payload.Enabled
+	}
+	if payload.MinConfidence != nil {
+		minConfidence = *payload.MinConfidence
+	}
+	if payload.RequireApproval != nil {
+		requireApproval = *payload.RequireApproval
+	}
+
+	entry := governance.ReasoningConstraint{
+		ID:              id,
+		RuleID:          payload.RuleID,
+		DisableRule:     !enabled,
+		MinConfidence:   minConfidence,
+		RequireApproval: requireApproval,
+		Author:          "ui",
+		CreatedAt:       now,
+		Notes:           "tuning",
+	}
+	if !enabled {
+		entry.PolicyImpossible = true
+		entry.PolicyReason = "disabled_by_tuning"
+	}
+
+	if existing != nil {
+		*existing = entry
+		return cons
+	}
+	return append(cons, entry)
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {

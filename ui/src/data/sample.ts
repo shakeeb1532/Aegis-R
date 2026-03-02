@@ -168,6 +168,15 @@ export const driftSignals = [
   "New device joined to tenant"
 ];
 
+export const tuningSamples = [
+  {
+    rule_id: "TA0006.SIGNIN_SUCCESS",
+    enabled: true,
+    min_confidence: 0.6,
+    require_approval: true
+  }
+];
+
 export const graphSample: GraphResponse = {
   threads: [
     {

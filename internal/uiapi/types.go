@@ -156,3 +156,10 @@ type FeedbackRequest struct {
 	AnalystLabel  string `json:"analyst_label"`
 	Comment       string `json:"comment,omitempty"`
 }
+
+type RuleTuning struct {
+	RuleID          string  `json:"rule_id"`
+	Enabled         bool    `json:"enabled"`
+	MinConfidence   float64 `json:"min_confidence"`
+	RequireApproval bool    `json:"require_approval"`
+}

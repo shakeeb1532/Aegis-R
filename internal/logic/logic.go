@@ -777,6 +777,30 @@ func ApplyConstraints(rep *model.ReasoningReport, constraints []governance.Reaso
 				}
 				overridden = true
 			}
+			if c.DisableRule {
+				r.PolicyImpossible = true
+				r.PolicyReason = "disabled_by_tuning"
+				r.Feasible = false
+				r.MissingEvidence = nil
+				r.ReasonCode = "rule_disabled"
+				r.Explanation += " Rule disabled by tuning."
+				overridden = true
+			}
+			if c.MinConfidence > 0 && r.Confidence < c.MinConfidence {
+				r.PolicyImpossible = true
+				r.PolicyReason = fmt.Sprintf("confidence %.2f below tuned minimum %.2f", r.Confidence, c.MinConfidence)
+				r.Feasible = false
+				r.MissingEvidence = nil
+				r.ReasonCode = "min_confidence"
+				r.Explanation += " Confidence below tuned minimum."
+				overridden = true
+			}
+			if c.RequireApproval && r.Feasible && !r.PolicyImpossible {
+				r.DecisionLabel = "keep"
+				r.ReasonCode = "approval_required"
+				r.Explanation += " Approval required by tuning."
+				overridden = true
+			}
 			for _, req := range c.RequireEvidence {
 				found := false
 				for _, ev := range r.SupportingEventIDs {
