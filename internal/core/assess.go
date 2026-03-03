@@ -163,6 +163,7 @@ func AssessWithMetrics(events []model.Event, rules []logic.Rule, environment env
 
 const decisionCacheTTL = 24 * time.Hour
 const threadWindow = 2 * time.Hour
+const decisionCacheMaxEntries = 5000
 
 func applyDecisionCacheAndThreads(rep *model.ReasoningReport, events []model.Event, st *state.AttackState, reqs map[string][]string, index map[string][]model.Event) {
 	if st.DecisionCache == nil {
@@ -228,6 +229,36 @@ func applyDecisionCacheAndThreads(rep *model.ReasoningReport, events []model.Eve
 		if threadID != "" {
 			upsertTicket(st, threadID, host, principal, r)
 		}
+	}
+	pruneDecisionCache(st.DecisionCache, now)
+}
+
+func pruneDecisionCache(cache state.DecisionCache, now time.Time) {
+	if len(cache) == 0 {
+		return
+	}
+	for key, entry := range cache {
+		if now.Sub(entry.UpdatedAt) > decisionCacheTTL {
+			delete(cache, key)
+		}
+	}
+	if len(cache) <= decisionCacheMaxEntries {
+		return
+	}
+	type item struct {
+		key string
+		at  time.Time
+	}
+	items := make([]item, 0, len(cache))
+	for k, v := range cache {
+		items = append(items, item{key: k, at: v.UpdatedAt})
+	}
+	sort.Slice(items, func(i, j int) bool {
+		return items[i].at.Before(items[j].at)
+	})
+	excess := len(items) - decisionCacheMaxEntries
+	for i := 0; i < excess; i++ {
+		delete(cache, items[i].key)
 	}
 }
 

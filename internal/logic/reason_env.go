@@ -66,9 +66,9 @@ func ReasonWithEnvAndMetricsWithConfig(
 		if metrics != nil {
 			metrics.IncRules(1)
 		}
-		missing := []model.EvidenceRequirement{}
-		supporting := []model.Event{}
-		supportingIDs := []string{}
+		missing := make([]model.EvidenceRequirement, 0, len(rule.Requirements))
+		supporting := make([]model.Event, 0, len(rule.Requirements))
+		supportingIDs := make([]string, 0, len(rule.Requirements))
 		for _, req := range rule.Requirements {
 			if len(index[req.Type]) == 0 {
 				missing = append(missing, req)
@@ -198,7 +198,8 @@ func ReasonWithEnvAndMetricsWithConfig(
 		}
 
 		narrative = append(narrative, narrativeLine(rule, feasible, precondOK, missing))
-		results = append(results, model.RuleResult{
+		rr := ruleResultPool.Get().(*model.RuleResult)
+		*rr = model.RuleResult{
 			RuleID:             rule.ID,
 			Name:               name,
 			Feasible:           feasible,
@@ -216,7 +217,10 @@ func ReasonWithEnvAndMetricsWithConfig(
 			CausalError:        causalErrMsg,
 			NecessaryCauses:    necessaryCauses,
 			NecessaryCauseSets: necessaryCauseSets,
-		})
+		}
+		results = append(results, *rr)
+		*rr = model.RuleResult{}
+		ruleResultPool.Put(rr)
 	}
 
 	return model.ReasoningReport{
