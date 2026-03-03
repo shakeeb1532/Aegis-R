@@ -25,6 +25,8 @@ docker load -i aman-sidecar_pilot.tar
 
 ## 3) Customer runs the sidecar
 
+### Option A — one-liner
+
 ```bash
 docker run --rm \
   -e ENTRA_TENANT_ID="..." \
@@ -35,6 +37,26 @@ docker run --rm \
   -e WINDOW_MINUTES="15" \
   -e SLEEP_SECONDS="60" \
   aman-sidecar:pilot
+```
+
+### Option B — docker-compose (recommended for pilots)
+
+Create a `.env` file in the same folder:
+
+```env
+ENTRA_TENANT_ID=...
+ENTRA_CLIENT_ID=...
+ENTRA_CLIENT_SECRET=...
+AMAN_INGEST_URL=https://your-aman-host:8080/v1/ingest?schema=native
+AMAN_INGEST_API_KEY=your-ingest-key
+WINDOW_MINUTES=15
+SLEEP_SECONDS=60
+```
+
+Run:
+
+```bash
+docker compose -f deploy/sidecar/docker-compose.yml up -d
 ```
 
 The sidecar will:

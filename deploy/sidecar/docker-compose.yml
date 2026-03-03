@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  aman-sidecar:
+    image: aman-sidecar:pilot
+    restart: unless-stopped
+    environment:
+      ENTRA_TENANT_ID: "${ENTRA_TENANT_ID}"
+      ENTRA_CLIENT_ID: "${ENTRA_CLIENT_ID}"
+      ENTRA_CLIENT_SECRET: "${ENTRA_CLIENT_SECRET}"
+      AMAN_INGEST_URL: "${AMAN_INGEST_URL}"
+      AMAN_INGEST_API_KEY: "${AMAN_INGEST_API_KEY}"
+      WINDOW_MINUTES: "${WINDOW_MINUTES:-15}"
+      SLEEP_SECONDS: "${SLEEP_SECONDS:-60}"
