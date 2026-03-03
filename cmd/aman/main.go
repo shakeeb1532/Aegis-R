@@ -452,6 +452,7 @@ func usage() {
 	fmt.Println("  system demo-pack [-outdir docs/demo_pack] [-rules data/rules.json]")
 	fmt.Println("  system drift-quickstart [-outdir data/inventory]")
 	fmt.Println("  system rule-lint [-rules data/rules.json] [-format text|json|md] [-out docs/rule_lint.md]")
+	fmt.Println("  system throughput-bench [-events 10000] [-duration 60s] [-rules data/rules.json] [-env data/env.json] [-out docs/throughput_report.json]")
 	fmt.Println("  graph killchain|blast-radius|controls|identity-pivots|timelapse|evidence-confidence -state data/state.json [-env data/env.json] [-format text|mermaid]")
 	fmt.Println("  system nist -rules data/rules.json [-out nist.json]")
 	fmt.Println("  system killchain -rules data/rules.json [-out killchain.json]")
@@ -3102,7 +3103,7 @@ func handleAudit(args []string) {
 
 func handleSystem(args []string) {
 	if len(args) == 0 {
-		fatal(errors.New("system requires a subcommand: status|config|health|coverage|nist|killchain|confidence|engines|pilot-metrics|integration-readiness|integration-quickstart|noisegraph-quickstart|roi-scorecard|demo-pack|rule-lint|drift-quickstart"))
+		fatal(errors.New("system requires a subcommand: status|config|health|coverage|nist|killchain|confidence|engines|pilot-metrics|integration-readiness|integration-quickstart|noisegraph-quickstart|roi-scorecard|demo-pack|rule-lint|drift-quickstart|throughput-bench"))
 	}
 	switch args[0] {
 	case "status":
@@ -3501,6 +3502,8 @@ WantedBy=multi-user.target
 				writeText(*outPath, renderRuleLintMarkdown(report))
 			}
 		}
+	case "throughput-bench":
+		handleThroughputBench(args[1:])
 	case "coverage":
 		fs := flag.NewFlagSet("system coverage", flag.ExitOnError)
 		rulesPath := fs.String("rules", "data/rules.json", "rules json")

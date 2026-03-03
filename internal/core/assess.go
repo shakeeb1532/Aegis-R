@@ -164,6 +164,7 @@ func AssessWithMetrics(events []model.Event, rules []logic.Rule, environment env
 const decisionCacheTTL = 24 * time.Hour
 const threadWindow = 2 * time.Hour
 const decisionCacheMaxEntries = 5000
+const maxThreadsPerWindow = 2000
 
 func applyDecisionCacheAndThreads(rep *model.ReasoningReport, events []model.Event, st *state.AttackState, reqs map[string][]string, index map[string][]model.Event) {
 	if st.DecisionCache == nil {
@@ -231,6 +232,7 @@ func applyDecisionCacheAndThreads(rep *model.ReasoningReport, events []model.Eve
 		}
 	}
 	pruneDecisionCache(st.DecisionCache, now)
+	pruneThreadsAndTickets(st, now)
 }
 
 func pruneDecisionCache(cache state.DecisionCache, now time.Time) {
@@ -260,6 +262,33 @@ func pruneDecisionCache(cache state.DecisionCache, now time.Time) {
 	for i := 0; i < excess; i++ {
 		delete(cache, items[i].key)
 	}
+}
+
+func pruneThreadsAndTickets(st *state.AttackState, now time.Time) {
+	if len(st.Threads) == 0 {
+		return
+	}
+	if len(st.Threads) > maxThreadsPerWindow {
+		sort.Slice(st.Threads, func(i, j int) bool {
+			return st.Threads[i].LastSeen.Before(st.Threads[j].LastSeen)
+		})
+		st.Threads = st.Threads[len(st.Threads)-maxThreadsPerWindow:]
+	}
+	if len(st.Tickets) == 0 {
+		return
+	}
+	threadIDs := map[string]bool{}
+	for _, t := range st.Threads {
+		threadIDs[t.ID] = true
+	}
+	tickets := st.Tickets[:0]
+	for _, tk := range st.Tickets {
+		if !threadIDs[tk.ThreadID] {
+			continue
+		}
+		tickets = append(tickets, tk)
+	}
+	st.Tickets = tickets
 }
 
 func decisionLabel(r *model.RuleResult, host string, principal string) (string, string) {
