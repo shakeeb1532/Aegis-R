@@ -148,6 +148,13 @@ type CountItem struct {
 	Count int    `json:"count"`
 }
 
+type HeaderResponse struct {
+	SessionID     string `json:"session_id"`
+	Integrity     string `json:"integrity"`
+	IntegrityNote string `json:"integrity_note,omitempty"`
+	StartedAt     string `json:"started_at,omitempty"`
+}
+
 type FeedbackRequest struct {
 	DecisionID    string `json:"decision_id"`
 	DecisionTitle string `json:"decision_title,omitempty"`

@@ -1,6 +1,6 @@
 {
   "total": 364,
-  "accuracy": 1,
+  "accuracy": 0.9945054945054945,
   "by_class": {
     "feasible": {
       "tp": 122,
@@ -10,17 +10,17 @@
       "recall": 1
     },
     "impossible": {
-      "tp": 8,
+      "tp": 6,
       "fp": 0,
-      "fn": 0,
+      "fn": 2,
       "precision": 1,
-      "recall": 1
+      "recall": 0.75
     },
     "incomplete": {
       "tp": 234,
-      "fp": 0,
+      "fp": 2,
       "fn": 0,
-      "precision": 1,
+      "precision": 0.9915254237288136,
       "recall": 1
     }
   },
@@ -133,7 +133,7 @@
     "TA0006.STEAL_APP_TOKEN": 1,
     "TA0006.STEAL_WEB_SESSION": 1,
     "TA0006.UNSECURED_CREDS": 1,
-    "TA0006.VALID_ACCOUNTS": 1,
+    "TA0006.VALID_ACCOUNTS": 0.8571428571428571,
     "TA0007.ACCOUNT_DISCOVERY": 1,
     "TA0007.ACCOUNT_POLICY_DISCOVERY": 1,
     "TA0007.APP_WIN_DISC": 1,
@@ -168,7 +168,7 @@
     "TA0008.CLOUD_PIVOT": 1,
     "TA0008.EXPLOIT_REMOTE_SVC": 1,
     "TA0008.INTERNAL_SPEARPHISH": 1,
-    "TA0008.LATERAL": 1,
+    "TA0008.LATERAL": 0.9,
     "TA0008.LATERAL_TOOL_XFER": 1,
     "TA0008.SOFTWARE_DEPLOY": 1,
     "TA0008.TAINT_SHARED": 1,
@@ -243,5 +243,18 @@
     "TA0043.SEARCH_OPEN_SITES": 1,
     "TA0043.SEARCH_VICTIM_WEB": 1
   },
-  "mismatches": []
+  "mismatches": [
+    {
+      "scenario_id": "contradiction-valid-accounts",
+      "rule_id": "TA0006.VALID_ACCOUNTS",
+      "expected": "impossible",
+      "actual": "incomplete"
+    },
+    {
+      "scenario_id": "contradiction-lateral",
+      "rule_id": "TA0008.LATERAL",
+      "expected": "impossible",
+      "actual": "incomplete"
+    }
+  ]
 }

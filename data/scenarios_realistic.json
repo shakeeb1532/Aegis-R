@@ -334,7 +334,7 @@
           "rule_id": "TA0002.LOLBIN_CHAIN",
           "decision_label": "keep",
           "ticket_status": "open",
-          "reason_code": "evidence_gap"
+          "reason_code": "precond_missing"
         }
       ]
     },
@@ -6888,7 +6888,7 @@
     },
     {
       "id": "realistic-276",
-      "description": "Valid Accounts – External",
+      "description": "Valid Accounts \u2013 External",
       "events": [
         {
           "details": {},
@@ -6944,7 +6944,7 @@
     },
     {
       "id": "realistic-278",
-      "description": "Command \u0026 Scripting – PowerShell",
+      "description": "Command & Scripting \u2013 PowerShell",
       "events": [
         {
           "details": {},
@@ -6988,7 +6988,7 @@
     },
     {
       "id": "realistic-279",
-      "description": "Command \u0026 Scripting – Bash/Shell",
+      "description": "Command & Scripting \u2013 Bash/Shell",
       "events": [
         {
           "details": {},
@@ -7032,7 +7032,7 @@
     },
     {
       "id": "realistic-280",
-      "description": "Command \u0026 Scripting – Python",
+      "description": "Command & Scripting \u2013 Python",
       "events": [
         {
           "details": {},
@@ -7076,7 +7076,7 @@
     },
     {
       "id": "realistic-281",
-      "description": "Command \u0026 Scripting – Visual Basic/VBA",
+      "description": "Command & Scripting \u2013 Visual Basic/VBA",
       "events": [
         {
           "details": {},
@@ -7120,7 +7120,7 @@
     },
     {
       "id": "realistic-282",
-      "description": "Command \u0026 Scripting – JavaScript/JScript",
+      "description": "Command & Scripting \u2013 JavaScript/JScript",
       "events": [
         {
           "details": {},
@@ -7164,7 +7164,7 @@
     },
     {
       "id": "realistic-283",
-      "description": "Command \u0026 Scripting – Cloud API",
+      "description": "Command & Scripting \u2013 Cloud API",
       "events": [
         {
           "details": {},
@@ -7428,7 +7428,7 @@
     },
     {
       "id": "realistic-289",
-      "description": "Scheduled Task/Job – Execution",
+      "description": "Scheduled Task/Job \u2013 Execution",
       "events": [
         {
           "details": {},
@@ -7516,7 +7516,7 @@
     },
     {
       "id": "realistic-291",
-      "description": "System Services – Service Execution",
+      "description": "System Services \u2013 Service Execution",
       "events": [
         {
           "details": {},
@@ -7560,7 +7560,7 @@
     },
     {
       "id": "realistic-292",
-      "description": "User Execution – Malicious File",
+      "description": "User Execution \u2013 Malicious File",
       "events": [
         {
           "details": {},
@@ -7604,7 +7604,7 @@
     },
     {
       "id": "realistic-293",
-      "description": "User Execution – Malicious Link",
+      "description": "User Execution \u2013 Malicious Link",
       "events": [
         {
           "details": {},
@@ -7912,7 +7912,7 @@
     },
     {
       "id": "realistic-300",
-      "description": "Hijack Execution Flow – DLL Sideload",
+      "description": "Hijack Execution Flow \u2013 DLL Sideload",
       "events": [
         {
           "details": {},
@@ -8000,7 +8000,7 @@
     },
     {
       "id": "realistic-302",
-      "description": "Modify Authentication Process – Persistence",
+      "description": "Modify Authentication Process \u2013 Persistence",
       "events": [
         {
           "details": {},
@@ -8088,7 +8088,7 @@
     },
     {
       "id": "realistic-304",
-      "description": "Scheduled Task – Persistence",
+      "description": "Scheduled Task \u2013 Persistence",
       "events": [
         {
           "details": {},
@@ -8132,7 +8132,7 @@
     },
     {
       "id": "realistic-305",
-      "description": "Server Software Component – Webshell",
+      "description": "Server Software Component \u2013 Webshell",
       "events": [
         {
           "details": {},
@@ -8220,7 +8220,7 @@
     },
     {
       "id": "realistic-307",
-      "description": "Valid Accounts – Cloud Account Persistence",
+      "description": "Valid Accounts \u2013 Cloud Account Persistence",
       "events": [
         {
           "details": {},
@@ -8264,7 +8264,7 @@
     },
     {
       "id": "realistic-308",
-      "description": "Abuse Elevation – UAC Bypass",
+      "description": "Abuse Elevation \u2013 UAC Bypass",
       "events": [
         {
           "details": {},
@@ -8308,7 +8308,7 @@
     },
     {
       "id": "realistic-309",
-      "description": "Abuse Elevation – Sudo/Sudoers",
+      "description": "Abuse Elevation \u2013 Sudo/Sudoers",
       "events": [
         {
           "details": {},
@@ -8352,7 +8352,7 @@
     },
     {
       "id": "realistic-310",
-      "description": "Abuse Elevation – Temporary Cloud Access",
+      "description": "Abuse Elevation \u2013 Temporary Cloud Access",
       "events": [
         {
           "details": {},
@@ -8528,7 +8528,7 @@
     },
     {
       "id": "realistic-314",
-      "description": "Process Injection – Privilege Escalation",
+      "description": "Process Injection \u2013 Privilege Escalation",
       "events": [
         {
           "details": {},
@@ -8616,7 +8616,7 @@
     },
     {
       "id": "realistic-316",
-      "description": "Valid Accounts – Privilege Escalation",
+      "description": "Valid Accounts \u2013 Privilege Escalation",
       "events": [
         {
           "details": {},
@@ -8660,7 +8660,7 @@
     },
     {
       "id": "realistic-317",
-      "description": "Access Token Manipulation – Evasion",
+      "description": "Access Token Manipulation \u2013 Evasion",
       "events": [
         {
           "details": {},
@@ -8704,7 +8704,7 @@
     },
     {
       "id": "realistic-318",
-      "description": "BITS Jobs – Evasion",
+      "description": "BITS Jobs \u2013 Evasion",
       "events": [
         {
           "details": {},
@@ -8968,7 +8968,7 @@
     },
     {
       "id": "realistic-324",
-      "description": "Forge Web Credentials – SAML/OAuth",
+      "description": "Forge Web Credentials \u2013 SAML/OAuth",
       "events": [
         {
           "details": {},
@@ -9056,7 +9056,7 @@
     },
     {
       "id": "realistic-326",
-      "description": "Hijack Execution Flow – Evasion",
+      "description": "Hijack Execution Flow \u2013 Evasion",
       "events": [
         {
           "details": {},
@@ -9232,7 +9232,7 @@
     },
     {
       "id": "realistic-330",
-      "description": "Process Injection – Evasion",
+      "description": "Process Injection \u2013 Evasion",
       "events": [
         {
           "details": {},
@@ -9408,7 +9408,7 @@
     },
     {
       "id": "realistic-334",
-      "description": "Signed Binary Proxy – rundll32/mshta/certutil",
+      "description": "Signed Binary Proxy \u2013 rundll32/mshta/certutil",
       "events": [
         {
           "details": {},
@@ -9540,7 +9540,7 @@
     },
     {
       "id": "realistic-337",
-      "description": "Signed Binary – Rundll32",
+      "description": "Signed Binary \u2013 Rundll32",
       "events": [
         {
           "details": {},
@@ -9832,7 +9832,7 @@
     },
     {
       "id": "realistic-344",
-      "description": "Forge Kerberos Tickets – Golden Ticket",
+      "description": "Forge Kerberos Tickets \u2013 Golden Ticket",
       "events": [
         {
           "details": {},
@@ -9868,7 +9868,7 @@
     },
     {
       "id": "realistic-345",
-      "description": "Kerberoasting – SPN Ticket Request",
+      "description": "Kerberoasting \u2013 SPN Ticket Request",
       "events": [
         {
           "details": {},
@@ -10120,7 +10120,7 @@
     },
     {
       "id": "realistic-352",
-      "description": "Unsecured Credentials – Files/Registry",
+      "description": "Unsecured Credentials \u2013 Files/Registry",
       "events": [
         {
           "details": {},
@@ -10568,7 +10568,7 @@
     },
     {
       "id": "realistic-364",
-      "description": "Network Sniffing – Discovery",
+      "description": "Network Sniffing \u2013 Discovery",
       "events": [
         {
           "details": {},
@@ -11504,7 +11504,7 @@
     },
     {
       "id": "realistic-392",
-      "description": "Input Capture – Keylogging",
+      "description": "Input Capture \u2013 Keylogging",
       "events": [
         {
           "details": {},
@@ -11676,7 +11676,7 @@
     },
     {
       "id": "realistic-397",
-      "description": "Dynamic Resolution – DGA",
+      "description": "Dynamic Resolution \u2013 DGA",
       "events": [
         {
           "details": {},
@@ -11712,7 +11712,7 @@
     },
     {
       "id": "realistic-398",
-      "description": "Encrypted Channel – Non-Standard",
+      "description": "Encrypted Channel \u2013 Non-Standard",
       "events": [
         {
           "details": {},
@@ -12036,7 +12036,7 @@
     },
     {
       "id": "realistic-407",
-      "description": "Web Service – C2 via Cloud Platform",
+      "description": "Web Service \u2013 C2 via Cloud Platform",
       "events": [
         {
           "details": {},
@@ -12108,7 +12108,7 @@
     },
     {
       "id": "realistic-409",
-      "description": "Exfiltration Over Alt Protocol – DNS",
+      "description": "Exfiltration Over Alt Protocol \u2013 DNS",
       "events": [
         {
           "details": {},
@@ -12312,7 +12312,7 @@
     },
     {
       "id": "realistic-414",
-      "description": "Data Manipulation – Stored",
+      "description": "Data Manipulation \u2013 Stored",
       "events": [
         {
           "details": {},
@@ -12348,7 +12348,7 @@
     },
     {
       "id": "realistic-415",
-      "description": "Data Manipulation – Runtime",
+      "description": "Data Manipulation \u2013 Runtime",
       "events": [
         {
           "details": {},
@@ -12384,7 +12384,7 @@
     },
     {
       "id": "realistic-416",
-      "description": "Defacement – External Website",
+      "description": "Defacement \u2013 External Website",
       "events": [
         {
           "details": {},
@@ -12420,7 +12420,7 @@
     },
     {
       "id": "realistic-417",
-      "description": "Defacement – Internal",
+      "description": "Defacement \u2013 Internal",
       "events": [
         {
           "details": {},
@@ -12636,7 +12636,7 @@
     },
     {
       "id": "realistic-423",
-      "description": "Active Scanning – Wordlist Scanning",
+      "description": "Active Scanning \u2013 Wordlist Scanning",
       "events": [
         {
           "details": {},
@@ -12832,7 +12832,7 @@
     },
     {
       "id": "realistic-430",
-      "description": "Pre-OS Boot – Bootkit/UEFI",
+      "description": "Pre-OS Boot \u2013 Bootkit/UEFI",
       "events": [
         {
           "details": {},
@@ -12876,7 +12876,7 @@
     },
     {
       "id": "realistic-431",
-      "description": "Traffic Signaling – Port Knocking",
+      "description": "Traffic Signaling \u2013 Port Knocking",
       "events": [
         {
           "details": {},
@@ -12920,7 +12920,7 @@
     },
     {
       "id": "realistic-432",
-      "description": "Traffic Signaling – Evasion",
+      "description": "Traffic Signaling \u2013 Evasion",
       "events": [
         {
           "details": {},

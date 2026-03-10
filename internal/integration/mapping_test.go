@@ -211,3 +211,136 @@ func toLike(events []model.Event) []EventLike {
 	}
 	return out
 }
+
+func TestMappingCloudTrailBlockers(t *testing.T) {
+	data := []byte(`[
+	  {
+	    "eventID": "ct-b1",
+	    "eventTime": "2026-02-06T12:37:00Z",
+	    "eventSource": "cloudtrail.amazonaws.com",
+	    "eventName": "StopLogging",
+	    "awsRegion": "us-east-1",
+	    "recipientAccountId": "123456789012",
+	    "userIdentity": {"userName": "secops"},
+	    "errorCode": "AccessDenied",
+	    "errorMessage": "Access denied"
+	  },
+	  {
+	    "eventID": "ct-b2",
+	    "eventTime": "2026-02-06T12:38:00Z",
+	    "eventSource": "iam.amazonaws.com",
+	    "eventName": "AttachRolePolicy",
+	    "awsRegion": "us-east-1",
+	    "recipientAccountId": "123456789012",
+	    "userIdentity": {"userName": "secops"},
+	    "errorCode": "AccessDenied",
+	    "errorMessage": "User is not authorized to perform iam:AttachRolePolicy"
+	  }
+	]`)
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaCloudTrail})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	assertHasType(t, toLike(events), "logging_verified_intact")
+	assertHasType(t, toLike(events), "admin_action_denied")
+}
+
+func TestMappingSentinelBlockers(t *testing.T) {
+	data := []byte(`[
+	  {
+	    "TimeGenerated": "2026-02-06T12:40:00Z",
+	    "Computer": "win-02",
+	    "AccountName": "jill",
+	    "SourceIP": "10.0.0.15",
+	    "DestinationIP": "10.0.0.16",
+	    "DeviceAction": "ExecutionBlocked",
+	    "Activity": "ExecutionBlocked",
+	    "Protocol": "tcp",
+	    "Fields": {"ProcessName": "mshta.exe", "Reason": "AppLocker blocked execution"}
+	  },
+	  {
+	    "TimeGenerated": "2026-02-06T12:41:00Z",
+	    "Computer": "win-02",
+	    "AccountName": "jill",
+	    "SourceIP": "10.0.0.15",
+	    "DestinationIP": "10.0.0.16",
+	    "DeviceAction": "RegistryWriteBlocked",
+	    "Activity": "RegistryWriteBlocked",
+	    "Protocol": "tcp",
+	    "Fields": {"RegistryKey": "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run", "Result": "Blocked"}
+	  }
+	]`)
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaSentinelCSL})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	assertHasType(t, toLike(events), "application_whitelisted")
+	assertHasType(t, toLike(events), "registry_write_blocked")
+}
+
+func TestMappingElasticECSBlockers(t *testing.T) {
+	data := []byte(`[
+	  {
+	    "@timestamp": "2026-02-06T12:20:00Z",
+	    "event": {"id": "ecs-b1", "action": "execution_blocked", "category": ["process"], "type": ["denied"], "kind": "alert"},
+	    "host": {"name": "host-1"},
+	    "user": {"name": "frank"},
+	    "message": "AppLocker blocked execution of mshta.exe",
+	    "labels": {"status": "blocked"}
+	  },
+	  {
+	    "@timestamp": "2026-02-06T12:21:00Z",
+	    "event": {"id": "ecs-b2", "action": "firewall_outbound_denied", "category": ["network"], "type": ["denied"], "kind": "alert"},
+	    "host": {"name": "host-1"},
+	    "user": {"name": "frank"},
+	    "message": "Firewall outbound blocked to 198.51.100.2",
+	    "labels": {"status": "denied"}
+	  }
+	]`)
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaElasticECS})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	assertHasType(t, toLike(events), "application_whitelisted")
+	assertHasType(t, toLike(events), "firewall_block_outbound")
+}
+
+func TestMappingSplunkBlockers(t *testing.T) {
+	auth := []byte(`[
+	  {
+	    "_time": "2026-02-06T12:25:00Z",
+	    "user": "gina",
+	    "src": "198.51.100.5",
+	    "dest": "idp-02",
+	    "action": "access denied",
+	    "app": "okta",
+	    "signature": "admin action denied",
+	    "fields": {"message": "admin action denied by policy"}
+	  }
+	]`)
+	events, err := IngestEvents(auth, IngestOptions{Schema: SchemaSplunkAuth})
+	if err != nil {
+		t.Fatalf("ingest auth: %v", err)
+	}
+	assertHasType(t, toLike(events), "admin_action_denied")
+
+	net := []byte(`[
+	  {
+	    "_time": "2026-02-06T12:28:00Z",
+	    "src": "10.0.0.5",
+	    "dest": "app-10",
+	    "src_port": 51515,
+	    "dest_port": 443,
+	    "transport": "tcp",
+	    "action": "firewall outbound blocked",
+	    "bytes_in": 1024,
+	    "bytes_out": 250,
+	    "fields": {"sensor": "netflow"}
+	  }
+	]`)
+	events, err = IngestEvents(net, IngestOptions{Schema: SchemaSplunkNet})
+	if err != nil {
+		t.Fatalf("ingest net: %v", err)
+	}
+	assertHasType(t, toLike(events), "firewall_block_outbound")
+}

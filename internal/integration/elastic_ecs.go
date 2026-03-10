@@ -80,6 +80,9 @@ func classifyECS(e elasticECSEvent) string {
 	types := e.Event.Type
 	action := strings.ToLower(e.Event.Action)
 	message := strings.ToLower(e.Message)
+	if blocker := blockerTypeFromText(action, message, fieldStringAny(e.Labels, "result", "reason", "status")); blocker != "" {
+		return blocker
+	}
 	if contains(categories, "process") && contains(types, "start") {
 		if containsAny(message, "lsass") {
 			return "lsass_access"

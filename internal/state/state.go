@@ -98,8 +98,12 @@ type Ticket struct {
 }
 
 func New() AttackState {
+	return NewAt(time.Now().UTC())
+}
+
+func NewAt(now time.Time) AttackState {
 	return AttackState{
-		UpdatedAt:           time.Now().UTC(),
+		UpdatedAt:           now,
 		CompromisedHosts:    map[string]bool{},
 		CompromisedUsers:    map[string]bool{},
 		ReachableHosts:      map[string]bool{},

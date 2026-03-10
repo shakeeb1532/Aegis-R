@@ -14,6 +14,7 @@ import {
   evaluations,
   evidenceGaps,
   graphSample,
+  headerSample,
   driftSignals,
   overviewKpis,
   queueItems,
@@ -22,6 +23,7 @@ import {
 } from "../data/sample";
 import { fetchTuning } from "../api/tuning";
 import { RuleTuning } from "../types";
+import { HeaderResponse } from "../api/types";
 
 const overviewFallback: OverviewResponse = {
   kpis: overviewKpis,
@@ -34,66 +36,72 @@ const overviewFallback: OverviewResponse = {
   ]
 };
 
-export function useOverview() {
-  const [data, setData] = useState<OverviewResponse>(overviewFallback);
+type HookState<T> = { data: T; loading: boolean };
+
+function useApiState<T>(path: string, fallback: T): HookState<T> {
+  const [data, setData] = useState<T>(fallback);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    void fetchJson<OverviewResponse>("/v1/overview", overviewFallback).then(setData);
-  }, []);
-  return data;
+    let active = true;
+    setLoading(true);
+    void fetchJson<T>(path, fallback).then((next) => {
+      if (!active) return;
+      setData(next);
+      setLoading(false);
+    });
+    return () => {
+      active = false;
+    };
+  }, [path]);
+  return { data, loading };
+}
+
+export function useOverview() {
+  return useApiState<OverviewResponse>("/v1/overview", overviewFallback);
+}
+
+export function useHeader() {
+  return useApiState<HeaderResponse>("/v1/header", headerSample);
 }
 
 export function useReasoning() {
-  const [data, setData] = useState<ReasoningResponse>(reasoningSamples);
-  useEffect(() => {
-    void fetchJson<ReasoningResponse>("/v1/reasoning", reasoningSamples).then(setData);
-  }, []);
-  return data;
+  return useApiState<ReasoningResponse>("/v1/reasoning", reasoningSamples);
 }
 
 export function useQueue() {
-  const [data, setData] = useState<QueueResponse>(queueItems);
-  useEffect(() => {
-    void fetchJson<QueueResponse>("/v1/queue", queueItems).then(setData);
-  }, []);
-  return data;
+  return useApiState<QueueResponse>("/v1/queue", queueItems);
 }
 
 export function useGovernance() {
-  const [data, setData] = useState<GovernanceResponse>(approvals);
-  useEffect(() => {
-    void fetchJson<GovernanceResponse>("/v1/governance", approvals).then(setData);
-  }, []);
-  return data;
+  return useApiState<GovernanceResponse>("/v1/governance", approvals);
 }
 
 export function useAudit() {
-  const [data, setData] = useState<AuditResponse>(auditItems);
-  useEffect(() => {
-    void fetchJson<AuditResponse>("/v1/audit", auditItems).then(setData);
-  }, []);
-  return data;
+  return useApiState<AuditResponse>("/v1/audit", auditItems);
 }
 
 export function useEvaluations() {
-  const [data, setData] = useState<EvaluationsResponse>(evaluations);
-  useEffect(() => {
-    void fetchJson<EvaluationsResponse>("/v1/evaluations", evaluations).then(setData);
-  }, []);
-  return data;
+  return useApiState<EvaluationsResponse>("/v1/evaluations", evaluations);
 }
 
 export function useGraph() {
-  const [data, setData] = useState(graphSample);
-  useEffect(() => {
-    void fetchJson("/v1/graph", graphSample).then(setData);
-  }, []);
-  return data;
+  return useApiState("/v1/graph", graphSample);
 }
 
 export function useTuning() {
   const [data, setData] = useState<RuleTuning[]>(tuningSamples);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    void fetchTuning().then(setData);
+    let active = true;
+    setLoading(true);
+    void fetchTuning().then((next) => {
+      if (!active) return;
+      setData(next);
+      setLoading(false);
+    });
+    return () => {
+      active = false;
+    };
   }, []);
-  return data;
+  return { data, loading };
 }

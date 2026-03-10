@@ -98,11 +98,15 @@ func Update(envelopes []model.Envelope, st *state.AttackState) {
 }
 
 func ApplyWindowAndDecay(st *state.AttackState, window time.Duration) {
+	ApplyWindowAndDecayAt(st, time.Now().UTC(), window)
+}
+
+func ApplyWindowAndDecayAt(st *state.AttackState, now time.Time, window time.Duration) {
 	events := make([]ProgressEventLike, 0, len(st.Progression))
 	for i := range st.Progression {
 		events = append(events, &st.Progression[i])
 	}
-	events = ApplyDecay(events, time.Now().UTC(), window)
+	events = ApplyDecay(events, now, window)
 	// prune
 	pruned := []state.ProgressEvent{}
 	for _, e := range events {

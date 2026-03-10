@@ -1,5 +1,12 @@
 export type Verdict = "CONFIRMED" | "POSSIBLE" | "INCOMPLETE" | "IMPOSSIBLE";
 
+export type HeaderStatus = {
+  session_id: string;
+  integrity: "verified" | "unknown" | "broken";
+  integrity_note?: string;
+  started_at?: string;
+};
+
 export type ReasoningItem = {
   id: string;
   title: string;
@@ -24,7 +31,8 @@ export type ReasoningItem = {
   summary: string;
   evidence: string[];
   gaps: string[];
-  nextMoves: string[];
+  nextMoves?: string[];
+  next_moves?: string[];
   updated: string;
 };
 

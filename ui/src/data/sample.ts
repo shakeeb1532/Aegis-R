@@ -1,5 +1,12 @@
 import { Approval, AuditItem, Evaluation, GraphResponse, QueueItem, ReasoningItem } from "../types";
 
+export const headerSample = {
+  session_id: "AMAN-LOCAL",
+  integrity: "unknown",
+  integrity_note: "Awaiting audit bundle verification",
+  started_at: new Date().toISOString()
+} as const;
+
 export const overviewKpis = [
   { label: "Active Threads", value: "4", sub: "Last 24h" },
   { label: "Feasible Findings", value: "9", sub: "3 require review" },

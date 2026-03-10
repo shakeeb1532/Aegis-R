@@ -1047,6 +1047,10 @@
     ],
     "kill_chain": [
       "Exploitation"
+    ],
+    "contradictions": [
+      "process_blocked",
+      "application_whitelisted"
     ]
   },
   {
@@ -1753,7 +1757,8 @@
     ],
     "kill_chain": [
       "Installation"
-    ]
+    ],
+    "requires_context": "identity"
   },
   {
     "id": "TA0003.MOD_AUTH_PERSIST",
@@ -1842,6 +1847,16 @@
     ],
     "kill_chain": [
       "Installation"
+    ],
+    "contradictions": [
+      "registry_write_blocked",
+      "applocker_block"
+    ],
+    "requires_context": "host",
+    "requires_reachability": true,
+    "target_event_types": [
+      "registry_run_key",
+      "scheduled_task"
     ]
   },
   {
@@ -1892,6 +1907,12 @@
     ],
     "kill_chain": [
       "Installation"
+    ],
+    "requires_context": "host",
+    "requires_reachability": true,
+    "target_event_types": [
+      "registry_run_key",
+      "service_install"
     ]
   },
   {
@@ -2292,7 +2313,9 @@
     ],
     "kill_chain": [
       "Exploitation"
-    ]
+    ],
+    "requires_context": "identity",
+    "requires_high_priv": true
   },
   {
     "id": "TA0004.DOMAIN_POLICY_MOD",
@@ -2405,7 +2428,8 @@
     ],
     "kill_chain": [
       "Exploitation"
-    ]
+    ],
+    "requires_context": "identity"
   },
   {
     "id": "TA0004.PRIVESCA",
@@ -2453,7 +2477,12 @@
     ],
     "kill_chain": [
       "Exploitation"
-    ]
+    ],
+    "contradictions": [
+      "privilege_escalation_blocked",
+      "admin_action_denied"
+    ],
+    "requires_high_priv": true
   },
   {
     "id": "TA0004.PROC_INJECTION_PE",
@@ -2686,7 +2715,8 @@
     ],
     "kill_chain": [
       "Actions"
-    ]
+    ],
+    "requires_high_priv": true
   },
   {
     "id": "TA0005.BITS_JOBS_EV",
@@ -3157,7 +3187,8 @@
     ],
     "kill_chain": [
       "Actions"
-    ]
+    ],
+    "requires_high_priv": true
   },
   {
     "id": "TA0005.INDICATOR_REMOVAL",
@@ -3286,7 +3317,11 @@
     ],
     "kill_chain": [
       "Actions"
-    ]
+    ],
+    "contradictions": [
+      "logging_verified_intact"
+    ],
+    "requires_high_priv": true
   },
   {
     "id": "TA0005.MASQUERADING",
@@ -3994,6 +4029,9 @@
     ],
     "kill_chain": [
       "Exploitation"
+    ],
+    "contradictions": [
+      "mfa_success"
     ]
   },
   {
@@ -4111,7 +4149,8 @@
     ],
     "kill_chain": [
       "Exploitation"
-    ]
+    ],
+    "requires_high_priv": true
   },
   {
     "id": "TA0006.EXPLOIT_CRED_ACCESS",
@@ -4222,7 +4261,8 @@
     ],
     "kill_chain": [
       "Exploitation"
-    ]
+    ],
+    "requires_context": "identity"
   },
   {
     "id": "TA0006.INSIDER_EXFIL",
@@ -4640,7 +4680,13 @@
     ],
     "kill_chain": [
       "Exploitation"
-    ]
+    ],
+    "contradictions": [
+      "access_denied",
+      "login_denied",
+      "account_locked"
+    ],
+    "requires_context": "identity"
   },
   {
     "id": "TA0007.ACCOUNT_DISCOVERY",
@@ -5792,6 +5838,11 @@
     ],
     "kill_chain": [
       "Exploitation"
+    ],
+    "requires_context": "host",
+    "requires_reachability": true,
+    "target_event_types": [
+      "new_inbound_admin_protocol"
     ]
   },
   {
@@ -5953,6 +6004,16 @@
     ],
     "kill_chain": [
       "Exploitation"
+    ],
+    "contradictions": [
+      "network_logon_failure",
+      "admin_protocol_denied"
+    ],
+    "requires_context": "host",
+    "requires_reachability": true,
+    "target_event_types": [
+      "remote_service_creation",
+      "network_logon"
     ]
   },
   {
@@ -6663,6 +6724,15 @@
     ],
     "kill_chain": [
       "Actions"
+    ],
+    "contradictions": [
+      "access_denied",
+      "egress_blocked"
+    ],
+    "requires_context": "host",
+    "requires_reachability": true,
+    "target_event_types": [
+      "large_outbound_transfer"
     ]
   },
   {
@@ -6781,6 +6851,16 @@
     ],
     "kill_chain": [
       "Actions"
+    ],
+    "contradictions": [
+      "access_denied",
+      "egress_blocked"
+    ],
+    "requires_context": "host",
+    "requires_reachability": true,
+    "target_event_types": [
+      "large_outbound_transfer",
+      "data_staging"
     ]
   },
   {
@@ -6933,6 +7013,10 @@
     ],
     "kill_chain": [
       "Actions"
+    ],
+    "requires_reachability": true,
+    "target_event_types": [
+      "exfil_web_service"
     ]
   },
   {
@@ -7045,6 +7129,12 @@
     ],
     "kill_chain": [
       "C2"
+    ],
+    "requires_context": "host",
+    "requires_reachability": true,
+    "target_event_types": [
+      "app_layer_c2",
+      "beacon_outbound"
     ]
   },
   {
@@ -7095,6 +7185,15 @@
     ],
     "kill_chain": [
       "C2"
+    ],
+    "contradictions": [
+      "firewall_block_outbound",
+      "dns_sinkholed"
+    ],
+    "requires_context": "host",
+    "requires_reachability": true,
+    "target_event_types": [
+      "beacon_outbound"
     ]
   },
   {
@@ -7943,6 +8042,12 @@
     ],
     "kill_chain": [
       "Actions"
+    ],
+    "requires_context": "host",
+    "requires_reachability": true,
+    "target_event_types": [
+      "encrypt_activity",
+      "mass_file_rename"
     ]
   },
   {

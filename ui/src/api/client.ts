@@ -1,19 +1,22 @@
+import { apiKeyHeader, getApiKey as readApiKey } from "./auth";
+
 const base = import.meta.env.VITE_API_BASE || "http://localhost:8081";
-function apiKey() {
-  return (
-    import.meta.env.VITE_API_KEY ||
-    window.localStorage.getItem("amanApiKey") ||
-    window.localStorage.getItem("ingestApiKey") ||
-    ""
-  );
+
+export function getApiBase() {
+  return base;
+}
+
+export function getApiKey() {
+  return readApiKey();
+}
+
+export function apiHeaders() {
+  return apiKeyHeader(readApiKey());
 }
 
 export async function fetchJson<T>(path: string, fallback: T): Promise<T> {
   try {
-    const key = apiKey();
-    const res = await fetch(`${base}${path}`, {
-      headers: key ? { "X-API-Key": key } : undefined
-    });
+    const res = await fetch(`${base}${path}`, { headers: apiHeaders() });
     if (!res.ok) {
       return fallback;
     }

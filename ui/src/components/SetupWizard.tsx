@@ -30,6 +30,15 @@ export function SetupWizard() {
     }
   }, []);
 
+  useEffect(() => {
+    const handler = () => {
+      setStep(0);
+      setOpen(true);
+    };
+    window.addEventListener("aman:openWizard", handler as EventListener);
+    return () => window.removeEventListener("aman:openWizard", handler as EventListener);
+  }, []);
+
   if (!open) {
     return null;
   }

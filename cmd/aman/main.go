@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -171,10 +172,11 @@ type IntegrationQuickstartReport struct {
 }
 
 type RuleLintReport struct {
-	GeneratedAt  time.Time               `json:"generated_at"`
-	RulesPath    string                  `json:"rules_path"`
-	WarningCount int                     `json:"warning_count"`
-	Warnings     []logic.RuleLintWarning `json:"warnings"`
+	GeneratedAt  time.Time                  `json:"generated_at"`
+	RulesPath    string                     `json:"rules_path"`
+	Coverage     logic.RuleBehaviorCoverage `json:"coverage"`
+	WarningCount int                        `json:"warning_count"`
+	Warnings     []logic.RuleLintWarning    `json:"warnings"`
 }
 
 type NoisegraphQuickstartReport struct {
@@ -211,28 +213,54 @@ type DemoPackReport struct {
 	Files                 []string                    `json:"files"`
 }
 
+type DeterminismRun struct {
+	Name           string   `json:"name"`
+	ReportDigest   string   `json:"report_digest"`
+	ManifestDigest string   `json:"manifest_digest"`
+	FeasibleRules  []string `json:"feasible_rules"`
+}
+
+type DeterminismReport struct {
+	GeneratedAt         time.Time        `json:"generated_at"`
+	InputPath           string           `json:"input_path"`
+	EnvPath             string           `json:"env_path"`
+	RulesPath           string           `json:"rules_path"`
+	FixedNow            string           `json:"fixed_now"`
+	SameOrderEqual      bool             `json:"same_order_equal"`
+	ShuffledOrderEqual  bool             `json:"shuffled_order_equal"`
+	StableFeasibleRules bool             `json:"stable_feasible_rules"`
+	Runs                []DeterminismRun `json:"runs"`
+}
+
 type ControlsExport struct {
 	GeneratedAt         time.Time                       `json:"generated_at"`
 	AuditChainVerified  bool                            `json:"audit_chain_verified"`
 	AuditChainError     string                          `json:"audit_chain_error,omitempty"`
 	AuditLifecycle      AuditLifecycleMetadata          `json:"audit_lifecycle"`
 	PolicyLifecycle     PolicyLifecycleMetadata         `json:"policy_lifecycle"`
+	GovernanceLifecycle GovernanceLifecycleMetadata     `json:"governance_lifecycle"`
 	DecisionControls    []DecisionControlLink           `json:"decision_controls"`
 	RuleControlMappings []compliance.RuleControlMapping `json:"rule_control_mappings"`
 	DualApprovals       []DualApprovalSummary           `json:"dual_approvals"`
 }
 
 type AuditLifecycleMetadata struct {
-	AuditLog         string    `json:"audit_log"`
-	AuditEntries     int       `json:"audit_entries"`
-	FirstEntryAt     time.Time `json:"first_entry_at"`
-	LastEntryAt      time.Time `json:"last_entry_at"`
-	LastHash         string    `json:"last_hash,omitempty"`
-	SignedAuditLog   string    `json:"signed_audit_log,omitempty"`
-	SignedEntries    int       `json:"signed_entries"`
-	SignedLastAt     time.Time `json:"signed_last_at"`
-	SignedSignerIDs  []string  `json:"signed_signer_ids,omitempty"`
-	SignedAuditError string    `json:"signed_audit_error,omitempty"`
+	AuditLog              string    `json:"audit_log"`
+	AuditEntries          int       `json:"audit_entries"`
+	FirstEntryAt          time.Time `json:"first_entry_at"`
+	LastEntryAt           time.Time `json:"last_entry_at"`
+	LastHash              string    `json:"last_hash,omitempty"`
+	SignedAuditLog        string    `json:"signed_audit_log,omitempty"`
+	SignedEntries         int       `json:"signed_entries"`
+	SignedLastAt          time.Time `json:"signed_last_at"`
+	SignedSignerIDs       []string  `json:"signed_signer_ids,omitempty"`
+	SignedAuditError      string    `json:"signed_audit_error,omitempty"`
+	LifecycleState        string    `json:"lifecycle_state"`
+	IntegrityModel        string    `json:"integrity_model"`
+	HashAlgorithm         string    `json:"hash_algorithm"`
+	SignatureAlgorithm    string    `json:"signature_algorithm"`
+	VerificationCheckedAt time.Time `json:"verification_checked_at"`
+	RetentionModel        string    `json:"retention_model"`
 }
 
 type PolicyLifecycleMetadata struct {
@@ -243,24 +271,53 @@ type PolicyLifecycleMetadata struct {
 	MinApprovals          int       `json:"min_approvals"`
 	AllowedSignerRoles    []string  `json:"allowed_signer_roles,omitempty"`
 	RequireDualForSignals []string  `json:"require_dual_for_signals,omitempty"`
+	LifecycleState        string    `json:"lifecycle_state"`
+	EvaluationMode        string    `json:"evaluation_mode"`
+	ChangeControl         string    `json:"change_control"`
+	RetentionModel        string    `json:"retention_model"`
 	Error                 string    `json:"error,omitempty"`
 }
 
 type DecisionControlLink struct {
-	DecisionID string   `json:"decision_id"`
-	RuleID     string   `json:"rule_id"`
-	NistCSF    []string `json:"nist_csf,omitempty"`
-	Soc2CC     []string `json:"soc2_cc,omitempty"`
-	ISO27001   []string `json:"iso_27001,omitempty"`
+	DecisionID      string   `json:"decision_id"`
+	DecisionCreated string   `json:"decision_created_at,omitempty"`
+	DecisionHash    string   `json:"decision_hash,omitempty"`
+	RuleID          string   `json:"rule_id"`
+	RuleName        string   `json:"rule_name,omitempty"`
+	Verdict         string   `json:"verdict,omitempty"`
+	DecisionLabel   string   `json:"decision_label,omitempty"`
+	ReasonCode      string   `json:"reason_code,omitempty"`
+	ControlIDs      []string `json:"control_ids,omitempty"`
+	NistCSF         []string `json:"nist_csf,omitempty"`
+	Soc2CC          []string `json:"soc2_cc,omitempty"`
+	ISO27001        []string `json:"iso_27001,omitempty"`
 }
 
 type DualApprovalSummary struct {
-	DecisionID    string   `json:"decision_id"`
-	Required      int      `json:"required"`
-	ValidSigners  int      `json:"valid_signers"`
-	DualApproved  bool     `json:"dual_approved"`
-	SignerIDs     []string `json:"signer_ids"`
-	AnyOktaBypass bool     `json:"any_okta_bypass"`
+	DecisionID         string   `json:"decision_id"`
+	Required           int      `json:"required"`
+	ValidSigners       int      `json:"valid_signers"`
+	DualApproved       bool     `json:"dual_approved"`
+	SignerIDs          []string `json:"signer_ids"`
+	SignerRoles        []string `json:"signer_roles,omitempty"`
+	ApprovalRecords    int      `json:"approval_records"`
+	EarliestApprovalAt string   `json:"earliest_approval_at,omitempty"`
+	LatestApprovalAt   string   `json:"latest_approval_at,omitempty"`
+	Rationales         []string `json:"rationales,omitempty"`
+	TemplateIDs        []string `json:"template_ids,omitempty"`
+	AnyOktaBypass      bool     `json:"any_okta_bypass"`
+}
+
+type GovernanceLifecycleMetadata struct {
+	ApprovalsLog        string    `json:"approvals_log,omitempty"`
+	ApprovalRecords     int       `json:"approval_records"`
+	LifecycleState      string    `json:"lifecycle_state"`
+	DualControlModel    string    `json:"dual_control_model"`
+	ChangeControl       string    `json:"change_control"`
+	ApprovalSignerRoles []string  `json:"approval_signer_roles,omitempty"`
+	EarliestApprovalAt  time.Time `json:"earliest_approval_at"`
+	LatestApprovalAt    time.Time `json:"latest_approval_at"`
+	RetentionModel      string    `json:"retention_model"`
 }
 
 type DecisionPackage struct {
@@ -452,6 +509,7 @@ func usage() {
 	fmt.Println("  system demo-pack [-outdir docs/demo_pack] [-rules data/rules.json]")
 	fmt.Println("  system drift-quickstart [-outdir data/inventory]")
 	fmt.Println("  system rule-lint [-rules data/rules.json] [-format text|json|md] [-out docs/rule_lint.md]")
+	fmt.Println("  system determinism-check -in events.json -env env.json -rules data/rules.json [-out docs/determinism_test.json]")
 	fmt.Println("  system throughput-bench [-events 10000] [-duration 60s] [-rules data/rules.json] [-env data/env.json] [-out docs/throughput_report.json]")
 	fmt.Println("  graph killchain|blast-radius|controls|identity-pivots|timelapse|evidence-confidence -state data/state.json [-env data/env.json] [-format text|mermaid]")
 	fmt.Println("  system nist -rules data/rules.json [-out nist.json]")
@@ -744,6 +802,12 @@ func renderRuleLintMarkdown(report RuleLintReport) string {
 	fmt.Fprintf(buf, "# Rule Lint Report\n\n")
 	fmt.Fprintf(buf, "Generated: %s\n\n", report.GeneratedAt.Format(time.RFC3339))
 	fmt.Fprintf(buf, "- Rules file: %s\n", report.RulesPath)
+	fmt.Fprintf(buf, "- Explicit contradictions: %d\n", report.Coverage.ExplicitContradictions)
+	fmt.Fprintf(buf, "- Explicit context: %d\n", report.Coverage.ExplicitContext)
+	fmt.Fprintf(buf, "- Explicit reachability: %d\n", report.Coverage.ExplicitReachability)
+	fmt.Fprintf(buf, "- Explicit high-priv: %d\n", report.Coverage.ExplicitHighPriv)
+	fmt.Fprintf(buf, "- Explicit target event types: %d\n", report.Coverage.ExplicitTargetEventTypes)
+	fmt.Fprintf(buf, "- Rules using legacy fallback: %d\n", report.Coverage.LegacyFallbackRules)
 	fmt.Fprintf(buf, "- Warnings: %d\n\n", report.WarningCount)
 	if len(report.Warnings) == 0 {
 		fmt.Fprintln(buf, "No warnings.")
@@ -1907,7 +1971,7 @@ func findArtifactByID(artifacts []audit.Artifact, decisionID string) (audit.Arti
 	return audit.Artifact{}, errors.New("decision not found")
 }
 
-func buildControlsExport(auditPath, signedAuditPath, approvalsPath, rulesPath, rulesExtra, policyPath string, reproducible bool) (ControlsExport, error) {
+func buildControlsExport(auditPath, signedAuditPath, approvalsPath, reportPath, rulesPath, rulesExtra, policyPath string, reproducible bool) (ControlsExport, error) {
 	export := ControlsExport{
 		DecisionControls: []DecisionControlLink{},
 		DualApprovals:    []DualApprovalSummary{},
@@ -1920,6 +1984,10 @@ func buildControlsExport(auditPath, signedAuditPath, approvalsPath, rulesPath, r
 	}
 
 	rules, err := logic.LoadRulesCombined(rulesPath, rulesExtra)
+	if err != nil {
+		return export, err
+	}
+	report, err := loadCoreOutput(reportPath)
 	if err != nil {
 		return export, err
 	}
@@ -1949,8 +2017,13 @@ func buildControlsExport(auditPath, signedAuditPath, approvalsPath, rulesPath, r
 
 	export.AuditLifecycle = buildAuditLifecycle(export.GeneratedAt, auditPath, signedAuditPath, artifacts)
 	export.PolicyLifecycle = buildPolicyLifecycle(export.GeneratedAt, policyPath)
+	export.GovernanceLifecycle = buildGovernanceLifecycle(export.GeneratedAt, approvalsPath, records)
 
 	allRuleIDs := map[string]bool{}
+	resultByRuleID := map[string]model.RuleResult{}
+	for _, r := range report.Reasoning.Results {
+		resultByRuleID[r.RuleID] = r
+	}
 	for _, a := range artifacts {
 		ids := compliance.ExtractRuleIDsFromFindings(a.Findings)
 		if len(ids) == 0 {
@@ -1959,12 +2032,20 @@ func buildControlsExport(auditPath, signedAuditPath, approvalsPath, rulesPath, r
 		mappings := compliance.BuildRuleControlMappings(ids, rules)
 		for _, m := range mappings {
 			allRuleIDs[m.RuleID] = true
+			ruleResult := resultByRuleID[m.RuleID]
 			export.DecisionControls = append(export.DecisionControls, DecisionControlLink{
-				DecisionID: a.ID,
-				RuleID:     m.RuleID,
-				NistCSF:    m.NistCSF,
-				Soc2CC:     m.Soc2CC,
-				ISO27001:   m.ISO27001,
+				DecisionID:      a.ID,
+				DecisionCreated: a.CreatedAt.Format(time.RFC3339),
+				DecisionHash:    a.Hash,
+				RuleID:          m.RuleID,
+				RuleName:        m.RuleName,
+				Verdict:         verdictLabel(ruleResult),
+				DecisionLabel:   ruleResult.DecisionLabel,
+				ReasonCode:      ruleResult.ReasonCode,
+				ControlIDs:      flattenControlIDs(m),
+				NistCSF:         m.NistCSF,
+				Soc2CC:          m.Soc2CC,
+				ISO27001:        m.ISO27001,
 			})
 		}
 	}
@@ -1991,17 +2072,42 @@ func buildControlsExport(auditPath, signedAuditPath, approvalsPath, rulesPath, r
 	for _, id := range decisionIDs {
 		apps := byID[id]
 		signers := map[string]bool{}
+		roles := map[string]bool{}
 		validSigners := map[string]bool{}
+		rationales := map[string]bool{}
+		templateIDs := map[string]bool{}
 		anyOktaBypass := false
+		var earliest time.Time
+		var latest time.Time
 		for _, a := range apps {
 			if a.SignerID != "" {
 				signers[a.SignerID] = true
 			}
+			if a.SignerRole != "" {
+				roles[a.SignerRole] = true
+			}
 			if !a.OktaVerified {
 				anyOktaBypass = true
 			}
+			if !a.IssuedAt.IsZero() && (earliest.IsZero() || a.IssuedAt.Before(earliest)) {
+				earliest = a.IssuedAt
+			}
+			if !a.IssuedAt.IsZero() && a.IssuedAt.After(latest) {
+				latest = a.IssuedAt
+			}
 			if err := approval.Verify(a, true, now); err == nil && a.SignerID != "" {
 				validSigners[a.SignerID] = true
+			}
+		}
+		for _, rec := range records {
+			if rec.Approval.ID != id {
+				continue
+			}
+			if strings.TrimSpace(rec.Rationale) != "" {
+				rationales[rec.Rationale] = true
+			}
+			if strings.TrimSpace(rec.TemplateID) != "" {
+				templateIDs[rec.TemplateID] = true
 			}
 		}
 		signerList := make([]string, 0, len(signers))
@@ -2009,13 +2115,22 @@ func buildControlsExport(auditPath, signedAuditPath, approvalsPath, rulesPath, r
 			signerList = append(signerList, signer)
 		}
 		sort.Strings(signerList)
+		roleList := sortedKeys(roles)
+		rationaleList := sortedKeys(rationales)
+		templateList := sortedKeys(templateIDs)
 		export.DualApprovals = append(export.DualApprovals, DualApprovalSummary{
-			DecisionID:    id,
-			Required:      2,
-			ValidSigners:  len(validSigners),
-			DualApproved:  len(validSigners) >= 2,
-			SignerIDs:     signerList,
-			AnyOktaBypass: anyOktaBypass,
+			DecisionID:         id,
+			Required:           2,
+			ValidSigners:       len(validSigners),
+			DualApproved:       len(validSigners) >= 2,
+			SignerIDs:          signerList,
+			SignerRoles:        roleList,
+			ApprovalRecords:    len(apps),
+			EarliestApprovalAt: formatRFC3339(earliest),
+			LatestApprovalAt:   formatRFC3339(latest),
+			Rationales:         rationaleList,
+			TemplateIDs:        templateList,
+			AnyOktaBypass:      anyOktaBypass,
 		})
 	}
 	return export, nil
@@ -2023,8 +2138,14 @@ func buildControlsExport(auditPath, signedAuditPath, approvalsPath, rulesPath, r
 
 func buildAuditLifecycle(now time.Time, auditPath, signedAuditPath string, artifacts []audit.Artifact) AuditLifecycleMetadata {
 	meta := AuditLifecycleMetadata{
-		AuditLog:     filepath.Base(auditPath),
-		AuditEntries: len(artifacts),
+		AuditLog:              filepath.Base(auditPath),
+		AuditEntries:          len(artifacts),
+		LifecycleState:        "verified_snapshot",
+		IntegrityModel:        "append_only_hash_chain",
+		HashAlgorithm:         "sha256",
+		SignatureAlgorithm:    "ed25519",
+		VerificationCheckedAt: now,
+		RetentionModel:        "operator_managed",
 	}
 	if len(artifacts) > 0 {
 		meta.FirstEntryAt = artifacts[0].CreatedAt
@@ -2074,7 +2195,13 @@ func buildAuditLifecycle(now time.Time, auditPath, signedAuditPath string, artif
 }
 
 func buildPolicyLifecycle(now time.Time, policyPath string) PolicyLifecycleMetadata {
-	meta := PolicyLifecycleMetadata{LoadedAt: now}
+	meta := PolicyLifecycleMetadata{
+		LoadedAt:       now,
+		LifecycleState: "loaded_snapshot",
+		EvaluationMode: "export_time_snapshot",
+		ChangeControl:  "signed_approvals_and_policy_file",
+		RetentionModel: "operator_managed",
+	}
 	if strings.TrimSpace(policyPath) == "" {
 		meta.Error = "policy path not provided"
 		return meta
@@ -2103,6 +2230,36 @@ func buildPolicyLifecycle(now time.Time, policyPath string) PolicyLifecycleMetad
 	meta.MinApprovals = p.MinApprovals
 	meta.AllowedSignerRoles = p.AllowedSignerRoles
 	meta.RequireDualForSignals = p.RequireDualForSignals
+	return meta
+}
+
+func buildGovernanceLifecycle(now time.Time, approvalsPath string, records []approvalRecord) GovernanceLifecycleMetadata {
+	meta := GovernanceLifecycleMetadata{
+		ApprovalsLog:     filepath.Base(strings.TrimSpace(approvalsPath)),
+		ApprovalRecords:  len(records),
+		LifecycleState:   "approval_snapshot",
+		DualControlModel: "human_governed_dual_control",
+		ChangeControl:    "approval_records_with_signatures",
+		RetentionModel:   "operator_managed",
+	}
+	roles := map[string]bool{}
+	for _, rec := range records {
+		if rec.Approval.SignerRole != "" {
+			roles[rec.Approval.SignerRole] = true
+		}
+		if !rec.Approval.IssuedAt.IsZero() && (meta.EarliestApprovalAt.IsZero() || rec.Approval.IssuedAt.Before(meta.EarliestApprovalAt)) {
+			meta.EarliestApprovalAt = rec.Approval.IssuedAt
+		}
+		if !rec.Approval.IssuedAt.IsZero() && rec.Approval.IssuedAt.After(meta.LatestApprovalAt) {
+			meta.LatestApprovalAt = rec.Approval.IssuedAt
+		}
+	}
+	meta.ApprovalSignerRoles = sortedKeys(roles)
+	if meta.ApprovalRecords == 0 {
+		meta.LifecycleState = "no_approvals_observed"
+		meta.EarliestApprovalAt = now
+		meta.LatestApprovalAt = now
+	}
 	return meta
 }
 
@@ -2213,11 +2370,12 @@ func buildCounterfactuals(results []model.RuleResult, nextMoves []string) []Coun
 
 func filterControlsForDecision(export ControlsExport, decisionID string) ControlsExport {
 	filtered := ControlsExport{
-		GeneratedAt:        export.GeneratedAt,
-		AuditChainVerified: export.AuditChainVerified,
-		AuditChainError:    export.AuditChainError,
-		AuditLifecycle:     export.AuditLifecycle,
-		PolicyLifecycle:    export.PolicyLifecycle,
+		GeneratedAt:         export.GeneratedAt,
+		AuditChainVerified:  export.AuditChainVerified,
+		AuditChainError:     export.AuditChainError,
+		AuditLifecycle:      export.AuditLifecycle,
+		PolicyLifecycle:     export.PolicyLifecycle,
+		GovernanceLifecycle: export.GovernanceLifecycle,
 	}
 	ruleIDs := map[string]bool{}
 	for _, d := range export.DecisionControls {
@@ -2309,6 +2467,32 @@ func dedupeStrings(in []string) []string {
 	return out
 }
 
+func sortedKeys(in map[string]bool) []string {
+	out := make([]string, 0, len(in))
+	for k := range in {
+		if strings.TrimSpace(k) == "" {
+			continue
+		}
+		out = append(out, k)
+	}
+	sort.Strings(out)
+	return out
+}
+
+func flattenControlIDs(m compliance.RuleControlMapping) []string {
+	out := append([]string{}, m.NistCSF...)
+	out = append(out, m.Soc2CC...)
+	out = append(out, m.ISO27001...)
+	return dedupeStrings(out)
+}
+
+func formatRFC3339(t time.Time) string {
+	if t.IsZero() {
+		return ""
+	}
+	return t.UTC().Format(time.RFC3339)
+}
+
 func bundleReadmeText() string {
 	return strings.TrimSpace(`
 Aman Evidence Bundle
@@ -2317,7 +2501,7 @@ Files:
 - decision.json: Decision summary, hashes, and audit chain pointers.
 - why_chain.json: Causal reasoning chain per rule (verdicts + explanations).
 - counterfactuals.json: "what-if" analysis and next likely actions.
-- controls.json: Framework control mappings + policy/audit lifecycle metadata.
+- controls.json: Decision-to-control mappings plus policy, audit, and governance lifecycle metadata.
 - oversight.json: Human approvals and dual-control status.
 - summary.json: Human-friendly summary of the bundle contents.
 - report.html: Human-readable view (open in a browser).
@@ -2770,6 +2954,170 @@ func packageTimestamp(reproducible bool, fallback time.Time) time.Time {
 	return time.Now().UTC()
 }
 
+func parseRuntimeOptions(deterministic bool, fixedNow string) (core.RuntimeOptions, error) {
+	opts := core.DefaultRuntimeOptions()
+	opts.Deterministic = deterministic
+	if strings.TrimSpace(fixedNow) != "" {
+		t, err := time.Parse(time.RFC3339, strings.TrimSpace(fixedNow))
+		if err != nil {
+			return core.RuntimeOptions{}, fmt.Errorf("parse fixed-now: %w", err)
+		}
+		opts.Now = t.UTC()
+		opts.Deterministic = true
+	}
+	if opts.Deterministic && opts.Now.IsZero() {
+		opts.Now = time.Unix(0, 0).UTC()
+	}
+	return opts, nil
+}
+
+func newArtifactID(out core.Output, rulesPath string, envPath string, policyPath string, runtime core.RuntimeOptions) string {
+	if !runtime.Deterministic {
+		return fmt.Sprintf("artifact-%d", time.Now().UTC().UnixNano())
+	}
+	payload := map[string]any{
+		"summary":     out.Summary,
+		"findings":    out.Findings,
+		"next_moves":  out.NextMoves,
+		"rules_path":  rulesPath,
+		"env_path":    envPath,
+		"policy_path": policyPath,
+	}
+	raw, _ := json.Marshal(payload)
+	sum := sha256.Sum256(raw)
+	return "artifact-" + hex.EncodeToString(sum[:8])
+}
+
+func reportDigest(out core.Output) (string, error) {
+	data, err := json.Marshal(out)
+	if err != nil {
+		return "", err
+	}
+	sum := sha256.Sum256(data)
+	return hex.EncodeToString(sum[:]), nil
+}
+
+func feasibleRuleIDs(results []model.RuleResult) []string {
+	out := make([]string, 0)
+	for _, r := range results {
+		if r.Feasible {
+			out = append(out, r.RuleID)
+		}
+	}
+	sort.Strings(out)
+	return out
+}
+
+func runDeterminismCheck(inPath string, envPath string, rulesPath string, rulesExtra string, fixedNow string) (DeterminismReport, error) {
+	runtimeOpts, err := parseRuntimeOptions(true, fixedNow)
+	if err != nil {
+		return DeterminismReport{}, err
+	}
+	events, err := loadEvents(inPath)
+	if err != nil {
+		return DeterminismReport{}, err
+	}
+	runOne := func(name string, evs []model.Event) (DeterminismRun, error) {
+		tmpDir, err := os.MkdirTemp("", "aman-determinism-*")
+		if err != nil {
+			return DeterminismRun{}, err
+		}
+		defer os.RemoveAll(tmpDir)
+		eventsPath := filepath.Join(tmpDir, "events.json")
+		statePath := filepath.Join(tmpDir, "state.json")
+		auditPath := filepath.Join(tmpDir, "audit.log")
+		reportPath := filepath.Join(tmpDir, "report.json")
+		rawEvents, err := json.Marshal(evs)
+		if err != nil {
+			return DeterminismRun{}, err
+		}
+		if err := os.WriteFile(eventsPath, rawEvents, 0600); err != nil {
+			return DeterminismRun{}, err
+		}
+		if err := os.WriteFile(statePath, []byte("{}\n"), 0600); err != nil {
+			return DeterminismRun{}, err
+		}
+		if err := os.WriteFile(auditPath, nil, 0600); err != nil {
+			return DeterminismRun{}, err
+		}
+		exe, err := os.Executable()
+		if err != nil {
+			return DeterminismRun{}, err
+		}
+		cmd := exec.Command(
+			exe,
+			"assess",
+			"-in", eventsPath,
+			"-env", envPath,
+			"-state", statePath,
+			"-audit", auditPath,
+			"-rules", rulesPath,
+			"-rules-extra", rulesExtra,
+			"-format", "json",
+			"-out", reportPath,
+			"--deterministic",
+			"--fixed-now", runtimeOpts.Now.Format(time.RFC3339),
+		)
+		outBytes, err := cmd.CombinedOutput()
+		if err != nil {
+			return DeterminismRun{}, fmt.Errorf("determinism assess %s: %w: %s", name, err, strings.TrimSpace(string(outBytes)))
+		}
+		var out core.Output
+		readJSON(reportPath, &out)
+		digest, err := reportDigest(out)
+		if err != nil {
+			return DeterminismRun{}, err
+		}
+		reportBytes, err := json.MarshalIndent(out, "", "  ")
+		if err != nil {
+			return DeterminismRun{}, err
+		}
+		manifest, err := audit.CreateEvidenceBundle(audit.BundleOptions{
+			OutputPath:   filepath.Join(tmpDir, "evidence.zip"),
+			Inline:       map[string][]byte{"report.json": reportBytes},
+			Reproducible: true,
+		})
+		if err != nil {
+			return DeterminismRun{}, err
+		}
+		return DeterminismRun{
+			Name:           name,
+			ReportDigest:   digest,
+			ManifestDigest: manifest.Digest,
+			FeasibleRules:  feasibleRuleIDs(out.Reasoning.Results),
+		}, nil
+	}
+
+	run1, err := runOne("run1", events)
+	if err != nil {
+		return DeterminismReport{}, err
+	}
+	run2, err := runOne("run2", events)
+	if err != nil {
+		return DeterminismReport{}, err
+	}
+	shuffled := append([]model.Event(nil), events...)
+	sort.SliceStable(shuffled, func(i, j int) bool {
+		return shuffled[i].ID > shuffled[j].ID
+	})
+	run3, err := runOne("shuffled", shuffled)
+	if err != nil {
+		return DeterminismReport{}, err
+	}
+
+	return DeterminismReport{
+		GeneratedAt:         time.Now().UTC(),
+		InputPath:           inPath,
+		EnvPath:             envPath,
+		RulesPath:           rulesPath,
+		FixedNow:            runtimeOpts.Now.Format(time.RFC3339),
+		SameOrderEqual:      run1.ReportDigest == run2.ReportDigest && run1.ManifestDigest == run2.ManifestDigest,
+		ShuffledOrderEqual:  run1.ReportDigest == run3.ReportDigest && run1.ManifestDigest == run3.ManifestDigest,
+		StableFeasibleRules: strings.Join(run1.FeasibleRules, ",") == strings.Join(run3.FeasibleRules, ","),
+		Runs:                []DeterminismRun{run1, run2, run3},
+	}, nil
+}
+
 func handleAudit(args []string) {
 	if len(args) == 0 {
 		fatal(errors.New("audit requires a subcommand: verify|explain|export|bundle|bundle-verify|package"))
@@ -2893,7 +3241,7 @@ func handleAudit(args []string) {
 			Signer:       strings.TrimSpace(*signer),
 		}
 		if *controlsJSON {
-			export, err := buildControlsExport(*auditPath, *signedAuditPath, *approvalsPath, *rulesPath, *rulesExtra, *policyPath, *reproducible)
+			export, err := buildControlsExport(*auditPath, *signedAuditPath, *approvalsPath, *reportPath, *rulesPath, *rulesExtra, *policyPath, *reproducible)
 			if err != nil {
 				fatal(err)
 			}
@@ -2993,7 +3341,7 @@ func handleAudit(args []string) {
 		if err != nil {
 			fatal(err)
 		}
-		controlsExport, err := buildControlsExport(*auditPath, *signedAuditPath, *approvalsPath, *rulesPath, *rulesExtra, *policyPath, *reproducible)
+		controlsExport, err := buildControlsExport(*auditPath, *signedAuditPath, *approvalsPath, *reportPath, *rulesPath, *rulesExtra, *policyPath, *reproducible)
 		if err != nil {
 			fatal(err)
 		}
@@ -3103,7 +3451,7 @@ func handleAudit(args []string) {
 
 func handleSystem(args []string) {
 	if len(args) == 0 {
-		fatal(errors.New("system requires a subcommand: status|config|health|coverage|nist|killchain|confidence|engines|pilot-metrics|integration-readiness|integration-quickstart|noisegraph-quickstart|roi-scorecard|demo-pack|rule-lint|drift-quickstart|throughput-bench"))
+		fatal(errors.New("system requires a subcommand: status|config|health|coverage|nist|killchain|confidence|engines|pilot-metrics|integration-readiness|integration-quickstart|noisegraph-quickstart|roi-scorecard|demo-pack|rule-lint|determinism-check|drift-quickstart|throughput-bench"))
 	}
 	switch args[0] {
 	case "status":
@@ -3476,6 +3824,7 @@ WantedBy=multi-user.target
 		report := RuleLintReport{
 			GeneratedAt:  time.Now().UTC(),
 			RulesPath:    *rulesPath,
+			Coverage:     logic.RuleBehaviorCoverageReport(rules),
 			WarningCount: len(warnings),
 			Warnings:     warnings,
 		}
@@ -3491,6 +3840,14 @@ WantedBy=multi-user.target
 			writeText(*outPath, md)
 		default:
 			outln(fmt.Sprintf("Rule lint: %d warnings", report.WarningCount))
+			outln(fmt.Sprintf("Behavior coverage: contradictions=%d context=%d reachability=%d high_priv=%d target_event_types=%d legacy_fallback=%d",
+				report.Coverage.ExplicitContradictions,
+				report.Coverage.ExplicitContext,
+				report.Coverage.ExplicitReachability,
+				report.Coverage.ExplicitHighPriv,
+				report.Coverage.ExplicitTargetEventTypes,
+				report.Coverage.LegacyFallbackRules,
+			))
 			for _, w := range warnings {
 				detail := w.Detail
 				if detail != "" {
@@ -3502,6 +3859,29 @@ WantedBy=multi-user.target
 				writeText(*outPath, renderRuleLintMarkdown(report))
 			}
 		}
+	case "determinism-check":
+		fs := flag.NewFlagSet("system determinism-check", flag.ExitOnError)
+		in := fs.String("in", "", "events json")
+		envPath := fs.String("env", "", "environment json")
+		rulesPath := fs.String("rules", "data/rules.json", "rules json")
+		rulesExtra := fs.String("rules-extra", "", "optional expansion rules json")
+		outPath := fs.String("out", "", "output json path (optional)")
+		fixedNow := fs.String("fixed-now", "2026-01-01T00:00:00Z", "fixed runtime clock (RFC3339)")
+		if err := fs.Parse(args[1:]); err != nil {
+			fatal(err)
+		}
+		if strings.TrimSpace(*in) == "" || strings.TrimSpace(*envPath) == "" {
+			fatal(errors.New("system determinism-check requires -in and -env"))
+		}
+		rep, err := runDeterminismCheck(*in, *envPath, *rulesPath, *rulesExtra, *fixedNow)
+		if err != nil {
+			fatal(err)
+		}
+		if *outPath != "" {
+			writeJSON(*outPath, rep)
+			return
+		}
+		outJSON(rep)
 	case "throughput-bench":
 		handleThroughputBench(args[1:])
 	case "coverage":
@@ -3899,7 +4279,7 @@ func handlePilotIdentityEntra(args []string) {
 		fatal(err)
 	}
 
-	controlsExport, err := buildControlsExport(auditPath, "", *approvalsPath, *rulesPath, *rulesExtra, *policyPath, false)
+	controlsExport, err := buildControlsExport(auditPath, "", *approvalsPath, reportPath, *rulesPath, *rulesExtra, *policyPath, false)
 	if err != nil {
 		fatal(err)
 	}
@@ -4096,6 +4476,8 @@ func handleAssess(args []string) {
 	aiOverlay := fs.Bool("ai-overlay", false, "high-recall AI candidate alerts filtered by causal validation")
 	aiThreshold := fs.Float64("ai-threshold", 0.20, "minimum AI candidate sensitivity (0-1)")
 	aiMax := fs.Int("ai-max", 50, "maximum AI candidate alerts to include")
+	deterministic := fs.Bool("deterministic", false, "emit stable timestamps and IDs for reproducible assess outputs")
+	fixedNow := fs.String("fixed-now", "", "override runtime clock (RFC3339), implies deterministic mode")
 	if err := fs.Parse(args); err != nil {
 		fatal(err)
 	}
@@ -4136,11 +4518,15 @@ func handleAssess(args []string) {
 	if err != nil {
 		fatal(err)
 	}
+	runtimeOpts, err := parseRuntimeOptions(*deterministic, *fixedNow)
+	if err != nil {
+		fatal(err)
+	}
 	logger := ops.NewLogger(cfg.LogLevel)
 	metrics := &ops.Metrics{}
 
 	includeEvidence := cfg.StrictMode
-	out := core.AssessWithMetrics(events, rules, environment, st, metrics, includeEvidence)
+	out := core.AssessWithOptions(events, rules, environment, st, metrics, includeEvidence, runtimeOpts)
 	if len(placeholders) > 0 {
 		out.Reasoning.Results = append(out.Reasoning.Results, placeholders...)
 	}
@@ -4200,8 +4586,8 @@ func handleAssess(args []string) {
 	}
 
 	artifact := audit.Artifact{
-		ID:        fmt.Sprintf("artifact-%d", time.Now().UTC().UnixNano()),
-		CreatedAt: time.Now().UTC(),
+		ID:        newArtifactID(out, *rulesPath, *envPath, *policyPath, runtimeOpts),
+		CreatedAt: runtimeOpts.Now,
 		Summary:   out.Summary,
 		Findings:  out.Findings,
 		Reasoning: out.State.ReasoningChain,

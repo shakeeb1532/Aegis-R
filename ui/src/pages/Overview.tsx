@@ -15,9 +15,10 @@ function confidenceBand(value: number) {
 }
 
 export function Overview() {
-  const data = useOverview();
-  const reasoning = useReasoning();
-  const graph = useGraph();
+  const { data, loading: overviewLoading } = useOverview();
+  const { data: reasoning, loading: reasoningLoading } = useReasoning();
+  const { data: graph, loading: graphLoading } = useGraph();
+  const loading = overviewLoading || reasoningLoading || graphLoading;
 
   const verdictCounts = reasoning.reduce(
     (acc, item) => {
@@ -55,6 +56,12 @@ export function Overview() {
 
   return (
     <div className="space-y-5">
+      <div className="flex items-center justify-between rounded-2xl border border-border bg-panel px-4 py-3 text-xs text-muted">
+        <span className="uppercase tracking-[0.2em]">Overview Sync</span>
+        <span className={`badge ${loading ? "border-amber/40 text-amber" : "border-teal/40 text-teal"}`}>
+          {loading ? "Syncing" : "Live"}
+        </span>
+      </div>
       <IngestStatusPanel />
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {data.kpis.map((kpi) => (

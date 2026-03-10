@@ -84,7 +84,7 @@ export function EvidenceBundleViewer() {
   };
 
   return (
-    <section className="card space-y-6">
+    <section id="evidence-bundle-viewer" className="card space-y-6">
       <div>
         <p className="text-xs uppercase tracking-[0.2em] text-muted">Evidence Bundle Viewer</p>
         <h2 className="section-title mt-2 text-xl font-semibold">Load Summary + Report</h2>

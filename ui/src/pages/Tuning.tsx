@@ -5,8 +5,8 @@ import { fetchTuningHistory, postTuning, postTuningReset, postTuningRollback } f
 import { RuleTuning } from "../types";
 
 export function Tuning() {
-  const reasoning = useReasoning();
-  const tuning = useTuning();
+  const { data: reasoning, loading: reasoningLoading } = useReasoning();
+  const { data: tuning, loading: tuningLoading } = useTuning();
   const tuningMap = useMemo(() => {
     const map = new Map<string, RuleTuning>();
     tuning.forEach((t) => map.set(t.rule_id, t));
@@ -52,7 +52,14 @@ export function Tuning() {
   return (
     <div className="space-y-6">
       <section className="card">
-        <SectionHeader title="Tuning" subtitle="Pilot-safe rule controls (applies on next assessment run)" />
+        <SectionHeader
+          title="Tuning"
+          subtitle="Pilot-safe rule controls (applies on next assessment run)"
+          status={{
+            label: reasoningLoading || tuningLoading ? "Syncing" : "Live",
+            tone: reasoningLoading || tuningLoading ? "syncing" : "live"
+          }}
+        />
         <p className="mt-2 text-sm text-muted">
           Use this to disable noisy rules, set a minimum confidence, or require approval before escalation.
         </p>

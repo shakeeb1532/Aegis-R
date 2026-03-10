@@ -1,6 +1,8 @@
 package core
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"sort"
 	"strings"
@@ -25,21 +27,49 @@ type Output struct {
 	Findings     []string              `json:"findings"`
 }
 
+type RuntimeOptions struct {
+	Now           time.Time
+	Deterministic bool
+}
+
+func DefaultRuntimeOptions() RuntimeOptions {
+	return RuntimeOptions{Now: time.Now().UTC()}
+}
+
 func Assess(events []model.Event, rules []logic.Rule, environment env.Environment, st state.AttackState) Output {
-	return AssessWithMetrics(events, rules, environment, st, nil, true)
+	return AssessWithOptions(events, rules, environment, st, nil, true, DefaultRuntimeOptions())
 }
 
 func AssessWithMetrics(events []model.Event, rules []logic.Rule, environment env.Environment, st state.AttackState, metrics *ops.Metrics, includeEvidence bool) Output {
+	return AssessWithOptions(events, rules, environment, st, metrics, includeEvidence, DefaultRuntimeOptions())
+}
+
+func AssessWithOptions(events []model.Event, rules []logic.Rule, environment env.Environment, st state.AttackState, metrics *ops.Metrics, includeEvidence bool, runtime RuntimeOptions) Output {
+	if runtime.Now.IsZero() {
+		runtime.Now = time.Now().UTC()
+	}
+	if runtime.Deterministic {
+		events = stableEvents(events)
+	}
 	if metrics != nil {
 		metrics.IncEvents(len(events))
 	}
-	rep := logic.ReasonWithEnvAndMetrics(events, rules, environment, metrics, includeEvidence)
-	st.UpdatedAt = time.Now().UTC()
+	cfg := logic.DefaultReasonerConfig()
+	cfg.Now = func() time.Time { return runtime.Now }
+	rep := logic.ReasonWithEnvAndMetricsWithConfig(events, rules, environment, metrics, includeEvidence, cfg)
+	st.UpdatedAt = runtime.Now
 
 	envelopes := progression.Normalize(events, environment)
 	progression.Update(envelopes, &st)
-	progression.ApplyWindowAndDecay(&st, 24*time.Hour)
+	progression.ApplyWindowAndDecayAt(&st, runtime.Now, 24*time.Hour)
 	progression.OverlayGraph(environment, &st)
+	if runtime.Deterministic {
+		sort.Strings(st.GraphOverlay.CurrentNodes)
+		sort.Strings(st.GraphOverlay.Reachable)
+		sort.Strings(st.Position.Principals)
+		sort.Strings(st.Position.Assets)
+		sort.Strings(st.Signals)
+	}
 
 	index := make(map[string][]model.Event)
 	for _, e := range events {
@@ -148,10 +178,10 @@ func AssessWithMetrics(events []model.Event, rules []logic.Rule, environment env
 		eventIndex[e.Type] = append(eventIndex[e.Type], e)
 	}
 
-	applyDecisionCacheAndThreads(&rep, events, &st, reqs, eventIndex)
+	applyDecisionCacheAndThreads(&rep, events, &st, reqs, eventIndex, runtime)
 
 	return Output{
-		GeneratedAt:  time.Now().UTC(),
+		GeneratedAt:  runtime.Now,
 		Summary:      "Causal feasibility, progression state, and evidence gaps evaluated.",
 		Reasoning:    rep,
 		State:        st,
@@ -166,20 +196,20 @@ const threadWindow = 2 * time.Hour
 const decisionCacheMaxEntries = 5000
 const maxThreadsPerWindow = 2000
 
-func applyDecisionCacheAndThreads(rep *model.ReasoningReport, events []model.Event, st *state.AttackState, reqs map[string][]string, index map[string][]model.Event) {
+func applyDecisionCacheAndThreads(rep *model.ReasoningReport, events []model.Event, st *state.AttackState, reqs map[string][]string, index map[string][]model.Event, runtime RuntimeOptions) {
 	if st.DecisionCache == nil {
 		st.DecisionCache = state.DecisionCache{}
 	}
 	if st.Tickets == nil {
 		st.Tickets = []state.Ticket{}
 	}
-	now := time.Now().UTC()
+	now := runtime.Now
 	for i := range rep.Results {
 		r := &rep.Results[i]
 		host, principal, lastSeen, conf, threadReason := deriveContext(r, events, reqs, index)
 		r.ThreadConfidence = conf
 		r.ThreadReason = threadReason
-		threadID := upsertThread(st, host, principal, lastSeen, r.RuleID, conf, threadReason)
+		threadID := upsertThread(st, host, principal, lastSeen, r.RuleID, conf, threadReason, runtime)
 		if threadID != "" {
 			r.ThreadID = threadID
 		}
@@ -228,7 +258,7 @@ func applyDecisionCacheAndThreads(rep *model.ReasoningReport, events []model.Eve
 			EvidenceIDs: r.SupportingEventIDs,
 		}
 		if threadID != "" {
-			upsertTicket(st, threadID, host, principal, r)
+			upsertTicket(st, threadID, host, principal, r, runtime)
 		}
 	}
 	pruneDecisionCache(st.DecisionCache, now)
@@ -418,12 +448,12 @@ func verdictForRule(r *model.RuleResult) string {
 	return "incomplete"
 }
 
-func upsertThread(st *state.AttackState, host string, principal string, when time.Time, ruleID string, confidence float64, reason string) string {
+func upsertThread(st *state.AttackState, host string, principal string, when time.Time, ruleID string, confidence float64, reason string, runtime RuntimeOptions) string {
 	if host == "" && principal == "" {
 		return ""
 	}
 	if when.IsZero() {
-		when = time.Now().UTC()
+		when = runtime.Now
 	}
 	for i := range st.Threads {
 		t := &st.Threads[i]
@@ -447,7 +477,7 @@ func upsertThread(st *state.AttackState, host string, principal string, when tim
 			}
 		}
 	}
-	id := fmt.Sprintf("thread-%d", time.Now().UTC().UnixNano())
+	id := newThreadID(host, principal, when, runtime)
 	rules := []string{}
 	if ruleID != "" {
 		rules = append(rules, ruleID)
@@ -465,8 +495,8 @@ func upsertThread(st *state.AttackState, host string, principal string, when tim
 	return id
 }
 
-func upsertTicket(st *state.AttackState, threadID string, host string, principal string, r *model.RuleResult) {
-	now := time.Now().UTC()
+func upsertTicket(st *state.AttackState, threadID string, host string, principal string, r *model.RuleResult, runtime RuntimeOptions) {
+	now := runtime.Now
 	for i := range st.Tickets {
 		t := &st.Tickets[i]
 		if t.ThreadID == threadID {
@@ -483,7 +513,7 @@ func upsertTicket(st *state.AttackState, threadID string, host string, principal
 			return
 		}
 	}
-	id := fmt.Sprintf("ticket-%d", time.Now().UTC().UnixNano())
+	id := newTicketID(threadID, host, principal, runtime)
 	st.Tickets = append(st.Tickets, state.Ticket{
 		ID:            id,
 		ThreadID:      threadID,
@@ -496,6 +526,23 @@ func upsertTicket(st *state.AttackState, threadID string, host string, principal
 		UpdatedAt:     now,
 		RuleIDs:       filterRuleIDs([]string{r.RuleID}),
 	})
+}
+
+func newThreadID(host string, principal string, when time.Time, runtime RuntimeOptions) string {
+	if !runtime.Deterministic {
+		return fmt.Sprintf("thread-%d", time.Now().UTC().UnixNano())
+	}
+	windowStart := when.Truncate(threadWindow).UTC().Format(time.RFC3339)
+	sum := sha256.Sum256([]byte(host + "|" + principal + "|" + windowStart))
+	return "thread-" + hex.EncodeToString(sum[:8])
+}
+
+func newTicketID(threadID string, host string, principal string, runtime RuntimeOptions) string {
+	if !runtime.Deterministic {
+		return fmt.Sprintf("ticket-%d", time.Now().UTC().UnixNano())
+	}
+	sum := sha256.Sum256([]byte(threadID + "|" + host + "|" + principal))
+	return "ticket-" + hex.EncodeToString(sum[:8])
 }
 
 func mostSevereLabel(a string, b string) string {
@@ -590,4 +637,24 @@ func trimPrefix(val string, prefix string) string {
 		return val[len(prefix):]
 	}
 	return ""
+}
+
+func stableEvents(events []model.Event) []model.Event {
+	out := append([]model.Event(nil), events...)
+	sort.SliceStable(out, func(i, j int) bool {
+		if !out[i].Time.Equal(out[j].Time) {
+			return out[i].Time.Before(out[j].Time)
+		}
+		if out[i].ID != out[j].ID {
+			return out[i].ID < out[j].ID
+		}
+		if out[i].Type != out[j].Type {
+			return out[i].Type < out[j].Type
+		}
+		if out[i].Host != out[j].Host {
+			return out[i].Host < out[j].Host
+		}
+		return out[i].User < out[j].User
+	})
+	return out
 }

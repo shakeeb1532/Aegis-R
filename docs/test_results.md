@@ -1,95 +1,99 @@
 # Test Results
 
-Generated: 2026-02-27
+Generated: 2026-03-10
+
+## Verification Battery
+
+Commands:
+```bash
+go test ./...
+go run ./cmd/aman evaluate -scenarios data/scenarios_realistic.json -rules data/rules.json -format md -out docs/regression_report.md
+go run ./cmd/aman evaluate -scenarios data/scenarios_public.json -rules data/rules.json -format md -out docs/public_dataset_report.md
+go run ./cmd/aman system determinism-check -in data/demo_events.json -env data/env.json -rules data/rules.json -out /tmp/determinism_test_latest.json
+go run ./cmd/aman system rule-lint -rules data/rules.json -format json > /tmp/rule_lint_latest.json
+cd ui && npm run build
+```
 
 ## Unit + Integration
 
-Command:
-```bash
-go test ./...
-```
-
 Result:
-```
-ok  	aman/cmd/aman	(cached)
-?   	aman/cmd/aman-stress	[no test files]
-ok  	aman/internal/approval	(cached)
-ok  	aman/internal/assist	(cached)
-ok  	aman/internal/audit	(cached)
-ok  	aman/internal/causal	(cached)
-ok  	aman/internal/compliance	(cached)
-ok  	aman/internal/compress	(cached) [no tests to run]
-ok  	aman/internal/core	(cached)
-?   	aman/internal/engines	[no test files]
-ok  	aman/internal/env	(cached)
-ok  	aman/internal/eval	(cached)
-?   	aman/internal/explain	[no test files]
-ok  	aman/internal/governance	(cached)
-ok  	aman/internal/integration	(cached)
-ok  	aman/internal/inventory	(cached)
-ok  	aman/internal/logic	(cached)
-?   	aman/internal/model	[no test files]
-?   	aman/internal/ops	[no test files]
-ok  	aman/internal/overlay	(cached)
-ok  	aman/internal/progression	(cached)
-?   	aman/internal/report	[no test files]
-ok  	aman/internal/secureingest	(cached)
-?   	aman/internal/sim	[no test files]
-?   	aman/internal/state	[no test files]
-?   	aman/internal/testutil	[no test files]
-ok  	aman/internal/uiapi	(cached)
-ok  	aman/internal/validate	(cached)
-?   	aman/internal/zerotrust	[no test files]
-?   	aman/scripts	[no test files]
-```
+- `go test ./...` PASS
+- All current Go packages passed.
 
 ## Regression Evaluation
 
+### Realistic suite
+- Total labels: `364`
+- Accuracy: `0.995`
+- Report: `docs/regression_report.md`
+- JSON: `docs/regression_report.json`
+
+Class metrics:
+- feasible: precision `1.000`, recall `1.000`
+- incomplete: precision `0.992`, recall `1.000`
+- impossible: precision `1.000`, recall `0.750`
+
+### Public dataset consistency
+- Total labels: `31`
+- Accuracy: `0.871`
+- Report: `docs/public_dataset_report.md`
+- JSON: `docs/public_dataset_report.json`
+
+Class metrics:
+- feasible: precision `1.000`, recall `0.833`
+- incomplete: precision `0.800`, recall `1.000`
+- impossible: precision `1.000`, recall `0.333`
+
+Current reading:
+- Aman is behaving conservatively on public blocker-heavy cases.
+- The remaining misses are mostly incomplete-vs-impossible boundaries, not unstable or obviously unsafe feasible outcomes.
+
+## Determinism
+
+Artifact:
+- `/tmp/determinism_test_latest.json`
+
+Result:
+- `same_order_equal: true`
+- `shuffled_order_equal: true`
+- `stable_feasible_rules: true`
+
+## Rule Runtime Lint
+
+Artifact:
+- `/tmp/rule_lint_latest.json`
+
+Result:
+- `warning_count: 0`
+- `legacy_fallback_rules: 0`
+- `rules_without_legacy_fallback: 232`
+
+Coverage snapshot:
+- explicit contradictions: `10`
+- explicit context: `14`
+- explicit reachability: `10`
+- explicit high privilege: `6`
+- explicit target event types: `10`
+
+## UI Build
+
 Command:
 ```bash
-go run ./cmd/aman evaluate -scenarios data/scenarios_realistic.json -rules data/rules.json -format md -out docs/regression_report.md
-go run ./cmd/aman evaluate -scenarios data/scenarios_realistic.json -rules data/rules.json -format json -out docs/regression_report.json
+cd ui && npm run build
 ```
 
-Output:
-- `docs/regression_report.md`
+Result:
+- PASS
+- Latest build output:
+  - `dist/index.html`
+  - `dist/assets/index-*.css`
+  - `dist/assets/index-*.js`
 
-## Public Dataset Consistency
+## Performance Snapshot
 
-Command:
-```bash
-go run ./cmd/aman evaluate -scenarios data/scenarios_public.json -rules data/rules.json -format md -out docs/public_dataset_report.md
-go run ./cmd/aman evaluate -scenarios data/scenarios_public.json -rules data/rules.json -format json -out docs/public_dataset_report.json
-```
+Benchmarks were not rerun in this verification cycle.
+Use:
+- `docs/current_engine_scorecard.md`
+- `docs/production_benchmark_report.md`
 
-Output:
-- `docs/public_dataset_report.md`
-
-## Performance Snapshot (Apple M1)
-
-Note: benchmarks not rerun in this cycle; values below are the most recent baseline.
-
-Assess:
-- 1k: 1.67 ms/op, 1.50 MB/op, 4,696 allocs/op
-- 10k: 13.1 ms/op, 12.4 MB/op, 37,233 allocs/op
-- 100k: 141.8 ms/op, 189 MB/op, 361,568 allocs/op
-
-Reason:
-- 1k: 0.124 ms/op, 0.55 MB/op, 623 allocs/op
-- 10k: 2.08 ms/op, 6.0 MB/op, 688 allocs/op
-- 100k: 15.3 ms/op, 74 MB/op, 814 allocs/op
-
-## Audit Compression Benchmarks (Apple M1)
-
-Note: benchmarks not rerun in this cycle; values below are the most recent baseline.
-
-Append throughput:
-- JSONL: 24.4 µs/op, 792 B/op, 11 allocs/op
-- LZ4: 27.2 µs/op, 1145 B/op, 12 allocs/op
-
-Compression ratio (sample artifact):
-- Single artifact JSON: 293 B → 256 B (12.6% smaller)
-- End-to-end audit log (demo events): 7.1 KB → 1.1 KB (~84.5% smaller)
-
-Report output:
-- JSON report: 54 KB → 9.2 KB (~83% smaller) when using `-out report.json.lz4`
+for the latest documented performance baseline.

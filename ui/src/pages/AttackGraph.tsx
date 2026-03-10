@@ -68,7 +68,7 @@ function stageFill(stage: string) {
 }
 
 export function AttackGraph() {
-  const graph = useGraph();
+  const { data: graph, loading } = useGraph();
   const svgRef = useRef<SVGSVGElement | null>(null);
   const [selectedNode, setSelectedNode] = useState<LayoutNode | null>(null);
   const [selectedEdge, setSelectedEdge] = useState<GraphEdge | null>(null);
@@ -142,7 +142,11 @@ export function AttackGraph() {
   return (
     <div className="space-y-8">
       <section className="card-elev">
-        <SectionHeader title="Attack Graph" subtitle="Live infrastructure reachability + decision overlay" />
+        <SectionHeader
+          title="Attack Graph"
+          subtitle="Live infrastructure reachability + decision overlay"
+          status={{ label: loading ? "Syncing" : "Live", tone: loading ? "syncing" : "live" }}
+        />
         <div className="mt-6 grid gap-6 xl:grid-cols-[1.5fr_1fr]">
           <div className="rounded-2xl border border-border bg-panel p-4">
             <svg

@@ -2,11 +2,15 @@ import { SectionHeader } from "../components/SectionHeader";
 import { useEvaluations } from "../hooks/useApiData";
 
 export function Evaluations() {
-  const data = useEvaluations();
+  const { data, loading } = useEvaluations();
   return (
     <div className="space-y-6">
       <section className="card">
-        <SectionHeader title="Evaluations" subtitle="Baselines and regression notes" />
+        <SectionHeader
+          title="Evaluations"
+          subtitle="Baselines and regression notes"
+          status={{ label: loading ? "Syncing" : "Live", tone: loading ? "syncing" : "live" }}
+        />
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           {data.map((item) => (
             <div key={item.label} className="rounded-2xl border border-border bg-panelElev p-5">

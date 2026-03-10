@@ -3,11 +3,15 @@ import { VerdictPill } from "../components/VerdictPill";
 import { useQueue } from "../hooks/useApiData";
 
 export function Queue() {
-  const data = useQueue();
+  const { data, loading } = useQueue();
   return (
     <div className="space-y-6">
       <section className="card">
-        <SectionHeader title="Reasoning Queue" subtitle="Analyst review workbench" />
+        <SectionHeader
+          title="Reasoning Queue"
+          subtitle="Analyst review workbench"
+          status={{ label: loading ? "Syncing" : "Live", tone: loading ? "syncing" : "live" }}
+        />
         <div className="mt-6 grid gap-4">
           {data.map((item) => (
             <div key={item.id} className="rounded-2xl border border-border bg-panelElev p-5">

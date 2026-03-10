@@ -17,7 +17,7 @@ function factorBand(value: number) {
 }
 
 export function Reasoning() {
-  const data = useReasoning();
+  const { data, loading } = useReasoning();
   const [commentById, setCommentById] = useState<Record<string, string>>({});
   const [statusById, setStatusById] = useState<Record<string, string>>({});
   if (!data || data.length === 0) {
@@ -33,8 +33,17 @@ export function Reasoning() {
   }
   return (
     <div className="space-y-6">
-      {data.map((item) => (
-        <section key={item.id} className="card-elev space-y-6">
+      <section className="card">
+        <SectionHeader
+          title="Reasoning"
+          subtitle="Latest causal decisions"
+          status={{ label: loading ? "Syncing" : "Live", tone: loading ? "syncing" : "live" }}
+        />
+      </section>
+      {data.map((item) => {
+        const nextMoves = item.nextMoves ?? item.next_moves ?? [];
+        return (
+          <section key={item.id} className="card-elev space-y-6">
           <div className="flex items-start justify-between gap-6">
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-muted">{item.id}</p>
@@ -71,7 +80,7 @@ export function Reasoning() {
             <div className="space-y-3">
               <SectionHeader title="Next Likely Actions" />
               <ul className="space-y-2 text-sm text-muted">
-                {item.nextMoves.map((e) => (
+                {nextMoves.map((e) => (
                   <li key={e} className="flex items-start gap-3">
                     <span className="mt-1 h-2 w-2 rounded-full bg-purple"></span>
                     {e}
@@ -160,8 +169,9 @@ export function Reasoning() {
               }
             />
           </div>
-        </section>
-      ))}
+          </section>
+        );
+      })}
     </div>
   );
 }

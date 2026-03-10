@@ -1,13 +1,13 @@
 {
   "total": 31,
-  "accuracy": 0.8064516129032258,
+  "accuracy": 0.8709677419354839,
   "by_class": {
     "feasible": {
-      "tp": 9,
-      "fp": 1,
-      "fn": 3,
-      "precision": 0.9,
-      "recall": 0.75
+      "tp": 10,
+      "fp": 0,
+      "fn": 2,
+      "precision": 1,
+      "recall": 0.8333333333333334
     },
     "impossible": {
       "tp": 1,
@@ -17,11 +17,11 @@
       "recall": 0.3333333333333333
     },
     "incomplete": {
-      "tp": 15,
-      "fp": 5,
-      "fn": 1,
-      "precision": 0.75,
-      "recall": 0.9375
+      "tp": 16,
+      "fp": 4,
+      "fn": 0,
+      "precision": 0.8,
+      "recall": 1
     }
   },
   "accuracy_by_rule": {
@@ -32,7 +32,7 @@
     "TA0001.STOLEN_CREDS_ANOMALY": 1,
     "TA0002.LOLBIN_CHAIN": 0.5,
     "TA0003.PERSIST": 1,
-    "TA0004.MFA_BYPASS": 0.5,
+    "TA0004.MFA_BYPASS": 1,
     "TA0005.IMPAIR_DEFENSES": 1,
     "TA0005.LOG_TAMPER": 0.3333333333333333,
     "TA0006.BRUTE_FORCE": 1,
@@ -40,7 +40,7 @@
     "TA0006.IDENTITY_ANOMALY": 1,
     "TA0006.INSIDER_EXFIL": 0,
     "TA0006.VALID_ACCOUNTS": 1,
-    "TA0008.LATERAL": 0.5,
+    "TA0008.LATERAL": 1,
     "TA0010.BULK_EXFIL": 1,
     "TA0010.EXFIL": 1,
     "TA0011.C2": 1
@@ -63,18 +63,6 @@
       "rule_id": "TA0005.LOG_TAMPER",
       "expected": "impossible",
       "actual": "incomplete"
-    },
-    {
-      "scenario_id": "public-sentinel-lateral",
-      "rule_id": "TA0008.LATERAL",
-      "expected": "feasible",
-      "actual": "incomplete"
-    },
-    {
-      "scenario_id": "public-mfa-bypass",
-      "rule_id": "TA0004.MFA_BYPASS",
-      "expected": "incomplete",
-      "actual": "feasible"
     },
     {
       "scenario_id": "public-log-tamper-feasible",

@@ -674,7 +674,7 @@ func ReasonWithMetrics(events []model.Event, rules []Rule, metrics *ops.Metrics,
 func reasonCode(precondOK bool, missing []model.EvidenceRequirement, eventCount int) string {
 	switch {
 	case !precondOK:
-		if len(missing) > 0 {
+		if hasRequirementGap(missing) {
 			return "evidence_gap"
 		}
 		return "precond_missing"
@@ -704,11 +704,8 @@ func reasonCodeWithContradiction(precondOK bool, missing []model.EvidenceRequire
 }
 
 var telemetryGapSignals = map[string]bool{
-	"disable_logging":     true,
 	"log_clear":           true,
 	"auth_process_modify": true,
-	"mfa_method_removed":  true,
-	"mfa_policy_changed":  true,
 }
 
 func hasHighSignalEvidence(index map[string][]int) bool {
@@ -729,13 +726,28 @@ func hasOrderAmbiguousPreconds(reqs []model.EvidenceRequirement) bool {
 	return false
 }
 
+func hasRequirementGap(reqs []model.EvidenceRequirement) bool {
+	for _, req := range reqs {
+		if !strings.HasPrefix(req.Type, "precond:") &&
+			!strings.HasPrefix(req.Type, "precond_any:") &&
+			!strings.HasPrefix(req.Type, "precond_order:") &&
+			!strings.HasPrefix(req.Type, "precond_order_ambiguous:") {
+			return true
+		}
+	}
+	return false
+}
+
 func hasContradiction(rule Rule, events []model.Event, index map[string][]int) bool {
 	types := contradictionsForRule(rule)
 	if len(types) == 0 {
 		return false
 	}
-	if contextForRule(rule) == "identity" {
+	if contextForRule(rule) == "identity" || contextForRule(rule) == "host" {
 		return hasScopedContradiction(rule, events, index, types)
+	}
+	if hasScopedContradiction(rule, events, index, types) {
+		return true
 	}
 	for _, t := range types {
 		if len(index[t]) > 0 {

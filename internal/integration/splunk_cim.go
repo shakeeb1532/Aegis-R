@@ -93,6 +93,9 @@ func mapSplunkCIMNet(raw []byte) ([]model.Event, error) {
 
 func mapSplunkAuthType(action string, signature string, fields map[string]interface{}) string {
 	joined := strings.ToLower(strings.Join([]string{action, signature, fieldString(fields, "message")}, " "))
+	if blocker := blockerTypeFromText(joined, fieldStringAny(fields, "reason", "status", "result")); blocker != "" {
+		return blocker
+	}
 	switch {
 	case containsAny(joined, "impossible travel", "impossible_travel"):
 		return "impossible_travel"
@@ -128,6 +131,9 @@ func mapSplunkAuthType(action string, signature string, fields map[string]interf
 }
 
 func mapSplunkNetType(action string, transport string, destPort int, bytesOut int) string {
+	if blocker := blockerTypeFromText(action, transport); blocker != "" {
+		return blocker
+	}
 	if bytesOut > 10_000_000 {
 		return "large_outbound_transfer"
 	}

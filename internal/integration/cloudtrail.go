@@ -31,7 +31,7 @@ func mapCloudTrail(raw []byte) ([]model.Event, error) {
 	out := make([]model.Event, 0, len(in))
 	for _, e := range in {
 		user := extractUserIdentity(e.UserIdentity)
-		etype := mapCloudTrailEventType(e.EventSource, e.EventName)
+		etype := mapCloudTrailEventType(e.EventSource, e.EventName, e.ErrorCode, e.ErrorMessage)
 		details := map[string]interface{}{
 			"event_source":  e.EventSource,
 			"aws_region":    e.AWSRegion,
@@ -75,7 +75,10 @@ func extractUserIdentity(m map[string]interface{}) string {
 	return ""
 }
 
-func mapCloudTrailEventType(source string, name string) string {
+func mapCloudTrailEventType(source string, name string, errorCode string, errorMessage string) string {
+	if blocker := blockerTypeFromCloudTrail(source, name, errorCode, errorMessage); blocker != "" {
+		return blocker
+	}
 	nameLower := strings.ToLower(name)
 	if strings.Contains(source, "iam.amazonaws.com") || strings.Contains(source, "sts.amazonaws.com") {
 		switch {

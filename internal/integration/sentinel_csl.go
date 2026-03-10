@@ -46,6 +46,9 @@ func mapSentinelCSL(raw []byte) ([]model.Event, error) {
 }
 
 func classifySentinel(e sentinelCSL) string {
+	if blocker := blockerTypeFromText(e.Activity, e.DeviceAction, fieldStringAny(e.Fields, "Result", "ActionType", "Message", "Reason", "Status"), fieldStringAny(e.Fields, "CommandLine", "ProcessCommandLine", "ProcessName", "Image", "InitiatingProcessFileName", "RegistryKey", "RegistryValue")); blocker != "" {
+		return blocker
+	}
 	cmd := strings.ToLower(fieldStringAny(e.Fields, "CommandLine", "ProcessCommandLine"))
 	proc := strings.ToLower(fieldStringAny(e.Fields, "ProcessName", "Image", "InitiatingProcessFileName"))
 	if proc != "" || cmd != "" {

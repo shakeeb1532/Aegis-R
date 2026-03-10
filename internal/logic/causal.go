@@ -72,6 +72,8 @@ func deriveCausalFacts(events []model.Event, index map[string][]int) map[string]
 		"keychain_access",
 	); ok {
 		facts["credential_access"] = causalFact{Observed: true, At: t}
+	} else if t, ok := earliestCredentialToolExecution(events, index["process_creation"]); ok {
+		facts["credential_access"] = causalFact{Observed: true, At: t}
 	}
 
 	beaconAt, hasBeacon := earliestEventTime(events, index["beacon_outbound"])
@@ -85,7 +87,7 @@ func deriveCausalFacts(events []model.Event, index map[string][]int) map[string]
 	}
 
 	if t, ok := earliestAnyEventTime(events, index,
-		"impossible_travel", "new_device_login", "mfa_method_removed", "mfa_policy_changed", "token_refresh_anomaly",
+		"impossible_travel", "new_device_login",
 	); ok {
 		facts["identity_compromise"] = causalFact{Observed: true, At: t}
 	} else if countObservedEventTypes(index,
@@ -93,6 +95,17 @@ func deriveCausalFacts(events []model.Event, index map[string][]int) map[string]
 	) >= 2 {
 		if t, ok := earliestAnyEventTime(events, index,
 			"oauth_consent", "new_app_grant", "device_code_flow_success", "device_join_complete",
+		); ok {
+			facts["identity_compromise"] = causalFact{Observed: true, At: t}
+		}
+	} else if countObservedEventTypes(index,
+		"oauth_consent", "new_app_grant", "device_code_flow_success", "device_join_complete",
+	) >= 1 && countObservedEventTypes(index,
+		"token_refresh_anomaly", "mfa_method_removed", "mfa_policy_changed",
+	) >= 1 {
+		if t, ok := earliestAnyEventTime(events, index,
+			"oauth_consent", "new_app_grant", "device_code_flow_success", "device_join_complete",
+			"token_refresh_anomaly", "mfa_method_removed", "mfa_policy_changed",
 		); ok {
 			facts["identity_compromise"] = causalFact{Observed: true, At: t}
 		}
@@ -252,4 +265,59 @@ func countObservedEventTypes(index map[string][]int, types ...string) int {
 		}
 	}
 	return count
+}
+
+func earliestCredentialToolExecution(events []model.Event, idxs []int) (time.Time, bool) {
+	var out time.Time
+	found := false
+	for _, idx := range idxs {
+		if idx < 0 || idx >= len(events) {
+			continue
+		}
+		ev := events[idx]
+		if !looksLikeCredentialAccessProcess(ev) {
+			continue
+		}
+		t := ev.Time
+		if t.IsZero() {
+			continue
+		}
+		if !found || t.Before(out) {
+			out = t
+			found = true
+		}
+	}
+	return out, found
+}
+
+func looksLikeCredentialAccessProcess(ev model.Event) bool {
+	if ev.Type != "process_creation" && ev.Type != "process_start" {
+		return false
+	}
+	if ev.Details == nil {
+		return false
+	}
+	candidates := []string{
+		detailString(ev.Details, "tool"),
+		detailString(ev.Details, "image"),
+		detailString(ev.Details, "process"),
+		detailString(ev.Details, "command"),
+		detailString(ev.Details, "command_line"),
+		detailString(ev.Details, "cmd"),
+	}
+	for _, raw := range candidates {
+		s := strings.ToLower(strings.TrimSpace(raw))
+		if s == "" {
+			continue
+		}
+		if strings.Contains(s, "mimikatz") ||
+			strings.Contains(s, "procdump") ||
+			strings.Contains(s, "lsassy") ||
+			strings.Contains(s, "nanodump") ||
+			strings.Contains(s, "secretsdump") ||
+			strings.Contains(s, "comsvcs.dll") {
+			return true
+		}
+	}
+	return false
 }

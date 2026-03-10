@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-03-10
+### Added
+- Deterministic assess mode and determinism-check workflow with stable report and manifest digests.
+- Rule catalog explicitness reporting via `aman system rule-lint` with legacy-fallback coverage.
+- Blocker taxonomy normalization across CloudTrail, Sentinel, Elastic ECS, Splunk, and generic ingest paths.
+- Additional integration tests for vendor blocker mappings and public-suite regression protections.
+- Current engine scorecard and refreshed full verification documentation.
+
+### Changed
+- Public-suite remediation tightened credential-tool derivation and removed circular MFA-bypass identity-compromise inference.
+- Reason-code handling now preserves precondition-only misses instead of collapsing them into generic evidence gaps.
+- README and test docs updated to reflect the 2026-03-10 validated state.
+
+### Fixed
+- Scoped contradiction matching now uses richer correlation keys including session, correlation, process, host, and principal context.
+
 ## 2026-02-27
 ### Added
 - Rule linting command (`aman system rule-lint`) to flag missing metadata and legacy identity evidence types.

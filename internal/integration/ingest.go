@@ -213,6 +213,9 @@ func mapCIM(raw []byte) ([]model.Event, error) {
 
 func normalizeInternalEventType(v string) string {
 	s := strings.ToLower(strings.TrimSpace(v))
+	if blocker := blockerTypeFromText(s); blocker != "" {
+		return blocker
+	}
 	switch s {
 	case "", "ecs_event", "event":
 		return "event"

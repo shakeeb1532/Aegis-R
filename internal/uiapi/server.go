@@ -2,6 +2,7 @@ package uiapi
 
 import (
 	"bufio"
+	"crypto/rand"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -14,6 +15,7 @@ import (
 	"time"
 
 	"aman/internal/approval"
+	"aman/internal/audit"
 	"aman/internal/governance"
 	"aman/internal/ops"
 )
@@ -27,6 +29,11 @@ type Server struct {
 	tuningAuditPath string
 	requireKey      bool
 	apiKey          string
+	sessionID       string
+	startedAt       time.Time
+	integrityAt     time.Time
+	integrityStatus string
+	integrityNote   string
 }
 
 type ServerOptions struct {
@@ -50,6 +57,8 @@ func NewServer(opts ServerOptions) *Server {
 		tuningAuditPath: opts.TuningAuditPath,
 		requireKey:      opts.RequireKey,
 		apiKey:          opts.APIKey,
+		sessionID:       newSessionID(),
+		startedAt:       time.Now().UTC(),
 	}
 }
 
@@ -72,6 +81,8 @@ func (s *Server) Routes() http.Handler {
 	mux.HandleFunc("/v1/tuning/reset", s.handleTuningReset)
 	mux.HandleFunc("/v1/tuning/rollback", s.handleTuningRollback)
 	mux.HandleFunc("/v1/report", s.handleReport)
+	mux.HandleFunc("/v1/header", s.handleHeader)
+	mux.HandleFunc("/v1/audit/log", s.handleAuditLog)
 
 	// Deprecated v0 routes for backward compatibility.
 	mux.HandleFunc("/api/overview", s.handleOverview)
@@ -87,6 +98,8 @@ func (s *Server) Routes() http.Handler {
 	mux.HandleFunc("/api/tuning/history", s.handleTuningHistory)
 	mux.HandleFunc("/api/tuning/reset", s.handleTuningReset)
 	mux.HandleFunc("/api/tuning/rollback", s.handleTuningRollback)
+	mux.HandleFunc("/api/header", s.handleHeader)
+	mux.HandleFunc("/api/audit/log", s.handleAuditLog)
 	return s.withCORS(s.withAuth(mux))
 }
 
@@ -719,6 +732,35 @@ func (s *Server) handleReport(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, report, responseMeta{RequestID: reqID})
 }
 
+func (s *Server) handleHeader(w http.ResponseWriter, r *http.Request) {
+	reqID := setRequestID(w, r)
+	status, note := s.integritySnapshot()
+	writeJSON(w, HeaderResponse{
+		SessionID:     s.sessionID,
+		Integrity:     status,
+		IntegrityNote: note,
+		StartedAt:     s.startedAt.Format(time.RFC3339),
+	}, responseMeta{RequestID: reqID})
+}
+
+func (s *Server) handleAuditLog(w http.ResponseWriter, r *http.Request) {
+	reqID := setRequestID(w, r)
+	if s.auditPath == "" {
+		writeError(w, http.StatusNotFound, "audit_unavailable", "audit log path not configured", reqID)
+		return
+	}
+	if !ops.IsSafePath(s.auditPath) {
+		writeError(w, http.StatusBadRequest, "unsafe_path", "audit path rejected", reqID)
+		return
+	}
+	w.Header().Set("Content-Type", "text/plain")
+	w.Header().Set("Content-Disposition", "attachment; filename=\"audit.log\"")
+	if err := audit.ExportLog(s.auditPath, w); err != nil {
+		writeError(w, http.StatusInternalServerError, "audit_export_failed", err.Error(), reqID)
+		return
+	}
+}
+
 func (s *Server) handleDecisions(w http.ResponseWriter, r *http.Request) {
 	reqID := setRequestID(w, r)
 	report, err := loadReport(s.reportPath)
@@ -801,6 +843,38 @@ func (s *Server) authorized(r *http.Request) bool {
 		return strings.TrimPrefix(auth, "Bearer ") == s.apiKey
 	}
 	return false
+}
+
+func newSessionID() string {
+	var b [4]byte
+	_, _ = rand.Read(b[:])
+	return fmt.Sprintf("AMAN-%X", b)
+}
+
+func (s *Server) integritySnapshot() (string, string) {
+	if time.Since(s.integrityAt) < 30*time.Second && s.integrityStatus != "" {
+		return s.integrityStatus, s.integrityNote
+	}
+	status := "unknown"
+	note := ""
+	if s.auditPath == "" {
+		note = "audit log not configured"
+	} else if _, err := os.Stat(s.auditPath); err != nil {
+		if os.IsNotExist(err) {
+			note = "audit log not found"
+		} else {
+			note = err.Error()
+		}
+	} else if err := audit.VerifyChain(s.auditPath); err != nil {
+		status = "broken"
+		note = err.Error()
+	} else {
+		status = "verified"
+	}
+	s.integrityAt = time.Now().UTC()
+	s.integrityStatus = status
+	s.integrityNote = note
+	return status, note
 }
 
 func requestID(r *http.Request) string {

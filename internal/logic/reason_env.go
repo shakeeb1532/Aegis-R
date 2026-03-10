@@ -3,6 +3,7 @@ package logic
 import (
 	"fmt"
 	"math"
+	"sort"
 	"strings"
 	"time"
 
@@ -281,14 +282,24 @@ func checkInsufficientPriv(
 	if len(actors) == 0 {
 		return false, false
 	}
+	keys := make([]string, 0, len(actors))
 	for actor := range actors {
+		keys = append(keys, actor)
+	}
+	sort.Strings(keys)
+	hasUnknown := false
+	for _, actor := range keys {
 		priv, known := identityPriv[actor]
 		if !known {
-			return false, true
+			hasUnknown = true
+			continue
 		}
 		if priv == "high" || priv == "admin" {
 			return false, false
 		}
+	}
+	if hasUnknown {
+		return false, true
 	}
 	return true, false
 }
@@ -395,7 +406,7 @@ func envReasonCode(
 	case unknownPriv:
 		return "environment_unknown"
 	case !precondOK:
-		if len(missing) > 0 {
+		if hasRequirementGap(missing) {
 			return "evidence_gap"
 		}
 		return "precond_missing"

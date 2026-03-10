@@ -97,31 +97,38 @@ Example trust boundary with conditions (`env.json`):
 
 ## Test Results (Latest)
 
-Command:
+Verification run on 2026-03-10:
+
+Commands:
 ```bash
 go test ./...
+go run ./cmd/aman evaluate -scenarios data/scenarios_realistic.json -rules data/rules.json -format md -out docs/regression_report.md
+go run ./cmd/aman evaluate -scenarios data/scenarios_public.json -rules data/rules.json -format md -out docs/public_dataset_report.md
+go run ./cmd/aman system determinism-check -in data/demo_events.json -env data/env.json -rules data/rules.json -out /tmp/determinism_test_latest.json
+go run ./cmd/aman system rule-lint -rules data/rules.json -format json > /tmp/rule_lint_latest.json
+cd ui && npm run build
 ```
 
 Summary:
-- All packages passed.
+- Full Go test suite passed.
+- Determinism check passed: same-order and shuffled-order digests matched.
+- Rule lint passed with `0` warnings and `0` legacy fallback rules.
+- UI production build passed.
 - Detailed output: `docs/test_results.md`
 
-Regression (latest run on synthetic scenarios):
-- Accuracy: 0.953 (Total labels: 127)
-- Class metrics (Precision/Recall): feasible 0.970/1.000, incomplete 1.000/0.884, impossible 0.826/0.950
-- Full report + calibration: `docs/regression_report.md`
+Regression (realistic suite):
+- Accuracy: `0.995` (364 labels)
+- Class metrics (Precision/Recall): feasible `1.000/1.000`, incomplete `0.992/1.000`, impossible `1.000/0.750`
+- Full report: `docs/regression_report.md`
 
 Public dataset consistency:
-- Accuracy: 0.941 (Total labels: 17)
+- Accuracy: `0.871` (31 labels)
+- Class metrics (Precision/Recall): feasible `1.000/0.833`, incomplete `0.800/1.000`, impossible `1.000/0.333`
 - Report: `docs/public_dataset_report.md`
 
-Performance snapshot (Apple M1):
-- Assess 1k: 1.67 ms/op, 1.50 MB/op, 4,696 allocs/op
-- Assess 10k: 13.1 ms/op, 12.4 MB/op, 37,233 allocs/op
-- Assess 100k: 141.8 ms/op, 189 MB/op, 361,568 allocs/op
-- Reason 1k: 0.124 ms/op, 0.55 MB/op, 623 allocs/op
-- Reason 10k: 2.08 ms/op, 6.0 MB/op, 688 allocs/op
-- Reason 100k: 15.3 ms/op, 74 MB/op, 814 allocs/op
+Current interpretation:
+- Aman is strong on feasible-path precision and conservative on impossible-path claims.
+- Remaining public mismatches are mostly blocker-evidence gaps, not obvious engine crashes or unstable behavior.
 
 Pilot dataset impact:
 - Pending pilot data (see `docs/metrics_report.md`)

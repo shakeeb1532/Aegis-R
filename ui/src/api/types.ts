@@ -1,4 +1,4 @@
-import { Approval, AuditItem, Evaluation, QueueItem, ReasoningItem } from "../types";
+import { Approval, AuditItem, Evaluation, HeaderStatus, QueueItem, ReasoningItem } from "../types";
 
 export type OverviewResponse = {
   kpis: { label: string; value: string; sub: string }[];
@@ -13,6 +13,7 @@ export type QueueResponse = QueueItem[];
 export type GovernanceResponse = Approval[];
 export type AuditResponse = AuditItem[];
 export type EvaluationsResponse = Evaluation[];
+export type HeaderResponse = HeaderStatus;
 
 export type GraphThread = {
   id: string;

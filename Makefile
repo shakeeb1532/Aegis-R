@@ -1,7 +1,10 @@
-.PHONY: demo readiness demo-pack roi pilot-metrics
+.PHONY: demo reviewer-demo readiness demo-pack roi pilot-metrics
 
 demo:
 	./scripts/demo.sh
+
+reviewer-demo:
+	bash ./docs/reviewer_demo/run_demo.sh
 
 readiness:
 	go run ./cmd/aman system integration-readiness --strict --min-events 1 --min-feasible 0 -rules data/rules.json -out docs/integration_readiness.json

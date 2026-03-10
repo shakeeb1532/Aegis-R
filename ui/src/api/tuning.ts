@@ -1,20 +1,11 @@
 import { RuleTuning } from "../types";
+import { apiKeyHeader, getApiKey } from "./auth";
 
 const base = import.meta.env.VITE_API_BASE || "http://localhost:8081";
 
-function apiKey() {
-  return (
-    import.meta.env.VITE_API_KEY ||
-    window.localStorage.getItem("amanApiKey") ||
-    window.localStorage.getItem("ingestApiKey") ||
-    ""
-  );
-}
-
 export async function fetchTuning(): Promise<RuleTuning[]> {
-  const key = apiKey();
   const res = await fetch(`${base}/v1/tuning`, {
-    headers: key ? { "X-API-Key": key } : undefined
+    headers: apiKeyHeader(getApiKey())
   });
   if (!res.ok) {
     return [];
@@ -24,12 +15,11 @@ export async function fetchTuning(): Promise<RuleTuning[]> {
 }
 
 export async function postTuning(payload: RuleTuning) {
-  const key = apiKey();
   const res = await fetch(`${base}/v1/tuning`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...(key ? { "X-API-Key": key } : {})
+      ...apiKeyHeader(getApiKey())
     },
     body: JSON.stringify(payload)
   });
@@ -40,9 +30,8 @@ export async function postTuning(payload: RuleTuning) {
 }
 
 export async function fetchTuningHistory() {
-  const key = apiKey();
   const res = await fetch(`${base}/v1/tuning/history`, {
-    headers: key ? { "X-API-Key": key } : undefined
+    headers: apiKeyHeader(getApiKey())
   });
   if (!res.ok) {
     return [];
@@ -52,10 +41,9 @@ export async function fetchTuningHistory() {
 }
 
 export async function postTuningReset() {
-  const key = apiKey();
   const res = await fetch(`${base}/v1/tuning/reset`, {
     method: "POST",
-    headers: key ? { "X-API-Key": key } : undefined
+    headers: apiKeyHeader(getApiKey())
   });
   if (!res.ok) {
     throw new Error("tuning_reset_failed");
@@ -64,12 +52,11 @@ export async function postTuningReset() {
 }
 
 export async function postTuningRollback(snapshot_id: string) {
-  const key = apiKey();
   const res = await fetch(`${base}/v1/tuning/rollback`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...(key ? { "X-API-Key": key } : {})
+      ...apiKeyHeader(getApiKey())
     },
     body: JSON.stringify({ snapshot_id })
   });
