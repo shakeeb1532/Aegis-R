@@ -25,6 +25,10 @@ func ActiveFacts(events []model.Event) map[string]bool {
 	for i, e := range events {
 		index[e.Type] = append(index[e.Type], i)
 	}
+	return ActiveFactsFromIndex(events, index)
+}
+
+func ActiveFactsFromIndex(events []model.Event, index map[string][]int) map[string]bool {
 	facts := deriveCausalFacts(events, index)
 	return activeFactsFromCausal(facts)
 }

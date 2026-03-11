@@ -71,25 +71,28 @@ func AssessWithOptions(events []model.Event, rules []logic.Rule, environment env
 		sort.Strings(st.Signals)
 	}
 
-	index := make(map[string][]model.Event)
-	for _, e := range events {
-		index[e.Type] = append(index[e.Type], e)
+	eventIndex := make(map[string][]int, 64)
+	for i, e := range events {
+		eventIndex[e.Type] = append(eventIndex[e.Type], i)
 	}
 
 	// Mark compromised hosts/users based on strong signals
-	for _, e := range index["beacon_outbound"] {
+	for _, idx := range eventIndex["beacon_outbound"] {
+		e := events[idx]
 		if e.Host != "" {
 			st.CompromisedHosts[e.Host] = true
 			st.ReasoningChain = append(st.ReasoningChain, fmt.Sprintf("C2 beacon from %s implies host compromise", e.Host))
 		}
 	}
-	for _, e := range index["lsass_access"] {
+	for _, idx := range eventIndex["lsass_access"] {
+		e := events[idx]
 		if e.User != "" {
 			st.CompromisedUsers[e.User] = true
 			st.ReasoningChain = append(st.ReasoningChain, fmt.Sprintf("LSASS access by %s implies credential exposure", e.User))
 		}
 	}
-	for _, e := range index["remote_service_creation"] {
+	for _, idx := range eventIndex["remote_service_creation"] {
+		e := events[idx]
 		if e.Host != "" {
 			st.CompromisedHosts[e.Host] = true
 			st.ReasoningChain = append(st.ReasoningChain, fmt.Sprintf("Remote service creation on %s implies host compromise", e.Host))
@@ -105,7 +108,7 @@ func AssessWithOptions(events []model.Event, rules []logic.Rule, environment env
 		}
 	}
 
-	activeFacts := logic.ActiveFacts(events)
+	activeFacts := logic.ActiveFactsFromIndex(events, eventIndex)
 	graph := env.BuildGraph(environment, activeFacts)
 	startZones := zonesFromReachable(st.ReachableHosts, zoneOf)
 	reachableZones := graph.ReachableFrom(startZones)
@@ -119,16 +122,16 @@ func AssessWithOptions(events []model.Event, rules []logic.Rule, environment env
 
 	// Drift signals
 	drift := []string{}
-	if len(index["trust_boundary_change"]) > 0 {
+	if len(eventIndex["trust_boundary_change"]) > 0 {
 		drift = append(drift, "Trust boundary configuration changed")
 	}
-	if len(index["identity_priv_change"]) > 0 {
+	if len(eventIndex["identity_priv_change"]) > 0 {
 		drift = append(drift, "Identity privilege levels changed")
 	}
-	if len(index["new_admin_account"]) > 0 {
+	if len(eventIndex["new_admin_account"]) > 0 {
 		drift = append(drift, "New admin account created")
 	}
-	if len(index["policy_override"]) > 0 {
+	if len(eventIndex["policy_override"]) > 0 {
 		drift = append(drift, "Policy override detected")
 	}
 
@@ -173,11 +176,6 @@ func AssessWithOptions(events []model.Event, rules []logic.Rule, environment env
 		}
 		reqs[r.ID] = types
 	}
-	eventIndex := map[string][]model.Event{}
-	for _, e := range events {
-		eventIndex[e.Type] = append(eventIndex[e.Type], e)
-	}
-
 	applyDecisionCacheAndThreads(&rep, events, &st, reqs, eventIndex, runtime)
 
 	return Output{
@@ -196,7 +194,7 @@ const threadWindow = 2 * time.Hour
 const decisionCacheMaxEntries = 5000
 const maxThreadsPerWindow = 2000
 
-func applyDecisionCacheAndThreads(rep *model.ReasoningReport, events []model.Event, st *state.AttackState, reqs map[string][]string, index map[string][]model.Event, runtime RuntimeOptions) {
+func applyDecisionCacheAndThreads(rep *model.ReasoningReport, events []model.Event, st *state.AttackState, reqs map[string][]string, index map[string][]int, runtime RuntimeOptions) {
 	if st.DecisionCache == nil {
 		st.DecisionCache = state.DecisionCache{}
 	}
@@ -370,17 +368,17 @@ func hasMissingPreconds(reqs []model.EvidenceRequirement) bool {
 	return false
 }
 
-func deriveContext(r *model.RuleResult, events []model.Event, reqs map[string][]string, index map[string][]model.Event) (string, string, time.Time, float64, string) {
+func deriveContext(r *model.RuleResult, events []model.Event, reqs map[string][]string, index map[string][]int) (string, string, time.Time, float64, string) {
 	host, principal, last, ok := pickContext(r.SupportingEvents)
 	if ok {
 		return host, principal, last, 1.0, "supporting_evidence"
 	}
 	if types, ok := reqs[r.RuleID]; ok {
-		filtered := []model.Event{}
+		idxs := make([]int, 0, 8)
 		for _, t := range types {
-			filtered = append(filtered, index[t]...)
+			idxs = append(idxs, index[t]...)
 		}
-		host, principal, last, ok = pickContext(filtered)
+		host, principal, last, ok = pickContextIndices(events, idxs)
 		if ok {
 			return host, principal, last, 0.7, "rule_evidence"
 		}
@@ -398,31 +396,68 @@ func deriveContext(r *model.RuleResult, events []model.Event, reqs map[string][]
 }
 
 func pickContext(events []model.Event) (string, string, time.Time, bool) {
-	hosts := map[string]bool{}
-	users := map[string]bool{}
+	var host, user string
 	var last time.Time
+	seenHost := false
+	seenUser := false
 	for _, ev := range events {
 		if ev.Host != "" {
-			hosts[ev.Host] = true
+			if !seenHost {
+				host = ev.Host
+				seenHost = true
+			} else if ev.Host != host {
+				return "", "", time.Time{}, false
+			}
 		}
 		if ev.User != "" {
-			users[ev.User] = true
+			if !seenUser {
+				user = ev.User
+				seenUser = true
+			} else if ev.User != user {
+				return "", "", time.Time{}, false
+			}
 		}
 		if ev.Time.After(last) {
 			last = ev.Time
 		}
 	}
-	if len(hosts) != 1 || len(users) != 1 {
+	if !seenHost || !seenUser || last.IsZero() {
 		return "", "", time.Time{}, false
 	}
+	return host, user, last, true
+}
+
+func pickContextIndices(events []model.Event, idxs []int) (string, string, time.Time, bool) {
 	var host, user string
-	for h := range hosts {
-		host = h
+	var last time.Time
+	seenHost := false
+	seenUser := false
+	for _, idx := range idxs {
+		if idx < 0 || idx >= len(events) {
+			continue
+		}
+		ev := events[idx]
+		if ev.Host != "" {
+			if !seenHost {
+				host = ev.Host
+				seenHost = true
+			} else if ev.Host != host {
+				return "", "", time.Time{}, false
+			}
+		}
+		if ev.User != "" {
+			if !seenUser {
+				user = ev.User
+				seenUser = true
+			} else if ev.User != user {
+				return "", "", time.Time{}, false
+			}
+		}
+		if ev.Time.After(last) {
+			last = ev.Time
+		}
 	}
-	for u := range users {
-		user = u
-	}
-	if last.IsZero() {
+	if !seenHost || !seenUser || last.IsZero() {
 		return "", "", time.Time{}, false
 	}
 	return host, user, last, true

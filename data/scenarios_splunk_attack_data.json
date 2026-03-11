@@ -1,0 +1,891 @@
+{
+  "scenarios": [
+    {
+      "id": "splunk-attackdata-stop-delete-cloudtrail",
+      "description": "Derived from splunk/attack_data T1562.008 stop_delete_cloudtrail CloudTrail sample. Successful StopLogging/DeleteTrail operations should support log tampering.",
+      "events": [
+        {
+          "id": "9f8d2b82-6e9d-45b8-9055-78d8c00ca416",
+          "time": "2022-06-30T21:26:49Z",
+          "host": "111111111111",
+          "user": "bhavin_cli",
+          "type": "disable_logging",
+          "details": {
+            "aws_region": "us-west-2",
+            "error_code": "",
+            "error_message": "",
+            "event_source": "cloudtrail.amazonaws.com",
+            "request": {
+              "name": "my-cloudtrail-trail"
+            },
+            "response": null,
+            "source_ip": "72.193.184.209",
+            "user_agent": "stratus-red-team_a6a8f8f2-d560-4062-bd0d-c232130cfcc5"
+          }
+        },
+        {
+          "id": "1c53bcce-650d-486a-b3f6-f64fd853e509",
+          "time": "2022-07-13T19:03:51Z",
+          "host": "111111111111",
+          "user": "bhavin_cli",
+          "type": "disable_logging",
+          "details": {
+            "aws_region": "us-west-2",
+            "error_code": "",
+            "error_message": "",
+            "event_source": "cloudtrail.amazonaws.com",
+            "request": {
+              "name": "redatomictesttrail"
+            },
+            "response": null,
+            "source_ip": "192.184.242.57",
+            "user_agent": "aws-cli/2.0.62 Python/3.9.2 Darwin/21.5.0 source/x86_64 command/cloudtrail.delete-trail"
+          }
+        },
+        {
+          "id": "8e04d926-0020-469b-87af-d68493fc2e39",
+          "time": "2022-07-13T19:02:13Z",
+          "host": "111111111111",
+          "user": "bhavin_cli",
+          "type": "disable_logging",
+          "details": {
+            "aws_region": "us-west-2",
+            "error_code": "",
+            "error_message": "",
+            "event_source": "cloudtrail.amazonaws.com",
+            "request": {
+              "name": "redatomictesttrail"
+            },
+            "response": null,
+            "source_ip": "192.184.242.57",
+            "user_agent": "aws-cli/2.0.62 Python/3.9.2 Darwin/21.5.0 source/x86_64 command/cloudtrail.delete-trail"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.LOG_TAMPER",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "splunk-attackdata-aws-login-failure",
+      "description": "Derived from splunk/attack_data T1110.001 aws_login_failure sample. Failed console logins alone should remain incomplete for brute force without stronger spray/stuffing normalization.",
+      "events": [
+        {
+          "id": "c03012c7-f462-4b6e-ab5c-0809ff0fead3",
+          "time": "2022-08-05T10:13:16Z",
+          "host": "111111111111",
+          "user": "gowthamaraj_cli",
+          "type": "ConsoleLogin",
+          "details": {
+            "aws_region": "us-east-1",
+            "error_code": "",
+            "error_message": "Failed authentication",
+            "event_source": "signin.amazonaws.com",
+            "request": null,
+            "response": {
+              "ConsoleLogin": "Failure"
+            },
+            "source_ip": "67.171.71.185",
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
+          }
+        },
+        {
+          "id": "57196505-c10f-42af-92fd-c7386eb38d07",
+          "time": "2022-07-05T16:23:35Z",
+          "host": "111111111111",
+          "user": "xlin",
+          "type": "ConsoleLogin",
+          "details": {
+            "aws_region": "us-west-1",
+            "error_code": "",
+            "error_message": "Failed authentication",
+            "event_source": "signin.amazonaws.com",
+            "request": null,
+            "response": {
+              "ConsoleLogin": "Failure"
+            },
+            "source_ip": "24.5.32.5",
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+          }
+        },
+        {
+          "id": "c7e7ba69-cbb7-4918-8547-e211cf147b7c",
+          "time": "2022-06-09T18:51:39Z",
+          "host": "111111111111",
+          "user": "HIDDEN_DUE_TO_SECURITY_REASONS",
+          "type": "ConsoleLogin",
+          "details": {
+            "aws_region": "us-west-2",
+            "error_code": "",
+            "error_message": "No username found in supplied account",
+            "event_source": "signin.amazonaws.com",
+            "request": null,
+            "response": {
+              "ConsoleLogin": "Failure"
+            },
+            "source_ip": "67.170.197.242",
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.61 Safari/537.36"
+          }
+        },
+        {
+          "id": "f1e32ec8-0d8f-48b9-b597-05d883615392",
+          "time": "2022-06-09T18:51:33Z",
+          "host": "111111111111",
+          "user": "HIDDEN_DUE_TO_SECURITY_REASONS",
+          "type": "ConsoleLogin",
+          "details": {
+            "aws_region": "us-west-2",
+            "error_code": "",
+            "error_message": "No username found in supplied account",
+            "event_source": "signin.amazonaws.com",
+            "request": null,
+            "response": {
+              "ConsoleLogin": "Failure"
+            },
+            "source_ip": "67.170.197.242",
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.61 Safari/537.36"
+          }
+        },
+        {
+          "id": "869ad504-538e-44e4-bcc2-d59122cd1af8",
+          "time": "2022-06-09T18:51:27Z",
+          "host": "111111111111",
+          "user": "HIDDEN_DUE_TO_SECURITY_REASONS",
+          "type": "ConsoleLogin",
+          "details": {
+            "aws_region": "us-west-2",
+            "error_code": "",
+            "error_message": "No username found in supplied account",
+            "event_source": "signin.amazonaws.com",
+            "request": null,
+            "response": {
+              "ConsoleLogin": "Failure"
+            },
+            "source_ip": "67.170.197.242",
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.61 Safari/537.36"
+          }
+        },
+        {
+          "id": "f0f982ca-faa5-400b-934f-84a36efc03af",
+          "time": "2022-06-09T18:48:49Z",
+          "host": "111111111111",
+          "user": "HIDDEN_DUE_TO_SECURITY_REASONS",
+          "type": "ConsoleLogin",
+          "details": {
+            "aws_region": "us-east-2",
+            "error_code": "",
+            "error_message": "No username found in supplied account",
+            "event_source": "signin.amazonaws.com",
+            "request": null,
+            "response": {
+              "ConsoleLogin": "Failure"
+            },
+            "source_ip": "67.170.197.242",
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.61 Safari/537.36"
+          }
+        },
+        {
+          "id": "62fafd57-e307-4fcf-8aa2-ddf3b24bbb99",
+          "time": "2022-03-01T14:08:31Z",
+          "host": "111111111111",
+          "user": "kshelton",
+          "type": "ConsoleLogin",
+          "details": {
+            "aws_region": "us-east-1",
+            "error_code": "",
+            "error_message": "Failed authentication",
+            "event_source": "signin.amazonaws.com",
+            "request": null,
+            "response": {
+              "ConsoleLogin": "Failure"
+            },
+            "source_ip": "136.32.158.14",
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.109 Safari/537.36"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.BRUTE_FORCE",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "splunk-attackdata-aws-iam-delete-group-fail",
+      "description": "Derived from splunk/attack_data T1098 aws_iam_failure_group_deletion sample. Failed IAM deletion attempts should not count as obtaining or developing capability.",
+      "events": [
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        },
+        {
+          "id": "",
+          "time": "0001-01-01T00:00:00Z",
+          "host": "",
+          "user": "",
+          "type": "",
+          "details": null
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0042.OBTAIN_CAPABILITY",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0042.DEVELOP_CAPABILITY",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "splunk-attackdata-okta-single-factor-auth",
+      "description": "Derived from splunk/attack_data T1078.004 okta_single_factor_auth sample. Single-factor sign-on context alone should remain incomplete for MFA bypass.",
+      "events": [
+        {
+          "id": "00ugb1l5ixnPE9vW45d7:user.authentication.auth_via_mfa",
+          "time": "2024-04-08T22:38:57.054Z",
+          "host": "",
+          "user": "victim@gmail.com",
+          "type": "signin_success",
+          "details": {
+            "actor_id": "00ugb1l5ixnPE9vW45d7",
+            "client_ip": "66.66.66.66",
+            "targets": [
+              {
+                "alternateId": "victim@gmail.com",
+                "detailEntry": null,
+                "displayName": "SFA Test",
+                "id": "00ugb1l5ixnPE9vW45d7",
+                "type": "User"
+              },
+              {
+                "alternateId": "unknown",
+                "detailEntry": {
+                  "methodTypeUsed": "Password",
+                  "methodUsedVerifiedProperties": "[USER_PRESENCE]"
+                },
+                "displayName": "Password",
+                "id": "lae1uw7ldjDwKqw445d7",
+                "type": "AuthenticatorEnrollment"
+              }
+            ],
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+          }
+        },
+        {
+          "id": "00ugb1l5ixnPE9vW45d7:user.authentication.sso",
+          "time": "2024-04-08T19:08:02.941Z",
+          "host": "",
+          "user": "victim@gmail.com",
+          "type": "signin_success",
+          "details": {
+            "actor_id": "00ugb1l5ixnPE9vW45d7",
+            "client_ip": "66.66.66.66",
+            "targets": [
+              {
+                "alternateId": "Okta Dashboard",
+                "detailEntry": {
+                  "signOnModeType": "OPENID_CONNECT"
+                },
+                "displayName": "Okta Dashboard",
+                "id": "0oadu2s402mMhVgMC5d7",
+                "type": "AppInstance"
+              },
+              {
+                "alternateId": "victim@gmail.com",
+                "detailEntry": null,
+                "displayName": "SFA Test",
+                "id": "0uagb1v0w4qKEPnc45d7",
+                "type": "AppUser"
+              }
+            ],
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+          }
+        },
+        {
+          "id": "00ugb1l5ixnPE9vW45d7:user.authentication.verify",
+          "time": "2024-04-08T19:08:01.592Z",
+          "host": "",
+          "user": "victim@gmail.com",
+          "type": "signin_success",
+          "details": {
+            "actor_id": "00ugb1l5ixnPE9vW45d7",
+            "client_ip": "66.66.66.66",
+            "targets": [
+              {
+                "alternateId": null,
+                "detailEntry": {
+                  "authenticatorKey": "okta_password",
+                  "authenticatorMethodVerificationTime": "2024-04-08T19:08:01.479Z",
+                  "methodTypeUsed": "password",
+                  "methodUsedVerifiedProperties": "[USER_PRESENCE]"
+                },
+                "displayName": "Password",
+                "id": "autdu3fv7qqAEADih5d7",
+                "type": "AuthenticatorMethod"
+              },
+              {
+                "alternateId": null,
+                "detailEntry": null,
+                "displayName": "Okta Dashboard",
+                "id": "0oadu2s402mMhVgMC5d7",
+                "type": "AppInstance"
+              }
+            ],
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+          }
+        },
+        {
+          "id": "00ugb1l5ixnPE9vW45d7:user.session.start",
+          "time": "2024-04-08T19:08:01.522Z",
+          "host": "",
+          "user": "victim@gmail.com",
+          "type": "signin_success",
+          "details": {
+            "actor_id": "00ugb1l5ixnPE9vW45d7",
+            "client_ip": "66.66.66.66",
+            "targets": [
+              {
+                "alternateId": "unknown",
+                "detailEntry": null,
+                "displayName": "Password",
+                "id": "lae1uw7ldjDwKqw445d7",
+                "type": "AuthenticatorEnrollment"
+              },
+              {
+                "alternateId": "Okta Dashboard",
+                "detailEntry": null,
+                "displayName": "Okta Dashboard",
+                "id": "0oadu2s402mMhVgMC5d7",
+                "type": "AppInstance"
+              }
+            ],
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+          }
+        },
+        {
+          "id": "00ugb1l5ixnPE9vW45d7:policy.evaluate_sign_on",
+          "time": "2024-04-08T19:08:01.516Z",
+          "host": "",
+          "user": "victim@gmail.com",
+          "type": "policy.evaluate_sign_on",
+          "details": {
+            "actor_id": "00ugb1l5ixnPE9vW45d7",
+            "client_ip": "66.66.66.66",
+            "targets": [
+              {
+                "alternateId": "Okta Dashboard",
+                "detailEntry": {
+                  "signOnModeEvaluationResult": "AUTHENTICATED",
+                  "signOnModeType": "OPENID_CONNECT"
+                },
+                "displayName": "Okta Dashboard",
+                "id": "0oadu2s402mMhVgMC5d7",
+                "type": "AppInstance"
+              },
+              {
+                "alternateId": "unknown",
+                "detailEntry": {
+                  "policyRuleFactorMode": "1FA"
+                },
+                "displayName": "Default Rule",
+                "id": "0prdu2nzoziFfmflf5d7",
+                "type": "Rule"
+              },
+              {
+                "alternateId": "unknown",
+                "detailEntry": {
+                  "policyRuleFactorMode": "1FA"
+                },
+                "displayName": "sfa",
+                "id": "rulgb1wr2ds0nB2Ds5d7",
+                "type": "Rule"
+              }
+            ],
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0004.MFA_BYPASS",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0006.VALID_ACCOUNTS",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "splunk-attackdata-okta-threatinsight",
+      "description": "Derived from splunk/attack_data T1078.004 okta_threatinsight_threat_detected sample. ThreatInsight alerts without user/device corroboration should remain incomplete for identity anomaly.",
+      "events": [
+        {
+          "id": "10.10.80.117:security.threat.detected",
+          "time": "2024-03-28T08:39:54.374Z",
+          "host": "",
+          "user": "unknown",
+          "type": "security.threat.detected",
+          "details": {
+            "actor_id": "10.10.80.117",
+            "client_ip": "10.10.80.117",
+            "targets": null,
+            "user_agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Mobile Safari/537.36"
+          }
+        },
+        {
+          "id": "10.10.80.117:security.threat.detected",
+          "time": "2024-03-28T08:39:54.101Z",
+          "host": "",
+          "user": "unknown",
+          "type": "security.threat.detected",
+          "details": {
+            "actor_id": "10.10.80.117",
+            "client_ip": "10.10.80.117",
+            "targets": null,
+            "user_agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Mobile Safari/537.36"
+          }
+        },
+        {
+          "id": "10.10.80.117:security.threat.detected",
+          "time": "2024-03-28T08:32:30.565Z",
+          "host": "",
+          "user": "unknown",
+          "type": "security.threat.detected",
+          "details": {
+            "actor_id": "10.10.80.117",
+            "client_ip": "10.10.80.117",
+            "targets": null,
+            "user_agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Mobile Safari/537.36"
+          }
+        },
+        {
+          "id": "10.10.80.117:security.threat.detected",
+          "time": "2024-03-28T08:32:30.286Z",
+          "host": "",
+          "user": "unknown",
+          "type": "security.threat.detected",
+          "details": {
+            "actor_id": "10.10.80.117",
+            "client_ip": "10.10.80.117",
+            "targets": null,
+            "user_agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Mobile Safari/537.36"
+          }
+        },
+        {
+          "id": "10.10.80.117:security.threat.detected",
+          "time": "2024-03-28T08:32:14.206Z",
+          "host": "",
+          "user": "unknown",
+          "type": "security.threat.detected",
+          "details": {
+            "actor_id": "10.10.80.117",
+            "client_ip": "10.10.80.117",
+            "targets": null,
+            "user_agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Mobile Safari/537.36"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.IDENTITY_ANOMALY",
+          "outcome": "incomplete"
+        }
+      ]
+    }
+  ]
+}

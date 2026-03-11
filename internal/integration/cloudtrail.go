@@ -80,7 +80,23 @@ func mapCloudTrailEventType(source string, name string, errorCode string, errorM
 		return blocker
 	}
 	nameLower := strings.ToLower(name)
+	hasError := strings.TrimSpace(errorCode) != "" || strings.TrimSpace(errorMessage) != ""
+	if strings.Contains(source, "cloudtrail.amazonaws.com") {
+		switch {
+		case containsAny(nameLower, "stoplogging", "deletetrail"):
+			return "disable_logging"
+		case containsAny(nameLower, "updatetrail", "puteventselectors"):
+			return "policy_bypass"
+		}
+	}
 	if strings.Contains(source, "iam.amazonaws.com") || strings.Contains(source, "sts.amazonaws.com") {
+		if hasError {
+			if blocker := blockerTypeFromText(name, errorCode, errorMessage); blocker != "" {
+				return blocker
+			}
+			// Failed IAM mutations should not look like successful capability changes.
+			return "access_denied"
+		}
 		switch {
 		case containsAny(nameLower, "updateassumerolepolicy", "assumerolepolicy", "updatetrustpolicy"):
 			return "trust_boundary_change"

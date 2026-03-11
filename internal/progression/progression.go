@@ -2,19 +2,12 @@ package progression
 
 import (
 	"strings"
-	"sync"
 	"time"
 
 	"aman/internal/env"
 	"aman/internal/model"
 	"aman/internal/state"
 )
-
-var envelopePool = sync.Pool{
-	New: func() any {
-		return &model.Envelope{}
-	},
-}
 
 func Normalize(events []model.Event, environment env.Environment) []model.Envelope {
 	hostZone := map[string]string{}
@@ -25,7 +18,7 @@ func Normalize(events []model.Event, environment env.Environment) []model.Envelo
 	}
 	out := make([]model.Envelope, 0, len(events))
 	for _, e := range events {
-		tags := []string{}
+		var tags []string
 		if z := hostZone[e.Host]; z != "" {
 			tags = append(tags, "zone:"+z)
 		}
@@ -34,7 +27,7 @@ func Normalize(events []model.Event, environment env.Environment) []model.Envelo
 		}
 		source := getString(e.Details, "source", "unknown")
 		confidence := getFloat(e.Details, "confidence", 0.5)
-		evidence := []string{}
+		var evidence []string
 		if e.ID != "" {
 			evidence = append(evidence, e.ID)
 		}
@@ -43,8 +36,7 @@ func Normalize(events []model.Event, environment env.Environment) []model.Envelo
 				evidence = append(evidence, s)
 			}
 		}
-		env := envelopePool.Get().(*model.Envelope)
-		*env = model.Envelope{
+		out = append(out, model.Envelope{
 			Timestamp:  e.Time,
 			Source:     source,
 			Principal:  e.User,
@@ -53,10 +45,7 @@ func Normalize(events []model.Event, environment env.Environment) []model.Envelo
 			Evidence:   evidence,
 			Confidence: confidence,
 			Tags:       tags,
-		}
-		out = append(out, *env)
-		*env = model.Envelope{}
-		envelopePool.Put(env)
+		})
 	}
 	return out
 }

@@ -68,21 +68,27 @@ func ReasonWithEnvAndMetricsWithConfig(
 			metrics.IncRules(1)
 		}
 		missing := make([]model.EvidenceRequirement, 0, len(rule.Requirements))
-		supporting := make([]model.Event, 0, len(rule.Requirements))
-		supportingIDs := make([]string, 0, len(rule.Requirements))
+		totalMatches := 0
 		for _, req := range rule.Requirements {
-			if len(index[req.Type]) == 0 {
+			totalMatches += len(index[req.Type])
+		}
+		var supporting []model.Event
+		if includeEvidence && totalMatches > 0 {
+			supporting = make([]model.Event, 0, totalMatches)
+		}
+		supportingIDs := make([]string, 0, totalMatches)
+		for _, req := range rule.Requirements {
+			idxs := index[req.Type]
+			if len(idxs) == 0 {
 				missing = append(missing, req)
-			} else {
+				continue
+			}
+			for _, idx := range idxs {
 				if includeEvidence {
-					for _, idx := range index[req.Type] {
-						supporting = append(supporting, events[idx])
-					}
+					supporting = append(supporting, events[idx])
 				}
-				for _, idx := range index[req.Type] {
-					if events[idx].ID != "" {
-						supportingIDs = append(supportingIDs, events[idx].ID)
-					}
+				if events[idx].ID != "" {
+					supportingIDs = append(supportingIDs, events[idx].ID)
 				}
 			}
 		}

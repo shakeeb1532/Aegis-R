@@ -23,7 +23,10 @@ Environment:
 | Feasible precision | public suite | `1.000` | Good fit for Aman’s role as an overlay validation engine |
 | Impossible recall | public suite | `0.333` | Still weak; blocker evidence and vendor prevention telemetry need expansion |
 | Adversarial effectiveness | Existing stress report | `73.40%` evasion detection rate over `500` runs | Meaningful signal, but still not strong enough for aggressive claims |
-| Performance | Existing benchmark baseline | See `docs/production_benchmark_report.md` | Benchmark baseline remains useful, but was not rerun in this battery |
+| Performance | `BenchmarkAssess100k` | `308.29 ms/op`, `104.23 MB/op`, `572729 allocs/op` | Memory-hardened assess path is materially cheaper than the previous baseline |
+| Performance | `BenchmarkReason100k` | `46.35 ms/op`, `21.24 MB/op`, `261111 allocs/op` | Core reasoning remains fast; most remaining cost is in assess/state plumbing |
+| End-to-end latency | CLI `assess` on `100k` events | avg `0.52s`, p50 `0.48s`, p95 `0.60s` | Good enough for pilot-scale batch assessment |
+| End-to-end memory | CLI `assess` on `100k` events | avg peak RSS `159.3 MB` | Single-node pilot sizing can stay modest after the memory-hardening batch |
 
 ## Commands Run
 
@@ -57,6 +60,18 @@ go run ./cmd/aman system rule-lint -rules data/rules.json -format json > /tmp/ru
 ```bash
 cd ui
 npm run build
+```
+
+### Benchmarks
+
+```bash
+go test ./internal/core -bench BenchmarkAssess -benchmem -run '^$' -count=1
+go test ./internal/logic -bench BenchmarkReason -benchmem -run '^$' -count=1
+go test ./internal/audit -bench . -benchmem -run '^$' -count=1
+go test ./internal/compress -bench . -benchmem -run '^$' -count=1
+go build -o /tmp/aman_bench ./cmd/aman
+/tmp/aman_bench generate -out /tmp/aman_events_100k.json -count 100000 -seed 42
+/usr/bin/time -l /tmp/aman_bench assess -in /tmp/aman_events_100k.json -env data/env.json -state /tmp/aman_state.json -audit /tmp/aman_audit.log -rules data/rules.json >/tmp/aman_report.json
 ```
 
 ## Current Results
@@ -114,6 +129,16 @@ Coverage snapshot:
 - `explicit_high_priv: 6`
 - `explicit_target_event_types: 10`
 
+### Benchmark snapshot
+
+- `BenchmarkAssess1k-8`: `6.34 ms/op`, `1.97 MB/op`, `18059 allocs/op`
+- `BenchmarkAssess10k-8`: `30.35 ms/op`, `10.58 MB/op`, `68553 allocs/op`
+- `BenchmarkAssess100k-8`: `308.29 ms/op`, `104.23 MB/op`, `572729 allocs/op`
+- `BenchmarkReason1k-8`: `1.81 ms/op`, `1.00 MB/op`, `13516 allocs/op`
+- `BenchmarkReason10k-8`: `6.01 ms/op`, `2.68 MB/op`, `36047 allocs/op`
+- `BenchmarkReason100k-8`: `46.35 ms/op`, `21.24 MB/op`, `261111 allocs/op`
+- End-to-end `assess` on a generated `100k` event batch: avg `0.52s`, p50 `0.48s`, p95 `0.60s`, avg peak RSS `159.3 MB`
+
 ## Interpretation
 
 ### What is strong
@@ -128,7 +153,7 @@ Coverage snapshot:
 
 - Public impossible recall is still low.
 - Remaining public misses are concentrated in blocker-heavy scenarios, especially log tampering and public impossible-vs-incomplete boundaries.
-- Benchmark numbers in the repo are older than this verification cycle; performance claims should still be anchored to `docs/production_benchmark_report.md` until rerun.
+- Allocation count is still high in the assess path even after the large memory drop. The next optimization wave should target small-object churn rather than large slice duplication.
 
 ## Safe external claims
 

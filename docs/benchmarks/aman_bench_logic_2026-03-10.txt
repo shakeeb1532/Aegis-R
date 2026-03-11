@@ -1,0 +1,9 @@
+goos: darwin
+goarch: arm64
+pkg: aman/internal/logic
+cpu: Apple M1
+BenchmarkReason1k-8     	     866	   1812295 ns/op	 1003879 B/op	   13516 allocs/op
+BenchmarkReason10k-8    	     177	   6009782 ns/op	 2681396 B/op	   36047 allocs/op
+BenchmarkReason100k-8   	      24	  46349865 ns/op	21242284 B/op	  261111 allocs/op
+PASS
+ok  	aman/internal/logic	5.159s

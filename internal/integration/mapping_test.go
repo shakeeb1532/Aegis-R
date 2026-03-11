@@ -245,6 +245,64 @@ func TestMappingCloudTrailBlockers(t *testing.T) {
 	assertHasType(t, toLike(events), "admin_action_denied")
 }
 
+func TestMappingCloudTrailSuccessfulLogTamper(t *testing.T) {
+	data := []byte(`[
+	  {
+	    "eventID": "ct-s1",
+	    "eventTime": "2026-02-06T12:37:00Z",
+	    "eventSource": "cloudtrail.amazonaws.com",
+	    "eventName": "StopLogging",
+	    "awsRegion": "us-east-1",
+	    "recipientAccountId": "123456789012",
+	    "userIdentity": {"userName": "secops"}
+	  },
+	  {
+	    "eventID": "ct-s2",
+	    "eventTime": "2026-02-06T12:38:00Z",
+	    "eventSource": "cloudtrail.amazonaws.com",
+	    "eventName": "UpdateTrail",
+	    "awsRegion": "us-east-1",
+	    "recipientAccountId": "123456789012",
+	    "userIdentity": {"userName": "secops"}
+	  }
+	]`)
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaCloudTrail})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	assertHasType(t, toLike(events), "disable_logging")
+	assertHasType(t, toLike(events), "policy_bypass")
+}
+
+func TestMappingCloudTrailFailedIAMMutationDoesNotLookSuccessful(t *testing.T) {
+	data := []byte(`[
+	  {
+	    "eventID": "ct-f1",
+	    "eventTime": "2026-02-06T12:38:00Z",
+	    "eventSource": "iam.amazonaws.com",
+	    "eventName": "DeleteGroup",
+	    "awsRegion": "us-east-1",
+	    "recipientAccountId": "123456789012",
+	    "userIdentity": {"userName": "secops"},
+	    "errorCode": "DeleteConflictException",
+	    "errorMessage": "Cannot delete entity, must remove users from group first."
+	  }
+	]`)
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaCloudTrail})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	if len(events) != 1 {
+		t.Fatalf("expected 1 event, got %d", len(events))
+	}
+	if events[0].Type == "iam_change" {
+		t.Fatalf("failed IAM mutation should not normalize to iam_change")
+	}
+	if events[0].Type != "access_denied" {
+		t.Fatalf("expected conservative failed-IAM normalization, got %q", events[0].Type)
+	}
+}
+
 func TestMappingSentinelBlockers(t *testing.T) {
 	data := []byte(`[
 	  {

@@ -1,0 +1,46 @@
+{
+  "dataset": "splunk_attack_data",
+  "scenario_file": "data/scenarios_splunk_attack_data.json",
+  "scenario_count": 5,
+  "label_count": 7,
+  "accuracy": 0.8571428571428571,
+  "mismatches": [
+    {
+      "scenario_id": "splunk-attackdata-stop-delete-cloudtrail",
+      "rule_id": "TA0005.LOG_TAMPER",
+      "expected": "feasible",
+      "actual": "incomplete"
+    }
+  ],
+  "speed": {
+    "evaluate_x200_avg_sec": 1.2196412881215413,
+    "evaluate_x200_p50_sec": 1.0573151111602783,
+    "evaluate_x200_p95_sec": 1.5771238803863525,
+    "scenario_repetitions": 200,
+    "evaluated_scenarios": 1000
+  },
+  "load": {
+    "assess_100k_avg_sec": 0.69,
+    "assess_100k_p50_sec": 0.68,
+    "assess_100k_p95_sec": 0.74,
+    "assess_100k_avg_peak_rss_mb": 350.921875,
+    "assess_300k_avg_sec": 1.9866666666666666,
+    "assess_300k_p50_sec": 1.95,
+    "assess_300k_p95_sec": 2.06,
+    "assess_300k_avg_peak_rss_mb": 992.4114583333334,
+    "assess_500k_sec": 3.57,
+    "assess_500k_peak_rss_mb": 1518.9418334960938
+  },
+  "conclusion": {
+    "strengths": [
+      "CloudTrail ingests and runs end-to-end",
+      "Failed IAM mutations no longer normalize as successful capability development",
+      "External sample pack now exposes one remaining semantic gap rather than broad normalization failure"
+    ],
+    "weaknesses": [
+      "TA0005.LOG_TAMPER remains conservative because it still requires initial_access before treating raw StopLogging/DeleteTrail as feasible",
+      "Okta public coverage is still narrow and under-represents real identity anomalies",
+      "Memory footprint on large external-mix assess runs is still high because the assess path materializes a large report and evidence structures"
+    ]
+  }
+}

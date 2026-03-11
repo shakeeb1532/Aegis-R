@@ -1,0 +1,9 @@
+goos: darwin
+goarch: arm64
+pkg: aman/internal/audit
+cpu: Apple M1
+BenchmarkAppendLogPlain-8          	   25044	     57866 ns/op	     792 B/op	      11 allocs/op
+BenchmarkAppendLogLZ4-8            	   27153	     39766 ns/op	    1145 B/op	      12 allocs/op
+BenchmarkAuditCompressionRatio-8   	1000000000	         0.5329 ns/op	562948.20 MB/s	       0 B/op	       0 allocs/op
+PASS
+ok  	aman/internal/audit	6.124s

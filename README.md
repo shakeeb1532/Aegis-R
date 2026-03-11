@@ -55,6 +55,7 @@ Aman is a human-governed security reasoning system that evaluates causal feasibi
 - `docs/confidence_bands.md` — confidence band interpretation
 - `docs/ci_checklist.md` — CI checklist and local verification steps
 - `docs/test_results.md` — latest test runs and regression output
+- `docs/full_validation_report.md` — consolidated fresh validation across unit tests, labeled scenario packs, external Splunk-derived data, determinism, and benchmarks
 - `docs/release_checklist.md` — release steps and tagging guidance
 - `PRIVATE_FEATURES.md` — protected components tracker
 - `docs/pilot_demo_pack.md` — pilot-grade demo pack guide
@@ -114,7 +115,9 @@ Summary:
 - Determinism check passed: same-order and shuffled-order digests matched.
 - Rule lint passed with `0` warnings and `0` legacy fallback rules.
 - UI production build passed.
+- Benchmarks rerun after the memory-hardening batch.
 - Detailed output: `docs/test_results.md`
+- Full consolidated validation: `docs/full_validation_report.md`
 
 Regression (realistic suite):
 - Accuracy: `0.995` (364 labels)
@@ -129,9 +132,15 @@ Public dataset consistency:
 Current interpretation:
 - Aman is strong on feasible-path precision and conservative on impossible-path claims.
 - Remaining public mismatches are mostly blocker-evidence gaps, not obvious engine crashes or unstable behavior.
+- Current performance profile is pilot-viable on a modest single node; the main remaining cost center is allocation count, not raw latency.
 
 Pilot dataset impact:
 - Pending pilot data (see `docs/metrics_report.md`)
+
+Benchmark snapshot:
+- `BenchmarkAssess100k-8`: `308.29 ms/op`, `104.23 MB/op`, `572729 allocs/op`
+- `BenchmarkReason100k-8`: `46.35 ms/op`, `21.24 MB/op`, `261111 allocs/op`
+- End-to-end `assess` on `100k` generated events: avg `0.52s`, p95 `0.60s`, avg peak RSS `159.3 MB`
 
 ---
 

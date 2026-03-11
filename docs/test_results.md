@@ -91,9 +91,23 @@ Result:
 
 ## Performance Snapshot
 
-Benchmarks were not rerun in this verification cycle.
-Use:
+Core assess:
+- `BenchmarkAssess1k-8`: `6.34 ms/op`, `1.97 MB/op`, `18059 allocs/op`
+- `BenchmarkAssess10k-8`: `30.35 ms/op`, `10.58 MB/op`, `68553 allocs/op`
+- `BenchmarkAssess100k-8`: `308.29 ms/op`, `104.23 MB/op`, `572729 allocs/op`
+
+Logic reasoning:
+- `BenchmarkReason1k-8`: `1.81 ms/op`, `1.00 MB/op`, `13516 allocs/op`
+- `BenchmarkReason10k-8`: `6.01 ms/op`, `2.68 MB/op`, `36047 allocs/op`
+- `BenchmarkReason100k-8`: `46.35 ms/op`, `21.24 MB/op`, `261111 allocs/op`
+
+End-to-end `assess` on a generated `100k` event batch:
+- avg wall-clock: `0.52s`
+- p50 wall-clock: `0.48s`
+- p95 wall-clock: `0.60s`
+- avg peak RSS: `159.3 MB`
+
+See:
 - `docs/current_engine_scorecard.md`
 - `docs/production_benchmark_report.md`
-
-for the latest documented performance baseline.
+- `docs/full_validation_report.md`
