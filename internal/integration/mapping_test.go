@@ -274,6 +274,69 @@ func TestMappingCloudTrailSuccessfulLogTamper(t *testing.T) {
 	assertHasType(t, toLike(events), "policy_bypass")
 }
 
+func TestMappingCloudTrailConsoleLoginSuccessAndMFAState(t *testing.T) {
+	data := []byte(`[
+	  {
+	    "eventID": "ct-login-1",
+	    "eventTime": "2026-02-06T12:37:00Z",
+	    "eventSource": "signin.amazonaws.com",
+	    "eventName": "ConsoleLogin",
+	    "awsRegion": "us-east-1",
+	    "recipientAccountId": "123456789012",
+	    "userIdentity": {"userName": "secops"},
+	    "responseElements": {"ConsoleLogin": "Success"},
+	    "additionalEventData": {"MFAUsed": "No"}
+	  },
+	  {
+	    "eventID": "ct-login-2",
+	    "eventTime": "2026-02-06T12:38:00Z",
+	    "eventSource": "signin.amazonaws.com",
+	    "eventName": "ConsoleLogin",
+	    "awsRegion": "us-east-1",
+	    "recipientAccountId": "123456789012",
+	    "userIdentity": {"userName": "secops"},
+	    "responseElements": {"ConsoleLogin": "Success"},
+	    "additionalEventData": {"MFAUsed": "Yes"}
+	  }
+	]`)
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaCloudTrail})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	assertHasType(t, toLike(events), "signin_success")
+	assertHasType(t, toLike(events), "mfa_not_required")
+	assertHasType(t, toLike(events), "mfa_success")
+}
+
+func TestMappingCloudTrailIAMMFAChanges(t *testing.T) {
+	data := []byte(`[
+	  {
+	    "eventID": "ct-mfa-1",
+	    "eventTime": "2026-02-06T12:37:00Z",
+	    "eventSource": "iam.amazonaws.com",
+	    "eventName": "DeleteVirtualMFADevice",
+	    "awsRegion": "us-east-1",
+	    "recipientAccountId": "123456789012",
+	    "userIdentity": {"userName": "secops"}
+	  },
+	  {
+	    "eventID": "ct-mfa-2",
+	    "eventTime": "2026-02-06T12:38:00Z",
+	    "eventSource": "iam.amazonaws.com",
+	    "eventName": "CreateVirtualMFADevice",
+	    "awsRegion": "us-east-1",
+	    "recipientAccountId": "123456789012",
+	    "userIdentity": {"userName": "secops"}
+	  }
+	]`)
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaCloudTrail})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	assertHasType(t, toLike(events), "mfa_method_removed")
+	assertHasType(t, toLike(events), "mfa_policy_changed")
+}
+
 func TestMappingCloudTrailFailedIAMMutationDoesNotLookSuccessful(t *testing.T) {
 	data := []byte(`[
 	  {
@@ -300,6 +363,30 @@ func TestMappingCloudTrailFailedIAMMutationDoesNotLookSuccessful(t *testing.T) {
 	}
 	if events[0].Type != "access_denied" {
 		t.Fatalf("expected conservative failed-IAM normalization, got %q", events[0].Type)
+	}
+}
+
+func TestMappingCloudTrailDeletePolicyIsPolicyChange(t *testing.T) {
+	data := []byte(`[
+	  {
+	    "eventID": "ct-p1",
+	    "eventTime": "2026-02-06T12:38:00Z",
+	    "eventSource": "iam.amazonaws.com",
+	    "eventName": "DeletePolicy",
+	    "awsRegion": "us-east-1",
+	    "recipientAccountId": "123456789012",
+	    "userIdentity": {"userName": "secops"}
+	  }
+	]`)
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaCloudTrail})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	if len(events) != 1 {
+		t.Fatalf("expected 1 event, got %d", len(events))
+	}
+	if events[0].Type != "policy_change" {
+		t.Fatalf("expected DeletePolicy to normalize to policy_change, got %q", events[0].Type)
 	}
 }
 
