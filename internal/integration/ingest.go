@@ -18,6 +18,7 @@ const (
 	SchemaECS         Schema = "ecs"
 	SchemaOCSF        Schema = "ocsf"
 	SchemaCIM         Schema = "cim"
+	SchemaSysmonJSON  Schema = "sysmon_json"
 	SchemaMDE         Schema = "mde"
 	SchemaElasticECS  Schema = "elastic_ecs"
 	SchemaSplunkAuth  Schema = "splunk_cim_auth"
@@ -51,6 +52,8 @@ func IngestEvents(raw []byte, opts IngestOptions) ([]model.Event, error) {
 		return mapOCSF(raw)
 	case SchemaCIM:
 		return mapCIM(raw)
+	case SchemaSysmonJSON:
+		return mapSysmonJSON(raw)
 	case SchemaSplunkAuth:
 		return mapSplunkCIMAuth(raw)
 	case SchemaSplunkNet:
@@ -79,6 +82,7 @@ func SupportedSchemas() []Schema {
 		SchemaElasticECS,
 		SchemaOCSF,
 		SchemaCIM,
+		SchemaSysmonJSON,
 		SchemaSplunkAuth,
 		SchemaSplunkNet,
 		SchemaMDE,

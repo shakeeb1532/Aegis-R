@@ -190,6 +190,24 @@ func TestMappingMDEIdentity(t *testing.T) {
 	assertHasType(t, toLike(events), "token_refresh_anomaly")
 }
 
+func TestMappingSysmonJSON(t *testing.T) {
+	root := testutil.RepoRoot(t)
+	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "sysmon_windows.json"))
+	if err != nil {
+		t.Fatalf("read: %v", err)
+	}
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaSysmonJSON})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	assertHasType(t, toLike(events), "process_creation")
+	assertHasType(t, toLike(events), "lolbin_execution")
+	assertHasType(t, toLike(events), "registry_run_key")
+	assertHasType(t, toLike(events), "service_install")
+	assertHasType(t, toLike(events), "disable_logging")
+	assertHasType(t, toLike(events), "wmi_subscription_trigger")
+}
+
 func TestMappingSentinelAuth(t *testing.T) {
 	root := testutil.RepoRoot(t)
 	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "sentinel_csl.json"))

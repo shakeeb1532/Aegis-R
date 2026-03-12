@@ -1,6 +1,6 @@
 # Full Validation Report
 
-Generated: 2026-03-11 (Australia/Sydney)
+Generated: 2026-03-13 (Australia/Sydney)
 
 ## Scope
 This report consolidates fresh validation runs across:
@@ -18,7 +18,8 @@ Aman is technically credible as a **decision-validation and governance engine**.
 - deterministic assess mode is stable across repeated and shuffled runs
 - realistic regression accuracy remains high at **99.45%** over **364** labeled checks
 - public labeled accuracy is **87.10%** over **31** checks
-- external Splunk-derived pack accuracy is **85.71%** over **7** checks
+- external Splunk-derived pack accuracy is **95.24%** over **21** checks
+- Windows BOTS-like validation pack accuracy is **100.00%** over **10** checks
 
 The main technical weakness remains external normalization depth and memory growth under larger mixed-event assessment runs.
 
@@ -100,32 +101,32 @@ Critical read:
 - public accuracy is good enough for an honest pilot conversation, but not good enough for broad “we solve false positives” claims.
 - the persistent weak spot is the `impossible` boundary.
 
-### 3.3 External Splunk `attack_data` pack
+### 3.3 External Splunk `attack_data` pack (v2)
 Command:
 ```bash
-go run ./cmd/aman evaluate -scenarios data/scenarios_splunk_attack_data.json -rules data/rules.json -format json -out /tmp/splunk_after_revert.json
+go run ./cmd/aman evaluate -scenarios data/scenarios_splunk_attack_data_v2.json -rules data/rules.json -format json -out /tmp/splunk_attack_v2_report.json
 ```
 
 Pack scope:
-- 5 scenarios
-- 7 labeled checks
+- 14 scenarios
+- 21 labeled checks
 - derived from real `splunk/attack_data` CloudTrail and Okta samples
 
 Result:
-- accuracy: **85.71%**
-- total labeled checks: **7**
+- accuracy: **95.24%**
+- total labeled checks: **21**
 
 By class:
-- feasible: precision **0.000**, recall **0.000**
-- incomplete: precision **0.857**, recall **1.000**
+- feasible: precision **1.000**, recall **0.857**
+- incomplete: precision **0.933**, recall **1.000**
 
 Mismatches:
 - `splunk-attackdata-stop-delete-cloudtrail` / `TA0005.LOG_TAMPER`: expected `feasible`, actual `incomplete`
 
 Critical read:
-- this pack is small, but it is valuable because it comes from real external telemetry.
-- external results improved materially after CloudTrail normalization fixes and failed-IAM handling fixes.
-- the remaining gap is not a crash or parsing failure; it is a product semantics choice around requiring prior foothold evidence for `TA0005.LOG_TAMPER`.
+- this pack is now large enough to be a meaningful external regression signal rather than a toy spot-check.
+- external AWS/CloudTrail fit improved materially after CloudTrail normalization fixes and failed-IAM handling fixes.
+- the remaining gap is not a crash or parser failure; it is a product semantics choice around requiring prior foothold evidence for `TA0005.LOG_TAMPER`.
 
 ## 4. Benchmarks
 
@@ -171,7 +172,33 @@ Critical read:
 - the core assess path is still materially heavier than pure reasoning.
 - the dominant remaining cost is memory/allocation churn rather than raw CPU speed.
 
-## 5. External-mix speed and load checks
+## 5. Windows BOTS-like validation
+
+This is an early realism check built from Aman-ingested Windows-like endpoint telemetry using:
+
+- `sysmon_json`
+- `sentinel_csl`
+- `crowdstrike_fdr`
+
+Scenario file:
+
+```bash
+/Users/shak1532/Downloads/Aegis-R/data/scenarios_bots_windows_like.json
+```
+
+Result:
+
+- total labeled checks: **10**
+- accuracy: **100.00%**
+- mismatches: **0**
+
+Critical read:
+
+- this proves the new Windows/Sysmon ingestion path is working on a controlled endpoint pack
+- it does **not** prove full BOTS v1/v3 readiness yet
+- it does show the current Aman behavior is conservative: endpoint execution, persistence, and log-tamper signals remain `incomplete` when foothold context is missing
+
+## 6. External-mix speed and load checks
 These runs used large mixed-event files built from the external Splunk-derived pack, then assessed through the normal Aman pipeline.
 
 ### 5.1 External repeated evaluation pack
@@ -196,22 +223,24 @@ Critical read:
 - Aman is fast enough for pilot-scale validation and offline regression workflows.
 - memory still rises sharply as event volume increases, especially when the assess path materializes large reports and evidence structures.
 
-## 6. What the fresh validation says about Aman
+## 7. What the fresh validation says about Aman
 
 ### What is strong
 - The core engine is stable and regression-tested.
 - Deterministic mode works.
 - Realistic-suite accuracy is strong.
 - External CloudTrail fit is now credible enough to use in technical discussions.
+- The initial Windows/Sysmon path now works and is good enough for BOTS-like endpoint validation.
 - The failed-IAM false-feasible issue uncovered by `splunk/attack_data` was real and was fixed cleanly.
 
 ### What is weak
 - Public and external accuracy still lag because normalization depth is not broad enough yet.
 - `impossible` recall is still the weakest class.
 - Okta normalization remains shallow for real public-style events.
+- Windows auth/logon normalization is still too shallow for a serious BOTS v1 score.
 - Memory footprint is still the main scale/cost pressure point.
 
-## 7. Safe claims vs unsafe claims
+## 8. Safe claims vs unsafe claims
 
 ### Safe claims
 - Aman is a deterministic, audit-oriented decision-validation engine.
@@ -224,8 +253,8 @@ Critical read:
 - “Aman is broadly production-ready across all vendor telemetry”
 - “Aman reliably proves impossible attack paths in all environments”
 
-## 8. Highest-value next work
+## 9. Highest-value next work
 1. Expand Okta normalization for realistic public event families.
 2. Improve blocker semantics and contradiction depth for the `impossible` boundary.
 3. Reduce memory pressure in the assess/report materialization path.
-4. Add a Windows/Sysmon ingestion path to unlock stronger external validation with BOTS v1.
+4. Add Windows auth/logon normalization and run real BOTS v1 exports through the new adapter.
