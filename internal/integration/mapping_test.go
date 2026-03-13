@@ -208,6 +208,187 @@ func TestMappingSysmonJSON(t *testing.T) {
 	assertHasType(t, toLike(events), "wmi_subscription_trigger")
 }
 
+func TestMappingWindowsSecurityJSON(t *testing.T) {
+	root := testutil.RepoRoot(t)
+	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "windows_security.json"))
+	if err != nil {
+		t.Fatalf("read: %v", err)
+	}
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaWindowsSec})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	seen := toLike(events)
+	assertHasType(t, seen, "signin_success")
+	assertHasType(t, seen, "valid_account_login")
+	assertHasType(t, seen, "network_logon")
+	assertHasType(t, seen, "signin_denied_account_state")
+	assertHasType(t, seen, "network_logon_failure")
+	assertHasType(t, seen, "admin_protocol_denied")
+	assertHasType(t, seen, "admin_group_change")
+	assertHasType(t, seen, "disable_logging")
+}
+
+func TestMappingBOTSWindowsSecurityJSON(t *testing.T) {
+	root := testutil.RepoRoot(t)
+	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "botsv1_windows_security.json"))
+	if err != nil {
+		t.Fatalf("read: %v", err)
+	}
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaWindowsSec})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	seen := toLike(events)
+	assertHasType(t, seen, "signin_success")
+	assertHasType(t, seen, "valid_account_login")
+	assertHasType(t, seen, "network_logon")
+	assertHasType(t, seen, "process_creation")
+}
+
+func TestMappingBOTSSysmonJSON(t *testing.T) {
+	root := testutil.RepoRoot(t)
+	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "botsv1_sysmon.json"))
+	if err != nil {
+		t.Fatalf("read: %v", err)
+	}
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaSysmonJSON})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	seen := toLike(events)
+	assertHasType(t, seen, "process_creation")
+	assertHasType(t, seen, "network_connection")
+}
+
+func TestMappingAttackDataWindowsSecurityJSON(t *testing.T) {
+	root := testutil.RepoRoot(t)
+	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "attack_data_t1053_security.json"))
+	if err != nil {
+		t.Fatalf("read: %v", err)
+	}
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaWindowsSec})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	seen := toLike(events)
+	assertHasType(t, seen, "signin_success")
+	assertHasType(t, seen, "valid_account_login")
+	assertHasType(t, seen, "explicit_credential_use")
+	assertHasType(t, seen, "privileged_logon")
+	assertHasType(t, seen, "kerberos_ticket")
+}
+
+func TestMappingAttackDataSysmonJSON(t *testing.T) {
+	root := testutil.RepoRoot(t)
+	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "attack_data_t1053_sysmon.json"))
+	if err != nil {
+		t.Fatalf("read: %v", err)
+	}
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaSysmonJSON})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	seen := toLike(events)
+	assertHasType(t, seen, "lsass_access")
+	assertHasType(t, seen, "schtasks_create")
+	assertHasType(t, seen, "scheduled_task")
+	assertHasType(t, seen, "process_creation")
+	assertHasType(t, seen, "registry_change")
+	assertHasType(t, seen, "network_connection")
+}
+
+
+func TestMappingAttackDataT1053BlockerWindowsSecurityJSON(t *testing.T) {
+	root := testutil.RepoRoot(t)
+	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "attack_data_t1053_blocker_windows_security.json"))
+	if err != nil {
+		t.Fatalf("read: %v", err)
+	}
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaWindowsSec})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	seen := toLike(events)
+	assertHasType(t, seen, "service_install")
+	assertHasType(t, seen, "signin_failed_auth")
+	assertHasType(t, seen, "network_logon_failure")
+	assertHasType(t, seen, "admin_protocol_denied")
+}
+
+func TestMappingAttackDataT1047WindowsSecurityJSON(t *testing.T) {
+	root := testutil.RepoRoot(t)
+	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "attack_data_t1047_security.json"))
+	if err != nil {
+		t.Fatalf("read: %v", err)
+	}
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaWindowsSec})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	seen := toLike(events)
+	assertHasType(t, seen, "signin_success")
+	assertHasType(t, seen, "valid_account_login")
+	assertHasType(t, seen, "explicit_credential_use")
+	assertHasType(t, seen, "privileged_logon")
+	assertHasType(t, seen, "kerberos_ticket")
+}
+
+func TestMappingAttackDataT1047SysmonJSON(t *testing.T) {
+	root := testutil.RepoRoot(t)
+	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "attack_data_t1047_sysmon.json"))
+	if err != nil {
+		t.Fatalf("read: %v", err)
+	}
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaSysmonJSON})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	seen := toLike(events)
+	assertHasType(t, seen, "process_access")
+	assertHasType(t, seen, "process_creation")
+	assertHasType(t, seen, "lolbin_execution")
+	assertHasType(t, seen, "wmic_process_create")
+}
+
+func TestMappingAttackDataT1027WindowsSecurityJSON(t *testing.T) {
+	root := testutil.RepoRoot(t)
+	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "attack_data_t1027_security.json"))
+	if err != nil {
+		t.Fatalf("read: %v", err)
+	}
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaWindowsSec})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	seen := toLike(events)
+	assertHasType(t, seen, "signin_success")
+	assertHasType(t, seen, "valid_account_login")
+	assertHasType(t, seen, "explicit_credential_use")
+	assertHasType(t, seen, "privileged_logon")
+	assertHasType(t, seen, "kerberos_ticket")
+}
+
+func TestMappingAttackDataT1027SysmonJSON(t *testing.T) {
+	root := testutil.RepoRoot(t)
+	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "attack_data_t1027_sysmon.json"))
+	if err != nil {
+		t.Fatalf("read: %v", err)
+	}
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaSysmonJSON})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	seen := toLike(events)
+	assertHasType(t, seen, "process_creation")
+	assertHasType(t, seen, "script_execution")
+	assertHasType(t, seen, "encoded_command")
+	assertHasType(t, seen, "encoded_powershell")
+	assertHasType(t, seen, "new_inbound_admin_protocol")
+	assertHasType(t, seen, "lsass_access")
+	assertHasType(t, seen, "file_create")
+}
+
 func TestMappingSentinelAuth(t *testing.T) {
 	root := testutil.RepoRoot(t)
 	data, err := os.ReadFile(filepath.Join(root, "data", "fixtures", "sentinel_csl.json"))
@@ -218,8 +399,35 @@ func TestMappingSentinelAuth(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ingest: %v", err)
 	}
-	assertHasType(t, toLike(events), "authentication_success")
-	assertHasType(t, toLike(events), "authentication_failure")
+	assertHasType(t, toLike(events), "signin_success")
+	assertHasType(t, toLike(events), "signin_failed_auth")
+}
+
+func TestMappingSentinelAuthPolicyAndAccountState(t *testing.T) {
+	data := []byte(`[
+	  {
+	    "TimeGenerated": "2026-02-06T12:43:30Z",
+	    "Computer": "win-02",
+	    "AccountName": "jill",
+	    "DeviceAction": "AuthenticationFailure",
+	    "Activity": "AuthenticationFailure",
+	    "Fields": {"Result": "BlockedByPolicy", "Message": "Conditional Access policy blocked sign-in"}
+	  },
+	  {
+	    "TimeGenerated": "2026-02-06T12:44:00Z",
+	    "Computer": "win-02",
+	    "AccountName": "jill",
+	    "DeviceAction": "AuthenticationFailure",
+	    "Activity": "AuthenticationFailure",
+	    "Fields": {"Result": "AccountDisabled", "Message": "Account disabled"}
+	  }
+	]`)
+	events, err := IngestEvents(data, IngestOptions{Schema: SchemaSentinelCSL})
+	if err != nil {
+		t.Fatalf("ingest: %v", err)
+	}
+	assertHasType(t, toLike(events), "signin_denied_policy")
+	assertHasType(t, toLike(events), "signin_denied_account_state")
 }
 
 func toLike(events []model.Event) []EventLike {

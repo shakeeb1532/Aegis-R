@@ -35,6 +35,7 @@ type reportFile struct {
 		Results     []reportFileReasoningResult `json:"results"`
 		Threads     []struct {
 			ID         string   `json:"id"`
+			Title      string   `json:"title"`
 			Host       string   `json:"host"`
 			Principal  string   `json:"principal"`
 			FirstSeen  string   `json:"first_seen"`
@@ -45,6 +46,7 @@ type reportFile struct {
 		} `json:"threads"`
 		Tickets []struct {
 			ID            string   `json:"id"`
+			Title         string   `json:"title"`
 			ThreadID      string   `json:"thread_id"`
 			Host          string   `json:"host"`
 			Principal     string   `json:"principal"`
@@ -164,6 +166,15 @@ func latestTimestamp(ts string) string {
 		return t.Format("2006-01-02 15:04 UTC")
 	}
 	return ts
+}
+
+func firstNonEmpty(values ...string) string {
+	for _, v := range values {
+		if strings.TrimSpace(v) != "" {
+			return strings.TrimSpace(v)
+		}
+	}
+	return ""
 }
 
 func buildOverview(r *reportFile) OverviewResponse {
@@ -332,6 +343,7 @@ func buildQueueItems(r *reportFile) []QueueItem {
 		}
 		items = append(items, QueueItem{
 			ID:         ticket.ID,
+			Title:      firstNonEmpty(ticket.Title, ruleTitle, ticket.ID),
 			Rule:       ruleTitle,
 			Verdict:    verdict,
 			Confidence: matched.Confidence,
@@ -350,6 +362,7 @@ func buildGraph(r *reportFile) GraphResponse {
 	for _, t := range r.Reasoning.Threads {
 		threads = append(threads, ThreadItem{
 			ID:         t.ID,
+			Title:      firstNonEmpty(t.Title, t.ID),
 			Host:       t.Host,
 			Principal:  t.Principal,
 			RuleIDs:    t.RuleIDs,

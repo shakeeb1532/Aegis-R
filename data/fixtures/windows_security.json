@@ -1,0 +1,57 @@
+[
+  {
+    "EventID": 4624,
+    "TimeCreated": "2026-02-06T12:40:00Z",
+    "Computer": "dc-01",
+    "Channel": "Security",
+    "Message": "An account was successfully logged on.",
+    "EventData": {
+      "TargetUserName": "jill",
+      "IpAddress": "10.10.10.15",
+      "WorkstationName": "wkst-01",
+      "LogonType": "3",
+      "TargetLogonId": "0x1234",
+      "AuthenticationPackageName": "NTLM",
+      "EventRecordID": "9001"
+    }
+  },
+  {
+    "EventID": 4625,
+    "TimeCreated": "2026-02-06T12:41:00Z",
+    "Computer": "dc-01",
+    "Channel": "Security",
+    "Message": "An account failed to log on. Account locked.",
+    "EventData": {
+      "TargetUserName": "jill",
+      "IpAddress": "10.10.10.15",
+      "WorkstationName": "wkst-01",
+      "LogonType": "10",
+      "Status": "0xC0000234",
+      "SubStatus": "0x0",
+      "EventRecordID": "9002"
+    }
+  },
+  {
+    "EventID": 4728,
+    "TimeCreated": "2026-02-06T12:42:00Z",
+    "Computer": "dc-01",
+    "Channel": "Security",
+    "Message": "A member was added to a security-enabled global group.",
+    "EventData": {
+      "TargetUserName": "svc-backup",
+      "SubjectUserName": "admin-user",
+      "EventRecordID": "9003"
+    }
+  },
+  {
+    "EventID": 1102,
+    "TimeCreated": "2026-02-06T12:43:00Z",
+    "Computer": "dc-01",
+    "Channel": "Security",
+    "Message": "The audit log was cleared.",
+    "EventData": {
+      "SubjectUserName": "admin-user",
+      "EventRecordID": "9004"
+    }
+  }
+]

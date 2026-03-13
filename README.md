@@ -116,6 +116,8 @@ Summary:
 - Rule lint passed with `0` warnings and `0` legacy fallback rules.
 - UI production build passed.
 - Benchmarks rerun after the memory-hardening batch.
+- External `splunk/attack_data` regression pack scores `95.24%` over `21` labels.
+- Focused Windows/cloud/identity blocker packs score `100.00%` on their scoped validation sets.
 - Detailed output: `docs/test_results.md`
 - Full consolidated validation: `docs/full_validation_report.md`
 

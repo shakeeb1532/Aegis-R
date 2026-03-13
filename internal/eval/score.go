@@ -3,6 +3,7 @@ package eval
 import (
 	"encoding/json"
 
+	aenv "aman/internal/env"
 	"aman/internal/logic"
 	"aman/internal/model"
 )
@@ -25,7 +26,11 @@ func Score(scenarios ScenariosFile, rules []logic.Rule) Report {
 		if err != nil {
 			continue
 		}
-		rep := logic.Reason(events, rules)
+		environment, err := coerceEnvironment(s.Environment)
+		if err != nil {
+			continue
+		}
+		rep := reasonWithOptionalEnv(events, rules, environment)
 		pred := map[string]Outcome{}
 		for _, r := range rep.Results {
 			pred[r.RuleID] = classify(r)
@@ -86,6 +91,13 @@ func Score(scenarios ScenariosFile, rules []logic.Rule) Report {
 		ByRuleID:   byRuleAcc,
 		Mismatches: mismatches,
 	}
+}
+
+func reasonWithOptionalEnv(events []model.Event, rules []logic.Rule, environment aenv.Environment) model.ReasoningReport {
+	if len(environment.Hosts) == 0 && len(environment.Identities) == 0 && len(environment.TrustBoundaries) == 0 {
+		return logic.Reason(events, rules)
+	}
+	return logic.ReasonWithEnv(events, rules, environment)
 }
 
 func coerceEvents(v any) ([]model.Event, error) {

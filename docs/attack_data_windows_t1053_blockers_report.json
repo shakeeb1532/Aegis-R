@@ -1,0 +1,33 @@
+{
+  "total": 3,
+  "accuracy": 1,
+  "by_class": {
+    "feasible": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": 0,
+      "recall": 0
+    },
+    "impossible": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": 0,
+      "recall": 0
+    },
+    "incomplete": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    }
+  },
+  "accuracy_by_rule": {
+    "TA0003.PERSIST_EXTENDED": 1,
+    "TA0008.ADMIN_PROTOCOL_LATERAL": 1,
+    "TA0008.LATERAL": 1
+  },
+  "mismatches": []
+}

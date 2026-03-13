@@ -46,6 +46,7 @@ type ConfidenceFactors struct {
 
 type QueueItem struct {
 	ID         string   `json:"id"`
+	Title      string   `json:"title,omitempty"`
 	Rule       string   `json:"rule"`
 	Verdict    string   `json:"verdict"`
 	Confidence float64  `json:"confidence"`
@@ -94,6 +95,7 @@ type GraphResponse struct {
 
 type ThreadItem struct {
 	ID         string   `json:"id"`
+	Title      string   `json:"title,omitempty"`
 	Host       string   `json:"host"`
 	Principal  string   `json:"principal"`
 	RuleIDs    []string `json:"rule_ids"`

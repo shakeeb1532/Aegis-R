@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 
+	aenv "aman/internal/env"
 	"aman/internal/ops"
 )
 
@@ -24,6 +25,7 @@ type Scenario struct {
 	ID          string  `json:"id"`
 	Description string  `json:"description"`
 	Events      any     `json:"events"`
+	Environment any     `json:"environment,omitempty"`
 	Labels      []Label `json:"labels"`
 }
 
@@ -69,4 +71,25 @@ func LoadScenarios(path string) (ScenariosFile, error) {
 		return f, err
 	}
 	return f, nil
+}
+
+func coerceEnvironment(v any) (aenv.Environment, error) {
+	var environment aenv.Environment
+	if v == nil {
+		return environment, nil
+	}
+	if envValue, ok := v.(aenv.Environment); ok {
+		return envValue, nil
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		return environment, err
+	}
+	if err := json.Unmarshal(data, &environment); err != nil {
+		return environment, err
+	}
+	if err := aenv.Validate(environment); err != nil {
+		return environment, err
+	}
+	return environment, nil
 }

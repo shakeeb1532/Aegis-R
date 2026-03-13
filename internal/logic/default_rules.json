@@ -1328,7 +1328,15 @@
     "constraints": {
       "min_confidence": 0,
       "applies_to": null
-    }
+    },
+    "contradictions": [
+      "network_logon_failure",
+      "admin_protocol_denied"
+    ],
+    "requires_context": "host",
+    "target_event_types": [
+      "wmic_process_create"
+    ]
   },
   {
     "id": "TA0003.ACCOUNT_CREATE",
@@ -4032,7 +4040,8 @@
     ],
     "contradictions": [
       "mfa_success"
-    ]
+    ],
+    "requires_context": "identity"
   },
   {
     "id": "TA0006.CLOUD_IMDS",
@@ -4481,6 +4490,10 @@
       {
         "type": "lsass_access",
         "description": "Pass-the-Hash"
+      },
+      {
+        "type": "ta0006_pass_the_hash",
+        "description": "Pass-the-Hash token or NTLM replay evidence"
       }
     ],
     "preconds": [
@@ -4686,7 +4699,11 @@
       "login_denied",
       "account_locked"
     ],
-    "requires_context": "identity"
+    "requires_context": "identity",
+    "target_event_types": [
+      "signin_success",
+      "new_device_login"
+    ]
   },
   {
     "id": "TA0007.ACCOUNT_DISCOVERY",
@@ -5843,6 +5860,10 @@
     "requires_reachability": true,
     "target_event_types": [
       "new_inbound_admin_protocol"
+    ],
+    "contradictions": [
+      "network_logon_failure",
+      "admin_protocol_denied"
     ]
   },
   {

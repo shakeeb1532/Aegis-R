@@ -14,5 +14,9 @@ func parseTime(v string) time.Time {
 	if ts, err := time.Parse("2006-01-02 15:04:05", v); err == nil {
 		return ts
 	}
+	// Splunk/BOTS local timestamp format
+	if ts, err := time.Parse("2006-01-02 15:04:05.000 MST", v); err == nil {
+		return ts
+	}
 	return time.Time{}
 }

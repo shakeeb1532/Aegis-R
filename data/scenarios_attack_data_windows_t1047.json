@@ -1,0 +1,149 @@
+{
+  "scenarios": [
+    {
+      "id": "attackdata-windows-t1047",
+      "description": "Real Windows Security and Sysmon records from splunk/attack_data T1047. The slice shows explicit credential use, Kerberos ticketing, WMI process execution, and WMI provider access, but it lacks initial access and persistence artifacts. The relevant paths should remain incomplete.",
+      "events": [
+        {
+          "id": "adw47-sec-1",
+          "time": "2020-08-01T07:53:07Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "WIN-DC-8400769$",
+          "type": "signin_success",
+          "details": { "channel": "Security", "logon_type": "5" }
+        },
+        {
+          "id": "adw47-sec-2",
+          "time": "2020-08-01T07:53:07Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "WIN-DC-8400769$",
+          "type": "valid_account_login",
+          "details": { "channel": "Security", "logon_type": "5" }
+        },
+        {
+          "id": "adw47-sec-3",
+          "time": "2020-08-01T07:53:07Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "SYSTEM",
+          "type": "privileged_logon",
+          "details": { "channel": "Security", "privileges": "SeDebugPrivilege" }
+        },
+        {
+          "id": "adw47-sec-4",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "Administrator",
+          "type": "explicit_credential_use",
+          "details": { "channel": "Security", "target_server": "localhost" }
+        },
+        {
+          "id": "adw47-sec-5",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "Administrator",
+          "type": "kerberos_ticket",
+          "details": { "channel": "Security" }
+        },
+        {
+          "id": "adw47-sec-6",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "Administrator",
+          "type": "kerberos_ticket",
+          "details": { "channel": "Security" }
+        },
+        {
+          "id": "adw47-sys-1",
+          "time": "2020-08-01T07:53:10Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "SYSTEM",
+          "type": "process_access",
+          "details": {
+            "target_image": "C:\\Windows\\system32\\wbem\\wmiprvse.exe",
+            "granted_access": "0x1FFFFF"
+          }
+        },
+        {
+          "id": "adw47-sys-2",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "process_creation",
+          "details": {
+            "image": "C:\\Windows\\System32\\cmd.exe",
+            "command_line": "\"C:\\Windows\\system32\\cmd.exe\" /c \"wmic useraccount get /ALL /format:csv\""
+          }
+        },
+        {
+          "id": "adw47-sys-3",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "lolbin_execution",
+          "details": {
+            "image": "C:\\Windows\\System32\\wbem\\WMIC.exe",
+            "command_line": "wmic useraccount get /ALL /format:csv"
+          }
+        },
+        {
+          "id": "adw47-sys-4",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "wmic_process_create",
+          "details": {
+            "image": "C:\\Windows\\System32\\wbem\\WMIC.exe",
+            "command_line": "wmic useraccount get /ALL /format:csv"
+          }
+        },
+        {
+          "id": "adw47-sys-5",
+          "time": "2020-08-01T07:59:14Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "process_creation",
+          "details": {
+            "image": "C:\\Windows\\System32\\cmd.exe",
+            "command_line": "\"C:\\Windows\\system32\\cmd.exe\" /c \"wmic process get caption,executablepath,commandline /format:csv\""
+          }
+        },
+        {
+          "id": "adw47-sys-6",
+          "time": "2020-08-01T07:59:14Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "lolbin_execution",
+          "details": {
+            "image": "C:\\Windows\\System32\\wbem\\WMIC.exe",
+            "command_line": "wmic process get caption,executablepath,commandline /format:csv"
+          }
+        },
+        {
+          "id": "adw47-sys-7",
+          "time": "2020-08-01T07:59:14Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "wmic_process_create",
+          "details": {
+            "image": "C:\\Windows\\System32\\wbem\\WMIC.exe",
+            "command_line": "wmic process get caption,executablepath,commandline /format:csv"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.WMI_EXEC",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0002.LOLBIN_CHAIN",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0006.PASS_THE_TICKET",
+          "outcome": "incomplete"
+        }
+      ]
+    }
+  ]
+}

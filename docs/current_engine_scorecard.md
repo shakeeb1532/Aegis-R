@@ -20,6 +20,8 @@ Environment:
 | UI build | `cd ui && npm run build` | Pass | Current frontend builds successfully for production |
 | Accuracy | `evaluate` on `data/scenarios_realistic.json` | `99.45%` over `364` labels | Strong regression baseline; still mostly internal/synthetic |
 | Accuracy | `evaluate` on `data/scenarios_public.json` | `87.10%` over `31` labels | More honest external signal; main weakness is impossible recall |
+| External validation | `evaluate` on `data/scenarios_splunk_attack_data_v2.json` | `95.24%` over `21` labels | Best current external regression signal; strongest on CloudTrail/AWS |
+| Blocker semantics | scoped Windows/cloud/identity blocker packs | `100.00%` across focused packs | Same-scope blockers now invalidate selected paths without regressing broader suites |
 | Feasible precision | public suite | `1.000` | Good fit for Aman’s role as an overlay validation engine |
 | Impossible recall | public suite | `0.333` | Still weak; blocker evidence and vendor prevention telemetry need expansion |
 | Adversarial effectiveness | Existing stress report | `73.40%` evasion detection rate over `500` runs | Meaningful signal, but still not strong enough for aggressive claims |
@@ -159,6 +161,7 @@ Coverage snapshot:
 
 - Aman is deterministic in controlled assessment mode.
 - Aman performs strongly on internal regression suites and reasonably on public scenarios.
+- Aman now has focused external proof that scoped blocker semantics work across selected Windows, cloud, and identity paths.
 - Aman is strongest at validating feasible paths and surfacing missing evidence, not at aggressively declaring impossibility without blocker evidence.
 - The rule catalog and audit outputs are now more defensible and reviewable than earlier versions.
 

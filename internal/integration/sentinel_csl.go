@@ -74,12 +74,20 @@ func classifySentinel(e sentinelCSL) string {
 		return "service_install"
 	}
 	act := strings.ToLower(firstNonEmpty(e.Activity, e.DeviceAction, ""))
+	result := strings.ToLower(fieldStringAny(e.Fields, "Result", "Status", "SubStatus"))
+	message := strings.ToLower(fieldStringAny(e.Fields, "Message", "FailureReason", "Reason"))
 	if act != "" {
 		if containsAny(act, "authenticationsuccess", "authentication success", "signin success", "sign-in success", "login success") {
-			return "authentication_success"
+			return "signin_success"
 		}
 		if containsAny(act, "authenticationfailure", "authentication failure", "signin failure", "sign-in failure", "login failure") {
-			return "authentication_failure"
+			if containsAny(result, "policy", "conditionalaccess", "ca", "blocked") || containsAny(message, "conditional access", "blocked by policy", "policy") {
+				return "signin_denied_policy"
+			}
+			if containsAny(result, "accountdisabled", "account locked", "locked", "disabled") || containsAny(message, "account disabled", "account locked") {
+				return "signin_denied_account_state"
+			}
+			return "signin_failed_auth"
 		}
 	}
 	return firstNonEmpty(e.Activity, e.DeviceAction, "sentinel_event")

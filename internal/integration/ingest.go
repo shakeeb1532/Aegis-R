@@ -19,6 +19,7 @@ const (
 	SchemaOCSF        Schema = "ocsf"
 	SchemaCIM         Schema = "cim"
 	SchemaSysmonJSON  Schema = "sysmon_json"
+	SchemaWindowsSec  Schema = "windows_security_json"
 	SchemaMDE         Schema = "mde"
 	SchemaElasticECS  Schema = "elastic_ecs"
 	SchemaSplunkAuth  Schema = "splunk_cim_auth"
@@ -54,6 +55,8 @@ func IngestEvents(raw []byte, opts IngestOptions) ([]model.Event, error) {
 		return mapCIM(raw)
 	case SchemaSysmonJSON:
 		return mapSysmonJSON(raw)
+	case SchemaWindowsSec:
+		return mapWindowsSecurityJSON(raw)
 	case SchemaSplunkAuth:
 		return mapSplunkCIMAuth(raw)
 	case SchemaSplunkNet:
@@ -83,6 +86,7 @@ func SupportedSchemas() []Schema {
 		SchemaOCSF,
 		SchemaCIM,
 		SchemaSysmonJSON,
+		SchemaWindowsSec,
 		SchemaSplunkAuth,
 		SchemaSplunkNet,
 		SchemaMDE,
@@ -227,7 +231,11 @@ func normalizeInternalEventType(v string) string {
 		return "process_creation"
 	case "authentication", "auth", "login", "user_login":
 		return "signin_success"
+	case "authentication_success":
+		return "signin_success"
 	case "auth_failed", "login_failed", "authentication_failure":
+		return "signin_failed_auth"
+	case "authentication_failed":
 		return "signin_failed_auth"
 	case "auth_denied_policy", "login_denied_policy":
 		return "signin_denied_policy"

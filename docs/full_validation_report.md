@@ -42,8 +42,8 @@ go run ./cmd/aman system determinism-check   -in data/demo_events.json   -env da
 ```
 
 Result:
-- `same_order_equal`: `False`
-- `shuffled_order_equal`: `False`
+- `same_order_equal`: `True`
+- `shuffled_order_equal`: `True`
 - `stable_feasible_rules`: `True`
 
 Interpretation:
@@ -127,6 +127,46 @@ Critical read:
 - this pack is now large enough to be a meaningful external regression signal rather than a toy spot-check.
 - external AWS/CloudTrail fit improved materially after CloudTrail normalization fixes and failed-IAM handling fixes.
 - the remaining gap is not a crash or parser failure; it is a product semantics choice around requiring prior foothold evidence for `TA0005.LOG_TAMPER`.
+
+### 3.4 Windows `attack_data` technique packs
+
+Real Windows validation slices were added from `splunk/attack_data` for:
+- `T1053` scheduled task / persistence
+- `T1047` WMI execution
+- `T1027` obfuscated/encoded execution + credential-access adjacency
+
+Representative scored results:
+- `docs/attack_data_windows_t1053_validation.md`
+- `docs/attack_data_windows_t1047_validation.md`
+- `docs/attack_data_windows_t1027_validation.md`
+
+Current outcome:
+- each narrow pack scores **100.00%** on its own labels
+- the dominant verdict is still `incomplete`, which is the correct conservative result for these slices because they lack full foothold / replay / privilege proof
+
+Critical read:
+- these packs prove Windows normalization is now credible enough to run real external slices
+- they do **not** prove broad Windows attack confirmation yet
+
+### 3.5 Scoped blocker validation
+
+Additional external packs were added to validate blocker semantics beyond the generic public suite:
+
+- `docs/attack_data_windows_admin_protocol_blockers_validation.md`
+- `docs/attack_data_windows_wmi_blockers_validation.md`
+- `docs/attack_data_windows_auth_lateral_validation.md`
+- `docs/attack_data_cloud_identity_blockers_validation.md`
+
+Current outcome:
+- Windows admin-protocol blocker pack: **100.00%** over `2`
+- Windows WMI blocker pack: **100.00%** over `2`
+- Windows auth/lateral combined pack: **100.00%** over `6`
+- Cloud/identity blocker pack: **100.00%** over `6`
+
+Critical read:
+- Aman now distinguishes between **same-scope blockers** and **out-of-scope noise** for selected Windows, cloud, and identity rules
+- this materially improves the blocker/impossible story
+- it is still selective coverage, not broad blocker maturity across every telemetry family
 
 ## 4. Benchmarks
 
@@ -231,13 +271,14 @@ Critical read:
 - Realistic-suite accuracy is strong.
 - External CloudTrail fit is now credible enough to use in technical discussions.
 - The initial Windows/Sysmon path now works and is good enough for BOTS-like endpoint validation.
+- Scoped blocker validation now works across selected Windows, cloud, and identity rules.
 - The failed-IAM false-feasible issue uncovered by `splunk/attack_data` was real and was fixed cleanly.
 
 ### What is weak
 - Public and external accuracy still lag because normalization depth is not broad enough yet.
 - `impossible` recall is still the weakest class.
 - Okta normalization remains shallow for real public-style events.
-- Windows auth/logon normalization is still too shallow for a serious BOTS v1 score.
+- Windows auth/logon normalization is better than before, but still not broad enough for a serious full BOTS v1 score.
 - Memory footprint is still the main scale/cost pressure point.
 
 ## 8. Safe claims vs unsafe claims

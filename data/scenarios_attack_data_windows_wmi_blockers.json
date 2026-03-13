@@ -1,0 +1,448 @@
+{
+  "scenarios": [
+    {
+      "id": "attackdata-windows-wmi_out_of_scope_blocker",
+      "description": "The same real Windows WMI execution slice paired with real blocker telemetry from a different host and user. Aman should keep the WMI path incomplete because the blocker is out of scope.",
+      "events": [
+        {
+          "id": "adw47-sec-1",
+          "time": "2020-08-01T07:53:07Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "WIN-DC-8400769$",
+          "type": "signin_success",
+          "details": {
+            "channel": "Security",
+            "logon_type": "5"
+          }
+        },
+        {
+          "id": "adw47-sec-2",
+          "time": "2020-08-01T07:53:07Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "WIN-DC-8400769$",
+          "type": "valid_account_login",
+          "details": {
+            "channel": "Security",
+            "logon_type": "5"
+          }
+        },
+        {
+          "id": "adw47-sec-3",
+          "time": "2020-08-01T07:53:07Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "SYSTEM",
+          "type": "privileged_logon",
+          "details": {
+            "channel": "Security",
+            "privileges": "SeDebugPrivilege"
+          }
+        },
+        {
+          "id": "adw47-sec-4",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "Administrator",
+          "type": "explicit_credential_use",
+          "details": {
+            "channel": "Security",
+            "target_server": "localhost"
+          }
+        },
+        {
+          "id": "adw47-sec-5",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "Administrator",
+          "type": "kerberos_ticket",
+          "details": {
+            "channel": "Security"
+          }
+        },
+        {
+          "id": "adw47-sec-6",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "Administrator",
+          "type": "kerberos_ticket",
+          "details": {
+            "channel": "Security"
+          }
+        },
+        {
+          "id": "adw47-sys-1",
+          "time": "2020-08-01T07:53:10Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "SYSTEM",
+          "type": "process_access",
+          "details": {
+            "target_image": "C:\\Windows\\system32\\wbem\\wmiprvse.exe",
+            "granted_access": "0x1FFFFF"
+          }
+        },
+        {
+          "id": "adw47-sys-2",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "process_creation",
+          "details": {
+            "image": "C:\\Windows\\System32\\cmd.exe",
+            "command_line": "\"C:\\Windows\\system32\\cmd.exe\" /c \"wmic useraccount get /ALL /format:csv\""
+          }
+        },
+        {
+          "id": "adw47-sys-3",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "lolbin_execution",
+          "details": {
+            "image": "C:\\Windows\\System32\\wbem\\WMIC.exe",
+            "command_line": "wmic useraccount get /ALL /format:csv"
+          }
+        },
+        {
+          "id": "adw47-sys-4",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "wmic_process_create",
+          "details": {
+            "image": "C:\\Windows\\System32\\wbem\\WMIC.exe",
+            "command_line": "wmic useraccount get /ALL /format:csv"
+          }
+        },
+        {
+          "id": "adw47-sys-5",
+          "time": "2020-08-01T07:59:14Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "process_creation",
+          "details": {
+            "image": "C:\\Windows\\System32\\cmd.exe",
+            "command_line": "\"C:\\Windows\\system32\\cmd.exe\" /c \"wmic process get caption,executablepath,commandline /format:csv\""
+          }
+        },
+        {
+          "id": "adw47-sys-6",
+          "time": "2020-08-01T07:59:14Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "lolbin_execution",
+          "details": {
+            "image": "C:\\Windows\\System32\\wbem\\WMIC.exe",
+            "command_line": "wmic process get caption,executablepath,commandline /format:csv"
+          }
+        },
+        {
+          "id": "adw47-sys-7",
+          "time": "2020-08-01T07:59:14Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "wmic_process_create",
+          "details": {
+            "image": "C:\\Windows\\System32\\wbem\\WMIC.exe",
+            "command_line": "wmic process get caption,executablepath,commandline /format:csv"
+          }
+        },
+        {
+          "id": "evt-e04db692621c0dd84c11383dba0aae3d658cde90",
+          "time": "2020-08-01T06:54:28Z",
+          "host": "win-fileserver-01.attackrange.local",
+          "user": "bob",
+          "type": "network_logon_failure",
+          "details": {
+            "auth_package": "NTLM",
+            "channel": "Security",
+            "command_line": "",
+            "logon_guid": "",
+            "logon_id": "",
+            "logon_type": "3",
+            "message": "An account failed to log on.\r\n\r\nSubject:\r\n\tSecurity ID:\t\tS-1-0-0\r\n\tAccount Name:\t\t-\r\n\tAccount Domain:\t\t-\r\n\tLogon ID:\t\t0x0\r\n\r\nLogon Type:\t\t\t3\r\n\r\nAccount For Which Logon Failed:\r\n\tSecurity ID:\t\tS-1-0-0\r\n\tAccount Name:\t\tadministrator\r\n\tAccount Domain:\t\t\r\n\r\nFailure Information:\r\n\tFailure Reason:\t\tAn Error occured during Logon.\r\n\tStatus:\t\t\t0xC0000225\r\n\tSub Status:\t\t0x0\r\n\r\nProcess Information:\r\n\tCaller Process ID:\t0x0\r\n\tCaller Process Name:\t-\r\n\r\nNetwork Information:\r\n\tWorkstation Name:\t-\r\n\tSource Network Address:\t203.192.247.66\r\n\tSource Port:\t\t51818\r\n\r\nDetailed Authentication Information:\r\n\tLogon Process:\t\t\r\n\tAuthentication Package:\tNTLM\r\n\tTransited Services:\t-\r\n\tPackage Name (NTLM only):\t-\r\n\tKey Length:\t\t0\r\n\r\nThis event is generated when a logon request fails. It is generated on the computer where access was attempted.\r\n\r\nThe Subject fields indicate the account on the local system which requested the logon. This is most commonly a service such as the Server service, or a local process such as Winlogon.exe or Services.exe.\r\n\r\nThe Logon Type field indicates the kind of logon that was requested. The most common types are 2 (interactive) and 3 (network).\r\n\r\nThe Process Information fields indicate which account and process on the system requested the logon.\r\n\r\nThe Network Information fields indicate where a remote logon request originated. Workstation name is not always available and may be left blank in some cases.\r\n\r\nThe authentication information fields provide detailed information about this specific logon request.\r\n\t- Transited services indicate which intermediate services have participated in this logon request.\r\n\t- Package name indicates which sub-protocol was used among the NTLM protocols.\r\n\t- Key length indicates the length of the generated session key. This will be 0 if no session key was requested.",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "process_name": "",
+            "source_host": "WIN-FILESERVER-01",
+            "source_ip": "10.20.30.40",
+            "status": "0xc0000225",
+            "sub_status": "0x0"
+          }
+        },
+        {
+          "id": "evt-0bc8d10ce61b37f2dc85404baa9da9bd7ca9bea3",
+          "time": "2020-08-01T06:54:28Z",
+          "host": "win-fileserver-01.attackrange.local",
+          "user": "bob",
+          "type": "admin_protocol_denied",
+          "details": {
+            "auth_package": "NTLM",
+            "channel": "Security",
+            "command_line": "",
+            "logon_guid": "",
+            "logon_id": "",
+            "logon_type": "3",
+            "message": "An account failed to log on.\r\n\r\nSubject:\r\n\tSecurity ID:\t\tS-1-0-0\r\n\tAccount Name:\t\t-\r\n\tAccount Domain:\t\t-\r\n\tLogon ID:\t\t0x0\r\n\r\nLogon Type:\t\t\t3\r\n\r\nAccount For Which Logon Failed:\r\n\tSecurity ID:\t\tS-1-0-0\r\n\tAccount Name:\t\tadministrator\r\n\tAccount Domain:\t\t\r\n\r\nFailure Information:\r\n\tFailure Reason:\t\tAn Error occured during Logon.\r\n\tStatus:\t\t\t0xC0000225\r\n\tSub Status:\t\t0x0\r\n\r\nProcess Information:\r\n\tCaller Process ID:\t0x0\r\n\tCaller Process Name:\t-\r\n\r\nNetwork Information:\r\n\tWorkstation Name:\t-\r\n\tSource Network Address:\t203.192.247.66\r\n\tSource Port:\t\t51818\r\n\r\nDetailed Authentication Information:\r\n\tLogon Process:\t\t\r\n\tAuthentication Package:\tNTLM\r\n\tTransited Services:\t-\r\n\tPackage Name (NTLM only):\t-\r\n\tKey Length:\t\t0\r\n\r\nThis event is generated when a logon request fails. It is generated on the computer where access was attempted.\r\n\r\nThe Subject fields indicate the account on the local system which requested the logon. This is most commonly a service such as the Server service, or a local process such as Winlogon.exe or Services.exe.\r\n\r\nThe Logon Type field indicates the kind of logon that was requested. The most common types are 2 (interactive) and 3 (network).\r\n\r\nThe Process Information fields indicate which account and process on the system requested the logon.\r\n\r\nThe Network Information fields indicate where a remote logon request originated. Workstation name is not always available and may be left blank in some cases.\r\n\r\nThe authentication information fields provide detailed information about this specific logon request.\r\n\t- Transited services indicate which intermediate services have participated in this logon request.\r\n\t- Package name indicates which sub-protocol was used among the NTLM protocols.\r\n\t- Key length indicates the length of the generated session key. This will be 0 if no session key was requested.",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "process_name": "",
+            "source_host": "WIN-FILESERVER-01",
+            "source_ip": "10.20.30.40",
+            "status": "0xc0000225",
+            "sub_status": "0x0"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.WMI_EXEC",
+          "outcome": "incomplete"
+        }
+      ],
+      "environment": {
+        "hosts": [
+          {
+            "id": "win-dc-8400769.attackrange.local",
+            "zone": "corp-admin",
+            "tags": [
+              "windows"
+            ],
+            "critical": true
+          }
+        ],
+        "identities": [
+          {
+            "id": "ATTACKRANGE\\Administrator",
+            "role": "administrator",
+            "priv_level": "high",
+            "tags": [
+              "admin"
+            ]
+          }
+        ],
+        "trust_boundaries": []
+      }
+    },
+    {
+      "id": "attackdata-windows-wmi_same_scope_blocker",
+      "description": "Real Windows WMI execution slice paired with real blocker telemetry aligned to the same host/user/logon scope. Aman should treat the WMI path as impossible via contradiction, not merely incomplete.",
+      "events": [
+        {
+          "id": "adw47-sec-1",
+          "time": "2020-08-01T07:53:07Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "WIN-DC-8400769$",
+          "type": "signin_success",
+          "details": {
+            "channel": "Security",
+            "logon_type": "5"
+          }
+        },
+        {
+          "id": "adw47-sec-2",
+          "time": "2020-08-01T07:53:07Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "WIN-DC-8400769$",
+          "type": "valid_account_login",
+          "details": {
+            "channel": "Security",
+            "logon_type": "5"
+          }
+        },
+        {
+          "id": "adw47-sec-3",
+          "time": "2020-08-01T07:53:07Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "SYSTEM",
+          "type": "privileged_logon",
+          "details": {
+            "channel": "Security",
+            "privileges": "SeDebugPrivilege"
+          }
+        },
+        {
+          "id": "adw47-sec-4",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "Administrator",
+          "type": "explicit_credential_use",
+          "details": {
+            "channel": "Security",
+            "target_server": "localhost"
+          }
+        },
+        {
+          "id": "adw47-sec-5",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "Administrator",
+          "type": "kerberos_ticket",
+          "details": {
+            "channel": "Security"
+          }
+        },
+        {
+          "id": "adw47-sec-6",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "Administrator",
+          "type": "kerberos_ticket",
+          "details": {
+            "channel": "Security"
+          }
+        },
+        {
+          "id": "adw47-sys-1",
+          "time": "2020-08-01T07:53:10Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "SYSTEM",
+          "type": "process_access",
+          "details": {
+            "target_image": "C:\\Windows\\system32\\wbem\\wmiprvse.exe",
+            "granted_access": "0x1FFFFF"
+          }
+        },
+        {
+          "id": "adw47-sys-2",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "process_creation",
+          "details": {
+            "image": "C:\\Windows\\System32\\cmd.exe",
+            "command_line": "\"C:\\Windows\\system32\\cmd.exe\" /c \"wmic useraccount get /ALL /format:csv\""
+          }
+        },
+        {
+          "id": "adw47-sys-3",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "lolbin_execution",
+          "details": {
+            "image": "C:\\Windows\\System32\\wbem\\WMIC.exe",
+            "command_line": "wmic useraccount get /ALL /format:csv"
+          }
+        },
+        {
+          "id": "adw47-sys-4",
+          "time": "2020-08-01T07:59:13Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "wmic_process_create",
+          "details": {
+            "image": "C:\\Windows\\System32\\wbem\\WMIC.exe",
+            "command_line": "wmic useraccount get /ALL /format:csv"
+          }
+        },
+        {
+          "id": "adw47-sys-5",
+          "time": "2020-08-01T07:59:14Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "process_creation",
+          "details": {
+            "image": "C:\\Windows\\System32\\cmd.exe",
+            "command_line": "\"C:\\Windows\\system32\\cmd.exe\" /c \"wmic process get caption,executablepath,commandline /format:csv\""
+          }
+        },
+        {
+          "id": "adw47-sys-6",
+          "time": "2020-08-01T07:59:14Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "lolbin_execution",
+          "details": {
+            "image": "C:\\Windows\\System32\\wbem\\WMIC.exe",
+            "command_line": "wmic process get caption,executablepath,commandline /format:csv"
+          }
+        },
+        {
+          "id": "adw47-sys-7",
+          "time": "2020-08-01T07:59:14Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "wmic_process_create",
+          "details": {
+            "image": "C:\\Windows\\System32\\wbem\\WMIC.exe",
+            "command_line": "wmic process get caption,executablepath,commandline /format:csv"
+          }
+        },
+        {
+          "id": "evt-e04db692621c0dd84c11383dba0aae3d658cde90",
+          "time": "2020-08-01T06:54:28Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "network_logon_failure",
+          "details": {
+            "auth_package": "NTLM",
+            "channel": "Security",
+            "command_line": "",
+            "logon_guid": "",
+            "logon_id": "",
+            "logon_type": "3",
+            "message": "An account failed to log on.\r\n\r\nSubject:\r\n\tSecurity ID:\t\tS-1-0-0\r\n\tAccount Name:\t\t-\r\n\tAccount Domain:\t\t-\r\n\tLogon ID:\t\t0x0\r\n\r\nLogon Type:\t\t\t3\r\n\r\nAccount For Which Logon Failed:\r\n\tSecurity ID:\t\tS-1-0-0\r\n\tAccount Name:\t\tadministrator\r\n\tAccount Domain:\t\t\r\n\r\nFailure Information:\r\n\tFailure Reason:\t\tAn Error occured during Logon.\r\n\tStatus:\t\t\t0xC0000225\r\n\tSub Status:\t\t0x0\r\n\r\nProcess Information:\r\n\tCaller Process ID:\t0x0\r\n\tCaller Process Name:\t-\r\n\r\nNetwork Information:\r\n\tWorkstation Name:\t-\r\n\tSource Network Address:\t203.192.247.66\r\n\tSource Port:\t\t51818\r\n\r\nDetailed Authentication Information:\r\n\tLogon Process:\t\t\r\n\tAuthentication Package:\tNTLM\r\n\tTransited Services:\t-\r\n\tPackage Name (NTLM only):\t-\r\n\tKey Length:\t\t0\r\n\r\nThis event is generated when a logon request fails. It is generated on the computer where access was attempted.\r\n\r\nThe Subject fields indicate the account on the local system which requested the logon. This is most commonly a service such as the Server service, or a local process such as Winlogon.exe or Services.exe.\r\n\r\nThe Logon Type field indicates the kind of logon that was requested. The most common types are 2 (interactive) and 3 (network).\r\n\r\nThe Process Information fields indicate which account and process on the system requested the logon.\r\n\r\nThe Network Information fields indicate where a remote logon request originated. Workstation name is not always available and may be left blank in some cases.\r\n\r\nThe authentication information fields provide detailed information about this specific logon request.\r\n\t- Transited services indicate which intermediate services have participated in this logon request.\r\n\t- Package name indicates which sub-protocol was used among the NTLM protocols.\r\n\t- Key length indicates the length of the generated session key. This will be 0 if no session key was requested.",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "process_name": "",
+            "source_host": "WIN-DC-8400769",
+            "source_ip": "203.192.247.66",
+            "status": "0xc0000225",
+            "sub_status": "0x0"
+          }
+        },
+        {
+          "id": "evt-0bc8d10ce61b37f2dc85404baa9da9bd7ca9bea3",
+          "time": "2020-08-01T06:54:28Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "admin_protocol_denied",
+          "details": {
+            "auth_package": "NTLM",
+            "channel": "Security",
+            "command_line": "",
+            "logon_guid": "",
+            "logon_id": "",
+            "logon_type": "3",
+            "message": "An account failed to log on.\r\n\r\nSubject:\r\n\tSecurity ID:\t\tS-1-0-0\r\n\tAccount Name:\t\t-\r\n\tAccount Domain:\t\t-\r\n\tLogon ID:\t\t0x0\r\n\r\nLogon Type:\t\t\t3\r\n\r\nAccount For Which Logon Failed:\r\n\tSecurity ID:\t\tS-1-0-0\r\n\tAccount Name:\t\tadministrator\r\n\tAccount Domain:\t\t\r\n\r\nFailure Information:\r\n\tFailure Reason:\t\tAn Error occured during Logon.\r\n\tStatus:\t\t\t0xC0000225\r\n\tSub Status:\t\t0x0\r\n\r\nProcess Information:\r\n\tCaller Process ID:\t0x0\r\n\tCaller Process Name:\t-\r\n\r\nNetwork Information:\r\n\tWorkstation Name:\t-\r\n\tSource Network Address:\t203.192.247.66\r\n\tSource Port:\t\t51818\r\n\r\nDetailed Authentication Information:\r\n\tLogon Process:\t\t\r\n\tAuthentication Package:\tNTLM\r\n\tTransited Services:\t-\r\n\tPackage Name (NTLM only):\t-\r\n\tKey Length:\t\t0\r\n\r\nThis event is generated when a logon request fails. It is generated on the computer where access was attempted.\r\n\r\nThe Subject fields indicate the account on the local system which requested the logon. This is most commonly a service such as the Server service, or a local process such as Winlogon.exe or Services.exe.\r\n\r\nThe Logon Type field indicates the kind of logon that was requested. The most common types are 2 (interactive) and 3 (network).\r\n\r\nThe Process Information fields indicate which account and process on the system requested the logon.\r\n\r\nThe Network Information fields indicate where a remote logon request originated. Workstation name is not always available and may be left blank in some cases.\r\n\r\nThe authentication information fields provide detailed information about this specific logon request.\r\n\t- Transited services indicate which intermediate services have participated in this logon request.\r\n\t- Package name indicates which sub-protocol was used among the NTLM protocols.\r\n\t- Key length indicates the length of the generated session key. This will be 0 if no session key was requested.",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "process_name": "",
+            "source_host": "WIN-DC-8400769",
+            "source_ip": "203.192.247.66",
+            "status": "0xc0000225",
+            "sub_status": "0x0"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.WMI_EXEC",
+          "outcome": "impossible"
+        }
+      ],
+      "environment": {
+        "hosts": [
+          {
+            "id": "win-dc-8400769.attackrange.local",
+            "zone": "corp-admin",
+            "tags": [
+              "windows"
+            ],
+            "critical": true
+          }
+        ],
+        "identities": [
+          {
+            "id": "ATTACKRANGE\\Administrator",
+            "role": "administrator",
+            "priv_level": "high",
+            "tags": [
+              "admin"
+            ]
+          }
+        ],
+        "trust_boundaries": []
+      }
+    }
+  ]
+}

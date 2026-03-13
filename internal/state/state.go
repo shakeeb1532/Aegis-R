@@ -75,6 +75,7 @@ type DecisionCacheEntry struct {
 
 type Thread struct {
 	ID         string    `json:"id"`
+	Title      string    `json:"title"`
 	Host       string    `json:"host"`
 	Principal  string    `json:"principal"`
 	FirstSeen  time.Time `json:"first_seen"`
@@ -86,6 +87,7 @@ type Thread struct {
 
 type Ticket struct {
 	ID            string    `json:"id"`
+	Title         string    `json:"title"`
 	ThreadID      string    `json:"thread_id"`
 	Host          string    `json:"host"`
 	Principal     string    `json:"principal"`

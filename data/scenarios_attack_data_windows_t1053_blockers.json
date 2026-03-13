@@ -1,0 +1,73 @@
+{
+  "scenarios": [
+    {
+      "id": "attackdata-windows-t1053-blockers",
+      "description": "Real Windows Security blocker-oriented records from splunk/attack_data T1053. This slice contains a real service install plus a failed NTLM network logon. It should validate prevention/blocker normalization while remaining conservative because there is no positive lateral-movement or foothold evidence.",
+      "events": [
+        {
+          "id": "adw-block-1",
+          "time": "2020-08-01T06:51:56Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "SYSTEM",
+          "type": "service_install",
+          "details": {
+            "channel": "System"
+          }
+        },
+        {
+          "id": "adw-block-2",
+          "time": "2020-08-01T06:54:28Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "administrator",
+          "type": "signin_failed_auth",
+          "details": {
+            "channel": "Security",
+            "logon_type": "3",
+            "source_ip": "203.192.247.66",
+            "auth_package": "NTLM"
+          }
+        },
+        {
+          "id": "adw-block-3",
+          "time": "2020-08-01T06:54:28Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "administrator",
+          "type": "network_logon_failure",
+          "details": {
+            "channel": "Security",
+            "logon_type": "3",
+            "source_ip": "203.192.247.66",
+            "auth_package": "NTLM"
+          }
+        },
+        {
+          "id": "adw-block-4",
+          "time": "2020-08-01T06:54:28Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "administrator",
+          "type": "admin_protocol_denied",
+          "details": {
+            "channel": "Security",
+            "logon_type": "3",
+            "source_ip": "203.192.247.66",
+            "auth_package": "NTLM"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0003.PERSIST_EXTENDED",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0008.ADMIN_PROTOCOL_LATERAL",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0008.LATERAL",
+          "outcome": "incomplete"
+        }
+      ]
+    }
+  ]
+}

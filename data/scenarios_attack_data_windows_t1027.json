@@ -1,0 +1,484 @@
+{
+  "scenarios": [
+    {
+      "id": "attackdata-windows-t1027",
+      "description": "Real Windows Security and Sysmon records from splunk/attack_data T1027. The slice shows encoded PowerShell execution, explicit credential use, Kerberos activity, and LSASS access, but it lacks initial access, privilege escalation, and credential replay proof. The relevant paths should remain incomplete. The host inventory is provided so admin-protocol lateral movement can be evaluated against a known environment rather than defaulting to environment_unknown.",
+      "events": [
+        {
+          "id": "evt-4c9871230a6d3dbcf0c260790a5352095753c370",
+          "time": "2020-08-01T05:46:59Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "Administrator",
+          "type": "signin_success",
+          "details": {
+            "auth_package": "",
+            "channel": "Security",
+            "command_line": "",
+            "logon_guid": "",
+            "logon_id": "",
+            "logon_type": "",
+            "message": "The computer attempted to validate the credentials for an account.\r\n\r\nAuthentication Package:\tMICROSOFT_AUTHENTICATION_PACKAGE_V1_0\r\nLogon Account:\tAdministrator\r\nSource Workstation:\tWIN-DC-881393\r\nError Code:\t0x0",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "process_name": "",
+            "source_host": "",
+            "source_ip": "",
+            "status": "0x0",
+            "sub_status": ""
+          }
+        },
+        {
+          "id": "evt-bcb08fd5c26418423097646af590734fc4d67ff7",
+          "time": "2020-08-01T05:46:59Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "Administrator",
+          "type": "valid_account_login",
+          "details": {
+            "auth_package": "",
+            "channel": "Security",
+            "command_line": "",
+            "logon_guid": "",
+            "logon_id": "",
+            "logon_type": "",
+            "message": "The computer attempted to validate the credentials for an account.\r\n\r\nAuthentication Package:\tMICROSOFT_AUTHENTICATION_PACKAGE_V1_0\r\nLogon Account:\tAdministrator\r\nSource Workstation:\tWIN-DC-881393\r\nError Code:\t0x0",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "process_name": "",
+            "source_host": "",
+            "source_ip": "",
+            "status": "0x0",
+            "sub_status": ""
+          }
+        },
+        {
+          "id": "evt-cf9a49ccf556124b7ca14b8d5a8a06fa887e1a5f",
+          "time": "2020-08-01T05:46:59Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "Administrator",
+          "type": "valid_account_login",
+          "details": {
+            "auth_package": "",
+            "channel": "Security",
+            "command_line": "",
+            "logon_guid": "",
+            "logon_id": "",
+            "logon_type": "",
+            "message": "A logon was attempted using explicit credentials.\r\n\r\nSubject:\r\n\tSecurity ID:\t\tS-1-5-20\r\n\tAccount Name:\t\tWIN-DC-881393$\r\n\tAccount Domain:\t\tATTACKRANGE\r\n\tLogon ID:\t\t0x3E4\r\n\tLogon GUID:\t\t{00000000-0000-0000-0000-000000000000}\r\n\r\nAccount Whose Credentials Were Used:\r\n\tAccount Name:\t\tAdministrator\r\n\tAccount Domain:\t\tATTACKRANGE\r\n\tLogon GUID:\t\t{00000000-0000-0000-0000-000000000000}\r\n\r\nTarget Server:\r\n\tTarget Server Name:\tlocalhost\r\n\tAdditional Information:\tlocalhost\r\n\r\nProcess Information:\r\n\tProcess ID:\t\t0x534\r\n\tProcess Name:\t\tC:\\Windows\\System32\\svchost.exe\r\n\r\nNetwork Information:\r\n\tNetwork Address:\t-\r\n\tPort:\t\t\t-\r\n\r\nThis event is generated when a process attempts to log on an account by explicitly specifying that account\u2019s credentials.  This most commonly occurs in batch-type configurations such as scheduled tasks, or when using the RUNAS command.",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "process_name": "",
+            "source_host": "",
+            "source_ip": "-",
+            "status": "",
+            "sub_status": ""
+          }
+        },
+        {
+          "id": "evt-33a40b209833821122a9a83110f9dd8090b405c1",
+          "time": "2020-08-01T05:46:59Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "Administrator",
+          "type": "explicit_credential_use",
+          "details": {
+            "auth_package": "",
+            "channel": "Security",
+            "command_line": "",
+            "logon_guid": "",
+            "logon_id": "",
+            "logon_type": "",
+            "message": "A logon was attempted using explicit credentials.\r\n\r\nSubject:\r\n\tSecurity ID:\t\tS-1-5-20\r\n\tAccount Name:\t\tWIN-DC-881393$\r\n\tAccount Domain:\t\tATTACKRANGE\r\n\tLogon ID:\t\t0x3E4\r\n\tLogon GUID:\t\t{00000000-0000-0000-0000-000000000000}\r\n\r\nAccount Whose Credentials Were Used:\r\n\tAccount Name:\t\tAdministrator\r\n\tAccount Domain:\t\tATTACKRANGE\r\n\tLogon GUID:\t\t{00000000-0000-0000-0000-000000000000}\r\n\r\nTarget Server:\r\n\tTarget Server Name:\tlocalhost\r\n\tAdditional Information:\tlocalhost\r\n\r\nProcess Information:\r\n\tProcess ID:\t\t0x534\r\n\tProcess Name:\t\tC:\\Windows\\System32\\svchost.exe\r\n\r\nNetwork Information:\r\n\tNetwork Address:\t-\r\n\tPort:\t\t\t-\r\n\r\nThis event is generated when a process attempts to log on an account by explicitly specifying that account\u2019s credentials.  This most commonly occurs in batch-type configurations such as scheduled tasks, or when using the RUNAS command.",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "process_name": "",
+            "source_host": "",
+            "source_ip": "-",
+            "status": "",
+            "sub_status": ""
+          }
+        },
+        {
+          "id": "evt-1e16820a7a6a2b2ef9b0a0cac4c130b6ce3b7a00",
+          "time": "2020-08-01T05:46:59Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "Administrator",
+          "type": "signin_success",
+          "details": {
+            "auth_package": "Negotiate",
+            "channel": "Security",
+            "command_line": "",
+            "logon_guid": "",
+            "logon_id": "",
+            "logon_type": "3",
+            "message": "An account was successfully logged on.\r\n\r\nSubject:\r\n\tSecurity ID:\t\tS-1-5-20\r\n\tAccount Name:\t\tWIN-DC-881393$\r\n\tAccount Domain:\t\tATTACKRANGE\r\n\tLogon ID:\t\t0x3E4\r\n\r\nLogon Information:\r\n\tLogon Type:\t\t3\r\n\tRestricted Admin Mode:\t-\r\n\tVirtual Account:\t\tNo\r\n\tElevated Token:\t\tYes\r\n\r\nImpersonation Level:\t\tImpersonation\r\n\r\nNew Logon:\r\n\tSecurity ID:\t\tS-1-5-21-1117747729-287425051-3091891954-500\r\n\tAccount Name:\t\tAdministrator\r\n\tAccount Domain:\t\tATTACKRANGE\r\n\tLogon ID:\t\t0x43AA3\r\n\tLinked Logon ID:\t\t0x0\r\n\tNetwork Account Name:\t-\r\n\tNetwork Account Domain:\t-\r\n\tLogon GUID:\t\t{00000000-0000-0000-0000-000000000000}\r\n\r\nProcess Information:\r\n\tProcess ID:\t\t0x534\r\n\tProcess Name:\t\tC:\\Windows\\System32\\svchost.exe\r\n\r\nNetwork Information:\r\n\tWorkstation Name:\tWIN-DC-881393\r\n\tSource Network Address:\t-\r\n\tSource Port:\t\t-\r\n\r\nDetailed Authentication Information:\r\n\tLogon Process:\t\tAdvapi  \r\n\tAuthentication Package:\tNegotiate\r\n\tTransited Services:\t-\r\n\tPackage Name (NTLM only):\t-\r\n\tKey Length:\t\t0\r\n\r\nThis event is generated when a logon session is created. It is generated on the computer that was accessed.\r\n\r\nThe subject fields indicate the account on the local system which requested the logon. This is most commonly a service such as the Server service, or a local process such as Winlogon.exe or Services.exe.\r\n\r\nThe logon type field indicates the kind of logon that occurred. The most common types are 2 (interactive) and 3 (network).\r\n\r\nThe New Logon fields indicate the account for whom the new logon was created, i.e. the account that was logged on.\r\n\r\nThe network fields indicate where a remote logon request originated. Workstation name is not always available and may be left blank in some cases.\r\n\r\nThe impersonation level field indicates the extent to which a process in the logon session can impersonate.\r\n\r\nThe authentication information fields provide detailed information about this specific logon request.\r\n\t- Logon GUID is a unique identifier that can be used to correlate this event with a KDC event.\r\n\t- Transited services indicate which intermediate services have participated in this logon request.\r\n\t- Package name indicates which sub-protocol was used among the NTLM protocols.\r\n\t- Key length indicates the length of the generated session key. This will be 0 if no session key was requested.",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "process_name": "",
+            "source_host": "WIN-DC-881393",
+            "source_ip": "-",
+            "status": "",
+            "sub_status": ""
+          }
+        },
+        {
+          "id": "evt-4daa9c60a8d10cbcabec8d5f68740f308b9296f2",
+          "time": "2020-08-01T05:46:59Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "Administrator",
+          "type": "valid_account_login",
+          "details": {
+            "auth_package": "Negotiate",
+            "channel": "Security",
+            "command_line": "",
+            "logon_guid": "",
+            "logon_id": "",
+            "logon_type": "3",
+            "message": "An account was successfully logged on.\r\n\r\nSubject:\r\n\tSecurity ID:\t\tS-1-5-20\r\n\tAccount Name:\t\tWIN-DC-881393$\r\n\tAccount Domain:\t\tATTACKRANGE\r\n\tLogon ID:\t\t0x3E4\r\n\r\nLogon Information:\r\n\tLogon Type:\t\t3\r\n\tRestricted Admin Mode:\t-\r\n\tVirtual Account:\t\tNo\r\n\tElevated Token:\t\tYes\r\n\r\nImpersonation Level:\t\tImpersonation\r\n\r\nNew Logon:\r\n\tSecurity ID:\t\tS-1-5-21-1117747729-287425051-3091891954-500\r\n\tAccount Name:\t\tAdministrator\r\n\tAccount Domain:\t\tATTACKRANGE\r\n\tLogon ID:\t\t0x43AA3\r\n\tLinked Logon ID:\t\t0x0\r\n\tNetwork Account Name:\t-\r\n\tNetwork Account Domain:\t-\r\n\tLogon GUID:\t\t{00000000-0000-0000-0000-000000000000}\r\n\r\nProcess Information:\r\n\tProcess ID:\t\t0x534\r\n\tProcess Name:\t\tC:\\Windows\\System32\\svchost.exe\r\n\r\nNetwork Information:\r\n\tWorkstation Name:\tWIN-DC-881393\r\n\tSource Network Address:\t-\r\n\tSource Port:\t\t-\r\n\r\nDetailed Authentication Information:\r\n\tLogon Process:\t\tAdvapi  \r\n\tAuthentication Package:\tNegotiate\r\n\tTransited Services:\t-\r\n\tPackage Name (NTLM only):\t-\r\n\tKey Length:\t\t0\r\n\r\nThis event is generated when a logon session is created. It is generated on the computer that was accessed.\r\n\r\nThe subject fields indicate the account on the local system which requested the logon. This is most commonly a service such as the Server service, or a local process such as Winlogon.exe or Services.exe.\r\n\r\nThe logon type field indicates the kind of logon that occurred. The most common types are 2 (interactive) and 3 (network).\r\n\r\nThe New Logon fields indicate the account for whom the new logon was created, i.e. the account that was logged on.\r\n\r\nThe network fields indicate where a remote logon request originated. Workstation name is not always available and may be left blank in some cases.\r\n\r\nThe impersonation level field indicates the extent to which a process in the logon session can impersonate.\r\n\r\nThe authentication information fields provide detailed information about this specific logon request.\r\n\t- Logon GUID is a unique identifier that can be used to correlate this event with a KDC event.\r\n\t- Transited services indicate which intermediate services have participated in this logon request.\r\n\t- Package name indicates which sub-protocol was used among the NTLM protocols.\r\n\t- Key length indicates the length of the generated session key. This will be 0 if no session key was requested.",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "process_name": "",
+            "source_host": "WIN-DC-881393",
+            "source_ip": "-",
+            "status": "",
+            "sub_status": ""
+          }
+        },
+        {
+          "id": "evt-347fa946617c2c3bbfb76248374cd3fb5483bc79",
+          "time": "2020-08-01T05:46:59Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "Administrator",
+          "type": "network_logon",
+          "details": {
+            "auth_package": "Negotiate",
+            "channel": "Security",
+            "command_line": "",
+            "logon_guid": "",
+            "logon_id": "",
+            "logon_type": "3",
+            "message": "An account was successfully logged on.\r\n\r\nSubject:\r\n\tSecurity ID:\t\tS-1-5-20\r\n\tAccount Name:\t\tWIN-DC-881393$\r\n\tAccount Domain:\t\tATTACKRANGE\r\n\tLogon ID:\t\t0x3E4\r\n\r\nLogon Information:\r\n\tLogon Type:\t\t3\r\n\tRestricted Admin Mode:\t-\r\n\tVirtual Account:\t\tNo\r\n\tElevated Token:\t\tYes\r\n\r\nImpersonation Level:\t\tImpersonation\r\n\r\nNew Logon:\r\n\tSecurity ID:\t\tS-1-5-21-1117747729-287425051-3091891954-500\r\n\tAccount Name:\t\tAdministrator\r\n\tAccount Domain:\t\tATTACKRANGE\r\n\tLogon ID:\t\t0x43AA3\r\n\tLinked Logon ID:\t\t0x0\r\n\tNetwork Account Name:\t-\r\n\tNetwork Account Domain:\t-\r\n\tLogon GUID:\t\t{00000000-0000-0000-0000-000000000000}\r\n\r\nProcess Information:\r\n\tProcess ID:\t\t0x534\r\n\tProcess Name:\t\tC:\\Windows\\System32\\svchost.exe\r\n\r\nNetwork Information:\r\n\tWorkstation Name:\tWIN-DC-881393\r\n\tSource Network Address:\t-\r\n\tSource Port:\t\t-\r\n\r\nDetailed Authentication Information:\r\n\tLogon Process:\t\tAdvapi  \r\n\tAuthentication Package:\tNegotiate\r\n\tTransited Services:\t-\r\n\tPackage Name (NTLM only):\t-\r\n\tKey Length:\t\t0\r\n\r\nThis event is generated when a logon session is created. It is generated on the computer that was accessed.\r\n\r\nThe subject fields indicate the account on the local system which requested the logon. This is most commonly a service such as the Server service, or a local process such as Winlogon.exe or Services.exe.\r\n\r\nThe logon type field indicates the kind of logon that occurred. The most common types are 2 (interactive) and 3 (network).\r\n\r\nThe New Logon fields indicate the account for whom the new logon was created, i.e. the account that was logged on.\r\n\r\nThe network fields indicate where a remote logon request originated. Workstation name is not always available and may be left blank in some cases.\r\n\r\nThe impersonation level field indicates the extent to which a process in the logon session can impersonate.\r\n\r\nThe authentication information fields provide detailed information about this specific logon request.\r\n\t- Logon GUID is a unique identifier that can be used to correlate this event with a KDC event.\r\n\t- Transited services indicate which intermediate services have participated in this logon request.\r\n\t- Package name indicates which sub-protocol was used among the NTLM protocols.\r\n\t- Key length indicates the length of the generated session key. This will be 0 if no session key was requested.",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "process_name": "",
+            "source_host": "WIN-DC-881393",
+            "source_ip": "-",
+            "status": "",
+            "sub_status": ""
+          }
+        },
+        {
+          "id": "evt-e5bf4efd2ab1be65f916b6e110c5ddfef858d4c4",
+          "time": "2020-08-01T05:46:59Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "Administrator",
+          "type": "privileged_logon",
+          "details": {
+            "auth_package": "",
+            "channel": "Security",
+            "command_line": "",
+            "logon_guid": "",
+            "logon_id": "",
+            "logon_type": "",
+            "message": "Special privileges assigned to new logon.\r\n\r\nSubject:\r\n\tSecurity ID:\t\tS-1-5-21-1117747729-287425051-3091891954-500\r\n\tAccount Name:\t\tAdministrator\r\n\tAccount Domain:\t\tATTACKRANGE\r\n\tLogon ID:\t\t0x43AA3\r\n\r\nPrivileges:\t\tSeSecurityPrivilege\r\n\t\t\tSeTakeOwnershipPrivilege\r\n\t\t\tSeLoadDriverPrivilege\r\n\t\t\tSeBackupPrivilege\r\n\t\t\tSeRestorePrivilege\r\n\t\t\tSeDebugPrivilege\r\n\t\t\tSeSystemEnvironmentPrivilege\r\n\t\t\tSeEnableDelegationPrivilege\r\n\t\t\tSeImpersonatePrivilege\r\n\t\t\tSeDelegateSessionUserImpersonatePrivilege",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "process_name": "",
+            "source_host": "",
+            "source_ip": "",
+            "status": "",
+            "sub_status": ""
+          }
+        },
+        {
+          "id": "evt-97c24ddec24f5d3208e1597ca800299b75025a67",
+          "time": "2020-08-01T05:47:09Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "Administrator",
+          "type": "kerberos_ticket",
+          "details": {
+            "auth_package": "",
+            "channel": "Security",
+            "command_line": "",
+            "logon_guid": "",
+            "logon_id": "",
+            "logon_type": "",
+            "message": "A Kerberos authentication ticket (TGT) was requested.\r\n\r\nAccount Information:\r\n\tAccount Name:\t\tAdministrator\r\n\tSupplied Realm Name:\tATTACKRANGE\r\n\tUser ID:\t\t\tS-1-5-21-1117747729-287425051-3091891954-500\r\n\r\nService Information:\r\n\tService Name:\t\tkrbtgt\r\n\tService ID:\t\tS-1-5-21-1117747729-287425051-3091891954-502\r\n\r\nNetwork Information:\r\n\tClient Address:\t\t::1\r\n\tClient Port:\t\t0\r\n\r\nAdditional Information:\r\n\tTicket Options:\t\t0x40810010\r\n\tResult Code:\t\t0x0\r\n\tTicket Encryption Type:\t0x12\r\n\tPre-Authentication Type:\t2\r\n\r\nCertificate Information:\r\n\tCertificate Issuer Name:\t\t\r\n\tCertificate Serial Number:\t\r\n\tCertificate Thumbprint:\t\t\r\n\r\nCertificate information is only provided if a certificate was used for pre-authentication.\r\n\r\nPre-authentication types, ticket options, encryption types and result codes are defined in RFC 4120.",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "process_name": "",
+            "source_host": "",
+            "source_ip": "::1",
+            "status": "0x0",
+            "sub_status": ""
+          }
+        },
+        {
+          "id": "evt-0910dfc0ed1e6b71a5acc64116569022b288ac2d",
+          "time": "2020-08-01T05:47:09Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "Administrator@ATTACKRANGE.LOCAL",
+          "type": "kerberos_ticket",
+          "details": {
+            "auth_package": "",
+            "channel": "Security",
+            "command_line": "",
+            "logon_guid": "",
+            "logon_id": "",
+            "logon_type": "",
+            "message": "A Kerberos service ticket was requested.\r\n\r\nAccount Information:\r\n\tAccount Name:\t\tAdministrator@ATTACKRANGE.LOCAL\r\n\tAccount Domain:\t\tATTACKRANGE.LOCAL\r\n\tLogon GUID:\t\t{2EA09B96-FE62-51BC-744A-7524CEC268C2}\r\n\r\nService Information:\r\n\tService Name:\t\tWIN-DC-881393$\r\n\tService ID:\t\tS-1-5-21-1117747729-287425051-3091891954-1008\r\n\r\nNetwork Information:\r\n\tClient Address:\t\t::1\r\n\tClient Port:\t\t0\r\n\r\nAdditional Information:\r\n\tTicket Options:\t\t0x40810000\r\n\tTicket Encryption Type:\t0x12\r\n\tFailure Code:\t\t0x0\r\n\tTransited Services:\t-\r\n\r\nThis event is generated every time access is requested to a resource such as a computer or a Windows service.  The service name indicates the resource to which access was requested.\r\n\r\nThis event can be correlated with Windows logon events by comparing the Logon GUID fields in each event.  The logon event occurs on the machine that was accessed, which is often a different machine than the domain controller which issued the service ticket.\r\n\r\nTicket options, encryption types, and failure codes are defined in RFC 4120.",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "process_name": "",
+            "source_host": "",
+            "source_ip": "::1",
+            "status": "0x0",
+            "sub_status": ""
+          }
+        },
+        {
+          "id": "evt-65aca18e6fb749bbcc39889a45f3fcf16640ad19",
+          "time": "2020-08-01T05:47:09Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "process_creation",
+          "details": {
+            "channel": "Microsoft-Windows-Sysmon/Operational",
+            "command_line": "C:\\Windows\\system32\\cmd.exe /C PowerShell -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -EncodedCommand KABHAGUAdAAtAFcAbQBpAE8AYgBqAGUAYwB0ACAALQBDAGwAYQBzAHMATgBhAG0AZQAgAFcAaQBuADMAMgBfAE8AcABlAHIAYQB0AGkAbgBnAFMAeQBzAHQAZQBtACkALgBMAGEAcwB0AEIAbwBvAHQAVQBwAFQAaQBtAGUA",
+            "granted_access": "",
+            "image": "C:\\Windows\\System32\\cmd.exe",
+            "message": "Process Create:\r\nRuleName: \r\nUtcTime: 2020-08-01 05:47:09.819\r\nProcessGuid: {A837DB8D-01DD-5F25-0000-001030590400}\r\nProcessId: 4180\r\nImage: C:\\Windows\\System32\\cmd.exe\r\nFileVersion: 10.0.14393.0 (rs1_release.160715-1616)\r\nDescription: Windows Command Processor\r\nProduct: Microsoft\u00ae Windows\u00ae Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: Cmd.Exe\r\nCommandLine: C:\\Windows\\system32\\cmd.exe /C PowerShell -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -EncodedCommand KABHAGUAdAAtAFcAbQBpAE8AYgBqAGUAYwB0ACAALQBDAGwAYQBzAHMATgBhAG0AZQAgAFcAaQBuADMAMgBfAE8AcABlAHIAYQB0AGkAbgBnAFMAeQBzAHQAZQBtACkALgBMAGEAcwB0AEIAbwBvAHQAVQBwAFQAaQBtAGUA\r\nCurrentDirectory: C:\\Users\\Administrator\\\r\nUser: ATTACKRANGE\\Administrator\r\nLogonGuid: {A837DB8D-01DA-5F25-0000-002027420400}\r\nLogonId: 0x44227\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: MD5=F4F684066175B77E0C3A000549D2922C,SHA256=935C1861DF1F4018D698E8B65ABFA02D7E9037D8F68CA3C2065B6CA165D44AD2,IMPHASH=3062ED732D4B25D1C64F084DAC97D37A\r\nParentProcessGuid: {A837DB8D-01DD-5F25-0000-00102C560400}\r\nParentProcessId: 4104\r\nParentImage: C:\\Windows\\System32\\winrshost.exe\r\nParentCommandLine: C:\\Windows\\system32\\WinrsHost.exe -Embedding",
+            "parent_image": "C:\\Windows\\System32\\winrshost.exe",
+            "parent_process_guid": "{A837DB8D-01DD-5F25-0000-00102C560400}",
+            "process_guid": "{A837DB8D-01DD-5F25-0000-001030590400}",
+            "rule_name": "",
+            "source_image": "",
+            "source_name": "Microsoft-Windows-Sysmon",
+            "source_process_guid": "",
+            "target_filename": "",
+            "target_image": "",
+            "target_object": ""
+          }
+        },
+        {
+          "id": "evt-b52213bdc812775e954e9930a3aecf465b526a76",
+          "time": "2020-08-01T05:47:09Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "script_execution",
+          "details": {
+            "channel": "Microsoft-Windows-Sysmon/Operational",
+            "command_line": "C:\\Windows\\system32\\cmd.exe /C PowerShell -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -EncodedCommand KABHAGUAdAAtAFcAbQBpAE8AYgBqAGUAYwB0ACAALQBDAGwAYQBzAHMATgBhAG0AZQAgAFcAaQBuADMAMgBfAE8AcABlAHIAYQB0AGkAbgBnAFMAeQBzAHQAZQBtACkALgBMAGEAcwB0AEIAbwBvAHQAVQBwAFQAaQBtAGUA",
+            "granted_access": "",
+            "image": "C:\\Windows\\System32\\cmd.exe",
+            "message": "Process Create:\r\nRuleName: \r\nUtcTime: 2020-08-01 05:47:09.819\r\nProcessGuid: {A837DB8D-01DD-5F25-0000-001030590400}\r\nProcessId: 4180\r\nImage: C:\\Windows\\System32\\cmd.exe\r\nFileVersion: 10.0.14393.0 (rs1_release.160715-1616)\r\nDescription: Windows Command Processor\r\nProduct: Microsoft\u00ae Windows\u00ae Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: Cmd.Exe\r\nCommandLine: C:\\Windows\\system32\\cmd.exe /C PowerShell -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -EncodedCommand KABHAGUAdAAtAFcAbQBpAE8AYgBqAGUAYwB0ACAALQBDAGwAYQBzAHMATgBhAG0AZQAgAFcAaQBuADMAMgBfAE8AcABlAHIAYQB0AGkAbgBnAFMAeQBzAHQAZQBtACkALgBMAGEAcwB0AEIAbwBvAHQAVQBwAFQAaQBtAGUA\r\nCurrentDirectory: C:\\Users\\Administrator\\\r\nUser: ATTACKRANGE\\Administrator\r\nLogonGuid: {A837DB8D-01DA-5F25-0000-002027420400}\r\nLogonId: 0x44227\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: MD5=F4F684066175B77E0C3A000549D2922C,SHA256=935C1861DF1F4018D698E8B65ABFA02D7E9037D8F68CA3C2065B6CA165D44AD2,IMPHASH=3062ED732D4B25D1C64F084DAC97D37A\r\nParentProcessGuid: {A837DB8D-01DD-5F25-0000-00102C560400}\r\nParentProcessId: 4104\r\nParentImage: C:\\Windows\\System32\\winrshost.exe\r\nParentCommandLine: C:\\Windows\\system32\\WinrsHost.exe -Embedding",
+            "parent_image": "C:\\Windows\\System32\\winrshost.exe",
+            "parent_process_guid": "{A837DB8D-01DD-5F25-0000-00102C560400}",
+            "process_guid": "{A837DB8D-01DD-5F25-0000-001030590400}",
+            "rule_name": "",
+            "source_image": "",
+            "source_name": "Microsoft-Windows-Sysmon",
+            "source_process_guid": "",
+            "target_filename": "",
+            "target_image": "",
+            "target_object": ""
+          }
+        },
+        {
+          "id": "evt-a84ea4798e115dc285d25e4bea63a4d917a451d5",
+          "time": "2020-08-01T05:47:09Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "encoded_powershell",
+          "details": {
+            "channel": "Microsoft-Windows-Sysmon/Operational",
+            "command_line": "C:\\Windows\\system32\\cmd.exe /C PowerShell -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -EncodedCommand KABHAGUAdAAtAFcAbQBpAE8AYgBqAGUAYwB0ACAALQBDAGwAYQBzAHMATgBhAG0AZQAgAFcAaQBuADMAMgBfAE8AcABlAHIAYQB0AGkAbgBnAFMAeQBzAHQAZQBtACkALgBMAGEAcwB0AEIAbwBvAHQAVQBwAFQAaQBtAGUA",
+            "granted_access": "",
+            "image": "C:\\Windows\\System32\\cmd.exe",
+            "message": "Process Create:\r\nRuleName: \r\nUtcTime: 2020-08-01 05:47:09.819\r\nProcessGuid: {A837DB8D-01DD-5F25-0000-001030590400}\r\nProcessId: 4180\r\nImage: C:\\Windows\\System32\\cmd.exe\r\nFileVersion: 10.0.14393.0 (rs1_release.160715-1616)\r\nDescription: Windows Command Processor\r\nProduct: Microsoft\u00ae Windows\u00ae Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: Cmd.Exe\r\nCommandLine: C:\\Windows\\system32\\cmd.exe /C PowerShell -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -EncodedCommand KABHAGUAdAAtAFcAbQBpAE8AYgBqAGUAYwB0ACAALQBDAGwAYQBzAHMATgBhAG0AZQAgAFcAaQBuADMAMgBfAE8AcABlAHIAYQB0AGkAbgBnAFMAeQBzAHQAZQBtACkALgBMAGEAcwB0AEIAbwBvAHQAVQBwAFQAaQBtAGUA\r\nCurrentDirectory: C:\\Users\\Administrator\\\r\nUser: ATTACKRANGE\\Administrator\r\nLogonGuid: {A837DB8D-01DA-5F25-0000-002027420400}\r\nLogonId: 0x44227\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: MD5=F4F684066175B77E0C3A000549D2922C,SHA256=935C1861DF1F4018D698E8B65ABFA02D7E9037D8F68CA3C2065B6CA165D44AD2,IMPHASH=3062ED732D4B25D1C64F084DAC97D37A\r\nParentProcessGuid: {A837DB8D-01DD-5F25-0000-00102C560400}\r\nParentProcessId: 4104\r\nParentImage: C:\\Windows\\System32\\winrshost.exe\r\nParentCommandLine: C:\\Windows\\system32\\WinrsHost.exe -Embedding",
+            "parent_image": "C:\\Windows\\System32\\winrshost.exe",
+            "parent_process_guid": "{A837DB8D-01DD-5F25-0000-00102C560400}",
+            "process_guid": "{A837DB8D-01DD-5F25-0000-001030590400}",
+            "rule_name": "",
+            "source_image": "",
+            "source_name": "Microsoft-Windows-Sysmon",
+            "source_process_guid": "",
+            "target_filename": "",
+            "target_image": "",
+            "target_object": ""
+          }
+        },
+        {
+          "id": "evt-e96917b6bd89a05e7ec8b58f3988d8fd99895366",
+          "time": "2020-08-01T05:47:09Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "encoded_command",
+          "details": {
+            "channel": "Microsoft-Windows-Sysmon/Operational",
+            "command_line": "C:\\Windows\\system32\\cmd.exe /C PowerShell -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -EncodedCommand KABHAGUAdAAtAFcAbQBpAE8AYgBqAGUAYwB0ACAALQBDAGwAYQBzAHMATgBhAG0AZQAgAFcAaQBuADMAMgBfAE8AcABlAHIAYQB0AGkAbgBnAFMAeQBzAHQAZQBtACkALgBMAGEAcwB0AEIAbwBvAHQAVQBwAFQAaQBtAGUA",
+            "granted_access": "",
+            "image": "C:\\Windows\\System32\\cmd.exe",
+            "message": "Process Create:\r\nRuleName: \r\nUtcTime: 2020-08-01 05:47:09.819\r\nProcessGuid: {A837DB8D-01DD-5F25-0000-001030590400}\r\nProcessId: 4180\r\nImage: C:\\Windows\\System32\\cmd.exe\r\nFileVersion: 10.0.14393.0 (rs1_release.160715-1616)\r\nDescription: Windows Command Processor\r\nProduct: Microsoft\u00ae Windows\u00ae Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: Cmd.Exe\r\nCommandLine: C:\\Windows\\system32\\cmd.exe /C PowerShell -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -EncodedCommand KABHAGUAdAAtAFcAbQBpAE8AYgBqAGUAYwB0ACAALQBDAGwAYQBzAHMATgBhAG0AZQAgAFcAaQBuADMAMgBfAE8AcABlAHIAYQB0AGkAbgBnAFMAeQBzAHQAZQBtACkALgBMAGEAcwB0AEIAbwBvAHQAVQBwAFQAaQBtAGUA\r\nCurrentDirectory: C:\\Users\\Administrator\\\r\nUser: ATTACKRANGE\\Administrator\r\nLogonGuid: {A837DB8D-01DA-5F25-0000-002027420400}\r\nLogonId: 0x44227\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: MD5=F4F684066175B77E0C3A000549D2922C,SHA256=935C1861DF1F4018D698E8B65ABFA02D7E9037D8F68CA3C2065B6CA165D44AD2,IMPHASH=3062ED732D4B25D1C64F084DAC97D37A\r\nParentProcessGuid: {A837DB8D-01DD-5F25-0000-00102C560400}\r\nParentProcessId: 4104\r\nParentImage: C:\\Windows\\System32\\winrshost.exe\r\nParentCommandLine: C:\\Windows\\system32\\WinrsHost.exe -Embedding",
+            "parent_image": "C:\\Windows\\System32\\winrshost.exe",
+            "parent_process_guid": "{A837DB8D-01DD-5F25-0000-00102C560400}",
+            "process_guid": "{A837DB8D-01DD-5F25-0000-001030590400}",
+            "rule_name": "",
+            "source_image": "",
+            "source_name": "Microsoft-Windows-Sysmon",
+            "source_process_guid": "",
+            "target_filename": "",
+            "target_image": "",
+            "target_object": ""
+          }
+        },
+        {
+          "id": "evt-91f2b2da5bbc2f1cb69755d19a3534b40cf80f57",
+          "time": "2020-08-01T05:47:09Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "new_inbound_admin_protocol",
+          "details": {
+            "channel": "Microsoft-Windows-Sysmon/Operational",
+            "command_line": "C:\\Windows\\system32\\cmd.exe /C PowerShell -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -EncodedCommand KABHAGUAdAAtAFcAbQBpAE8AYgBqAGUAYwB0ACAALQBDAGwAYQBzAHMATgBhAG0AZQAgAFcAaQBuADMAMgBfAE8AcABlAHIAYQB0AGkAbgBnAFMAeQBzAHQAZQBtACkALgBMAGEAcwB0AEIAbwBvAHQAVQBwAFQAaQBtAGUA",
+            "granted_access": "",
+            "image": "C:\\Windows\\System32\\cmd.exe",
+            "message": "Process Create:\r\nRuleName: \r\nUtcTime: 2020-08-01 05:47:09.819\r\nProcessGuid: {A837DB8D-01DD-5F25-0000-001030590400}\r\nProcessId: 4180\r\nImage: C:\\Windows\\System32\\cmd.exe\r\nFileVersion: 10.0.14393.0 (rs1_release.160715-1616)\r\nDescription: Windows Command Processor\r\nProduct: Microsoft\u00ae Windows\u00ae Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: Cmd.Exe\r\nCommandLine: C:\\Windows\\system32\\cmd.exe /C PowerShell -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -EncodedCommand KABHAGUAdAAtAFcAbQBpAE8AYgBqAGUAYwB0ACAALQBDAGwAYQBzAHMATgBhAG0AZQAgAFcAaQBuADMAMgBfAE8AcABlAHIAYQB0AGkAbgBnAFMAeQBzAHQAZQBtACkALgBMAGEAcwB0AEIAbwBvAHQAVQBwAFQAaQBtAGUA\r\nCurrentDirectory: C:\\Users\\Administrator\\\r\nUser: ATTACKRANGE\\Administrator\r\nLogonGuid: {A837DB8D-01DA-5F25-0000-002027420400}\r\nLogonId: 0x44227\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: MD5=F4F684066175B77E0C3A000549D2922C,SHA256=935C1861DF1F4018D698E8B65ABFA02D7E9037D8F68CA3C2065B6CA165D44AD2,IMPHASH=3062ED732D4B25D1C64F084DAC97D37A\r\nParentProcessGuid: {A837DB8D-01DD-5F25-0000-00102C560400}\r\nParentProcessId: 4104\r\nParentImage: C:\\Windows\\System32\\winrshost.exe\r\nParentCommandLine: C:\\Windows\\system32\\WinrsHost.exe -Embedding",
+            "parent_image": "C:\\Windows\\System32\\winrshost.exe",
+            "parent_process_guid": "{A837DB8D-01DD-5F25-0000-00102C560400}",
+            "process_guid": "{A837DB8D-01DD-5F25-0000-001030590400}",
+            "rule_name": "",
+            "source_image": "",
+            "source_name": "Microsoft-Windows-Sysmon",
+            "source_process_guid": "",
+            "target_filename": "",
+            "target_image": "",
+            "target_object": ""
+          }
+        },
+        {
+          "id": "evt-a0e2940232fb2edb7d87e6fe1a4f84812693d80b",
+          "time": "2020-08-01T05:46:46Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "",
+          "type": "lsass_access",
+          "details": {
+            "channel": "Microsoft-Windows-Sysmon/Operational",
+            "command_line": "",
+            "granted_access": "0x1400",
+            "image": "",
+            "message": "Process accessed:\r\nRuleName: \r\nUtcTime: 2020-08-01 05:46:30.141\r\nSourceProcessGUID: {A837DB8D-01B5-5F25-0000-0010B4650000}\r\nSourceProcessId: 612\r\nSourceThreadId: 1072\r\nSourceImage: C:\\Windows\\system32\\svchost.exe\r\nTargetProcessGUID: {A837DB8D-01B3-5F25-0000-001001540000}\r\nTargetProcessId: 864\r\nTargetImage: C:\\Windows\\system32\\lsass.exe\r\nGrantedAccess: 0x1400\r\nCallTrace: C:\\Windows\\SYSTEM32\\ntdll.dll+a5ec4|C:\\Windows\\System32\\KERNELBASE.dll+5eab4|c:\\windows\\system32\\lsm.dll+fa3b|C:\\Windows\\System32\\RPCRT4.dll+78253|C:\\Windows\\System32\\RPCRT4.dll+dbc0d|C:\\Windows\\System32\\RPCRT4.dll+b3cc|C:\\Windows\\System32\\RPCRT4.dll+59cd4|C:\\Windows\\System32\\RPCRT4.dll+58bed|C:\\Windows\\System32\\RPCRT4.dll+5949b|C:\\Windows\\System32\\RPCRT4.dll+3933c|C:\\Windows\\System32\\RPCRT4.dll+397bc|C:\\Windows\\System32\\RPCRT4.dll+53dac|C:\\Windows\\System32\\RPCRT4.dll+5560b|C:\\Windows\\System32\\RPCRT4.dll+480ea|C:\\Windows\\SYSTEM32\\ntdll.dll+286be|C:\\Windows\\SYSTEM32\\ntdll.dll+2a029|C:\\Windows\\System32\\KERNEL32.DLL+84d4|C:\\Windows\\SYSTEM32\\ntdll.dll+6e871",
+            "parent_image": "",
+            "parent_process_guid": "",
+            "process_guid": "",
+            "rule_name": "",
+            "source_image": "C:\\Windows\\system32\\svchost.exe",
+            "source_name": "Microsoft-Windows-Sysmon",
+            "source_process_guid": "{A837DB8D-01B5-5F25-0000-0010B4650000}",
+            "target_filename": "",
+            "target_image": "C:\\Windows\\system32\\lsass.exe",
+            "target_object": ""
+          }
+        },
+        {
+          "id": "evt-6df03e56d0b6ce1a1e9191ffbd426c350a746b25",
+          "time": "2020-08-01T05:46:46Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "",
+          "type": "file_create",
+          "details": {
+            "channel": "Microsoft-Windows-Sysmon/Operational",
+            "command_line": "",
+            "granted_access": "",
+            "image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "message": "File created:\r\nRuleName: \r\nUtcTime: 2020-08-01 05:46:31.766\r\nProcessGuid: {A837DB8D-01B5-5F25-0000-001034380100}\r\nProcessId: 2096\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nTargetFilename: C:\\Windows\\Temp\\__PSScriptPolicyTest_jbulgi2t.pgg.ps1\r\nCreationUtcTime: 2020-08-01 05:46:31.766",
+            "parent_image": "",
+            "parent_process_guid": "",
+            "process_guid": "{A837DB8D-01B5-5F25-0000-001034380100}",
+            "rule_name": "",
+            "source_image": "",
+            "source_name": "Microsoft-Windows-Sysmon",
+            "source_process_guid": "",
+            "target_filename": "C:\\Windows\\Temp\\__PSScriptPolicyTest_jbulgi2t.pgg.ps1",
+            "target_image": "",
+            "target_object": ""
+          }
+        },
+        {
+          "id": "evt-c7d2dadbed00095d5b8ee2b521f3f98d55e4de6c",
+          "time": "2020-08-01T05:46:46Z",
+          "host": "win-dc-881393.attackrange.local",
+          "user": "",
+          "type": "file_create",
+          "details": {
+            "channel": "Microsoft-Windows-Sysmon/Operational",
+            "command_line": "",
+            "granted_access": "",
+            "image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "message": "File created:\r\nRuleName: EXE\r\nUtcTime: 2020-08-01 05:46:33.672\r\nProcessGuid: {A837DB8D-01B5-5F25-0000-00103D410100}\r\nProcessId: 2180\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nTargetFilename: C:\\Users\\Public\\sandcat.exe\r\nCreationUtcTime: 2020-08-01 05:46:33.672",
+            "parent_image": "",
+            "parent_process_guid": "",
+            "process_guid": "{A837DB8D-01B5-5F25-0000-00103D410100}",
+            "rule_name": "EXE",
+            "source_image": "",
+            "source_name": "Microsoft-Windows-Sysmon",
+            "source_process_guid": "",
+            "target_filename": "C:\\Users\\Public\\sandcat.exe",
+            "target_image": "",
+            "target_object": ""
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0005.OBFUSCATED_FILES",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0006.CREDDUMP",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0006.PASS_THE_HASH",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0008.ADMIN_PROTOCOL_LATERAL",
+          "outcome": "feasible"
+        }
+      ],
+      "environment": {
+        "hosts": [
+          {
+            "id": "win-dc-881393.attackrange.local",
+            "zone": "corp-admin",
+            "tags": [
+              "windows",
+              "domain-controller"
+            ],
+            "critical": true
+          }
+        ],
+        "identities": [
+          {
+            "id": "ATTACKRANGE\\Administrator",
+            "role": "administrator",
+            "priv_level": "high",
+            "tags": [
+              "windows",
+              "admin"
+            ]
+          },
+          {
+            "id": "Administrator",
+            "role": "administrator",
+            "priv_level": "high",
+            "tags": [
+              "windows",
+              "admin"
+            ]
+          }
+        ],
+        "trust_boundaries": []
+      }
+    }
+  ]
+}

@@ -207,7 +207,7 @@ func applyDecisionCacheAndThreads(rep *model.ReasoningReport, events []model.Eve
 		host, principal, lastSeen, conf, threadReason := deriveContext(r, events, reqs, index)
 		r.ThreadConfidence = conf
 		r.ThreadReason = threadReason
-		threadID := upsertThread(st, host, principal, lastSeen, r.RuleID, conf, threadReason, runtime)
+		threadID := upsertThread(st, host, principal, lastSeen, r.RuleID, r.Name, conf, threadReason, runtime)
 		if threadID != "" {
 			r.ThreadID = threadID
 		}
@@ -483,7 +483,7 @@ func verdictForRule(r *model.RuleResult) string {
 	return "incomplete"
 }
 
-func upsertThread(st *state.AttackState, host string, principal string, when time.Time, ruleID string, confidence float64, reason string, runtime RuntimeOptions) string {
+func upsertThread(st *state.AttackState, host string, principal string, when time.Time, ruleID string, ruleName string, confidence float64, reason string, runtime RuntimeOptions) string {
 	if host == "" && principal == "" {
 		return ""
 	}
@@ -508,6 +508,9 @@ func upsertThread(st *state.AttackState, host string, principal string, when tim
 					t.Confidence = confidence
 					t.Reason = reason
 				}
+				if t.Title == "" {
+					t.Title = buildThreadTitle(host, principal, ruleName, ruleID)
+				}
 				return t.ID
 			}
 		}
@@ -519,6 +522,7 @@ func upsertThread(st *state.AttackState, host string, principal string, when tim
 	}
 	st.Threads = append(st.Threads, state.Thread{
 		ID:         id,
+		Title:      buildThreadTitle(host, principal, ruleName, ruleID),
 		Host:       host,
 		Principal:  principal,
 		FirstSeen:  when,
@@ -544,6 +548,9 @@ func upsertTicket(st *state.AttackState, threadID string, host string, principal
 			if t.ReasonCode == "" {
 				t.ReasonCode = r.ReasonCode
 			}
+			if t.Title == "" {
+				t.Title = buildTicketTitle(host, principal, r.Name, r.RuleID)
+			}
 			t.Status = statusFromLabel(t.Status, t.DecisionLabel)
 			return
 		}
@@ -551,6 +558,7 @@ func upsertTicket(st *state.AttackState, threadID string, host string, principal
 	id := newTicketID(threadID, host, principal, runtime)
 	st.Tickets = append(st.Tickets, state.Ticket{
 		ID:            id,
+		Title:         buildTicketTitle(host, principal, r.Name, r.RuleID),
 		ThreadID:      threadID,
 		Host:          host,
 		Principal:     principal,
@@ -561,6 +569,46 @@ func upsertTicket(st *state.AttackState, threadID string, host string, principal
 		UpdatedAt:     now,
 		RuleIDs:       filterRuleIDs([]string{r.RuleID}),
 	})
+}
+
+func buildThreadTitle(host string, principal string, ruleName string, ruleID string) string {
+	subject := firstNonEmptyString(host, principal, "environment")
+	activity := cleanRuleTitle(ruleName, ruleID)
+	if activity == "" {
+		return "Reasoning thread for " + subject
+	}
+	return activity + " on " + subject
+}
+
+func buildTicketTitle(host string, principal string, ruleName string, ruleID string) string {
+	subject := firstNonEmptyString(host, principal, "environment")
+	activity := cleanRuleTitle(ruleName, ruleID)
+	if activity == "" {
+		return "Review security decision for " + subject
+	}
+	return "Review " + activity + " on " + subject
+}
+
+func cleanRuleTitle(ruleName string, ruleID string) string {
+	title := strings.TrimSpace(ruleName)
+	if title == "" {
+		title = strings.TrimSpace(ruleID)
+	}
+	title = strings.TrimSuffix(title, " (preconditions unmet)")
+	title = strings.TrimSuffix(title, " (context missing)")
+	title = strings.TrimSuffix(title, " (env: target unreachable)")
+	title = strings.TrimSuffix(title, " (env: insufficient privilege)")
+	title = strings.TrimSuffix(title, " (policy impossible)")
+	return strings.TrimSpace(title)
+}
+
+func firstNonEmptyString(values ...string) string {
+	for _, v := range values {
+		if strings.TrimSpace(v) != "" {
+			return strings.TrimSpace(v)
+		}
+	}
+	return ""
 }
 
 func newThreadID(host string, principal string, when time.Time, runtime RuntimeOptions) string {

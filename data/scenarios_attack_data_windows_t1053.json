@@ -1,0 +1,176 @@
+{
+  "scenarios": [
+    {
+      "id": "attackdata-windows-t1053",
+      "description": "Real Windows Security and Sysmon records from splunk/attack_data T1053.005. This slice supports scheduled-task and credential-access signals but lacks explicit foothold, privilege-escalation, and ticket-reuse evidence, so the targeted paths should remain incomplete.",
+      "events": [
+        {
+          "id": "adw-sec-1",
+          "time": "2020-08-01T06:49:15Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "WIN-DC-8400769$",
+          "type": "signin_success",
+          "details": {
+            "channel": "Security",
+            "logon_type": "5"
+          }
+        },
+        {
+          "id": "adw-sec-2",
+          "time": "2020-08-01T06:49:15Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "WIN-DC-8400769$",
+          "type": "valid_account_login",
+          "details": {
+            "channel": "Security",
+            "logon_type": "5"
+          }
+        },
+        {
+          "id": "adw-sec-3",
+          "time": "2020-08-01T06:49:15Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "SYSTEM",
+          "type": "privileged_logon",
+          "details": {
+            "channel": "Security",
+            "privileges": "SeDebugPrivilege"
+          }
+        },
+        {
+          "id": "adw-sec-4",
+          "time": "2020-08-01T06:49:28Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "Administrator",
+          "type": "explicit_credential_use",
+          "details": {
+            "channel": "Security",
+            "target_server": "localhost"
+          }
+        },
+        {
+          "id": "adw-sec-5",
+          "time": "2020-08-01T06:49:28Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "Administrator",
+          "type": "signin_success",
+          "details": {
+            "channel": "Security"
+          }
+        },
+        {
+          "id": "adw-sec-6",
+          "time": "2020-08-01T06:49:28Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "Administrator",
+          "type": "valid_account_login",
+          "details": {
+            "channel": "Security"
+          }
+        },
+        {
+          "id": "adw-sec-7",
+          "time": "2020-08-01T06:49:38Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "WIN-DC-8400769$@ATTACKRANGE.LOCAL",
+          "type": "kerberos_ticket",
+          "details": {
+            "channel": "Security"
+          }
+        },
+        {
+          "id": "adw-sec-8",
+          "time": "2020-08-01T06:49:38Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "WIN-DC-8400769$",
+          "type": "kerberos_ticket",
+          "details": {
+            "channel": "Security"
+          }
+        },
+        {
+          "id": "adw-sys-1",
+          "time": "2020-08-01T06:49:15Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "SYSTEM",
+          "type": "lsass_access",
+          "details": {
+            "source_image": "C:\\Windows\\system32\\svchost.exe",
+            "target_image": "C:\\Windows\\system32\\lsass.exe",
+            "granted_access": "0x1400"
+          }
+        },
+        {
+          "id": "adw-sys-2",
+          "time": "2020-08-01T06:49:15Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "SYSTEM",
+          "type": "registry_change",
+          "details": {
+            "target_object": "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\NetworkList\\Profiles\\{1C4380BB-3862-41F1-B425-7E74397CF5D1}\\DateLastConnected"
+          }
+        },
+        {
+          "id": "adw-sys-3",
+          "time": "2020-08-01T06:49:15Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "SYSTEM",
+          "type": "scheduled_task",
+          "details": {
+            "target_filename": "C:\\Windows\\Tasks\\SA.DAT"
+          }
+        },
+        {
+          "id": "adw-sys-4",
+          "time": "2020-08-01T06:49:18Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "SYSTEM",
+          "type": "network_connection",
+          "details": {
+            "source_ip": "10.0.1.14"
+          }
+        },
+        {
+          "id": "adw-sys-5",
+          "time": "2020-08-01T06:55:19Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "process_creation",
+          "details": {
+            "image": "C:\\Windows\\System32\\cmd.exe",
+            "command_line": "\"C:\\Windows\\system32\\cmd.exe\" /c \"schtasks /create /tn \\\"T1053_005_OnLogon\\\" /sc onlogon /tr \\\"cmd.exe /c calc.exe\\\"\""
+          }
+        },
+        {
+          "id": "adw-sys-6",
+          "time": "2020-08-01T06:55:19Z",
+          "host": "win-dc-8400769.attackrange.local",
+          "user": "ATTACKRANGE\\Administrator",
+          "type": "schtasks_create",
+          "details": {
+            "image": "C:\\Windows\\System32\\cmd.exe",
+            "command_line": "\"C:\\Windows\\system32\\cmd.exe\" /c \"schtasks /create /tn \\\"T1053_005_OnLogon\\\" /sc onlogon /tr \\\"cmd.exe /c calc.exe\\\"\""
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0002.SCHED_TASK_EXEC",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0003.PERSIST",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0006.CREDDUMP",
+          "outcome": "incomplete"
+        },
+        {
+          "rule_id": "TA0006.PASS_THE_TICKET",
+          "outcome": "incomplete"
+        }
+      ]
+    }
+  ]
+}

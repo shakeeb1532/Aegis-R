@@ -1,0 +1,358 @@
+{
+  "scenarios": [
+    {
+      "id": "cloud-exfil-out-of-scope-blocker",
+      "description": "Cloud exfil path with out-of-scope egress block should remain feasible",
+      "environment": {
+        "hosts": [
+          {
+            "id": "prod-db-01",
+            "zone": "prod-app"
+          },
+          {
+            "id": "irrelevant-host",
+            "zone": "prod-app"
+          }
+        ],
+        "identities": [
+          {
+            "id": "svc-backup",
+            "role": "service",
+            "priv_level": "high"
+          }
+        ],
+        "trust_boundaries": [
+          {
+            "id": "tb1",
+            "from": "prod-app",
+            "to": "prod-app",
+            "mode": "allow"
+          }
+        ]
+      },
+      "events": [
+        {
+          "id": "ce1",
+          "time": "2026-02-10T10:00:00Z",
+          "host": "prod-db-01",
+          "user": "svc-backup",
+          "type": "beacon_outbound",
+          "details": {
+            "source": "cloudtrail"
+          }
+        },
+        {
+          "id": "ce2",
+          "time": "2026-02-10T10:00:05Z",
+          "host": "prod-db-01",
+          "user": "svc-backup",
+          "type": "lsass_access",
+          "details": {
+            "source": "cloudtrail"
+          }
+        },
+        {
+          "id": "ce3",
+          "time": "2026-02-10T10:01:00Z",
+          "host": "prod-db-01",
+          "user": "svc-backup",
+          "type": "data_staging",
+          "details": {
+            "bucket": "s3://sensitive"
+          }
+        },
+        {
+          "id": "ce4",
+          "time": "2026-02-10T10:01:10Z",
+          "host": "prod-db-01",
+          "user": "svc-backup",
+          "type": "large_outbound_transfer",
+          "details": {
+            "dest": "198.51.100.10"
+          }
+        },
+        {
+          "id": "ce5",
+          "time": "2026-02-10T10:01:15Z",
+          "host": "irrelevant-host",
+          "user": "other-user",
+          "type": "egress_blocked",
+          "details": {
+            "dest": "203.0.113.10"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "cloud-exfil-same-scope-blocker",
+      "description": "Cloud exfil path with same-scope egress block should become impossible",
+      "environment": {
+        "hosts": [
+          {
+            "id": "prod-db-01",
+            "zone": "prod-app"
+          }
+        ],
+        "identities": [
+          {
+            "id": "svc-backup",
+            "role": "service",
+            "priv_level": "high"
+          }
+        ],
+        "trust_boundaries": [
+          {
+            "id": "tb1",
+            "from": "prod-app",
+            "to": "prod-app",
+            "mode": "allow"
+          }
+        ]
+      },
+      "events": [
+        {
+          "id": "ce1",
+          "time": "2026-02-10T10:00:00Z",
+          "host": "prod-db-01",
+          "user": "svc-backup",
+          "type": "beacon_outbound",
+          "details": {
+            "source": "cloudtrail"
+          }
+        },
+        {
+          "id": "ce2",
+          "time": "2026-02-10T10:00:05Z",
+          "host": "prod-db-01",
+          "user": "svc-backup",
+          "type": "lsass_access",
+          "details": {
+            "source": "cloudtrail"
+          }
+        },
+        {
+          "id": "ce3",
+          "time": "2026-02-10T10:01:00Z",
+          "host": "prod-db-01",
+          "user": "svc-backup",
+          "type": "data_staging",
+          "details": {
+            "bucket": "s3://sensitive"
+          }
+        },
+        {
+          "id": "ce4",
+          "time": "2026-02-10T10:01:10Z",
+          "host": "prod-db-01",
+          "user": "svc-backup",
+          "type": "large_outbound_transfer",
+          "details": {
+            "dest": "198.51.100.10"
+          }
+        },
+        {
+          "id": "ce5",
+          "time": "2026-02-10T10:01:15Z",
+          "host": "prod-db-01",
+          "user": "svc-backup",
+          "type": "egress_blocked",
+          "details": {
+            "dest": "198.51.100.10"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0010.EXFIL",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "identity-valid-accounts-out-of-scope-blocker",
+      "description": "Valid-accounts anomaly with out-of-scope denial should remain feasible",
+      "events": [
+        {
+          "id": "ia1",
+          "time": "2026-02-10T11:00:00Z",
+          "host": "idp-okta",
+          "user": "alice",
+          "type": "signin_success",
+          "details": {
+            "signInId": "sig-1",
+            "source_ip": "203.0.113.50"
+          }
+        },
+        {
+          "id": "ia2",
+          "time": "2026-02-10T11:00:03Z",
+          "host": "idp-okta",
+          "user": "alice",
+          "type": "new_device_login",
+          "details": {
+            "signInId": "sig-1",
+            "source_ip": "203.0.113.50"
+          }
+        },
+        {
+          "id": "ia3",
+          "time": "2026-02-10T11:00:05Z",
+          "host": "idp-okta",
+          "user": "bob",
+          "type": "access_denied",
+          "details": {
+            "signInId": "sig-2",
+            "source_ip": "198.51.100.50"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.VALID_ACCOUNTS",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "identity-valid-accounts-same-scope-blocker",
+      "description": "Valid-accounts anomaly with same-scope denial should become impossible",
+      "events": [
+        {
+          "id": "ia1",
+          "time": "2026-02-10T11:00:00Z",
+          "host": "idp-okta",
+          "user": "alice",
+          "type": "signin_success",
+          "details": {
+            "signInId": "sig-1",
+            "source_ip": "203.0.113.50"
+          }
+        },
+        {
+          "id": "ia2",
+          "time": "2026-02-10T11:00:03Z",
+          "host": "idp-okta",
+          "user": "alice",
+          "type": "new_device_login",
+          "details": {
+            "signInId": "sig-1",
+            "source_ip": "203.0.113.50"
+          }
+        },
+        {
+          "id": "ia3",
+          "time": "2026-02-10T11:00:05Z",
+          "host": "idp-okta",
+          "user": "alice",
+          "type": "access_denied",
+          "details": {
+            "signInId": "sig-1",
+            "source_ip": "203.0.113.50"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.VALID_ACCOUNTS",
+          "outcome": "impossible"
+        }
+      ]
+    },
+    {
+      "id": "identity-bruteforce-out-of-scope-success",
+      "description": "Brute-force pattern with unrelated MFA success should remain incomplete",
+      "events": [
+        {
+          "id": "bf1",
+          "time": "2026-02-10T12:00:00Z",
+          "host": "idp-okta",
+          "user": "alice",
+          "type": "password_spray",
+          "details": {
+            "signInId": "spray-1",
+            "source_ip": "198.51.100.20"
+          }
+        },
+        {
+          "id": "bf2",
+          "time": "2026-02-10T12:00:05Z",
+          "host": "idp-okta",
+          "user": "alice",
+          "type": "credential_stuffing",
+          "details": {
+            "signInId": "spray-1",
+            "source_ip": "198.51.100.20"
+          }
+        },
+        {
+          "id": "bf3",
+          "time": "2026-02-10T12:00:10Z",
+          "host": "idp-okta",
+          "user": "bob",
+          "type": "mfa_success",
+          "details": {
+            "signInId": "spray-2",
+            "source_ip": "203.0.113.20"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.BRUTE_FORCE",
+          "outcome": "feasible"
+        }
+      ]
+    },
+    {
+      "id": "identity-bruteforce-same-scope-success",
+      "description": "Brute-force pattern with same-scope MFA success should become impossible",
+      "events": [
+        {
+          "id": "bf1",
+          "time": "2026-02-10T12:00:00Z",
+          "host": "idp-okta",
+          "user": "alice",
+          "type": "password_spray",
+          "details": {
+            "signInId": "spray-1",
+            "source_ip": "198.51.100.20"
+          }
+        },
+        {
+          "id": "bf2",
+          "time": "2026-02-10T12:00:05Z",
+          "host": "idp-okta",
+          "user": "alice",
+          "type": "credential_stuffing",
+          "details": {
+            "signInId": "spray-1",
+            "source_ip": "198.51.100.20"
+          }
+        },
+        {
+          "id": "bf3",
+          "time": "2026-02-10T12:00:10Z",
+          "host": "idp-okta",
+          "user": "alice",
+          "type": "mfa_success",
+          "details": {
+            "signInId": "spray-1",
+            "source_ip": "198.51.100.20"
+          }
+        }
+      ],
+      "labels": [
+        {
+          "rule_id": "TA0006.BRUTE_FORCE",
+          "outcome": "impossible"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "source": "splunk/botsv1 real export sample",
+  "security_fixture": "/Users/shak1532/Downloads/Aegis-R/data/fixtures/botsv1_windows_security.json",
+  "sysmon_fixture": "/Users/shak1532/Downloads/Aegis-R/data/fixtures/botsv1_sysmon.json",
+  "normalized_event_count": 6,
+  "interesting_results": [
+    {
+      "rule_id": "TA0001.CONTENT_INJECTION",
+      "name": "Content Injection",
+      "feasible": false,
+      "reason_code": "evidence_gap",
+      "confidence": 0.21666666666666667,
+      "supporting_event_ids": [
+        "evt-c57299e611e31af88c41765f0439980011a1ccac"
+      ]
+    },
+    {
+      "rule_id": "TA0001.STOLEN_CREDS",
+      "name": "Stolen Credentials Initial Access",
+      "feasible": false,
+      "reason_code": "evidence_gap",
+      "confidence": 0.325,
+      "supporting_event_ids": [
+        "evt-40f11392b2084a59a5431117f002bfa20c9ca9bb"
+      ]
+    },
+    {
+      "rule_id": "TA0001.STOLEN_CREDS_ANOMALY",
+      "name": "Stolen Credentials with Anomalous Access",
+      "feasible": false,
+      "reason_code": "evidence_gap",
+      "confidence": 0.21666666666666667,
+      "supporting_event_ids": [
+        "evt-40f11392b2084a59a5431117f002bfa20c9ca9bb"
+      ]
+    },
+    {
+      "rule_id": "TA0001.VALID_ACCOUNTS_EXT",
+      "name": "Valid Accounts \u2013 External",
+      "feasible": false,
+      "reason_code": "evidence_gap",
+      "confidence": 0.21666666666666667,
+      "supporting_event_ids": [
+        "evt-40f11392b2084a59a5431117f002bfa20c9ca9bb"
+      ]
+    },
+    {
+      "rule_id": "TA0002.CMD_SCRIPT_BASH",
+      "name": "Command & Scripting \u2013 Bash/Shell (preconditions unmet)",
+      "feasible": false,
+      "reason_code": "evidence_gap",
+      "confidence": 0.1,
+      "supporting_event_ids": [
+        "evt-24c9564513be42f029c09609e7798ceee13b68d6",
+        "evt-649ae5c9c5c2f5a79818c22c0c74a5ef4eae3ee8"
+      ]
+    },
+    {
+      "rule_id": "TA0002.CMD_SCRIPT_CLOUD",
+      "name": "Command & Scripting \u2013 Cloud API (preconditions unmet)",
+      "feasible": false,
+      "reason_code": "evidence_gap",
+      "confidence": 0.1,
+      "supporting_event_ids": [
+        "evt-24c9564513be42f029c09609e7798ceee13b68d6",
+        "evt-649ae5c9c5c2f5a79818c22c0c74a5ef4eae3ee8"
+      ]
+    },
+    {
+      "rule_id": "TA0002.CMD_SCRIPT_JS",
+      "name": "Command & Scripting \u2013 JavaScript/JScript (preconditions unmet)",
+      "feasible": false,
+      "reason_code": "evidence_gap",
+      "confidence": 0.1,
+      "supporting_event_ids": [
+        "evt-24c9564513be42f029c09609e7798ceee13b68d6",
+        "evt-649ae5c9c5c2f5a79818c22c0c74a5ef4eae3ee8"
+      ]
+    },
+    {
+      "rule_id": "TA0002.CMD_SCRIPT_PS",
+      "name": "Command & Scripting \u2013 PowerShell (preconditions unmet)",
+      "feasible": false,
+      "reason_code": "evidence_gap",
+      "confidence": 0.1,
+      "supporting_event_ids": [
+        "evt-24c9564513be42f029c09609e7798ceee13b68d6",
+        "evt-649ae5c9c5c2f5a79818c22c0c74a5ef4eae3ee8"
+      ]
+    },
+    {
+      "rule_id": "TA0002.CMD_SCRIPT_PYTHON",
+      "name": "Command & Scripting \u2013 Python (preconditions unmet)",
+      "feasible": false,
+      "reason_code": "evidence_gap",
+      "confidence": 0.1,
+      "supporting_event_ids": [
+        "evt-24c9564513be42f029c09609e7798ceee13b68d6",
+        "evt-649ae5c9c5c2f5a79818c22c0c74a5ef4eae3ee8"
+      ]
+    },
+    {
+      "rule_id": "TA0002.CMD_SCRIPT_VBA",
+      "name": "Command & Scripting \u2013 Visual Basic/VBA (preconditions unmet)",
+      "feasible": false,
+      "reason_code": "evidence_gap",
+      "confidence": 0.1,
+      "supporting_event_ids": [
+        "evt-24c9564513be42f029c09609e7798ceee13b68d6",
+        "evt-649ae5c9c5c2f5a79818c22c0c74a5ef4eae3ee8"
+      ]
+    },
+    {
+      "rule_id": "TA0002.CONTAINER_ADMIN",
+      "name": "Container Administration Command (preconditions unmet)",
+      "feasible": false,
+      "reason_code": "evidence_gap",
+      "confidence": 0.1,
+      "supporting_event_ids": [
+        "evt-24c9564513be42f029c09609e7798ceee13b68d6",
+        "evt-649ae5c9c5c2f5a79818c22c0c74a5ef4eae3ee8"
+      ]
+    },
+    {
+      "rule_id": "TA0002.DEPLOY_CONTAINER",
+      "name": "Deploy Container (preconditions unmet)",
+      "feasible": false,
+      "reason_code": "evidence_gap",
+      "confidence": 0.1,
+      "supporting_event_ids": [
+        "evt-24c9564513be42f029c09609e7798ceee13b68d6",
+        "evt-649ae5c9c5c2f5a79818c22c0c74a5ef4eae3ee8"
+      ]
+    },
+    {
+      "rule_id": "TA0002.EXPLOIT_CLIENT",
+      "name": "Exploitation for Client Execution (preconditions unmet)",
+      "feasible": false,
+      "reason_code": "evidence_gap",
+      "confidence": 0.1,
+      "supporting_event_ids": [
+        "evt-24c9564513be42f029c09609e7798ceee13b68d6",
+        "evt-649ae5c9c5c2f5a79818c22c0c74a5ef4eae3ee8"
+      ]
+    },
+    {
+      "rule_id": "TA0002.INTER_PROC_COMM",
+      "name": "Inter-Process Communication (COM/DCOM) (preconditions unmet)",
+      "feasible": false,
+      "reason_code": "evidence_gap",
+      "confidence": 0.1,
+      "supporting_event_ids": [
+        "evt-24c9564513be42f029c09609e7798ceee13b68d6",
+        "evt-649ae5c9c5c2f5a79818c22c0c74a5ef4eae3ee8"
+      ]
+    },
+    {
+      "rule_id": "TA0002.LOLBIN_CHAIN",
+      "name": "Suspicious LOLBin Execution Chain (preconditions unmet)",
+      "feasible": false,
+      "reason_code": "evidence_gap",
+      "confidence": 0.1,
+      "supporting_event_ids": [
+        "evt-24c9564513be42f029c09609e7798ceee13b68d6",
+        "evt-649ae5c9c5c2f5a79818c22c0c74a5ef4eae3ee8"
+      ]
+    }
+  ],
+  "thread_count": 0,
+  "ticket_count": 0,
+  "finding_count": 230
+}

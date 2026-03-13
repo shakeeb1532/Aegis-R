@@ -1,0 +1,33 @@
+{
+  "total": 3,
+  "accuracy": 1,
+  "by_class": {
+    "feasible": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": 0,
+      "recall": 0
+    },
+    "impossible": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": 0,
+      "recall": 0
+    },
+    "incomplete": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    }
+  },
+  "accuracy_by_rule": {
+    "TA0002.LOLBIN_CHAIN": 1,
+    "TA0002.WMI_EXEC": 1,
+    "TA0006.PASS_THE_TICKET": 1
+  },
+  "mismatches": []
+}
